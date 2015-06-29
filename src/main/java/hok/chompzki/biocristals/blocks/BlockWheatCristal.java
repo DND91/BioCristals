@@ -108,7 +108,7 @@ public class BlockWheatCristal extends Block {
         	
         	l = 0;
         	world.setBlockMetadataWithNotify(x, y, z, l, 2);
-        	//fasfaf
+        	
         }
 		
         return true;
