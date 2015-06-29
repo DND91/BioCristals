@@ -1,5 +1,7 @@
 package hok.chompzki.biocristals.api;
 
+import java.util.List;
+
 import net.minecraft.world.World;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,4 +14,5 @@ public interface ICristal {
 	
 	public void harvest(World world, EntityPlayer player, ItemStack stack, int x, int y, int z);
 	
+	public void harvest(World world, EntityPlayer player, ItemStack stack, int x, int y, int z, List<ItemStack> list);
 }

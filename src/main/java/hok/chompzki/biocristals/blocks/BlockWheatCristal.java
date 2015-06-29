@@ -23,6 +23,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockWheatCristal extends Block implements ICristal{
 	
+	//Plants: Wheat, Suger Cane, Carrots, Melon, Pumpkin, Potato
+	
 	@SideOnly(Side.CLIENT)
     private IIcon[] field_149867_a;
 	public static final String NAME = "blockWheatCristal";
@@ -103,16 +105,17 @@ public class BlockWheatCristal extends Block implements ICristal{
 	@Override
 	public void harvest(World world, EntityPlayer player, ItemStack stack,
 			int x, int y, int z) {
-    	
     	List<ItemStack> list = new ArrayList<ItemStack>();
-    	list.add(new ItemStack(Items.wheat, 2));
-    	
+    	this.harvest(world, player, stack, x, y, z, list);
     	BioHelper.dropItems(world, list, x, y+1, z);
-    	
+	}
+
+	@Override
+	public void harvest(World world, EntityPlayer player, ItemStack stack,
+			int x, int y, int z, List<ItemStack> list) {
+		list.add(new ItemStack(Items.wheat, 2));
     	int meta = 0;
     	world.setBlockMetadataWithNotify(x, y, z, meta, 2);
-        
-		
 	}
 	
 }

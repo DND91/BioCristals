@@ -1,4 +1,5 @@
 item.BioCristals_itemAttuner.name=Attuner
 item.BioCristals_itemBioReagent.name=Biological Reagent
+item.BioCristals_itemCollector.name=Collector
 tile.BioCristals_blockBiomass.name=Biomass
 tile.BioCristals_blockWheatCristal.name=Wheat Cristal
