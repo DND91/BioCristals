@@ -4,7 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public interface IStructure {
+public interface ITransformation {
 	
 	public boolean hasResources(ItemStack stack, EntityPlayer player);
 	

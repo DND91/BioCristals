@@ -5,7 +5,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import hok.chompzki.biocristals.BioCristalsMod;
 import hok.chompzki.biocristals.api.BioHelper;
 import hok.chompzki.biocristals.api.ICristal;
-import hok.chompzki.biocristals.api.IStructure;
+import hok.chompzki.biocristals.api.ITransformation;
 import hok.chompzki.biocristals.blocks.BlockBiomass;
 import hok.chompzki.biocristals.registrys.CristalRegistry;
 import hok.chompzki.biocristals.registrys.ItemRegistry;
@@ -66,7 +66,7 @@ public class ItemAttuner extends Item {
 			if(world.isAirBlock(x, y, z))
 				return;
 			if(world.getBlock(x, y, z) instanceof BlockBiomass){
-				IStructure struct = CristalRegistry.get(stack, player, world, x, y, z);
+				ITransformation struct = CristalRegistry.get(stack, player, world, x, y, z);
 				if(struct == null){
 					Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("Envoirment not adopted for any crystaline transformation..."));
 					return;
