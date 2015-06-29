@@ -1,7 +1,8 @@
-package hok.chompzki.biocristals.structure.farming;
+package hok.chompzki.biocristals.structure;
 
+import hok.chompzki.biocristals.api.BioHelper;
+import hok.chompzki.biocristals.api.IStructure;
 import hok.chompzki.biocristals.registrys.BlockRegistry;
-import hok.chompzki.biocristals.structure.IStructure;
 
 import java.util.List;
 
@@ -25,16 +26,8 @@ public class WheatCristalStructure implements IStructure {
 	@Override
 	public boolean canPlaceAt(ItemStack stack, EntityPlayer player,
 			World world, int x, int y, int z) {// AxisAlignedBB
-		Block block = world.getBlock(x, y, z);
-		if(block != BlockRegistry.biomass)
-			return false;
 		
-		List<EntityItem> list = world.getEntitiesWithinAABB(EntityItem.class, player.boundingBox.expand(10, 10, 10));
-		for(EntityItem item : list){
-			if(item.getEntityItem().getItem() == Items.wheat)
-				return true;
-		}
-		return false;
+		return BioHelper.getFirstEntityItemWithinAABB(world, player, Items.wheat, 10, 10, 10) != null;
 	}
 	
 	@Override
@@ -45,21 +38,14 @@ public class WheatCristalStructure implements IStructure {
 	@Override
 	public void construct(ItemStack stack, EntityPlayer player, World world,
 			int x, int y, int z) {
-		if (!world.isRemote)
-	        return;
-	        
-		world.setBlock(x, y, z, BlockRegistry.wheatCristal);
-		
-		List<EntityItem> list = world.getEntitiesWithinAABB(EntityItem.class, player.boundingBox.expand(10, 10, 10));
-		for(EntityItem item : list){
-			if(item.getEntityItem().getItem() == Items.wheat){
-				item.getEntityItem().stackSize--;
-				if(item.getEntityItem().stackSize <= 0)
-					item.setDead();
-				return;
-			}
+		EntityItem item = BioHelper.getFirstEntityItemWithinAABB(world, player, Items.wheat, 10, 10, 10);
+		if(item != null && item.getEntityItem().getItem() == Items.wheat){
+			world.setBlock(x, y, z, BlockRegistry.wheatCristal);
+			
+			item.getEntityItem().stackSize--;
+			if(item.getEntityItem().stackSize <= 0)
+				item.setDead();
 		}
-		
 	}
 
 }

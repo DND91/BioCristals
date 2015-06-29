@@ -1,6 +1,5 @@
 package hok.chompzki.biocristals.registrys;
 
-import hok.chompzki.biocristals.structure.FarmingStructures;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -13,7 +12,7 @@ public class CommonProxy { //Server sided
 		items.registerItems();
 		BlockRegistry blocks = new BlockRegistry();
 		blocks.registerBlocks();
-		FarmingStructures.registerAll();
+		CristalRegistry.registerAll();
 	}
 
     

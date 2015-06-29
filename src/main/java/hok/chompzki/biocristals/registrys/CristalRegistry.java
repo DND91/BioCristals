@@ -1,7 +1,7 @@
-package hok.chompzki.biocristals.structure;
+package hok.chompzki.biocristals.registrys;
 
-import hok.chompzki.biocristals.structure.farming.TestFarmingStructure;
-import hok.chompzki.biocristals.structure.farming.WheatCristalStructure;
+import hok.chompzki.biocristals.api.IStructure;
+import hok.chompzki.biocristals.structure.WheatCristalStructure;
 
 import java.util.ArrayList;
 
@@ -9,7 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public class FarmingStructures {
+public class CristalRegistry {
 	
 	private static ArrayList<IStructure> structures = new ArrayList<IStructure>();
 	
@@ -27,8 +27,7 @@ public class FarmingStructures {
 	}
 	
 	public static void registerAll(){
-		FarmingStructures.register(new TestFarmingStructure());
-		FarmingStructures.register(new WheatCristalStructure());
+		CristalRegistry.register(new WheatCristalStructure());
 		
 		
 	}

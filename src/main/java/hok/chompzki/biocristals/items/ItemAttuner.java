@@ -3,20 +3,26 @@ package hok.chompzki.biocristals.items;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import hok.chompzki.biocristals.BioCristalsMod;
-import hok.chompzki.biocristals.structure.FarmingStructures;
-import hok.chompzki.biocristals.structure.IStructure;
+import hok.chompzki.biocristals.api.BioHelper;
+import hok.chompzki.biocristals.api.ICristal;
+import hok.chompzki.biocristals.api.IStructure;
+import hok.chompzki.biocristals.blocks.BlockBiomass;
+import hok.chompzki.biocristals.registrys.CristalRegistry;
+import hok.chompzki.biocristals.registrys.ItemRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
@@ -50,22 +56,42 @@ public class ItemAttuner extends Item {
 	@Override
 	public void onPlayerStoppedUsing(ItemStack stack, World world, EntityPlayer player, int useTicks)
     {
+		if(world.isRemote)
+			return;
+		
 		if((this.getMaxItemUseDuration(stack) - 100) <= useTicks){
 			int x = Minecraft.getMinecraft().objectMouseOver.blockX;
 			int y = Minecraft.getMinecraft().objectMouseOver.blockY;
 			int z = Minecraft.getMinecraft().objectMouseOver.blockZ;
 			if(world.isAirBlock(x, y, z))
 				return;
-			IStructure struct = FarmingStructures.get(stack, player, world, x, y, z);
-			if(struct == null)
-				return;
-			
-			Block block = world.getBlock(x, y, z);
-			
-			
-			
-			struct.pay(stack, player);
-			struct.construct(stack, player, world, x, y, z);
+			if(world.getBlock(x, y, z) instanceof BlockBiomass){
+				IStructure struct = CristalRegistry.get(stack, player, world, x, y, z);
+				if(struct == null){
+					Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("Envoirment not adopted for any crystaline transformation..."));
+					return;
+				}
+				
+				EntityItem item = BioHelper.getFirstEntityItemWithinAABB(world, player, ItemRegistry.bioReagent, 10, 10, 10);
+				if(item == null){
+					Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("Crystaline transformation is missing a reagent..."));
+					return;
+				}
+				
+				Block block = world.getBlock(x, y, z);
+				struct.pay(stack, player);
+				struct.construct(stack, player, world, x, y, z);
+				
+				item.getEntityItem().stackSize--;
+				if(item.getEntityItem().stackSize <= 0)
+					item.setDead();
+				
+			}else if(world.getBlock(x, y, z) instanceof ICristal){
+				ICristal cristal = (ICristal) world.getBlock(x, y, z);
+				if(cristal.isMature(world, player, stack, x, y, z)){
+					cristal.harvest(world, player, stack, x, y, z);
+				}
+			}
 		}
     }
 	

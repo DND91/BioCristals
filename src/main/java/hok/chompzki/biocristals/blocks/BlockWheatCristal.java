@@ -1,10 +1,14 @@
 package hok.chompzki.biocristals.blocks;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import hok.chompzki.biocristals.BioCristalsMod;
+import hok.chompzki.biocristals.api.BioHelper;
+import hok.chompzki.biocristals.api.ICristal;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -17,7 +21,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class BlockWheatCristal extends Block {
+public class BlockWheatCristal extends Block implements ICristal{
 	
 	@SideOnly(Side.CLIENT)
     private IIcon[] field_149867_a;
@@ -89,30 +93,27 @@ public class BlockWheatCristal extends Block {
             
         }
     }
+
+	@Override
+	public boolean isMature(World world, EntityPlayer player, ItemStack stack,
+			int x, int y, int z) {
+		return world.getBlockMetadata(x, y, z) == maxMeta;
+	}
 	
 	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_)
-    {
+	public void harvest(World world, EntityPlayer player, ItemStack stack,
+			int x, int y, int z) {
+    	
+    	List<ItemStack> list = new ArrayList<ItemStack>();
+    	list.add(new ItemStack(Items.wheat, 2));
+    	
+    	BioHelper.dropItems(world, list, x, y+1, z);
+    	
+    	int meta = 0;
+    	world.setBlockMetadataWithNotify(x, y, z, meta, 2);
+        
 		
-		int l = world.getBlockMetadata(x, y, z);
-
-        if (l < maxMeta)
-        {
-            float f = 1.0f;
-            ++l;
-            world.setBlockMetadataWithNotify(x, y, z, l, 2);
-            
-        }else if(l == maxMeta){
-        	
-        	player.inventory.addItemStackToInventory(new ItemStack(Items.wheat, 2));
-        	
-        	l = 0;
-        	world.setBlockMetadataWithNotify(x, y, z, l, 2);
-        	//agfsdgsd
-        }
-		
-        return true;
-    }
+	}
 	
 }
 

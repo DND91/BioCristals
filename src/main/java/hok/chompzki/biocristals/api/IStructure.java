@@ -1,4 +1,4 @@
-package hok.chompzki.biocristals.structure;
+package hok.chompzki.biocristals.api;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
