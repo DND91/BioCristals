@@ -8,6 +8,8 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 public class CommonProxy { //Server sided
 
 	public void preInit(FMLPreInitializationEvent event) {
+		ConfigRegistry.preinit(event.getSuggestedConfigurationFile());
+		
 		ItemRegistry items = new ItemRegistry();
 		items.registerItems();
 		BlockRegistry blocks = new BlockRegistry();

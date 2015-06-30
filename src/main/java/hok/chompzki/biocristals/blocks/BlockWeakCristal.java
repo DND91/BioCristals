@@ -46,22 +46,14 @@ public class BlockWeakCristal extends Block implements ICristal{
 			this.drops = drops;
 		}
 		
-		public void updateTick(World p_149674_1_, int p_149674_2_, int p_149674_3_, int p_149674_4_, Random p_149674_5_)
+		public void updateTick(World world, int x, int y, int z, Random rand)
 	    {
-	        super.updateTick(p_149674_1_, p_149674_2_, p_149674_3_, p_149674_4_, p_149674_5_);
-
+	        super.updateTick(world, x, y, z, rand);
 	        
-	        int l = p_149674_1_.getBlockMetadata(p_149674_2_, p_149674_3_, p_149674_4_);
-
-	        if (l < maxMeta)
-	        {
-	            if (p_149674_5_.nextInt(5) == 0)
-	            {
-	                ++l;
-	                p_149674_1_.setBlockMetadataWithNotify(p_149674_2_, p_149674_3_, p_149674_4_, l, 2);
-	            }
-	        }
-	        
+            if (rand.nextInt(5) == 0)
+            {
+                //this.grow(world, x, y, z);
+            }
 	    }
 		
 		public void func_149863_m(World p_149863_1_, int p_149863_2_, int p_149863_3_, int p_149863_4_)
@@ -118,8 +110,20 @@ public class BlockWeakCristal extends Block implements ICristal{
 		public void harvest(World world, EntityPlayer player, ItemStack stack,
 				int x, int y, int z, List<ItemStack> list) {
 			for(ItemStack d : drops)
-				list.add(d);
+				list.add(d.copy());
 	    	int meta = 0;
 	    	world.setBlockMetadataWithNotify(x, y, z, meta, 2);
 		}
+		
+		@Override
+		public void grow(World world, int x, int y, int z) {
+			int l = world.getBlockMetadata(x, y, z);
+
+	        if (l < maxMeta)
+	        {
+	        	++l;
+                world.setBlockMetadataWithNotify(x, y, z, l, 2);
+	        }
+		}
+
 }

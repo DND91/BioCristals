@@ -15,4 +15,6 @@ public interface ICristal {
 	public void harvest(World world, EntityPlayer player, ItemStack stack, int x, int y, int z);
 	
 	public void harvest(World world, EntityPlayer player, ItemStack stack, int x, int y, int z, List<ItemStack> list);
+
+	public void grow(World world, int x, int y, int z);
 }

@@ -1,6 +1,7 @@
 item.BioCristals_itemAttuner.name=Attuner
 item.BioCristals_itemBioReagent.name=Biological Reagent
 item.BioCristals_itemCollector.name=Collector
+item.BioCristals_itemCatalystInjector.name=Catalyst Inducer
 tile.BioCristals_blockBiomass.name=Biomass
 tile.BioCristals_blockWheatCristal.name=Wheat Cristal
 tile.BioCristals_blockCarrotCristal.name=Carrot Cristal

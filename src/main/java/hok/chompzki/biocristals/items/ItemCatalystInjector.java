@@ -1,20 +1,18 @@
 package hok.chompzki.biocristals.items;
 
-import java.util.AbstractSet;
+import hok.chompzki.biocristals.BioCristalsMod;
+import hok.chompzki.biocristals.api.BioHelper;
+import hok.chompzki.biocristals.api.ICristal;
+import hok.chompzki.biocristals.registrys.ConfigRegistry;
+
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Queue;
-import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import scala.tools.nsc.interpreter.IMain.ReadEvalPrint.EvalException;
-import hok.chompzki.biocristals.BioCristalsMod;
-import hok.chompzki.biocristals.api.BioHelper;
-import hok.chompzki.biocristals.api.ICristal;
-import hok.chompzki.biocristals.registrys.ConfigRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
@@ -24,11 +22,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public class ItemCollector extends Item {
+public class ItemCatalystInjector extends Item {
+	public final static String NAME = "itemCatalystInjector";
 	
-	public final static String NAME = "itemCollector";
-	
-	public ItemCollector(){
+	public ItemCatalystInjector(){
 		setUnlocalizedName(BioCristalsMod.MODID + "_" + NAME);
 		setCreativeTab(CreativeTabs.tabMisc);
 		setTextureName(BioCristalsMod.MODID + ":" + NAME);
@@ -64,11 +61,11 @@ public class ItemCollector extends Item {
 			player.stopUsingItem();
 			player.clearItemInUse();
 			player.setItemInUse(stack, this.getMaxItemUseDuration(stack));
-			collect(player, stack);
+			grow(player, stack);
 		}
     }
 	
-	public class Posistion implements Comparable{
+	private class Posistion implements Comparable{
 		public int x;
 		public int y;
 		public int z;
@@ -87,7 +84,7 @@ public class ItemCollector extends Item {
 		    Posistion other = (Posistion)obj;
 		    return other.x == x && other.y == y && other.z == z;
 		}
-		
+
 		@Override
 		public int compareTo(Object obj) {
 			if (obj == null) return -1;
@@ -108,18 +105,11 @@ public class ItemCollector extends Item {
 	public class ComparablePosistion implements Comparator<Posistion> {
 		@Override
 		public int compare(Posistion a, Posistion b) {
-			if (a.x < b.x) return -1;
-	        if (a.x > b.x) return +1;
-			if (a.y < b.y) return -1;
-	        if (a.y > b.y) return +1;
-	        if (a.z < b.z) return -1;
-	        if (a.z > b.z) return +1;
-	        
-			return 0;
+			return a.compareTo(b);
 		}
 	}
 	
-	public void collect(EntityPlayer player, ItemStack stack){
+	public void grow(EntityPlayer player, ItemStack stack){
 		World world = player.worldObj;
 		Minecraft mc = Minecraft.getMinecraft();
 		int dx = mc.objectMouseOver.blockX;
@@ -142,8 +132,8 @@ public class ItemCollector extends Item {
 				}
 				
 				ICristal cristal = (ICristal)block;
-				if(cristal.isMature(world, player, stack, pos.x, pos.y, pos.z))
-					cristal.harvest(world, player, stack, pos.x, pos.y, pos.z, stacks);
+				if(!cristal.isMature(world, player, stack, pos.x, pos.y, pos.z))
+					cristal.grow(world, pos.x, pos.y, pos.z);
 				blocks++;
 				
 				closed.add(pos);
@@ -158,15 +148,20 @@ public class ItemCollector extends Item {
 					if(closed.contains(tmp) || tmp.equals(pos) || open.contains(tmp))
 						continue;
 					
+					block = world.getBlock(tmp.x, tmp.y, tmp.z);
+					if(block == null || !(block instanceof ICristal)){
+						closed.add(pos);
+						continue;
+					}
+					
 					open.add(tmp);
 				}
 				
 			}
 		}catch (Exception ex){
-			System.out.println("SOME KIND OF ERROR WHEN WORKING WITH THE COLLECTOR OF BIOCRISTALS!!!\n"  + ex.getLocalizedMessage());
+			System.out.println("SOME KIND OF ERROR WHEN WORKING WITH THE CATALYST INJECTOR OF BIOCRISTALS!!!\n"  + ex.getLocalizedMessage());
 		}
 		
 		BioHelper.dropItems(world, stacks, (int)player.posX, (int)player.posY + 1, (int)player.posZ);
 	}
 }
-
