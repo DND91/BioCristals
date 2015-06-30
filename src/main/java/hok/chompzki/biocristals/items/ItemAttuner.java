@@ -5,6 +5,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import hok.chompzki.biocristals.BioCristalsMod;
 import hok.chompzki.biocristals.api.BioHelper;
 import hok.chompzki.biocristals.api.ICristal;
+import hok.chompzki.biocristals.api.IEntityTransformation;
 import hok.chompzki.biocristals.api.ITransformation;
 import hok.chompzki.biocristals.blocks.BlockBiomass;
 import hok.chompzki.biocristals.registrys.CristalRegistry;
@@ -15,6 +16,8 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
@@ -22,6 +25,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
@@ -63,9 +67,36 @@ public class ItemAttuner extends Item {
 			int x = Minecraft.getMinecraft().objectMouseOver.blockX;
 			int y = Minecraft.getMinecraft().objectMouseOver.blockY;
 			int z = Minecraft.getMinecraft().objectMouseOver.blockZ;
-			if(world.isAirBlock(x, y, z))
-				return;
-			if(world.getBlock(x, y, z) instanceof BlockBiomass){
+			Entity entity  = Minecraft.getMinecraft().objectMouseOver.entityHit;
+			
+			if(entity != null && entity instanceof EntityLiving){
+				
+				EntityLiving target = (EntityLiving)entity;
+				if(!target.isPotionActive(Potion.moveSlowdown.getId())){
+					Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("Target not weakened for any crystaline transformation..."));
+					return;
+				}
+				
+				IEntityTransformation trans = CristalRegistry.get(stack, player, world, target);
+				if(trans == null){
+					Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("Envoirment not adopted for any crystaline transformation..."));
+					return;
+				}
+				
+				EntityItem item = BioHelper.getFirstEntityItemWithinAABB(world, player, ItemRegistry.bioReagent, 10, 10, 10);
+				if(item == null){
+					Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("Crystaline transformation is missing a reagent..."));
+					return;
+				}
+				
+				trans.pay(stack, player, target);
+				trans.transform(stack, player, world, target);
+				
+				item.getEntityItem().stackSize--;
+				if(item.getEntityItem().stackSize <= 0)
+					item.setDead();
+				
+			}else if(!world.isAirBlock(x, y, z) && world.getBlock(x, y, z) instanceof BlockBiomass){
 				ITransformation struct = CristalRegistry.get(stack, player, world, x, y, z);
 				if(struct == null){
 					Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("Envoirment not adopted for any crystaline transformation..."));

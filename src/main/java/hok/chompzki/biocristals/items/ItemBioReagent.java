@@ -9,9 +9,13 @@ public class ItemBioReagent extends Item {
 	public final static String NAME = "itemBioReagent";
 	
 	public ItemBioReagent(){
+		
 		setUnlocalizedName(BioCristalsMod.MODID + "_" + NAME);
 		setCreativeTab(CreativeTabs.tabMisc);
 		setTextureName(BioCristalsMod.MODID + ":" + NAME);
+		
+		
+		//ADD SOMETINHG NEW!
 	}
 	
 	

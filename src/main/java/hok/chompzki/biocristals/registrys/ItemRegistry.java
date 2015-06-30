@@ -8,6 +8,17 @@ import hok.chompzki.biocristals.items.ItemCatalystInjector;
 import hok.chompzki.biocristals.items.ItemCollector;
 import net.minecraft.item.Item;
 
+
+/**
+ * 
+ * @author Jonathan
+ *	- REMEMBER LINKS -
+ * Making mode use other mods ore and so on: https://github.com/MinecraftForge/MinecraftForge/pull/1926#issuecomment-110486973
+ * DON'T YOU FUCKING DARE INVENTING THE FUCKING WHEEL AGAIN!!!!
+ * 
+ * 
+ */
+
 public class ItemRegistry {
 	
 	public static Item attuner = null;
