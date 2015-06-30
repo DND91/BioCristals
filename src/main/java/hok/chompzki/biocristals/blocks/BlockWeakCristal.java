@@ -7,6 +7,7 @@ import java.util.Random;
 import hok.chompzki.biocristals.BioCristalsMod;
 import hok.chompzki.biocristals.api.BioHelper;
 import hok.chompzki.biocristals.api.ICristal;
+import hok.chompzki.biocristals.registrys.ConfigRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -50,9 +51,9 @@ public class BlockWeakCristal extends Block implements ICristal{
 	    {
 	        super.updateTick(world, x, y, z, rand);
 	        
-            if (rand.nextInt(5) == 0)
+            if (rand.nextInt(ConfigRegistry.weakCristalGrowthChance) == 0)
             {
-                //this.grow(world, x, y, z);
+                this.grow(world, x, y, z);
             }
 	    }
 		

@@ -138,7 +138,7 @@ public class ItemCatalystInjector extends Item {
 				
 				closed.add(pos);
 				
-				if(ConfigRegistry.maxBlocksCollector < blocks)
+				if(ConfigRegistry.maxBlocksCatalystInjector < blocks)
 					break;
 				
 				for(int x = pos.x - 1; x < pos.x + 2; x++)

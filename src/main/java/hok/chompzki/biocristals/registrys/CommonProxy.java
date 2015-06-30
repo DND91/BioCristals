@@ -1,5 +1,6 @@
 package hok.chompzki.biocristals.registrys;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -9,6 +10,7 @@ public class CommonProxy { //Server sided
 
 	public void preInit(FMLPreInitializationEvent event) {
 		ConfigRegistry.preinit(event.getSuggestedConfigurationFile());
+		FMLCommonHandler.instance().bus().register(new ConfigRegistry());
 		
 		ItemRegistry items = new ItemRegistry();
 		items.registerItems();
