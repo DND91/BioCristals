@@ -43,7 +43,7 @@ public class WeakFleshTransformation implements IEntityTransformation {
 		taget.hitByEntity(player);
 		
 	}
-
+	
 	@Override
 	public void transform(ItemStack stack, EntityPlayer player, World world,
 			Entity taget) {
