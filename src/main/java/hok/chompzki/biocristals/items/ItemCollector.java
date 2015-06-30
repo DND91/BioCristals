@@ -10,6 +10,10 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.util.IIcon;
 import scala.tools.nsc.interpreter.IMain.ReadEvalPrint.EvalException;
 import hok.chompzki.biocristals.BioCristalsMod;
 import hok.chompzki.biocristals.api.BioHelper;
@@ -27,16 +31,21 @@ import net.minecraft.world.World;
 public class ItemCollector extends Item {
 	
 	public final static String NAME = "itemCollector";
-	
+    private IIcon[] icons;
+    private final static String[] iconNames={"Open","Close"};
+    public short iconState;
+
+
 	public ItemCollector(){
 		setUnlocalizedName(BioCristalsMod.MODID + "_" + NAME);
 		setCreativeTab(CreativeTabs.tabMisc);
-		setTextureName(BioCristalsMod.MODID + ":" + NAME);
-		this.setMaxStackSize(1);
+        iconState=0;
+        setTextureName(BioCristalsMod.MODID + ":" + NAME+iconNames[1]);
+        this.setMaxStackSize(1);
 	}
 	
 	@Override
-	public EnumAction getItemUseAction(ItemStack p_77661_1_)
+	public EnumAction getItemUseAction(ItemStack stack)
     {
         return EnumAction.bow;
     }
@@ -49,9 +58,9 @@ public class ItemCollector extends Item {
     }
 	
 	@Override
-	public int getMaxItemUseDuration(ItemStack p_77626_1_)
+	public int getMaxItemUseDuration(ItemStack stack)
     {
-        return 50;
+        return 72000;
     }
 	
 	@Override
@@ -60,11 +69,14 @@ public class ItemCollector extends Item {
 		if(player.worldObj.isRemote)
 			return;
 		
-		if(count <= 10){
-			player.stopUsingItem();
-			player.clearItemInUse();
-			player.setItemInUse(stack, this.getMaxItemUseDuration(stack));
-			collect(player, stack);
+		if(count%40==0) {
+            this.iconState = 1;
+            player.stopUsingItem();
+            player.clearItemInUse();
+            player.setItemInUse(stack, this.getMaxItemUseDuration(stack));
+            collect(player, stack);
+        }else if(count%40==5 && this.iconState==1){
+            this.iconState=0;
 		}
     }
 	
@@ -168,5 +180,26 @@ public class ItemCollector extends Item {
 		
 		BioHelper.dropItems(world, stacks, (int)player.posX, (int)player.posY + 1, (int)player.posZ);
 	}
+
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister iconRegister){
+       icons = new IIcon[iconNames.length];
+        for (int it=0;it<iconNames.length;++it){
+            icons[it]=iconRegister.registerIcon(BioCristalsMod.MODID + ":" + NAME+iconNames[it]);
+        }
+        itemIcon=icons[this.iconState];
+        }
+    @Override
+    public IIcon getIcon(ItemStack stack, int renderPass){
+        if(renderPass==0) {
+            if (this.iconState == 0) return icons[0];
+            if (this.iconState == 1) return icons[1];
+        }
+         return icons[0];
+
+    }
+
 }
 
