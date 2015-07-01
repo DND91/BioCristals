@@ -11,7 +11,7 @@ public class ItemBioReagent extends Item {
 	public ItemBioReagent(){
 		
 		setUnlocalizedName(BioCristalsMod.MODID + "_" + NAME);
-		setCreativeTab(CreativeTabs.tabMisc);
+		setCreativeTab(BioCristalsMod.creativeTab);
 		setTextureName(BioCristalsMod.MODID + ":" + NAME);
 		
 		

@@ -1,4 +1,4 @@
-package hok.chompzki.biocristals.registrys;
+package hok.chompzki.biocristals.recipes;
 
 public class RecipeData {
 	public String output;

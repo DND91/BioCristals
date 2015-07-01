@@ -27,7 +27,7 @@ public class ItemCatalystInjector extends Item {
 	
 	public ItemCatalystInjector(){
 		setUnlocalizedName(BioCristalsMod.MODID + "_" + NAME);
-		setCreativeTab(CreativeTabs.tabMisc);
+		setCreativeTab(BioCristalsMod.creativeTab);
 		setTextureName(BioCristalsMod.MODID + ":" + NAME);
 		this.setMaxStackSize(1);
 	}

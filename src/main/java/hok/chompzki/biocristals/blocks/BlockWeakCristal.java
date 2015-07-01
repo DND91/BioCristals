@@ -39,7 +39,7 @@ public class BlockWeakCristal extends Block implements IGrowthCristal{
 			this.maxMeta = maxMeta;
 			
 			setBlockName(BioCristalsMod.MODID + "_" + name);
-			setCreativeTab(CreativeTabs.tabMisc);
+			setCreativeTab(BioCristalsMod.creativeTab);
 			setBlockTextureName(BioCristalsMod.MODID + ":" + name);
 			
 			this.setTickRandomly(true);

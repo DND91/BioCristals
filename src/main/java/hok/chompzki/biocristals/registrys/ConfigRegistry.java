@@ -1,6 +1,7 @@
 package hok.chompzki.biocristals.registrys;
 
 import hok.chompzki.biocristals.BioCristalsMod;
+import hok.chompzki.biocristals.recipes.RecipeData;
 
 import java.io.File;
 import java.util.ArrayList;

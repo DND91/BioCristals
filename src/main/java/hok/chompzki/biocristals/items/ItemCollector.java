@@ -38,7 +38,7 @@ public class ItemCollector extends Item {
 
 	public ItemCollector(){
 		setUnlocalizedName(BioCristalsMod.MODID + "_" + NAME);
-		setCreativeTab(CreativeTabs.tabMisc);
+		setCreativeTab(BioCristalsMod.creativeTab);
         iconState=0;
         setTextureName(BioCristalsMod.MODID + ":" + NAME+iconNames[1]);
         this.setMaxStackSize(1);

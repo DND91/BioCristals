@@ -19,7 +19,7 @@ public class BlockSulphurTuft extends Block {
 	public BlockSulphurTuft() {
 		super(Material.plants);
 		setBlockName(BioCristalsMod.MODID + "_" + NAME);
-		setCreativeTab(CreativeTabs.tabMisc);
+		setCreativeTab(BioCristalsMod.creativeTab);
 		setBlockTextureName(BioCristalsMod.MODID + ":" + NAME);
 		float f = 0.0625F;
 		this.setBlockBounds(f, 0.0F, f, 1.0F - f, 0.0625F, 1.0F - f);

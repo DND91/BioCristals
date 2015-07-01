@@ -48,7 +48,7 @@ public class ItemAttuner extends Item {
 	
 	public ItemAttuner(){
 		setUnlocalizedName(BioCristalsMod.MODID + "_" + NAME);
-		setCreativeTab(CreativeTabs.tabMisc);
+		setCreativeTab(BioCristalsMod.creativeTab);
 		setTextureName(BioCristalsMod.MODID + ":" + NAME);
 		this.setMaxStackSize(1);
 	}

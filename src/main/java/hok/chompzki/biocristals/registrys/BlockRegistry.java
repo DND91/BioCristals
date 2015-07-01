@@ -2,6 +2,7 @@ package hok.chompzki.biocristals.registrys;
 
 import hok.chompzki.biocristals.BioCristalsMod;
 import hok.chompzki.biocristals.blocks.BlockBiomass;
+import hok.chompzki.biocristals.blocks.BlockReagentPurifier;
 import hok.chompzki.biocristals.blocks.BlockSulphurTuft;
 import hok.chompzki.biocristals.blocks.BlockWeakCristal;
 import hok.chompzki.biocristals.items.ItemAttuner;
@@ -22,6 +23,7 @@ public class BlockRegistry {
 	public static Block melonCristal = null;
 	public static Block pumpikCristal = null;
 	public static Block sulphurTuft = null;
+	public static Block reagentPurifier = null;
 	
 	
 	public void registerBlocks(){
@@ -33,6 +35,7 @@ public class BlockRegistry {
 		melonCristal = new BlockWeakCristal("blockMelonCristal", 3, new ItemStack(Items.melon, 2));
 		pumpikCristal = new BlockWeakCristal("blockPumpkinCristal", 3, new ItemStack(Blocks.pumpkin, 1));
 		sulphurTuft = new BlockSulphurTuft();
+		reagentPurifier = new BlockReagentPurifier();
 		
 		GameRegistry.registerBlock(biomass, BlockBiomass.NAME);
 		GameRegistry.registerBlock(wheatCristal, "blockWheatCristal");
@@ -42,6 +45,7 @@ public class BlockRegistry {
 		GameRegistry.registerBlock(melonCristal, "blockMelonCristal");
 		GameRegistry.registerBlock(pumpikCristal, "blockPumpkinCristal");
 		GameRegistry.registerBlock(sulphurTuft, BlockSulphurTuft.NAME);
+		GameRegistry.registerBlock(reagentPurifier, BlockReagentPurifier.NAME);
 	}
 	
 	

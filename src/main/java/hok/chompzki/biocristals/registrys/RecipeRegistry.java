@@ -1,10 +1,16 @@
 package hok.chompzki.biocristals.registrys;
 
+import hok.chompzki.biocristals.recipes.RecipeContainer;
+import hok.chompzki.biocristals.recipes.RecipeData;
+import hok.chompzki.biocristals.recipes.RecipePurifier;
+import hok.chompzki.biocristals.recipes.RecipeTransformer;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -14,12 +20,25 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 public class RecipeRegistry {
 	
-	
 	public static List<RecipeContainer> recipes = new ArrayList<RecipeContainer>();
+	public static List<RecipePurifier> purifierRecipes = new ArrayList<RecipePurifier>();
+	
+	public static void register(RecipePurifier pur){
+		purifierRecipes.add(pur);
+	}
+	
+	public static RecipePurifier getRecipePurifier(IInventory[] inputs){
+		for(RecipePurifier recp : purifierRecipes){
+			if(recp.affords(inputs))
+				return recp;
+		}
+		return null;
+	}
 	
 	public void registerRecipes(){
-		
 		load();
+		
+		register(new RecipePurifier(new ItemStack(ItemRegistry.bioReagent, 8), new ItemStack(Items.wheat, 4), new ItemStack(Items.slime_ball), new ItemStack(Items.potato), new ItemStack(Blocks.dirt)));
 	}
 	
 	public static void load(){

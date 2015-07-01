@@ -10,3 +10,5 @@ tile.BioCristals_blockPotatoCristal.name=Potato Cristal
 tile.BioCristals_blockMelonCristal.name=Melon Cristal
 tile.BioCristals_blockPumpkinCristal.name=Pumpkin Cristal
 tile.BioCristals_blockSulphurTuft.name=Sulphur Tuft
+tile.BioCristals_blockReagentPurifier.name=Reagent Purifier
+itemGroup.Bio Cristal=Bio Cristal

@@ -1,4 +1,4 @@
-package hok.chompzki.biocristals.registrys;
+package hok.chompzki.biocristals.recipes;
 
 import net.minecraft.item.ItemStack;
 

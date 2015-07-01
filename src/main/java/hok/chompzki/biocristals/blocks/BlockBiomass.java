@@ -13,7 +13,7 @@ public class BlockBiomass extends Block implements IBaseCristal{
 	public BlockBiomass() {
 		super(Material.grass);
 		setBlockName(BioCristalsMod.MODID + "_" + NAME);
-		setCreativeTab(CreativeTabs.tabMisc);
+		setCreativeTab(BioCristalsMod.creativeTab);
 		setBlockTextureName(BioCristalsMod.MODID + ":" + NAME);
 	}
 
