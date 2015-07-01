@@ -8,6 +8,14 @@ import hok.chompzki.biocristals.transformation.WeakFleshTransformation;
 import java.util.ArrayList;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.monster.EntityEnderman;
+import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntitySlime;
+import net.minecraft.entity.monster.EntitySpider;
+import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.passive.EntityChicken;
+import net.minecraft.entity.passive.EntityCow;
+import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -57,6 +65,13 @@ private static ArrayList<IEntityTransformation> entityTransformations = new Arra
 		CristalRegistry.register(new WeakCristalTransformation((new ItemStack(Blocks.pumpkin)).getItem(), BlockRegistry.wheatCristal));
 		
 		CristalRegistry.register(new WeakFleshTransformation(EntitySheep.class, new ItemStack(Blocks.wool)));
-		
+		CristalRegistry.register(new WeakFleshTransformation(EntityCow.class, new ItemStack(Items.leather)));
+		CristalRegistry.register(new WeakFleshTransformation(EntityPig.class, new ItemStack(Items.carrot)));
+		CristalRegistry.register(new WeakFleshTransformation(EntityChicken.class, new ItemStack(Items.egg), new ItemStack(Items.feather)));
+		CristalRegistry.register(new WeakFleshTransformation(EntityZombie.class, new ItemStack(Items.rotten_flesh)));
+		CristalRegistry.register(new WeakFleshTransformation(EntitySkeleton.class, new ItemStack(Items.bone)));
+		CristalRegistry.register(new WeakFleshTransformation(EntitySpider.class, new ItemStack(Items.spider_eye), new ItemStack(Items.string)));
+		CristalRegistry.register(new WeakFleshTransformation(EntitySlime.class, new ItemStack(Items.slime_ball)));
+		CristalRegistry.register(new WeakFleshTransformation(EntityEnderman.class, new ItemStack(Items.ender_pearl)));
 	}
 }

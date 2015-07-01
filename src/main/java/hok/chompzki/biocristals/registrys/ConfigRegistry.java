@@ -84,5 +84,12 @@ public class ConfigRegistry {
 		catalystInjector.put("input", new Property("input", "BioCristals:itemBioReagent__minecraft:slime_ball__BioCristals:itemBioReagent__minecraft:slime_ball__minecraft:sapling__minecraft:slime_ball__BioCristals:itemBioReagent__minecraft:slime_ball__BioCristals:itemBioReagent", Property.Type.STRING));
 		catalystInjector.put("output", new Property("output", "BioCristals:itemCatalystInjector", Property.Type.STRING));
 		catalystInjector.put("quantity", new Property("quantity", "1", Property.Type.INTEGER));
+		
+		ConfigCategory sulphurTuft = new ConfigCategory("Sulphur Tuft", recipes);
+		sulphurTuft.put("input", new Property("input", "minecraft:spider_eye__minecraft:spider_eye__minecraft:spider_eye__BioCristals:blockBiomass__BioCristals:blockBiomass__BioCristals:blockBiomass__BioCristals:itemBioReagent__BioCristals:itemBioReagent__BioCristals:itemBioReagent", Property.Type.STRING));
+		sulphurTuft.put("output", new Property("output", "BioCristals:blockSulphurTuft", Property.Type.STRING));
+		sulphurTuft.put("quantity", new Property("quantity", "1", Property.Type.INTEGER));
+		
+		
     }
 }

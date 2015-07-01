@@ -14,6 +14,12 @@ import net.minecraft.world.World;
 
 public class BioHelper {
 	
+	/**
+	 * Healing block for animals that eats somekind of resource
+	 * Block that generates biomass & biological reagent
+	 * 
+	 */
+	
 	private static Random random = new Random();
 	
 	public static void dropItems(World world, List<ItemStack> list, int x, int y, int z){

@@ -54,6 +54,7 @@ public class BlockSulphurTuft extends Block {
 			living.addPotionEffect(new PotionEffect(Potion.blindness.getId(), 1200, 100));
 			living.addPotionEffect(new PotionEffect(Potion.jump.getId(), 1200, -8));
 			
+			
 		}
 		if(entity != null && entity instanceof EntityPlayer){
 			EntityPlayer player = (EntityPlayer)entity;

@@ -8,7 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-public interface ICristal {
+public interface IGrowthCristal {
 	
 	public boolean isMature(World world, EntityPlayer player, ItemStack stack, int x, int y, int z);
 	

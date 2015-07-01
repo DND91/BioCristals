@@ -6,7 +6,7 @@ import java.util.Random;
 
 import hok.chompzki.biocristals.BioCristalsMod;
 import hok.chompzki.biocristals.api.BioHelper;
-import hok.chompzki.biocristals.api.ICristal;
+import hok.chompzki.biocristals.api.IGrowthCristal;
 import hok.chompzki.biocristals.registrys.ConfigRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -21,7 +21,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-public class BlockWeakCristal extends Block implements ICristal{
+public class BlockWeakCristal extends Block implements IGrowthCristal{
 	
 	//Plants: Wheat, Carrots, Suger Cane, Potato, Melon, Pumpkin
 	

@@ -2,7 +2,7 @@ package hok.chompzki.biocristals.items;
 
 import hok.chompzki.biocristals.BioCristalsMod;
 import hok.chompzki.biocristals.api.BioHelper;
-import hok.chompzki.biocristals.api.ICristal;
+import hok.chompzki.biocristals.api.IGrowthCristal;
 import hok.chompzki.biocristals.registrys.ConfigRegistry;
 
 import java.util.ArrayDeque;
@@ -126,12 +126,12 @@ public class ItemCatalystInjector extends Item {
 				Posistion pos = open.poll();
 				
 				Block block = world.getBlock(pos.x, pos.y, pos.z);
-				if(block == null || !(block instanceof ICristal)){
+				if(block == null || !(block instanceof IGrowthCristal)){
 					closed.add(pos);
 					continue;
 				}
 				
-				ICristal cristal = (ICristal)block;
+				IGrowthCristal cristal = (IGrowthCristal)block;
 				if(!cristal.isMature(world, player, stack, pos.x, pos.y, pos.z))
 					cristal.grow(world, pos.x, pos.y, pos.z);
 				blocks++;
@@ -149,7 +149,7 @@ public class ItemCatalystInjector extends Item {
 						continue;
 					
 					block = world.getBlock(tmp.x, tmp.y, tmp.z);
-					if(block == null || !(block instanceof ICristal)){
+					if(block == null || !(block instanceof IGrowthCristal)){
 						closed.add(pos);
 						continue;
 					}
