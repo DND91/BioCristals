@@ -65,7 +65,9 @@ public class ItemAttuner extends Item {
 		if(world.isRemote)
 			return;
 		
-		if((this.getMaxItemUseDuration(stack) - 100) <= useTicks){
+		int ticksInUse = stack.getMaxItemUseDuration() - useTicks;
+		
+		if(17 < ticksInUse){
 			int x = Minecraft.getMinecraft().objectMouseOver.blockX;
 			int y = Minecraft.getMinecraft().objectMouseOver.blockY;
 			int z = Minecraft.getMinecraft().objectMouseOver.blockZ;
