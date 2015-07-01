@@ -13,6 +13,10 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileReagentPurifier extends TileEntity implements IInventory{
 	
+	/**
+	 * WILL CONTINUE TO CONSUME RESOURCES EVEN IF OUTPUT INVENTORY IS FULL! NEEDS FIX!
+	 */
+	
 	public final static ForgeDirection outputSide = ForgeDirection.UP;
 	public final static ForgeDirection[] inputSides = {ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.EAST};
 	
@@ -120,8 +124,10 @@ public class TileReagentPurifier extends TileEntity implements IInventory{
 		RecipePurifier recp = RecipeRegistry.getRecipePurifier(inputs);
 		if(recp == null)
 			return;
-		recp.pay(inputs);
 		ItemStack result = recp.result();
+		
+		recp.pay(inputs);
 		BioHelper.addItemStackToInventory(result, output);
+		
 	}
 }

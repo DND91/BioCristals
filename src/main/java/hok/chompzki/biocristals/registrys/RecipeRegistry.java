@@ -39,6 +39,7 @@ public class RecipeRegistry {
 		load();
 		
 		register(new RecipePurifier(new ItemStack(ItemRegistry.bioReagent, 8), new ItemStack(Items.wheat, 4), new ItemStack(Items.slime_ball), new ItemStack(Items.potato), new ItemStack(Blocks.dirt)));
+		register(new RecipePurifier(new ItemStack(BlockRegistry.biomass, 1), new ItemStack(ItemRegistry.bioReagent, 8), new ItemStack(Blocks.dirt, 1)));
 	}
 	
 	public static void load(){
