@@ -8,20 +8,20 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileReagentPurifier extends TileEntity implements IInventory{
 	
-	/**
-	 * WILL CONTINUE TO CONSUME RESOURCES EVEN IF OUTPUT INVENTORY IS FULL! NEEDS FIX!
-	 */
-	
 	public final static ForgeDirection outputSide = ForgeDirection.UP;
-	public final static ForgeDirection[] inputSides = {ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.EAST};
+	public final static ForgeDirection[] inputSides = {ForgeDirection.DOWN, ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.EAST};
 	
 	public final static int tickMod = 40;
 	private long tick = 0;
+	
+	private ItemStack stored_result = null;
 	
 	@Override
 	public int getSizeInventory() {
@@ -68,7 +68,7 @@ public class TileReagentPurifier extends TileEntity implements IInventory{
 	@Override
 	public int getInventoryStackLimit() {
 		// TODO Auto-generated method stub
-		return 0;
+		return 64;
 	}
 
 	@Override
@@ -95,6 +95,37 @@ public class TileReagentPurifier extends TileEntity implements IInventory{
 		return false;
 	}
 	
+	public void readFromNBT(NBTTagCompound p_145839_1_)
+    {
+        super.readFromNBT(p_145839_1_);
+        NBTTagList nbttaglist = p_145839_1_.getTagList("Items", 10);
+        this.stored_result = null;
+        
+        if(0 < nbttaglist.tagCount()){
+        	NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(0);
+            int j = nbttagcompound1.getByte("Slot") & 255;
+            this.stored_result = ItemStack.loadItemStackFromNBT(nbttagcompound1);
+        }
+        
+    }
+
+    public void writeToNBT(NBTTagCompound p_145841_1_)
+    {
+        super.writeToNBT(p_145841_1_);
+        NBTTagList nbttaglist = new NBTTagList();
+        
+        if (this.stored_result != null)
+        {
+            NBTTagCompound nbttagcompound1 = new NBTTagCompound();
+            nbttagcompound1.setByte("Slot", (byte)0);
+            this.stored_result.writeToNBT(nbttagcompound1);
+            nbttaglist.appendTag(nbttagcompound1);
+        }
+
+        p_145841_1_.setTag("Items", nbttaglist);
+    }
+	
+	
 	@Override
 	public void updateEntity() {
 		if (this.worldObj != null && !this.worldObj.isRemote)
@@ -119,15 +150,24 @@ public class TileReagentPurifier extends TileEntity implements IInventory{
 	}
 	
 	public void transformation(){
-		IInventory[] inputs = BioHelper.getInventories(this, inputSides);
-		IInventory output = (IInventory) BioHelper.getTileEntityOnSide(this, outputSide);
-		RecipePurifier recp = RecipeRegistry.getRecipePurifier(inputs);
-		if(recp == null)
-			return;
-		ItemStack result = recp.result();
-		
-		recp.pay(inputs);
-		BioHelper.addItemStackToInventory(result, output);
+		if(stored_result == null){
+			IInventory[] inputs = BioHelper.getInventories(this, inputSides);
+			IInventory output = (IInventory) BioHelper.getTileEntityOnSide(this, outputSide);
+			RecipePurifier recp = RecipeRegistry.getRecipePurifier(inputs);
+			if(recp == null)
+				return;
+			ItemStack result = recp.result();
+			
+			recp.pay(inputs);
+			if(!BioHelper.addItemStackToInventory(result, output) || 0 < result.stackSize){
+				stored_result = result;
+			}
+		}else{
+			IInventory output = (IInventory) BioHelper.getTileEntityOnSide(this, outputSide);
+			if(BioHelper.addItemStackToInventory(stored_result, output) && stored_result.stackSize <= 0){
+				stored_result = null;
+			}
+		}
 		
 	}
 }

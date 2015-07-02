@@ -123,9 +123,8 @@ public class BioHelper {
                     }
                     while (stack.stackSize > 0 && stack.stackSize < i);
 
-                    if (stack.stackSize == i)
+                    if (stack.stackSize == 0)
                     {
-                    	stack.stackSize = 0;
                         return true;
                     }
                     else
@@ -243,6 +242,8 @@ public class BioHelper {
 
         return -1;
     }
+	
+	
 	
 	public static TileEntity getTileEntityOnSide(TileEntity tile, ForgeDirection direction){
 		return tile.getWorldObj().getTileEntity(tile.xCoord+direction.offsetX, tile.yCoord+direction.offsetY, tile.zCoord+direction.offsetZ);
