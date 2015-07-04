@@ -16,6 +16,8 @@ public class CommonProxy { //Server sided
 		items.registerItems();
 		BlockRegistry blocks = new BlockRegistry();
 		blocks.registerBlocks();
+		TileEntityRegistry tileEntity = new TileEntityRegistry();
+		tileEntity.registerTileEntities();
 		CristalRegistry.registerAll();
 	}
 

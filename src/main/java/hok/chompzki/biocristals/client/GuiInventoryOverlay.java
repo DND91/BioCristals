@@ -1,5 +1,6 @@
 package hok.chompzki.biocristals.client;
 
+import hok.chompzki.biocristals.api.IGrowthCristal;
 import hok.chompzki.biocristals.registrys.ItemRegistry;
 
 import java.util.ArrayDeque;
@@ -13,6 +14,8 @@ import org.lwjgl.opengl.GL12;
 
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.registry.LanguageRegistry;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
@@ -22,9 +25,14 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.InventoryEffectRenderer;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.GuiScreenEvent.ActionPerformedEvent;
@@ -62,23 +70,40 @@ public class GuiInventoryOverlay extends Gui{
 			int bx = Minecraft.getMinecraft().objectMouseOver.blockX;
 			int by = Minecraft.getMinecraft().objectMouseOver.blockY;
 			int bz = Minecraft.getMinecraft().objectMouseOver.blockZ;
+			Entity entity  = Minecraft.getMinecraft().objectMouseOver.entityHit;
+			if(entity != null)
+				entity = world.getEntityByID(entity.getEntityId());
 			
-			if(world.isAirBlock(bx, by, bz))
-				return;
-			
-			int x = 0;
-			int y = 20;
-			
-			GL11.glPushMatrix();
-			
-			
-		    
-			ArrayList<String> list = new ArrayList<String>();
-			list.add("TEST");
-			list.add("WILL THIS WORK?!");
-			drawHoveringText(list, x, y, mc.fontRenderer);
-			
-			GL11.glPopMatrix();
+			if(entity != null && entity instanceof EntityLiving){
+				int x = 0;
+				int y = 20;
+				
+				EntityLiving target = (EntityLiving)entity;
+				if(target.isPotionActive(Potion.moveSlowdown)){
+					GL11.glPushMatrix();
+					ArrayList<String> list = new ArrayList<String>();
+					list.add(StatCollector.translateToLocal(target.getCommandSenderName()));
+					list.add("Is paralysed");
+					drawHoveringText(list, x, y, mc.fontRenderer);
+					GL11.glPopMatrix();
+					return;
+				}
+				
+			}else if(!world.isAirBlock(bx, by, bz) && world.getBlock(bx, by, bz) instanceof IGrowthCristal){
+				int x = 0;
+				int y = 20;
+				Block block = world.getBlock(bx, by, bz);
+				IGrowthCristal cristal = (IGrowthCristal)block;
+				GL11.glPushMatrix();
+				ArrayList<String> list = new ArrayList<String>();
+				
+				list.add(StatCollector.translateToLocal(block.getLocalizedName()));
+				list.add(cristal.isMature(world, player, currentStack, bx, by, bz) ? "Mature: True" : "Mature: False");
+				
+				drawHoveringText(list, x, y, mc.fontRenderer);
+				GL11.glPopMatrix();
+				
+			}
     }
 	
 	protected void drawHoveringText(List p_146283_1_, int p_146283_2_, int p_146283_3_, FontRenderer font)

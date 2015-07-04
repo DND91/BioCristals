@@ -17,7 +17,7 @@ import net.minecraft.util.IIcon;
 import scala.tools.nsc.interpreter.IMain.ReadEvalPrint.EvalException;
 import hok.chompzki.biocristals.BioCristalsMod;
 import hok.chompzki.biocristals.api.BioHelper;
-import hok.chompzki.biocristals.api.ICristal;
+import hok.chompzki.biocristals.api.IGrowthCristal;
 import hok.chompzki.biocristals.registrys.ConfigRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -38,7 +38,7 @@ public class ItemCollector extends Item {
 
 	public ItemCollector(){
 		setUnlocalizedName(BioCristalsMod.MODID + "_" + NAME);
-		setCreativeTab(CreativeTabs.tabMisc);
+		setCreativeTab(BioCristalsMod.creativeTab);
         iconState=0;
         setTextureName(BioCristalsMod.MODID + ":" + NAME+iconNames[1]);
         this.setMaxStackSize(1);
@@ -148,12 +148,12 @@ public class ItemCollector extends Item {
 				Posistion pos = open.poll();
 				
 				Block block = world.getBlock(pos.x, pos.y, pos.z);
-				if(block == null || !(block instanceof ICristal)){
+				if(block == null || !(block instanceof IGrowthCristal)){
 					closed.add(pos);
 					continue;
 				}
 				
-				ICristal cristal = (ICristal)block;
+				IGrowthCristal cristal = (IGrowthCristal)block;
 				if(cristal.isMature(world, player, stack, pos.x, pos.y, pos.z))
 					cristal.harvest(world, player, stack, pos.x, pos.y, pos.z, stacks);
 				blocks++;
