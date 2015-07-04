@@ -16,7 +16,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 public class TileReagentPurifier extends TileEntity implements IInventory{
 	
 	public final static ForgeDirection outputSide = ForgeDirection.UP;
-	public final static ForgeDirection[] inputSides = {ForgeDirection.DOWN, ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.EAST};
+	public final static ForgeDirection[] inputSides = {ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.EAST};
 	
 	public final static int tickMod = 40;
 	private long tick = 0;
