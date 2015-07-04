@@ -1,5 +1,6 @@
 package hok.chompzki.biocristals.blocks;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import hok.chompzki.biocristals.BioCristalsMod;
@@ -8,11 +9,13 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockReagentPurifier extends BlockContainer {
 	
@@ -32,6 +35,31 @@ public class BlockReagentPurifier extends BlockContainer {
 		// TODO Auto-generated method stub
 		return new TileReagentPurifier();
 	}
+
+    @Override
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hit_x, float hit_y, float hit_z){
+        TileReagentPurifier te = (TileReagentPurifier)world.getTileEntity(x,y,z);
+        if (ForgeDirection.getOrientation(side) !=te.getOutputSide()){
+
+            ForgeDirection newOut = ForgeDirection.getOrientation(side);
+            ForgeDirection[]tempIn=te.getInputSides();
+            ForgeDirection tempOut=te.getOutputSide();
+            ArrayList<ForgeDirection> tempArray=new ArrayList<ForgeDirection>();
+
+            for (int temp_x=0;temp_x<=tempIn.length;temp_x++) {
+                tempArray.add(tempIn[temp_x]);
+            }
+            tempArray.add(tempOut);
+            tempArray.remove(newOut);
+            tempIn=(ForgeDirection[])tempArray.toArray();
+
+            te.setInputSides(tempIn);
+            te.setOutputSide(newOut);
+
+            return true;
+        }
+        return false;
+    }
 	
 	public void breakBlock(World p_149749_1_, int p_149749_2_, int p_149749_3_, int p_149749_4_, Block p_149749_5_, int p_149749_6_)
     {
