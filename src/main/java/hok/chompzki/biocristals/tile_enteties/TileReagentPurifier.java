@@ -14,9 +14,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileReagentPurifier extends TileEntity implements IInventory{
-	
-	public final static ForgeDirection outputSide = ForgeDirection.UP;
-	public final static ForgeDirection[] inputSides = {ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.EAST};
+
+
+
+
+    private ForgeDirection outputSide = ForgeDirection.UP;
+    private ForgeDirection[] inputSides = {ForgeDirection.DOWN, ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.EAST};
 	
 	public final static int tickMod = 40;
 	private long tick = 0;
@@ -136,8 +139,21 @@ public class TileReagentPurifier extends TileEntity implements IInventory{
 			}
         }
 	}
-	
-	public boolean canFunction(){
+    public void setOutputSide(ForgeDirection outputSide) {
+        this.outputSide = outputSide;
+    }
+
+    public void setInputSides(ForgeDirection[] inputSides) {
+        this.inputSides = inputSides;
+    }
+    public ForgeDirection getOutputSide() {
+        return outputSide;
+    }
+    public ForgeDirection[] getInputSides() {
+        return this.inputSides;
+    }
+
+    public boolean canFunction(){
 		TileEntity tile = BioHelper.getTileEntityOnSide(this, outputSide);
 		if(tile == null || !(tile instanceof IInventory))
 			return false;
