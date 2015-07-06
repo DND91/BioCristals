@@ -1,10 +1,13 @@
 package hok.chompzki.biocristals.registrys;
 
+import hok.chompzki.biocristals.client.GuiHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.network.NetworkRegistry;
+
 
 public class CommonProxy { //Server sided
 
@@ -25,11 +28,13 @@ public class CommonProxy { //Server sided
 	public void init(FMLInitializationEvent event) {
     	RecipeRegistry recipes = new RecipeRegistry();
     	recipes.registerRecipes();
+    	NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
 	}
 
     
 	public void postInit(FMLPostInitializationEvent event) {
-    	
+		
+		
 	}
 	
 	
