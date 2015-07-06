@@ -23,7 +23,7 @@ public class BioCristalsMod
     @SidedProxy(clientSide = "hok.chompzki.biocristals.registrys.ClientProxy", serverSide = "hok.chompzki.biocristals.registrys.CommonProxy")
     public static CommonProxy proxy;
     
-    @Instance(MODID+"Mod")
+    @Instance(MODID)
     public static BioCristalsMod instance = new BioCristalsMod();
     
     @EventHandler

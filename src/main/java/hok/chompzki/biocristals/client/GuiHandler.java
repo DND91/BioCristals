@@ -1,5 +1,6 @@
 package hok.chompzki.biocristals.client;
 
+import hok.chompzki.biocristals.tutorials.GuiBioBook;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -26,7 +27,7 @@ public class GuiHandler implements IGuiHandler {
 			NBTTagCompound compound = (NBTTagCompound) player.getEntityData().getTag(player.getGameProfile().getName()+".BioBook");
 			if(compound == null)
 				return null;
-			return null; //new GuiKnowledges(compound, player);
+			return new GuiBioBook(compound, player);
 		}
 		
 		return null;
