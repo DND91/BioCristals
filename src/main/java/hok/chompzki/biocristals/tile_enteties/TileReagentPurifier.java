@@ -121,10 +121,9 @@ public class TileReagentPurifier extends TileEntity implements IInventory{
        if(nbt.hasKey("OUTPUT_SIDE")){
         	int side = nbt.getInteger("OUTPUT_SIDE");
         	this.setOutputSide(ForgeDirection.getOrientation(side));
-        	System.out.println("READING: " + side + ", " + this.outputSide);
         }
     }
-
+	
     public void writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
@@ -141,7 +140,6 @@ public class TileReagentPurifier extends TileEntity implements IInventory{
         nbt.setTag("Items", nbttaglist);
         
         nbt.setInteger("OUTPUT_SIDE", this.outputSide.ordinal());
-        System.out.println("WRITING: " + this.outputSide.ordinal() + ", " + this.outputSide);
     }
 	
 	
@@ -185,6 +183,9 @@ public class TileReagentPurifier extends TileEntity implements IInventory{
 		TileEntity tile = BioHelper.getTileEntityOnSide(this, outputSide);
 		if(tile == null || !(tile instanceof IInventory))
 			return false;
+		tile = BioHelper.getTileEntityOnSide(this, getFilterSide());
+		if(tile == null || !(tile instanceof IInventory))
+			return false;
 		for(ForgeDirection side : inputSides){
 			TileEntity ent = BioHelper.getTileEntityOnSide(this, side);
 			if(ent != null && ent instanceof IInventory)
@@ -197,7 +198,15 @@ public class TileReagentPurifier extends TileEntity implements IInventory{
 		if(stored_result == null){
 			IInventory[] inputs = BioHelper.getInventories(this, inputSides);
 			IInventory output = (IInventory) BioHelper.getTileEntityOnSide(this, outputSide);
-			RecipePurifier recp = RecipeRegistry.getRecipePurifier(inputs);
+			IInventory filter = (IInventory) BioHelper.getTileEntityOnSide(this, getFilterSide());
+			ArrayList<ItemStack> filters = new ArrayList<ItemStack>();
+			for(int i = 0; i < filter.getSizeInventory(); i++){
+				ItemStack stack = filter.getStackInSlot(i);
+				if(stack == null || filters.contains(stack))
+					continue;
+				filters.add(stack);
+			}
+			RecipePurifier recp = RecipeRegistry.getRecipePurifier(filters, inputs);
 			if(recp == null)
 				return;
 			ItemStack result = recp.result();

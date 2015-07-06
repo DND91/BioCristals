@@ -6,11 +6,14 @@ import hok.chompzki.biocristals.recipes.RecipePurifier;
 import hok.chompzki.biocristals.recipes.RecipeTransformer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -21,25 +24,35 @@ import cpw.mods.fml.common.registry.GameRegistry;
 public class RecipeRegistry {
 	
 	public static List<RecipeContainer> recipes = new ArrayList<RecipeContainer>();
-	public static List<RecipePurifier> purifierRecipes = new ArrayList<RecipePurifier>();
+	public static Map<Item, List<RecipePurifier>> purifierRecipes = new HashMap<Item, List<RecipePurifier>>();
 	
 	public static void register(RecipePurifier pur){
-		purifierRecipes.add(pur);
+		ItemStack filter = pur.filter();
+		if(!purifierRecipes.containsKey(filter.getItem()))
+			purifierRecipes.put(filter.getItem(), new ArrayList<RecipePurifier>());
+		List<RecipePurifier> lst = purifierRecipes.get(filter.getItem());
+		lst.add(pur);
 	}
 	
-	public static RecipePurifier getRecipePurifier(IInventory[] inputs){
-		for(RecipePurifier recp : purifierRecipes){
-			if(recp.affords(inputs))
-				return recp;
+	public static RecipePurifier getRecipePurifier(List<ItemStack> filters, IInventory[] inputs){
+		for(ItemStack filter : filters){
+			if(purifierRecipes.containsKey(filter.getItem())){
+				List<RecipePurifier> lst = purifierRecipes.get(filter.getItem());
+				for(RecipePurifier recp : lst){
+					if(recp.affords(inputs))
+						return recp;
+				}
+			}
 		}
+		
 		return null;
 	}
 	
 	public void registerRecipes(){
 		load();
 		
-		register(new RecipePurifier(new ItemStack(ItemRegistry.bioReagent, 8), new ItemStack(Items.wheat, 4), new ItemStack(Items.slime_ball), new ItemStack(Items.potato), new ItemStack(Blocks.dirt)));
-		register(new RecipePurifier(new ItemStack(BlockRegistry.biomass, 1), new ItemStack(ItemRegistry.bioReagent, 8), new ItemStack(Blocks.dirt, 1)));
+		register(new RecipePurifier(new ItemStack(ItemRegistry.bioReagent, 8), new ItemStack(Items.stick), new ItemStack(Items.wheat, 4), new ItemStack(Items.slime_ball), new ItemStack(Items.potato), new ItemStack(Blocks.dirt)));
+		register(new RecipePurifier(new ItemStack(BlockRegistry.biomass, 1), new ItemStack(Items.stick), new ItemStack(ItemRegistry.bioReagent, 8), new ItemStack(Blocks.dirt, 1)));
 	}
 	
 	public static void load(){

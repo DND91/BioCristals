@@ -22,7 +22,8 @@ public class ConfigRegistry {
 	
 	public static Configuration config;
 	
-	public static List<RecipeData> recipeData = new ArrayList<RecipeData>(); 
+	public static List<RecipeData> recipeData = new ArrayList<RecipeData>();
+	
 	
 	public static void preinit(File configFile) {
 
