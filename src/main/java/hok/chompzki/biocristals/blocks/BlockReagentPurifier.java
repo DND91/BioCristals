@@ -3,17 +3,22 @@ package hok.chompzki.biocristals.blocks;
 import java.util.ArrayList;
 import java.util.Random;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import hok.chompzki.biocristals.BioCristalsMod;
 import hok.chompzki.biocristals.tile_enteties.TileReagentPurifier;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -22,13 +27,44 @@ public class BlockReagentPurifier extends BlockContainer {
 	public static final String NAME = "blockReagentPurifier";
 	
 	private final Random random = new Random();
-
+	
+	@SideOnly(Side.CLIENT)
+    private IIcon[] iconArray = new IIcon[3];
+	
 	public BlockReagentPurifier() {
 		super(Material.wood);
 		setBlockName(BioCristalsMod.MODID + "_" + NAME);
 		this.setCreativeTab(BioCristalsMod.creativeTab);
 		setBlockTextureName(BioCristalsMod.MODID + ":" + NAME);
+		
 	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister p_149651_1_)
+    {
+        this.blockIcon = p_149651_1_.registerIcon(this.getTextureName());
+        iconArray[0] = this.blockIcon;
+        iconArray[1] = p_149651_1_.registerIcon(this.getTextureName() + "_output");
+        iconArray[2] = p_149651_1_.registerIcon(this.getTextureName() + "_filter");
+    }
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+    public IIcon getIcon(IBlockAccess blockacc, int x, int y, int z, int side)
+    {
+		TileReagentPurifier ent = (TileReagentPurifier)blockacc.getTileEntity(x, y, z);
+        ForgeDirection drawSide = ForgeDirection.getOrientation(side);
+        ForgeDirection outputSide = ent.getOutputSide();
+        ForgeDirection filterSide = ent.getFilterSide();
+        
+        if(drawSide == outputSide)
+        	return iconArray[1];
+        if(drawSide == filterSide)
+        	return iconArray[2];
+        return iconArray[0];
+    }
+	
 
 	@Override
 	public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
@@ -38,24 +74,13 @@ public class BlockReagentPurifier extends BlockContainer {
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hit_x, float hit_y, float hit_z){
+    	
         TileReagentPurifier te = (TileReagentPurifier)world.getTileEntity(x,y,z);
-        if (ForgeDirection.getOrientation(side) !=te.getOutputSide()){
-
-            ForgeDirection newOut = ForgeDirection.getOrientation(side);
-            ForgeDirection[]tempIn=te.getInputSides();
-            ForgeDirection tempOut=te.getOutputSide();
-            ArrayList<ForgeDirection> tempArray=new ArrayList<ForgeDirection>();
-
-            for (int temp_x=0;temp_x<=tempIn.length;temp_x++) {
-                tempArray.add(tempIn[temp_x]);
-            }
-            tempArray.add(tempOut);
-            tempArray.remove(newOut);
-            tempIn=(ForgeDirection[])tempArray.toArray();
-
-            te.setInputSides(tempIn);
+        System.out.println((world.isRemote ? "CLIENT" : "SERVER") + ": " + te.getOutputSide());
+        ForgeDirection newOut = ForgeDirection.getOrientation(side);
+        
+        if (newOut !=te.getOutputSide()){
             te.setOutputSide(newOut);
-
             return true;
         }
         return false;

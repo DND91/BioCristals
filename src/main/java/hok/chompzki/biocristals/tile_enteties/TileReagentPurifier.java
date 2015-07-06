@@ -1,30 +1,38 @@
 package hok.chompzki.biocristals.tile_enteties;
 
+import java.util.ArrayList;
+
 import hok.chompzki.biocristals.api.BioHelper;
 import hok.chompzki.biocristals.recipes.RecipePurifier;
 import hok.chompzki.biocristals.registrys.RecipeRegistry;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.DataWatcher;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileReagentPurifier extends TileEntity implements IInventory{
 
-
-
-
     private ForgeDirection outputSide = ForgeDirection.UP;
-    private ForgeDirection[] inputSides = {ForgeDirection.DOWN, ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.EAST};
+    private ForgeDirection[] inputSides = {ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.EAST};
 	
 	public final static int tickMod = 40;
 	private long tick = 0;
 	
 	private ItemStack stored_result = null;
+	
+	public TileReagentPurifier(){
+		super();
+		
+	}
 	
 	@Override
 	public int getSizeInventory() {
@@ -98,10 +106,10 @@ public class TileReagentPurifier extends TileEntity implements IInventory{
 		return false;
 	}
 	
-	public void readFromNBT(NBTTagCompound p_145839_1_)
+	public void readFromNBT(NBTTagCompound nbt)
     {
-        super.readFromNBT(p_145839_1_);
-        NBTTagList nbttaglist = p_145839_1_.getTagList("Items", 10);
+        super.readFromNBT(nbt);
+        NBTTagList nbttaglist = nbt.getTagList("Items", 10);
         this.stored_result = null;
         
         if(0 < nbttaglist.tagCount()){
@@ -110,11 +118,16 @@ public class TileReagentPurifier extends TileEntity implements IInventory{
             this.stored_result = ItemStack.loadItemStackFromNBT(nbttagcompound1);
         }
         
+       if(nbt.hasKey("OUTPUT_SIDE")){
+        	int side = nbt.getInteger("OUTPUT_SIDE");
+        	this.setOutputSide(ForgeDirection.getOrientation(side));
+        	System.out.println("READING: " + side + ", " + this.outputSide);
+        }
     }
 
-    public void writeToNBT(NBTTagCompound p_145841_1_)
+    public void writeToNBT(NBTTagCompound nbt)
     {
-        super.writeToNBT(p_145841_1_);
+        super.writeToNBT(nbt);
         NBTTagList nbttaglist = new NBTTagList();
         
         if (this.stored_result != null)
@@ -124,8 +137,11 @@ public class TileReagentPurifier extends TileEntity implements IInventory{
             this.stored_result.writeToNBT(nbttagcompound1);
             nbttaglist.appendTag(nbttagcompound1);
         }
-
-        p_145841_1_.setTag("Items", nbttaglist);
+        
+        nbt.setTag("Items", nbttaglist);
+        
+        nbt.setInteger("OUTPUT_SIDE", this.outputSide.ordinal());
+        System.out.println("WRITING: " + this.outputSide.ordinal() + ", " + this.outputSide);
     }
 	
 	
@@ -139,19 +155,31 @@ public class TileReagentPurifier extends TileEntity implements IInventory{
 			}
         }
 	}
-    public void setOutputSide(ForgeDirection outputSide) {
-        this.outputSide = outputSide;
+    public void setOutputSide(ForgeDirection side) {
+        ArrayList<ForgeDirection> newIn = new ArrayList<ForgeDirection>();
+        
+        for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+        	newIn.add(dir);
+        
+        newIn.remove(side);
+        newIn.remove(side.getOpposite());
+        
+        inputSides = newIn.toArray(new ForgeDirection[4]);
+        outputSide = side;
+        if(this.worldObj != null)
+        	this.worldObj.markBlockRangeForRenderUpdate(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
     }
-
-    public void setInputSides(ForgeDirection[] inputSides) {
-        this.inputSides = inputSides;
-    }
+    
     public ForgeDirection getOutputSide() {
         return outputSide;
     }
     public ForgeDirection[] getInputSides() {
         return this.inputSides;
     }
+    public ForgeDirection getFilterSide(){
+    	return outputSide.getOpposite();
+    }
+    
 
     public boolean canFunction(){
 		TileEntity tile = BioHelper.getTileEntityOnSide(this, outputSide);
@@ -186,4 +214,31 @@ public class TileReagentPurifier extends TileEntity implements IInventory{
 		}
 		
 	}
+	
+	/**
+     * Called when you receive a TileEntityData packet for the location this
+     * TileEntity is currently in. On the client, the NetworkManager will always
+     * be the remote server. On the server, it will be whomever is responsible for
+     * sending the packet.
+     *
+     * @param net The NetworkManager the packet originated from
+     * @param pkt The data packet
+     */
+	@Override
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
+    {
+		NBTTagCompound nbt = pkt.func_148857_g();
+		this.readFromNBT(nbt);
+    }
+	
+	/**
+     * Overriden in a sign to provide the text.
+     */
+	@Override
+    public Packet getDescriptionPacket()
+    {
+		NBTTagCompound nbt = new NBTTagCompound();
+		this.writeToNBT(nbt);
+        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, blockMetadata, nbt);
+    }
 }
