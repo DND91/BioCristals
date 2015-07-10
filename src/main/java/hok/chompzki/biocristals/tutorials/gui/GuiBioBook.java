@@ -1,19 +1,35 @@
-package hok.chompzki.biocristals.tutorials;
+package hok.chompzki.biocristals.tutorials.gui;
 
 import hok.chompzki.biocristals.BioCristalsMod;
+import hok.chompzki.biocristals.tutorials.data.DataBook;
+import hok.chompzki.biocristals.tutorials.data.DataPlayer;
+import hok.chompzki.biocristals.tutorials.data.DataPlayerProgression;
+import hok.chompzki.biocristals.tutorials.data.StorageHandler;
+import hok.chompzki.biocristals.tutorials.data.knowledges.Knowledge;
+import hok.chompzki.biocristals.tutorials.data.knowledges.Knowledges;
 
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
@@ -23,8 +39,8 @@ public class GuiBioBook extends GuiScreen {
 	
 	public static final ResourceLocation bioBookBG = new ResourceLocation(BioCristalsMod.MODID + ":textures/client/gui/GuiBioBookBG.png");
 	
-	private static final int guiMapTop = 8 * 24 - 112;
-	private static final int guiMapLeft = 8 * 24 - 112;
+	private static final int guiMapTop = -8 * 24 - 112;
+	private static final int guiMapLeft = -8 * 24 - 112;
 	
 	private static final int guiMapBottom = 16 * 24 - 77;
 	private static final int guiMapRight = 16 * 24 - 77;
@@ -38,14 +54,26 @@ public class GuiBioBook extends GuiScreen {
 	protected double guiMapX;
 	protected double guiMapY;
 	
-	NBTTagCompound comp = null;
-	EntityPlayer player = null;
+	protected int mouseX = 0;
+	protected int mouseY = 0;
+	private int isMouseButtonDown = 0;
+	private int lastMouseButtonDown = 0;
+	
+	protected final float speed = 10.0f;
+	
+	DataBook book = null;
+	DataPlayer player = null;
+	Knowledge tooltipKnowledge = null;
 	
 	static Random random = new Random();
 	
-	public GuiBioBook(NBTTagCompound compound, EntityPlayer player) {
-		this.comp = compound;
-		this.player = player;
+	public GuiBioBook(EntityPlayer player) {
+		this.book = new DataBook(player.inventory.getCurrentItem());
+		this.player = new DataPlayer(player);
+		short short1 = 141;
+        short short2 = 141;
+		this.field_74117_m = this.guiMapX = (double)(0 * 24 - short1 / 2 - 12);
+        this.field_74115_n = this.guiMapY = (double)(0 * 24 - short2 / 2);
 	}
 	
 	@Override
@@ -72,20 +100,110 @@ public class GuiBioBook extends GuiScreen {
             this.mc.displayGuiScreen((GuiScreen)null);
             this.mc.setIngameFocus();
             return;
-        }
-        else
+        } else
         {
             super.keyTyped(par1, par2);
         }
     }
 	
 	@Override
+	protected void mouseClicked(int x, int y, int btn)
+    {
+		if(btn == 0 && this.tooltipKnowledge != null){
+        	this.mc.displayGuiScreen(new GuiDescription(this, tooltipKnowledge.getDescription()));
+        	
+        }else{
+        	super.mouseClicked(x, y, btn);
+        }
+    }
+	
+	public void addToMapPos(double x, double y){
+		this.guiMapX += x;
+        this.guiMapY += y;
+        
+        this.field_74117_m = this.guiMapX;
+        this.field_74115_n = this.guiMapY;
+        
+        if (this.guiMapY < (double)guiMapTop)
+        {
+        	this.guiMapY = (double)guiMapTop + 1;
+            
+        }
+
+        if (this.guiMapX < (double)guiMapLeft)
+        {
+        	this.guiMapX = (double)guiMapLeft + 1;
+        }
+
+        if (this.guiMapY >= (double)guiMapBottom)
+        {
+        	this.guiMapY = (double)(guiMapBottom - 1);
+        }
+        	
+        if (this.guiMapX >= (double)guiMapRight)
+        {
+        	this.guiMapX = (double)(guiMapRight - 1);
+        }
+	}
+	
+	@Override
 	public void drawScreen(int par1, int par2, float par3)
     {
+		float speedY = 0.0f;
+		float speedX = 0.0f;
+		
+		if(Keyboard.isKeyDown(this.mc.gameSettings.keyBindForward.getKeyCode())){
+			speedY -= speed * par3;
+		}
+		if(Keyboard.isKeyDown(this.mc.gameSettings.keyBindBack.getKeyCode())){
+			speedY += speed * par3;
+		}
+		if(Keyboard.isKeyDown(this.mc.gameSettings.keyBindLeft.getKeyCode())){
+			speedX -= speed * par3;
+		}
+		if(Keyboard.isKeyDown(this.mc.gameSettings.keyBindRight.getKeyCode())){
+			speedX += speed * par3;
+		}
+		
+		this.addToMapPos(speedX, speedY);
+		
+		if (Mouse.isButtonDown(0))
+        {
+            int k = (this.width - this.knowledgePaneWidth) / 2;
+            int l = (this.height - this.knowledgePaneHeight) / 2;
+            int i1 = k + 8;
+            int j1 = l + 17;
+
+            if ((this.isMouseButtonDown == 0 || this.isMouseButtonDown == 1) && par1 >= i1 && par1 < i1 + 224 && par2 >= j1 && par2 < j1 + 155)
+            {
+                if (this.isMouseButtonDown == 0)
+                {
+                    this.isMouseButtonDown = 1;
+                    
+                }
+                else
+                {
+                	this.addToMapPos(-(double)(par1 - this.mouseX), -(double)(par2 - this.mouseY));
+                }
+
+                this.mouseX = par1;
+                this.mouseY = par2;
+            }
+
+        }
+        else
+        {
+            this.isMouseButtonDown = 0;
+        }
+		
 		this.drawDefaultBackground();
 		this.genBioBookBackground(par1, par2, par3);
+		//Draw Relations
+		this.drawIcons(par1, par2, par3);
+		this.drawOverlay(par1, par2, par3);
 		super.drawScreen(par1, par2, par3);
-		
+		if(tooltipKnowledge != null)
+			this.drawTooltip(par1, par2, par3);
     }
 	
 	@Override
@@ -123,7 +241,7 @@ public class GuiBioBook extends GuiScreen {
 	        int j1 = (this.height - this.knowledgePaneHeight) / 2;
 	        int k1 = i1 + 16;
 	        int l1 = j1 + 17;
-	        this.zLevel = 0.0F;
+	        //this.zLevel = 0.0F;
 	        GL11.glPushMatrix();
 	        this.mc.renderEngine.bindTexture(TextureMap.locationBlocksTexture);
 	        int i2 = k + 288 >> 4;
@@ -144,6 +262,8 @@ public class GuiBioBook extends GuiScreen {
 	            {
 	                random.setSeed((long)(1234 + i2 + k3));
 	                random.nextInt();
+	                j2 = Math.max(0, j2);
+	                i3 = Math.max(0, i3);
 	                j3 = random.nextInt(1 + j2 + i3) + (j2 + i3) / 2;
 	                IIcon icon = Blocks.sand.getIcon(0, 0);
 
@@ -190,17 +310,7 @@ public class GuiBioBook extends GuiScreen {
 	        }
 	        GL11.glPopMatrix();
 	        
-	        GL11.glPushMatrix();
-	        this.mc.getTextureManager().bindTexture(bioBookBG);
-	        
-	        GL11.glColor3f(1.0f, 1.0f, 1.0f);
-	        GL11.glEnable(GL11.GL_BLEND);
-            this.drawTexturedModalRect(i1, j1, 0, 0, 255, 202);
-	        GL11.glDisable(GL11.GL_BLEND);
-            
-            GL11.glPopMatrix();
 	        /*
-	        List<Knowledge> knowledgeList = KnowledgeAppedix.knowledgeList;
 	        for (i3 = 0; i3 < knowledgeList.size(); ++i3)
 	        {
 	        	Knowledge knowledge = knowledgeList.get(i3);
@@ -234,83 +344,11 @@ public class GuiBioBook extends GuiScreen {
 	                this.drawVerticalLine(j4, j3, l3, k4);
 	            }
 	        }
-
-	        Knowledge knowledge1 = null;
-	        RenderItem renderitem = new RenderItem();
-	        RenderHelper.enableGUIStandardItemLighting();
-	        GL11.glDisable(GL11.GL_LIGHTING);
-	        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-	        GL11.glEnable(GL11.GL_COLOR_MATERIAL);
-	        int l4;
-	        int i5;
-
-	        for (k3 = 0; k3 < knowledgeList.size(); ++k3)
-	        {
-	        	Knowledge knowledge2 = (Knowledge)knowledgeList.get(k3);
-	            j4 = knowledge2.displayColumn * 24 - k;
-	            l3 = knowledge2.displayRow * 24 - l;
-
-	            if (j4 >= -24 && l3 >= -24 && j4 <= 224 && l3 <= 155)
-	            {
-	                float f2;
-	                
-	                
-
-	                if (KnowledgeAppedix.hasKnowledgeUnlocked(compound, knowledge2))
-	                {
-	                    f2 = 1.0F;
-	                    GL11.glColor4f(f2, f2, f2, 1.0F);
-	                }
-	                else if (KnowledgeAppedix.canUnlockKnowledge(compound, knowledge2))
-	                {
-	                    f2 = Math.sin((double)(Minecraft.getSystemTime() % 600L) / 600.0D * Math.PI * 2.0D) < 0.6D ? 0.6F : 0.8F;
-	                    GL11.glColor4f(f2, f2, f2, 1.0F);
-	                }
-	                else
-	                {
-	                    f2 = 0.3F;
-	                    GL11.glColor4f(f2, f2, f2, 1.0F);
-	                }
-
-	                this.mc.renderEngine.bindTexture("/mods/dnd91/minecraft/hivecraft/textures/gui/KnowledgesBG.png");
-	                i5 = k1 + j4;
-	                l4 = l1 + l3;
-
-	                if (knowledge2.getSpecial())
-	                {
-	                    this.drawTexturedModalRect(i5 - 2, l4 - 2, 26, 202, 26, 26);
-	                }
-	                else
-	                {
-	                    this.drawTexturedModalRect(i5 - 2, l4 - 2, 0, 202, 26, 26);
-	                }
-
-	                if (!KnowledgeAppedix.canUnlockKnowledge(compound, knowledge2))
-	                {
-	                    float f3 = 0.1F;
-	                    GL11.glColor4f(f3, f3, f3, 1.0F);
-	                    renderitem.renderWithColor = false;
-	                }
-
-	                GL11.glEnable(GL11.GL_LIGHTING);
-	                GL11.glEnable(GL11.GL_CULL_FACE);
-	                renderitem.renderItemAndEffectIntoGUI(this.mc.fontRenderer, this.mc.renderEngine, knowledge2.theItemStack, i5 + 3, l4 + 3);
-	                GL11.glDisable(GL11.GL_LIGHTING);
-
-	                if (!KnowledgeAppedix.canUnlockKnowledge(compound, knowledge2))
-	                {
-	                    renderitem.renderWithColor = true;
-	                }
-
-	                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-
-	                if (par1 >= k1 && par2 >= l1 && par1 < k1 + 224 && par2 < l1 + 155 && par1 >= i5 && par1 <= i5 + 22 && par2 >= l4 && par2 <= l4 + 22)
-	                {
-	                    knowledge1 = knowledge2;
-	                }
-	            }
-	        }
-
+	        */
+			
+	        
+	        
+	        /*
 	        GL11.glDisable(GL11.GL_DEPTH_TEST);
 	        GL11.glEnable(GL11.GL_BLEND);
 	        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -374,4 +412,122 @@ public class GuiBioBook extends GuiScreen {
 	        //RenderHelper.disableStandardItemLighting();
 	    }
 	 
+	 public void drawIcons(int par1, int par2, float par3){
+		 int k = MathHelper.floor_double(this.field_74117_m + (this.guiMapX - this.field_74117_m) * (double)par3);
+	     int l = MathHelper.floor_double(this.field_74115_n + (this.guiMapY - this.field_74115_n) * (double)par3);
+
+        if (k < guiMapTop)
+        {
+            k = guiMapTop;
+        }
+
+        if (l < guiMapLeft)
+        {
+            l = guiMapLeft;
+        }
+
+        if (k >= guiMapBottom)
+        {
+            k = guiMapBottom - 1;
+        }
+
+        if (l >= guiMapRight)
+        {
+            l = guiMapRight - 1;
+        }
+		  
+	    
+        int i1 = (this.width - this.knowledgePaneWidth) / 2;
+        int j1 = (this.height - this.knowledgePaneHeight) / 2;
+        int k1 = i1 + 16;
+        int l1 = j1 + 17;
+        
+		RenderItem renderitem = new RenderItem();
+        RenderHelper.enableGUIStandardItemLighting();
+        //GL11.glDisable(GL11.GL_LIGHTING);
+        //GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+        //GL11.glEnable(GL11.GL_COLOR_MATERIAL);
+        int l4;
+        int i5;
+        tooltipKnowledge = null;
+        for(Knowledge knowledge : Knowledges.knowledges){
+        	int colum = knowledge.displayColumn * 24 - k;
+            int row = knowledge.displayRow * 24 - l;
+            if (colum >= -10 && row >= -10 && colum <= 224 && row <= 155)
+            {
+            	float f2 = 1.0F;
+            	GL11.glColor4f(f2, f2, f2, 1.0F);
+            	
+            	this.mc.renderEngine.bindTexture(bioBookBG);
+                i5 = k1 + colum;
+                l4 = l1 + row;
+
+                if (knowledge.getSpecial())
+                {
+                    this.drawTexturedModalRect(i5 - 2, l4 - 2, 26, 202, 26, 26);
+                }
+                else
+                {
+                    this.drawTexturedModalRect(i5 - 2, l4 - 2, 0, 202, 26, 26);
+                }
+
+	             float f3 = 1.0F;
+	             GL11.glColor4f(f3, f3, f3, 1.0F);
+	             renderitem.renderWithColor = false;
+	             renderitem.zLevel = -50.0f;
+                //GL11.glEnable(GL11.GL_LIGHTING);
+                //GL11.glEnable(GL11.GL_CULL_FACE);
+                renderitem.renderItemAndEffectIntoGUI(this.mc.fontRenderer, this.mc.renderEngine, knowledge.getIconStack(), i5 + 3, l4 + 3);
+                //GL11.glDisable(GL11.GL_LIGHTING);
+                
+                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+                
+                Rectangle rect = new Rectangle(i5 + 3, l4 + 3, 16, 16);
+                if(rect.contains(new Rectangle(par1, par2, 2, 2))){
+                	tooltipKnowledge = knowledge;
+                }
+            }
+            
+        }
+	 }
+	 
+	 public void drawOverlay(int par1, int par2, float par3){
+		
+		int i1 = (this.width - this.knowledgePaneWidth) / 2;
+        int j1 = (this.height - this.knowledgePaneHeight) / 2;
+        //this.zLevel = 200.0f;
+		GL11.glPushMatrix();
+		this.mc.getTextureManager().bindTexture(bioBookBG);
+		
+		GL11.glColor3f(1.0f, 1.0f, 1.0f);
+		GL11.glEnable(GL11.GL_BLEND);
+		this.drawTexturedModalRect(i1, j1, 0, 0, 255, 202);
+		GL11.glDisable(GL11.GL_BLEND);
+		 
+		GL11.glPopMatrix();
+		 
+		
+		//this.zLevel = 200.0f;
+		GL11.glPushMatrix();
+		GL11.glColor3f(1.0f, 1.0f, 1.0f);
+		GL11.glEnable(GL11.GL_BLEND);
+		this.drawString(fontRendererObj, book.getOwner() + "'s book", i1+20, j1+5, 0xFFFFFF);
+		GL11.glDisable(GL11.GL_BLEND);
+		
+		GL11.glPopMatrix();
+		//this.zLevel = 0.0f;
+	 }
+	 
+	 public void drawTooltip(int par1, int par2, float par3){
+		 this.renderToolTip(tooltipKnowledge, par1, par2);
+	 }
+	 
+	protected void renderToolTip(Knowledge tooltipKnowledge, int p_146285_2_, int p_146285_3_)
+    {
+        List list = new ArrayList();
+        list.add(EnumChatFormatting.GOLD + tooltipKnowledge.getTitle());
+        list.add(tooltipKnowledge.getDesc());
+        
+        drawHoveringText(list, p_146285_2_, p_146285_3_, Minecraft.getMinecraft().fontRenderer);
+    }
 }

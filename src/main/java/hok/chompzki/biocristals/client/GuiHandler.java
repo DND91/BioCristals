@@ -1,7 +1,11 @@
 package hok.chompzki.biocristals.client;
 
-import hok.chompzki.biocristals.tutorials.GuiBioBook;
+import hok.chompzki.biocristals.tutorials.data.DataBook;
+import hok.chompzki.biocristals.tutorials.data.description.BabySteps;
+import hok.chompzki.biocristals.tutorials.gui.GuiBioBook;
+import hok.chompzki.biocristals.tutorials.gui.GuiDescription;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.network.IGuiHandler;
@@ -24,10 +28,8 @@ public class GuiHandler implements IGuiHandler {
 			int x, int y, int z) {
 		
 		if(ID == 100){ //BioBook
-			NBTTagCompound compound = (NBTTagCompound) player.getEntityData().getTag(player.getGameProfile().getName()+".BioBook");
-			if(compound == null)
-				return null;
-			return new GuiBioBook(compound, player);
+			//return new GuiDescription(new BabySteps());
+			return new GuiBioBook(player);
 		}
 		
 		return null;

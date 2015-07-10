@@ -18,6 +18,11 @@ import net.minecraftforge.oredict.OreDictionary;
 public class RecipeTransformer {
 	
 	
+	/**
+	 * 
+	 * @param data domain:name or name
+	 * @return
+	 */
 	
 	public static ItemStack dataToItemStack(String data){
 		
@@ -57,6 +62,15 @@ public class RecipeTransformer {
             ArrayList<ItemStack> orename = OreDictionary.getOres(name);
             if (orename.size() > 0) {
             	stack = orename.get(0);
+            }else{
+            	Item i = (Item)Item.itemRegistry.getObject("minecraft:" + name);
+            	if(i == null){
+            		i = GameRegistry.findItem(domain, name);
+            	}
+            	
+            	stack = new ItemStack(i, 1, meta);
+            	if(stack.getItem() == null)
+            		return null;
             }
         } else if(name != null && domain != null) {
         	Item i = (Item)Item.itemRegistry.getObject(domain + ":" + name);

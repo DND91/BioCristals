@@ -85,4 +85,13 @@ public class RecipeRegistry {
 		}
 	}
 	
+	public static RecipeContainer getRecipreFor(ItemStack output){
+		for(RecipeContainer con : recipes){
+			if(con.output.isItemEqual(output)){
+				return con;
+			}
+		}
+		return null;
+	}
+	
 }

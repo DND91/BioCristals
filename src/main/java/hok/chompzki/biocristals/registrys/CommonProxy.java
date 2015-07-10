@@ -1,7 +1,9 @@
 package hok.chompzki.biocristals.registrys;
 
+import net.minecraftforge.common.MinecraftForge;
 import hok.chompzki.biocristals.BioCristalsMod;
 import hok.chompzki.biocristals.client.GuiHandler;
+import hok.chompzki.biocristals.tutorials.data.StorageHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -15,6 +17,8 @@ public class CommonProxy { //Server sided
 	public void preInit(FMLPreInitializationEvent event) {
 		ConfigRegistry.preinit(event.getSuggestedConfigurationFile());
 		FMLCommonHandler.instance().bus().register(new ConfigRegistry());
+		//FMLCommonHandler.instance().bus().register(new StorageHandler());
+		MinecraftForge.EVENT_BUS.register(new StorageHandler());
 		
 		ItemRegistry items = new ItemRegistry();
 		items.registerItems();
@@ -23,6 +27,9 @@ public class CommonProxy { //Server sided
 		TileEntityRegistry tileEntity = new TileEntityRegistry();
 		tileEntity.registerTileEntities();
 		CristalRegistry.registerAll();
+		
+		TutorialRegistry turt = new TutorialRegistry();
+		turt.preInit(event);
 	}
 
     
