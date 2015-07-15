@@ -1,8 +1,8 @@
-item.BioCristals_itemAttuner.name=Attuner
+item.BioCristals_itemAttuner.name=Rabarberpaj's Attuner
 item.BioCristals_itemBioReagent.name=Biological Reagent
 item.BioCristals_itemCollector.name=Collector
 item.BioCristals_itemCatalystInjector.name=Catalyst Inducer
-item.BioCristals_itemBiobook.name=BioCristals Book
+item.BioCristals_itemResearchBook.name=Research Book
 tile.BioCristals_blockBiomass.name=Biomass
 tile.BioCristals_blockWheatCristal.name=Wheat Cristal
 tile.BioCristals_blockCarrotCristal.name=Carrot Cristal
@@ -13,3 +13,23 @@ tile.BioCristals_blockPumpkinCristal.name=Pumpkin Cristal
 tile.BioCristals_blockSulphurTuft.name=Sulphur Tuft
 tile.BioCristals_blockReagentPurifier.name=Reagent Purifier
 itemGroup.Bio Cristal=Bio Cristal
+
+research.babySteps.title=Baby Steps
+research.babySteps.text=Many Piron steps...
+research.theWorldAroundUs.title=The World Around Us
+research.theWorldAroundUs.text=Why is dirt and life so diffrent?
+research.reaction.title=Biological Reagent
+research.reaction.text=Author D'rry
+research.wheatCristalisation.title=Cristalisation: Wheat
+research.wheatCristalisation.text=Author Rot
+research.cubeMass.title=Cubic Biomass
+research.cubeMass.text=Author Carla & Fleur
+
+research.rabarberpaj.title=Rabarberpaj
+research.rabarberpaj.text=Knowledge founder
+research.dberry.title=Ellen D'berry
+research.dberry.text=Mutation reagent
+research.carla_fleur.title=Carla & Fleur
+research.carla_fleur.text=Labratory explorers
+research.cara_rot.title=Carra Rot
+research.cara_rot.text=Crystal Maniac

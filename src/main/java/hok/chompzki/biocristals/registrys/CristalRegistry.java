@@ -59,12 +59,12 @@ private static ArrayList<IEntityTransformation> entityTransformations = new Arra
 	}
 	
 	public static void registerAll(){
-		CristalRegistry.register(new WeakCristalTransformation(Items.wheat, BlockRegistry.wheatCristal));
-		CristalRegistry.register(new WeakCristalTransformation(Items.carrot, BlockRegistry.carrotCristal));
-		CristalRegistry.register(new WeakCristalTransformation(Items.reeds, BlockRegistry.sugerCaneCristal));
-		CristalRegistry.register(new WeakCristalTransformation(Items.potato, BlockRegistry.potatoCristal));
-		CristalRegistry.register(new WeakCristalTransformation(Items.melon, BlockRegistry.melonCristal));
-		CristalRegistry.register(new WeakCristalTransformation((new ItemStack(Blocks.pumpkin)).getItem(), BlockRegistry.wheatCristal));
+		CristalRegistry.register(new WeakCristalTransformation(Items.wheat, BlockRegistry.wheatCristal, ReserchRegistry.wheatCristalisation));
+		CristalRegistry.register(new WeakCristalTransformation(Items.carrot, BlockRegistry.carrotCristal, null));
+		CristalRegistry.register(new WeakCristalTransformation(Items.reeds, BlockRegistry.sugerCaneCristal, null));
+		CristalRegistry.register(new WeakCristalTransformation(Items.potato, BlockRegistry.potatoCristal, null));
+		CristalRegistry.register(new WeakCristalTransformation(Items.melon, BlockRegistry.melonCristal, null));
+		CristalRegistry.register(new WeakCristalTransformation((new ItemStack(Blocks.pumpkin)).getItem(), BlockRegistry.wheatCristal, null));
 		
 		CristalRegistry.register(new WeakFleshTransformation(EntitySheep.class, new ItemStack(Blocks.wool)));
 		CristalRegistry.register(new WeakFleshTransformation(EntityCow.class, new ItemStack(Items.leather)));

@@ -3,8 +3,12 @@ package hok.chompzki.biocristals.transformation;
 import hok.chompzki.biocristals.api.BioHelper;
 import hok.chompzki.biocristals.api.ITransformation;
 import hok.chompzki.biocristals.registrys.BlockRegistry;
+import hok.chompzki.biocristals.registrys.ReserchRegistry;
+import hok.chompzki.biocristals.research.data.PlayerResearch;
+import hok.chompzki.biocristals.research.data.PlayerStorage;
 
 import java.util.List;
+import java.util.UUID;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -21,10 +25,12 @@ public class WeakCristalTransformation implements ITransformation {
 	
 	private Item input;
 	private Block output;
+	private String code;
 	
-	public WeakCristalTransformation(Item input, Block output){
+	public WeakCristalTransformation(Item input, Block output, String code){
 		this.input = input;
 		this.output = output;
+		this.code = code;
 	}
 
 	@Override
@@ -54,6 +60,14 @@ public class WeakCristalTransformation implements ITransformation {
 			item.getEntityItem().stackSize--;
 			if(item.getEntityItem().stackSize <= 0)
 				item.setDead();
+			
+			if(code != null){
+				UUID id = player.getGameProfile().getId();
+				PlayerResearch research = PlayerStorage.instance().get(id);
+				if(!research.hasCompleted(code)){
+					research.addCompleted(code);
+				} 
+			}
 		}
 	}
 

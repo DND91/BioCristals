@@ -2,12 +2,15 @@ package hok.chompzki.biocristals.client;
 
 import hok.chompzki.biocristals.api.IGrowthCristal;
 import hok.chompzki.biocristals.registrys.ItemRegistry;
+import hok.chompzki.biocristals.research.data.DataHelper;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.List;
+
+import javafx.scene.input.MouseButton;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -43,6 +46,7 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
 public class GuiInventoryOverlay extends Gui{
 	
+	public static CraftingHelper craftingHelper = new CraftingHelper();
 	
 	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
     public void onEventGui(InitGuiEvent.Post event)
@@ -105,6 +109,27 @@ public class GuiInventoryOverlay extends Gui{
 				
 			}
     }
+
+	
+	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
+    public void onEventDraw(DrawScreenEvent.Post event)
+    {
+		Minecraft mc = Minecraft.getMinecraft();
+		EntityPlayer player = mc.thePlayer;
+		World world = mc.theWorld;
+		GuiScreen currentScreen = mc.currentScreen;
+		
+		if(player == null)
+			return;
+		ItemStack currentStack = player.getCurrentEquippedItem();
+		
+		if(world != null && currentScreen != null && currentScreen instanceof GuiContainer && currentStack != null && currentStack.getItem() == ItemRegistry.researchBook){
+			if(DataHelper.belongsTo(player, currentStack))
+				this.craftingHelper.drawCurrentSelected(currentScreen, mc, world, player, currentStack, event.mouseX, event.mouseY, event.renderPartialTicks);
+		}
+    }
+	
+	
 	
 	protected void drawHoveringText(List p_146283_1_, int p_146283_2_, int p_146283_3_, FontRenderer font)
     {

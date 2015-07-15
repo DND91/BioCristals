@@ -28,7 +28,7 @@ public class BlockReagentPurifier extends BlockContainer {
 	
 	private final Random random = new Random();
 	
-	@SideOnly(Side.CLIENT)
+	//@SideOnly(Side.CLIENT)
     private IIcon[] iconArray = new IIcon[3];
 	
 	public BlockReagentPurifier() {

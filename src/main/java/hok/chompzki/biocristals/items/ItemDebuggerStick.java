@@ -1,11 +1,16 @@
 package hok.chompzki.biocristals.items;
 
 import java.util.Map.Entry;
+import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 import hok.chompzki.biocristals.BioCristalsMod;
-import hok.chompzki.biocristals.tutorials.data.DataPlayerProgression;
-import hok.chompzki.biocristals.tutorials.data.StorageHandler;
+import hok.chompzki.biocristals.research.data.PlayerResearch;
+import hok.chompzki.biocristals.research.data.PlayerStorage;
+import hok.chompzki.biocristals.research.data.Research;
+import hok.chompzki.biocristals.research.data.ReserchDataNetwork;
+import hok.chompzki.biocristals.research.logic.ResearchLogicNetwork;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -28,13 +33,11 @@ public class ItemDebuggerStick extends Item {
 		if(!world.isRemote)
 			return stack;
 		
-		System.out.println("============================================================");
-		System.out.println("StorageHandler<DataPlayerProgression> size " + StorageHandler.data.size());
-		System.out.println("============================================================");
-		for(Entry<UUID, DataPlayerProgression> entry : StorageHandler.data.entrySet()){
-			System.out.println("USERNAME " + entry.getValue().getUser());
-		}
-		System.out.println("============================================================");
+		PlayerResearch data = PlayerStorage.instance().get(player.getGameProfile().getId());
+		System.out.println("CURRENT USER: " + data.getUsername(world));
+		
+		PlayerStorage.instance().printLissensOn(data.getOwnerId());
+		
 		
         return stack;
     }

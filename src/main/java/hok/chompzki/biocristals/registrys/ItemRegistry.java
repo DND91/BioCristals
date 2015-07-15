@@ -7,7 +7,7 @@ import hok.chompzki.biocristals.items.ItemBioReagent;
 import hok.chompzki.biocristals.items.ItemCatalystInjector;
 import hok.chompzki.biocristals.items.ItemCollector;
 import hok.chompzki.biocristals.items.ItemDebuggerStick;
-import hok.chompzki.biocristals.tutorials.logic.ItemBioBook;
+import hok.chompzki.biocristals.research.logic.ItemResearchBook;
 import net.minecraft.item.Item;
 
 
@@ -27,7 +27,7 @@ public class ItemRegistry {
 	public static Item bioReagent = null;
 	public static Item collector = null;
 	public static Item catalystInjector = null;
-	public static Item bioBook = null;
+	public static Item researchBook = null;
 	public static Item debuggingStick = null;
 	
 	public void registerItems(){
@@ -35,14 +35,14 @@ public class ItemRegistry {
 		bioReagent = new ItemBioReagent();
 		collector = new ItemCollector();
 		catalystInjector = new ItemCatalystInjector();
-		bioBook = new ItemBioBook();
+		researchBook = new ItemResearchBook();
 		debuggingStick = new ItemDebuggerStick();
 		
 		GameRegistry.registerItem(attuner, ItemAttuner.NAME, BioCristalsMod.MODID);
 		GameRegistry.registerItem(bioReagent, ItemBioReagent.NAME, BioCristalsMod.MODID);
 		GameRegistry.registerItem(collector, ItemCollector.NAME, BioCristalsMod.MODID);
 		GameRegistry.registerItem(catalystInjector, ItemCatalystInjector.NAME, BioCristalsMod.MODID);
-		GameRegistry.registerItem(bioBook, ItemBioBook.NAME, BioCristalsMod.MODID);
+		GameRegistry.registerItem(researchBook, ItemResearchBook.NAME, BioCristalsMod.MODID);
 		GameRegistry.registerItem(debuggingStick, ItemDebuggerStick.NAME, BioCristalsMod.MODID);
 	}
 	
