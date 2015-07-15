@@ -10,8 +10,6 @@ import java.util.Deque;
 import java.util.Iterator;
 import java.util.List;
 
-import javafx.scene.input.MouseButton;
-
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
