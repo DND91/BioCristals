@@ -8,6 +8,7 @@ import hok.chompzki.biocristals.research.gui.ArticleFontRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -55,11 +56,19 @@ public abstract class GuiCraftingHelper extends Gui {
     
     public void rescale(Minecraft mc, GuiScreen currentScreen){
     	GL11.glPushMatrix();
-    	float freeX = (mc.displayWidth - currentScreen.width) / 2;
-    	float freeY = (mc.displayHeight - currentScreen.height) / 2;
     	
-    	xScale = freeX / width / 2;
-    	yScale = freeY / height;
+    	float extraScale = 1.0f;
+    	if(mc.gameSettings.guiScale == 1){
+    		extraScale = 0.5f;
+    	}
+    	
+    	ScaledResolution res = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
+    	
+    	float freeX = (res.getScaledWidth()) / 2;
+    	float freeY = (res.getScaledHeight()) / 2;
+    	
+    	xScale = freeX / width / 2 * extraScale;
+    	yScale = freeY / height * extraScale;
     	
 		GL11.glScalef(xScale, yScale, 1.0f);
 		
@@ -81,6 +90,8 @@ public abstract class GuiCraftingHelper extends Gui {
 	}
 	
 	public void normalScale(){
+		//System.out.println(Minecraft.getMinecraft().gameSettings.guiScale);
+		
 		GL11.glScalef(1.0f / xScale, 1.0f / yScale, 1.0f);
 		GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glEnable(GL11.GL_DEPTH_TEST);
