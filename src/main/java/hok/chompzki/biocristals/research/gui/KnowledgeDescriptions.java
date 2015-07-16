@@ -73,4 +73,12 @@ public class KnowledgeDescriptions {
 		
 		return domain + ":" + name;
 	}
+	
+	public static String transformWealCristal(ItemStack substance, ItemStack reagent, ItemStack base, ItemStack activator){
+		ItemStack air = new ItemStack(Blocks.air);
+		String s = "\t\n\f";
+		s += transformItemStack(air, false) + transformItemStack(substance, false) + transformItemStack(air, false) + "\n\n";
+		s += "\f" + transformItemStack(reagent, false) + transformItemStack(base, false) + transformItemStack(activator, false) + "\n\n";
+		return s + "\t";
+	}
 }

@@ -2,7 +2,6 @@ package hok.chompzki.biocristals.client;
 
 import java.util.UUID;
 
-import hok.chompzki.biocristals.research.data.DataBook;
 import hok.chompzki.biocristals.research.data.PlayerStorage;
 import hok.chompzki.biocristals.research.gui.GuiResearchBook;
 import net.minecraft.entity.player.EntityPlayer;

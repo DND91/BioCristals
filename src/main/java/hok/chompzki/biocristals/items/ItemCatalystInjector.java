@@ -4,6 +4,7 @@ import hok.chompzki.biocristals.BioCristalsMod;
 import hok.chompzki.biocristals.api.BioHelper;
 import hok.chompzki.biocristals.api.IGrowthCristal;
 import hok.chompzki.biocristals.registrys.ConfigRegistry;
+import hok.chompzki.biocristals.research.data.DataHelper;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
 public class ItemCatalystInjector extends Item {
@@ -111,10 +113,12 @@ public class ItemCatalystInjector extends Item {
 	
 	public void grow(EntityPlayer player, ItemStack stack){
 		World world = player.worldObj;
-		Minecraft mc = Minecraft.getMinecraft();
-		int dx = mc.objectMouseOver.blockX;
-		int dy = mc.objectMouseOver.blockY;
-		int dz = mc.objectMouseOver.blockZ;
+		
+		MovingObjectPosition mop = DataHelper.rayTrace(player, 6.0f, 1.0f);
+		
+		int dx = mop.blockX;
+		int dy = mop.blockY;
+		int dz = mop.blockZ;
 		List<ItemStack> stacks = new ArrayList<ItemStack>();
 		
 		SortedSet<Posistion> closed = new TreeSet<Posistion>(new ComparablePosistion());

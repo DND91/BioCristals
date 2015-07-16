@@ -7,7 +7,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import hok.chompzki.biocristals.BioCristalsMod;
 import hok.chompzki.biocristals.registrys.ReserchRegistry;
-import hok.chompzki.biocristals.research.data.DataBook;
 import hok.chompzki.biocristals.research.data.DataHelper;
 import hok.chompzki.biocristals.research.data.DataPlayer;
 import hok.chompzki.biocristals.research.data.PlayerResearch;
@@ -37,6 +36,8 @@ public class ItemResearchBook extends Item {
 		
 		if(DataHelper.hasOwner(itemstack)){
 			list.add("Owner: " + DataHelper.getOwnerName(itemstack, par2EntityPlayer.worldObj));
+			list.add("OWNER: " + DataHelper.getOwner(itemstack));
+			list.add("ME___: " + par2EntityPlayer.getGameProfile().getId().toString());
 		}else{
 			list.add("Owner: None");
 		}
@@ -52,6 +53,9 @@ public class ItemResearchBook extends Item {
 	public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer player){
 		DataHelper.belongsTo(player, itemstack);
 		
+		if(!DataHelper.hasOwner(itemstack))
+			return itemstack;
+		
 		player.openGui(BioCristalsMod.instance, 100, world, (int)player.posX, (int)player.posY, (int)player.posZ);
 		
 		return itemstack;
@@ -60,8 +64,7 @@ public class ItemResearchBook extends Item {
 	@SideOnly(Side.CLIENT)
 	public String getItemStackDisplayName(ItemStack stack)
     {
-		DataBook book = new DataBook(stack);
-		if(book.hasOwner())
+		if(DataHelper.hasOwner(stack))
 			return DataHelper.getOwnerName(stack, Minecraft.getMinecraft().theWorld) + "'s " + ("" + StatCollector.translateToLocal(this.getUnlocalizedNameInefficiently(stack) + ".name")).trim();
 		return super.getItemStackDisplayName(stack);
     }

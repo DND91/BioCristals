@@ -1,8 +1,16 @@
 package hok.chompzki.biocristals.research.logic.content;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.Minecraft;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import hok.chompzki.biocristals.client.GuiCraftRecipe;
+import hok.chompzki.biocristals.client.GuiCristalRecipe;
+import hok.chompzki.biocristals.client.GuiInventoryOverlay;
 import hok.chompzki.biocristals.registrys.BlockRegistry;
 import hok.chompzki.biocristals.registrys.ItemRegistry;
+import hok.chompzki.biocristals.registrys.ReserchRegistry;
 import hok.chompzki.biocristals.research.data.ArticleContent;
 import hok.chompzki.biocristals.research.data.ArticleContent.Content;
 import hok.chompzki.biocristals.research.gui.KnowledgeDescriptions;
@@ -11,59 +19,23 @@ public class WheatCristalisation extends ArticleContent {
 
 	@Override
 	public String textOnPage(Content content, int p){
-		//Basic stuff Attuner, Biological Reagent & Biomass TUTORIAL RESEARCH!
 		String s = "";
 		switch(p){
 		case 0:
-			s += "Our journey befall us in a time where resources are scares and we have often found that time is more spent ";
-			s += "on little things rather then the big whole. One of the more time consumping aspects are found in areas of ";
-			s += "agriculture, as all of us have to eat and that food have to come from somewhere.  ";
+			s += "Rot was never intressted in spreading many of his findings to others and it was shortly before his death ";
+			s += "that many of his notes came into the hands of the field. One of the most notibale notes was the one on ";
+			s += "wheat crystallization. On the other side you can find the Ccrystallization activation.";
 			break;
 		case 1:
-			s += "As we study surface properties of the woodlands, ";
-			s += "we can notice the inhernt property of attunment between the dead and the living. ";
-			s += "By using somekind of attuner we should be able to perform somekind of abuse between ";
-			s += "what is and what can be. From this we have conducted a study on what this object could be.";
-			s += "\n\n";
-			s += "- Hawk";
-			break;
-		case 2:
-			s += "From our studies of the subject we propose a hypothes about the attuner's structure:\n";
-			s += "       ~ Structure ~\n";
-			s += KnowledgeDescriptions.transformRecipe(new ItemStack(ItemRegistry.attuner));
+			s += "       ~ Crystallization ~\n";
+			s += KnowledgeDescriptions.transformWealCristal(new ItemStack(Items.wheat), new ItemStack(ItemRegistry.bioReagent), new ItemStack(BlockRegistry.biomass), new ItemStack(ItemRegistry.attuner));
 			s += "       ~ Creation ~\n\n";
-			s += KnowledgeDescriptions.transformOutput(new ItemStack(ItemRegistry.attuner));
-			break;
-		case 3:
-			s += "To continue on our work we have found that the attunment processes is in need of ";
-			s += ", what Hawk desribed as, a little help along the way. We found a few reagents that ";
-			s += "functions as a base for reaction between matter A and substance B. "; 
-			break;
-		case 4:
-			s += "The most promesing reagent was... \n";
-			s += "           ~ Structure ~\n";
-			s += KnowledgeDescriptions.transformRecipe(new ItemStack(ItemRegistry.bioReagent));
-			s += "           ~ Creation ~\n\n";
-			s += KnowledgeDescriptions.transformOutput(new ItemStack(ItemRegistry.bioReagent));
-			break;
-		case 5:
-			s += "After finding a promesing reagent we took a focus on the matter and substances for attunment. ";
-			s += "Here we found that many substances was fit for the process of attunment, be they dead or alive. ";
-			s += "Thou in the center of the process there was a need for a stable high life containing matter. ";
-			break;
-		case 6:
-			s += "The most promesing mater was... \n";
-			s += "           ~ Structure ~\n";
-			s += KnowledgeDescriptions.transformRecipe(new ItemStack(BlockRegistry.biomass));
-			s += "           ~ Creation ~\n\n";
-			s += KnowledgeDescriptions.transformOutput(new ItemStack(BlockRegistry.biomass));
-			break;
-		case 7:
-			s += "Steps for activation:\n";
+			s += KnowledgeDescriptions.transformOutput(new ItemStack(BlockRegistry.wheatCristal));
+			s += "\n";
 			s += "1. Place biomass\n";
-			s += "2. Place bio. reagent close\n";
-			s += "3. Place substance close, ex. Wheat\n";
-			s += "4. Hold Attuner, bow it, release when sunny onto biomass";
+			s += "2. Throw biological reagent\n";
+			s += "3. Throw wheat\n";
+			s += "4. Hold and release attuner on biomass\n";
 			break;
 		}
 		return s;
@@ -72,7 +44,24 @@ public class WheatCristalisation extends ArticleContent {
 	
 	@Override
 	public int numberOfPages(Content content){
-		return 8;
+		return 2;
 	}
 	
+	public boolean hasPageSelection(int i){
+		return i == 1;
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public boolean initSelection(){
+		return GuiInventoryOverlay.craftingHelper.contains(new ItemStack(BlockRegistry.wheatCristal));
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public void selected(boolean selection){
+		if(selection){
+			GuiInventoryOverlay.craftingHelper.add(new GuiCristalRecipe(Minecraft.getMinecraft(), ReserchRegistry.wheatCristalisation, new ItemStack(BlockRegistry.wheatCristal), KnowledgeDescriptions.transformWealCristal(new ItemStack(Items.wheat), new ItemStack(ItemRegistry.bioReagent), new ItemStack(BlockRegistry.biomass), new ItemStack(ItemRegistry.attuner))));
+		}else{
+			GuiInventoryOverlay.craftingHelper.remove(new ItemStack(BlockRegistry.wheatCristal));
+		}
+	}
 }

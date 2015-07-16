@@ -11,6 +11,7 @@ import hok.chompzki.biocristals.api.ITransformation;
 import hok.chompzki.biocristals.blocks.BlockBiomass;
 import hok.chompzki.biocristals.registrys.CristalRegistry;
 import hok.chompzki.biocristals.registrys.ItemRegistry;
+import hok.chompzki.biocristals.research.data.DataHelper;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -68,12 +69,20 @@ public class ItemAttuner extends Item {
 		int ticksInUse = stack.getMaxItemUseDuration() - useTicks;
 		
 		if(17 < ticksInUse){
-			int x = Minecraft.getMinecraft().objectMouseOver.blockX;
-			int y = Minecraft.getMinecraft().objectMouseOver.blockY;
-			int z = Minecraft.getMinecraft().objectMouseOver.blockZ;
-			Entity entity  = Minecraft.getMinecraft().objectMouseOver.entityHit;
+			MovingObjectPosition mop = DataHelper.rayTrace(player, 6.0f, 1.0f);
+			
+			if(mop == null)
+				return;
+			
+			System.out.println(mop.toString());
+			int x = mop.blockX;
+			int y = mop.blockY;
+			int z = mop.blockZ;
+			
+			Entity entity  = mop.entityHit;
 			
 			if(entity != null && entity instanceof EntityLiving){
+				System.out.println("DOUH!");
 				entity = world.getEntityByID(entity.getEntityId());
 				EntityLiving target = (EntityLiving)entity;
 				if(!target.isPotionActive(Potion.moveSlowdown)){

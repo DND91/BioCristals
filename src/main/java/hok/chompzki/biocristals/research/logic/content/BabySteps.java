@@ -1,5 +1,7 @@
 package hok.chompzki.biocristals.research.logic.content;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import hok.chompzki.biocristals.client.GuiCraftRecipe;
@@ -50,10 +52,12 @@ public class BabySteps extends ArticleContent {
 		return i == 2;
 	}
 	
+	@SideOnly(Side.CLIENT)
 	public boolean initSelection(){
 		return GuiInventoryOverlay.craftingHelper.contains(new ItemStack(ItemRegistry.attuner));
 	}
 	
+	@SideOnly(Side.CLIENT)
 	public void selected(boolean selection){
 		if(selection){
 			GuiInventoryOverlay.craftingHelper.add(new GuiCraftRecipe(Minecraft.getMinecraft(), ReserchRegistry.babySteps,new ItemStack(ItemRegistry.attuner)));

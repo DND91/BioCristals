@@ -2,7 +2,6 @@ package hok.chompzki.biocristals.research.gui;
 
 import hok.chompzki.biocristals.BioCristalsMod;
 import hok.chompzki.biocristals.client.GuiInventoryOverlay;
-import hok.chompzki.biocristals.research.data.DataBook;
 import hok.chompzki.biocristals.research.data.DataHelper;
 import hok.chompzki.biocristals.research.data.DataPlayer;
 import hok.chompzki.biocristals.research.data.PlayerResearch;
@@ -67,7 +66,7 @@ public class GuiResearchBook extends GuiScreen {
 	
 	protected final float speed = 10.0f;
 	
-	DataBook book = null;
+	ItemStack book = null;
 	UUID player = null;
 	Research tooltipResearch = null;
 	
@@ -79,8 +78,8 @@ public class GuiResearchBook extends GuiScreen {
 	
 	public GuiResearchBook(EntityPlayer player) {
 		this.reader = player;
-		this.book = new DataBook(player.inventory.getCurrentItem());
-		this.player = UUID.fromString(book.getOwner());
+		this.book = player.inventory.getCurrentItem();
+		this.player = UUID.fromString(DataHelper.getOwner(book));
 		short short1 = 141;
         short short2 = 141;
 		this.field_74117_m = this.guiMapX = (double)(0 * 24 - short1 / 2 - 12);
@@ -148,10 +147,8 @@ public class GuiResearchBook extends GuiScreen {
         		return;
         	}
         	
-        }else
-        {
-            super.keyTyped(par1, par2);
         }
+        super.keyTyped(par1, par2);
     }
 	
 	@Override
@@ -593,7 +590,7 @@ public class GuiResearchBook extends GuiScreen {
 		GL11.glPushMatrix();
 		GL11.glColor3f(1.0f, 1.0f, 1.0f);
 		GL11.glEnable(GL11.GL_BLEND);
-		UUID id = UUID.fromString(book.getOwner());
+		UUID id = UUID.fromString(DataHelper.getOwner(book));
 		
 		this.drawString(fontRendererObj, DataHelper.getOwnerName(id, Minecraft.getMinecraft().theWorld) + "'s book", i1+20, j1+5, 0xFFFFFF);
 		GL11.glDisable(GL11.GL_BLEND);
@@ -695,7 +692,7 @@ public class GuiResearchBook extends GuiScreen {
 	@Override
 	public void onGuiClosed(){
 		UUID observer = reader.getGameProfile().getId();
-		UUID subject = UUID.fromString(book.getOwner());
+		UUID subject = UUID.fromString(DataHelper.getOwner(book));
 		if(observer.compareTo(subject) != 0){
 			PlayerStorage.instance().getNetwork().sendToServer(new PlayerStorageDelissenMessage(observer, subject));
 		}

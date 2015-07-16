@@ -14,11 +14,13 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MovingObjectPosition;
 import scala.tools.nsc.interpreter.IMain.ReadEvalPrint.EvalException;
 import hok.chompzki.biocristals.BioCristalsMod;
 import hok.chompzki.biocristals.api.BioHelper;
 import hok.chompzki.biocristals.api.IGrowthCristal;
 import hok.chompzki.biocristals.registrys.ConfigRegistry;
+import hok.chompzki.biocristals.research.data.DataHelper;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
@@ -133,10 +135,12 @@ public class ItemCollector extends Item {
 	
 	public void collect(EntityPlayer player, ItemStack stack){
 		World world = player.worldObj;
-		Minecraft mc = Minecraft.getMinecraft();
-		int dx = mc.objectMouseOver.blockX;
-		int dy = mc.objectMouseOver.blockY;
-		int dz = mc.objectMouseOver.blockZ;
+		
+		MovingObjectPosition mop = DataHelper.rayTrace(player, 6.0f, 1.0f);
+		
+		int dx = mop.blockX;
+		int dy = mop.blockY;
+		int dz = mop.blockZ;
 		List<ItemStack> stacks = new ArrayList<ItemStack>();
 		
 		SortedSet<Posistion> closed = new TreeSet<Posistion>(new ComparablePosistion());

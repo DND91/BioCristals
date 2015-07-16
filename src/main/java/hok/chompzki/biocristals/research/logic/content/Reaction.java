@@ -1,5 +1,7 @@
 package hok.chompzki.biocristals.research.logic.content;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import hok.chompzki.biocristals.client.GuiCraftRecipe;
@@ -45,10 +47,12 @@ public class Reaction extends ArticleContent {
 		return i == 1;
 	}
 	
+	@SideOnly(Side.CLIENT)
 	public boolean initSelection(){
 		return GuiInventoryOverlay.craftingHelper.contains(new ItemStack(ItemRegistry.bioReagent));
 	}
 	
+	@SideOnly(Side.CLIENT)
 	public void selected(boolean selection){
 		if(selection){
 			GuiInventoryOverlay.craftingHelper.add(new GuiCraftRecipe(Minecraft.getMinecraft(), ReserchRegistry.reaction, new ItemStack(ItemRegistry.bioReagent)));

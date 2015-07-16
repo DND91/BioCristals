@@ -130,7 +130,7 @@ public class CraftingHelper {
 		this.currentGui = 0;
 	}
 	
-	public void add(GuiCraftRecipe guiCraftRecipe) {
+	public void add(GuiCraftingHelper guiCraftRecipe) {
 		if(!this.contains(guiCraftRecipe.getResult()))
 			guis.add(guiCraftRecipe);
 		updateButtons();

@@ -1,10 +1,22 @@
 package hok.chompzki.biocristals.research.data;
 
+import java.util.List;
 import java.util.UUID;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItemFrame;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 public class DataHelper {
@@ -17,15 +29,19 @@ public class DataHelper {
 	}
 	
 	public static boolean belongsTo(EntityPlayer player, ItemStack stack){
-		UUID userId = player.getGameProfile().getId();
+		UUID userId = EntityPlayer.func_146094_a(player.getGameProfile());
 		if(!stack.hasTagCompound())
 			stack.setTagCompound(new NBTTagCompound());
 		NBTTagCompound data = stack.getTagCompound();
 		if(data.hasKey("OWNER")){
 			return data.getString("OWNER").equals(userId.toString());
 		}else{
-			data.setString("OWNER", userId.toString());
-			return true;
+			Side side = FMLCommonHandler.instance().getEffectiveSide();
+			if(side == Side.SERVER){
+				data.setString("OWNER", userId.toString());
+				return true;
+			}else
+				return false;
 		}
 	}
 	
@@ -41,4 +57,123 @@ public class DataHelper {
 	public static String getOwnerName(UUID id, World world){
 		return PlayerStorage.instance().get(id).getUsername(world);
 	}
+	
+	public static MovingObjectPosition rayTrace(EntityLivingBase entity, double p_70614_1_, float p_70614_3_){
+		Vec3 vec3 = getPosition(entity, p_70614_3_);
+        vec3.yCoord += entity.getEyeHeight();
+        Vec3 vec31 = entity.getLook(p_70614_3_);
+        Vec3 vec32 = vec3.addVector(vec31.xCoord * p_70614_1_, vec31.yCoord * p_70614_1_, vec31.zCoord * p_70614_1_);
+        
+        return entity.worldObj.func_147447_a(vec3, vec32, false, false, true);
+    }
+	
+	public static Vec3 getPosition(EntityLivingBase entity, float p_70666_1_)
+    {
+        if (p_70666_1_ == 1.0F)
+        {
+            return Vec3.createVectorHelper(entity.posX, entity.posY, entity.posZ);
+        }
+        else
+        {
+            double d0 = entity.prevPosX + (entity.posX - entity.prevPosX) * (double)p_70666_1_;
+            double d1 = entity.prevPosY + (entity.posY - entity.prevPosY) * (double)p_70666_1_;
+            double d2 = entity.prevPosZ + (entity.posZ - entity.prevPosZ) * (double)p_70666_1_;
+            return Vec3.createVectorHelper(d0, d1, d2);
+        }
+    }
+	/*
+	public static MovingObjectPosition getEntityLookingAt(EntityLivingBase entity, float p_78473_1_)
+    {
+		World world = entity.worldObj;
+        if (this.mc.theWorld != null)
+        {
+            this.mc.pointedEntity = null;
+            double d0 = (double)this.mc.playerController.getBlockReachDistance();
+            this.mc.objectMouseOver = this.mc.renderViewEntity.rayTrace(d0, p_78473_1_);
+            double d1 = d0;
+            Vec3 vec3 = this.mc.renderViewEntity.getPosition(p_78473_1_);
+
+            if (this.mc.playerController.extendedReach())
+            {
+                d0 = 6.0D;
+                d1 = 6.0D;
+            }
+            else
+            {
+                if (d0 > 3.0D)
+                {
+                    d1 = 3.0D;
+                }
+
+                d0 = d1;
+            }
+
+            if (this.mc.objectMouseOver != null)
+            {
+                d1 = this.mc.objectMouseOver.hitVec.distanceTo(vec3);
+            }
+
+            Vec3 vec31 = this.mc.renderViewEntity.getLook(p_78473_1_);
+            Vec3 vec32 = vec3.addVector(vec31.xCoord * d0, vec31.yCoord * d0, vec31.zCoord * d0);
+            this.pointedEntity = null;
+            Vec3 vec33 = null;
+            float f1 = 1.0F;
+            List list = this.mc.theWorld.getEntitiesWithinAABBExcludingEntity(this.mc.renderViewEntity, this.mc.renderViewEntity.boundingBox.addCoord(vec31.xCoord * d0, vec31.yCoord * d0, vec31.zCoord * d0).expand((double)f1, (double)f1, (double)f1));
+            double d2 = d1;
+
+            for (int i = 0; i < list.size(); ++i)
+            {
+                Entity entity = (Entity)list.get(i);
+
+                if (entity.canBeCollidedWith())
+                {
+                    float f2 = entity.getCollisionBorderSize();
+                    AxisAlignedBB axisalignedbb = entity.boundingBox.expand((double)f2, (double)f2, (double)f2);
+                    MovingObjectPosition movingobjectposition = axisalignedbb.calculateIntercept(vec3, vec32);
+
+                    if (axisalignedbb.isVecInside(vec3))
+                    {
+                        if (0.0D < d2 || d2 == 0.0D)
+                        {
+                            this.pointedEntity = entity;
+                            vec33 = movingobjectposition == null ? vec3 : movingobjectposition.hitVec;
+                            d2 = 0.0D;
+                        }
+                    }
+                    else if (movingobjectposition != null)
+                    {
+                        double d3 = vec3.distanceTo(movingobjectposition.hitVec);
+
+                        if (d3 < d2 || d2 == 0.0D)
+                        {
+                            if (entity == this.mc.renderViewEntity.ridingEntity && !entity.canRiderInteract())
+                            {
+                                if (d2 == 0.0D)
+                                {
+                                    this.pointedEntity = entity;
+                                    vec33 = movingobjectposition.hitVec;
+                                }
+                            }
+                            else
+                            {
+                                this.pointedEntity = entity;
+                                vec33 = movingobjectposition.hitVec;
+                                d2 = d3;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (this.pointedEntity != null && (d2 < d1 || this.mc.objectMouseOver == null))
+            {
+                this.mc.objectMouseOver = new MovingObjectPosition(this.pointedEntity, vec33);
+
+                if (this.pointedEntity instanceof EntityLivingBase || this.pointedEntity instanceof EntityItemFrame)
+                {
+                    this.mc.pointedEntity = this.pointedEntity;
+                }
+            }
+        }
+    }*/
 }
