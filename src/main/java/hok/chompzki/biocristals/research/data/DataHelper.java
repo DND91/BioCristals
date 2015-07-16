@@ -81,99 +81,78 @@ public class DataHelper {
             return Vec3.createVectorHelper(d0, d1, d2);
         }
     }
-	/*
-	public static MovingObjectPosition getEntityLookingAt(EntityLivingBase entity, float p_78473_1_)
+	
+	public static MovingObjectPosition getEntityRayTrace(EntityLivingBase viewer, float p_78473_1_)
     {
-		World world = entity.worldObj;
-        if (this.mc.theWorld != null)
+		World world = viewer.worldObj;
+		Entity pointedEntity = null;
+        double d0 = 6.0D;
+        MovingObjectPosition objectMouseOver = rayTrace(viewer, d0, p_78473_1_);
+        double d1 = d0;
+        Vec3 vec3 = getPosition(viewer, p_78473_1_);
+        vec3.yCoord += viewer.getEyeHeight();
+        
+        if (objectMouseOver != null)
         {
-            this.mc.pointedEntity = null;
-            double d0 = (double)this.mc.playerController.getBlockReachDistance();
-            this.mc.objectMouseOver = this.mc.renderViewEntity.rayTrace(d0, p_78473_1_);
-            double d1 = d0;
-            Vec3 vec3 = this.mc.renderViewEntity.getPosition(p_78473_1_);
+            d1 = objectMouseOver.hitVec.distanceTo(vec3);
+        }
 
-            if (this.mc.playerController.extendedReach())
+        Vec3 vec31 = viewer.getLook(p_78473_1_);
+        Vec3 vec32 = vec3.addVector(vec31.xCoord * d0, vec31.yCoord * d0, vec31.zCoord * d0);
+        
+        Vec3 vec33 = null;
+        float f1 = 1.0F;
+        List list = world.getEntitiesWithinAABBExcludingEntity(viewer, viewer.boundingBox.addCoord(vec31.xCoord * d0, vec31.yCoord * d0, vec31.zCoord * d0).expand((double)f1, (double)f1, (double)f1));
+        double d2 = d1;
+
+        for (int i = 0; i < list.size(); ++i)
+        {
+            Entity entity = (Entity)list.get(i);
+
+            if (entity.canBeCollidedWith())
             {
-                d0 = 6.0D;
-                d1 = 6.0D;
-            }
-            else
-            {
-                if (d0 > 3.0D)
+                float f2 = entity.getCollisionBorderSize();
+                AxisAlignedBB axisalignedbb = entity.boundingBox.expand((double)f2, (double)f2, (double)f2);
+                MovingObjectPosition movingobjectposition = axisalignedbb.calculateIntercept(vec3, vec32);
+
+                if (axisalignedbb.isVecInside(vec3))
                 {
-                    d1 = 3.0D;
-                }
-
-                d0 = d1;
-            }
-
-            if (this.mc.objectMouseOver != null)
-            {
-                d1 = this.mc.objectMouseOver.hitVec.distanceTo(vec3);
-            }
-
-            Vec3 vec31 = this.mc.renderViewEntity.getLook(p_78473_1_);
-            Vec3 vec32 = vec3.addVector(vec31.xCoord * d0, vec31.yCoord * d0, vec31.zCoord * d0);
-            this.pointedEntity = null;
-            Vec3 vec33 = null;
-            float f1 = 1.0F;
-            List list = this.mc.theWorld.getEntitiesWithinAABBExcludingEntity(this.mc.renderViewEntity, this.mc.renderViewEntity.boundingBox.addCoord(vec31.xCoord * d0, vec31.yCoord * d0, vec31.zCoord * d0).expand((double)f1, (double)f1, (double)f1));
-            double d2 = d1;
-
-            for (int i = 0; i < list.size(); ++i)
-            {
-                Entity entity = (Entity)list.get(i);
-
-                if (entity.canBeCollidedWith())
-                {
-                    float f2 = entity.getCollisionBorderSize();
-                    AxisAlignedBB axisalignedbb = entity.boundingBox.expand((double)f2, (double)f2, (double)f2);
-                    MovingObjectPosition movingobjectposition = axisalignedbb.calculateIntercept(vec3, vec32);
-
-                    if (axisalignedbb.isVecInside(vec3))
+                    if (0.0D < d2 || d2 == 0.0D)
                     {
-                        if (0.0D < d2 || d2 == 0.0D)
-                        {
-                            this.pointedEntity = entity;
-                            vec33 = movingobjectposition == null ? vec3 : movingobjectposition.hitVec;
-                            d2 = 0.0D;
-                        }
+                        pointedEntity = entity;
+                        vec33 = movingobjectposition == null ? vec3 : movingobjectposition.hitVec;
+                        d2 = 0.0D;
                     }
-                    else if (movingobjectposition != null)
-                    {
-                        double d3 = vec3.distanceTo(movingobjectposition.hitVec);
+                }
+                else if (movingobjectposition != null)
+                {
+                    double d3 = vec3.distanceTo(movingobjectposition.hitVec);
 
-                        if (d3 < d2 || d2 == 0.0D)
+                    if (d3 < d2 || d2 == 0.0D)
+                    {
+                        if (entity == viewer.ridingEntity && !entity.canRiderInteract())
                         {
-                            if (entity == this.mc.renderViewEntity.ridingEntity && !entity.canRiderInteract())
+                            if (d2 == 0.0D)
                             {
-                                if (d2 == 0.0D)
-                                {
-                                    this.pointedEntity = entity;
-                                    vec33 = movingobjectposition.hitVec;
-                                }
-                            }
-                            else
-                            {
-                                this.pointedEntity = entity;
+                                pointedEntity = entity;
                                 vec33 = movingobjectposition.hitVec;
-                                d2 = d3;
                             }
                         }
+                        else
+                        {
+                            pointedEntity = entity;
+                            vec33 = movingobjectposition.hitVec;
+                            d2 = d3;
+                        }
                     }
-                }
-            }
-
-            if (this.pointedEntity != null && (d2 < d1 || this.mc.objectMouseOver == null))
-            {
-                this.mc.objectMouseOver = new MovingObjectPosition(this.pointedEntity, vec33);
-
-                if (this.pointedEntity instanceof EntityLivingBase || this.pointedEntity instanceof EntityItemFrame)
-                {
-                    this.mc.pointedEntity = this.pointedEntity;
                 }
             }
         }
-    }*/
+
+        if (pointedEntity != null && (d2 < d1 || objectMouseOver == null))
+        {
+            objectMouseOver = new MovingObjectPosition(pointedEntity, vec33);
+        }
+        return objectMouseOver;
+    }
 }

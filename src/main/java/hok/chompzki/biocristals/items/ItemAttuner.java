@@ -69,12 +69,11 @@ public class ItemAttuner extends Item {
 		int ticksInUse = stack.getMaxItemUseDuration() - useTicks;
 		
 		if(17 < ticksInUse){
-			MovingObjectPosition mop = DataHelper.rayTrace(player, 6.0f, 1.0f);
+			MovingObjectPosition mop = DataHelper.getEntityRayTrace(player, 1.0f);
 			
 			if(mop == null)
 				return;
 			
-			System.out.println(mop.toString());
 			int x = mop.blockX;
 			int y = mop.blockY;
 			int z = mop.blockZ;
@@ -82,24 +81,23 @@ public class ItemAttuner extends Item {
 			Entity entity  = mop.entityHit;
 			
 			if(entity != null && entity instanceof EntityLiving){
-				System.out.println("DOUH!");
 				entity = world.getEntityByID(entity.getEntityId());
 				EntityLiving target = (EntityLiving)entity;
 				if(!target.isPotionActive(Potion.moveSlowdown)){
-					Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("Target not weakened for any crystaline transformation..."));
+					player.addChatMessage(new ChatComponentText("Target not weakened for any crystaline transformation..."));
 					
 					return;
 				}
 				
 				IEntityTransformation trans = CristalRegistry.get(stack, player, world, target);
 				if(trans == null){
-					Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("Envoirment not adopted for any crystaline transformation..."));
+					player.addChatMessage(new ChatComponentText("Envoirment not adopted for any crystaline transformation..."));
 					return;
 				}
 				
 				EntityItem item = BioHelper.getFirstEntityItemWithinAABB(world, player, ItemRegistry.bioReagent, 10, 10, 10);
 				if(item == null){
-					Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("Crystaline transformation is missing a reagent..."));
+					player.addChatMessage(new ChatComponentText("Crystaline transformation is missing a reagent..."));
 					return;
 				}
 				
@@ -113,13 +111,13 @@ public class ItemAttuner extends Item {
 			}else if(!world.isAirBlock(x, y, z) && world.getBlock(x, y, z) instanceof IBaseCristal){
 				ITransformation struct = CristalRegistry.get(stack, player, world, x, y, z);
 				if(struct == null){
-					Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("Envoirment not adopted for any crystaline transformation..."));
+					player.addChatMessage(new ChatComponentText("Envoirment not adopted for any crystaline transformation..."));
 					return;
 				}
 				
 				EntityItem item = BioHelper.getFirstEntityItemWithinAABB(world, player, ItemRegistry.bioReagent, 10, 10, 10);
 				if(item == null){
-					Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("Crystaline transformation is missing a reagent..."));
+					player.addChatMessage(new ChatComponentText("Crystaline transformation is missing a reagent..."));
 					return;
 				}
 				
