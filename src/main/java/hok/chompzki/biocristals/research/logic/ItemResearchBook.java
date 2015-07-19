@@ -36,8 +36,6 @@ public class ItemResearchBook extends Item {
 		
 		if(DataHelper.hasOwner(itemstack)){
 			list.add("Owner: " + DataHelper.getOwnerName(itemstack, par2EntityPlayer.worldObj));
-			list.add("OWNER: " + DataHelper.getOwner(itemstack));
-			list.add("ME___: " + par2EntityPlayer.getGameProfile().getId().toString());
 		}else{
 			list.add("Owner: None");
 		}

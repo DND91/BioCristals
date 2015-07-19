@@ -1,6 +1,9 @@
 package hok.chompzki.biocristals.research.data;
 
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -9,15 +12,18 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityItemFrame;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeHooks;
 
 public class DataHelper {
 	
@@ -155,4 +161,50 @@ public class DataHelper {
         }
         return objectMouseOver;
     }
+	
+	public static List<ItemStack> getDrops(EntityLivingBase entity, Random rand){
+		List<ItemStack> list = new ArrayList<ItemStack>();
+		entity.captureDrops = true;
+		entity.capturedDrops.clear();
+		simulateLootDrop(entity, rand);
+		entity.captureDrops = false;
+		for(EntityItem entitm : entity.capturedDrops){
+			list.add(entitm.getEntityItem());
+		}
+		entity.capturedDrops.clear();
+		return list;
+	}
+	
+	public static void simulateLootDrop(EntityLivingBase entitiy, Random rand){
+		try {
+			try{
+				Method dropFewItems = EntityLivingBase.class.getDeclaredMethod("dropFewItems", boolean.class, int.class);
+				dropFewItems.setAccessible(true);
+				dropFewItems.invoke(entitiy, true, 0);
+			} catch (Exception e) {
+			}
+			try{
+				Method dropEquipment = EntityLivingBase.class.getDeclaredMethod("dropEquipment", boolean.class, int.class);
+				dropEquipment.setAccessible(true);
+				dropEquipment.invoke(entitiy, true, 0);
+			} catch (Exception e) {
+			}
+			
+			int j = rand.nextInt(200) - 0;
+            
+            if (j < 5)
+            {
+            	try{
+					Method dropRareDrop = EntityLivingBase.class.getDeclaredMethod("dropRareDrop", boolean.class);
+					dropRareDrop.setAccessible(true);
+					dropRareDrop.invoke(entitiy, true);
+            	} catch (Exception e) {
+        		}
+            }
+			
+            ForgeHooks.onLivingDrops(entitiy, DamageSource.generic, entitiy.capturedDrops, 0, true, 0);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

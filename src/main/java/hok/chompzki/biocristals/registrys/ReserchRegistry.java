@@ -29,6 +29,8 @@ public class ReserchRegistry {
 	
 	public static final String wheatCristalisation = "wheatCristalisation"; //Weak Wheat Cristal
 	
+	public static final String grungisCroots = "grubgisCroots"; //Grubgi's Croots
+	
 	public static final String theWorldAroundUs = "theWorldAroundUs";
 	
 	public static final String rabarberpaj = "rabarberpaj";

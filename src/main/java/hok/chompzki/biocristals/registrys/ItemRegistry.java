@@ -3,6 +3,7 @@ package hok.chompzki.biocristals.registrys;
 import cpw.mods.fml.common.registry.GameRegistry;
 import hok.chompzki.biocristals.BioCristalsMod;
 import hok.chompzki.biocristals.items.ItemAttuner;
+import hok.chompzki.biocristals.items.ItemBioBlob;
 import hok.chompzki.biocristals.items.ItemBioReagent;
 import hok.chompzki.biocristals.items.ItemCatalystInjector;
 import hok.chompzki.biocristals.items.ItemCollector;
@@ -28,6 +29,7 @@ public class ItemRegistry {
 	public static Item collector = null;
 	public static Item catalystInjector = null;
 	public static Item researchBook = null;
+	public static Item bioBlob = null;
 	public static Item debuggingStick = null;
 	
 	public void registerItems(){
@@ -36,6 +38,7 @@ public class ItemRegistry {
 		collector = new ItemCollector();
 		catalystInjector = new ItemCatalystInjector();
 		researchBook = new ItemResearchBook();
+		bioBlob = new ItemBioBlob();
 		debuggingStick = new ItemDebuggerStick();
 		
 		GameRegistry.registerItem(attuner, ItemAttuner.NAME, BioCristalsMod.MODID);
@@ -43,6 +46,8 @@ public class ItemRegistry {
 		GameRegistry.registerItem(collector, ItemCollector.NAME, BioCristalsMod.MODID);
 		GameRegistry.registerItem(catalystInjector, ItemCatalystInjector.NAME, BioCristalsMod.MODID);
 		GameRegistry.registerItem(researchBook, ItemResearchBook.NAME, BioCristalsMod.MODID);
+		GameRegistry.registerItem(bioBlob, ItemBioBlob.NAME, BioCristalsMod.MODID);
+		
 		GameRegistry.registerItem(debuggingStick, ItemDebuggerStick.NAME, BioCristalsMod.MODID);
 	}
 	

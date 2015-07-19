@@ -76,7 +76,7 @@ public class BlockReagentPurifier extends BlockContainer {
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hit_x, float hit_y, float hit_z){
     	
         TileReagentPurifier te = (TileReagentPurifier)world.getTileEntity(x,y,z);
-        System.out.println((world.isRemote ? "CLIENT" : "SERVER") + ": " + te.getOutputSide());
+        
         ForgeDirection newOut = ForgeDirection.getOrientation(side);
         
         if (newOut !=te.getOutputSide()){
