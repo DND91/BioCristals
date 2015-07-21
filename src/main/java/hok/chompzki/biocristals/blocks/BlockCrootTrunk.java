@@ -1,26 +1,19 @@
 package hok.chompzki.biocristals.blocks;
 
+import hok.chompzki.biocristals.BioCristalsMod;
+import hok.chompzki.biocristals.blocks.croot.BlockMember;
+import hok.chompzki.biocristals.blocks.croot.TileCrootMember;
+import hok.chompzki.biocristals.tile_enteties.TileCrootOneMember;
+
 import java.util.List;
-import java.util.Random;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import hok.chompzki.biocristals.BioCristalsMod;
-import hok.chompzki.biocristals.api.IGrowthCristal;
-import hok.chompzki.biocristals.blocks.croot.BlockGenerator;
-import hok.chompzki.biocristals.blocks.croot.ICrootPowerGen;
-import hok.chompzki.biocristals.blocks.croot.TileCrootMember;
-import hok.chompzki.biocristals.croot.CrootBlock;
-import hok.chompzki.biocristals.croot.CrootHelper;
-import hok.chompzki.biocristals.croot.CrootModule;
-import hok.chompzki.biocristals.tile_enteties.TileCrootCore;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -28,28 +21,22 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-public class BlockCrootCore extends BlockGenerator {
-	
+public class BlockCrootTrunk extends BlockMember {
+
 	public static final String[] subtypes = new String[] {"normal"};
     private static final IIcon[] icons = new IIcon[subtypes.length];
-    public static final String NAME = "croot_core";
+    public static final String NAME = "croot_trunk";
     
-    
-    
-	public BlockCrootCore() {
-		super(Material.wood);
-		this.setTickRandomly(true);
+    public BlockCrootTrunk()
+    {
+    	super();
         setBlockName(BioCristalsMod.MODID + "_" + NAME);
 		setCreativeTab(BioCristalsMod.creativeTab);
 		setBlockTextureName(BioCristalsMod.MODID + ":" + NAME);
-	}
-
-	@Override
-	public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
-		return new TileCrootCore();
-	}
-	
-	@SideOnly(Side.CLIENT)
+        this.setCreativeTab(BioCristalsMod.creativeTab);
+    }
+    
+    @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta)
     {
     	meta &= 7;
@@ -76,7 +63,10 @@ public class BlockCrootCore extends BlockGenerator {
         	icons[i] = p_149651_1_.registerIcon(this.getTextureName() + "_" + subtypes[i]);
         }
     }
-	
-	
+    
+	@Override
+	public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
+		return new TileCrootOneMember(0.05f);
+	}
 	
 }

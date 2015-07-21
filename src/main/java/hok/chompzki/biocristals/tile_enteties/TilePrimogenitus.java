@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import hok.chompzki.biocristals.api.BioHelper;
+import hok.chompzki.biocristals.blocks.croot.TileCrootConsumer;
 import hok.chompzki.biocristals.research.data.DataHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -15,7 +16,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TilePrimogenitus extends TileEntity {
+public class TilePrimogenitus extends TileCrootConsumer {
 	
 	private Random rand = new Random();
 	
@@ -25,8 +26,13 @@ public class TilePrimogenitus extends TileEntity {
 	private long tick = 0;
 	
 	public TilePrimogenitus(){
-		super();
+		super(10.0f);
 		
+	}
+	
+	@Override
+	public boolean canUpdate(){
+		return true;
 	}
 
 	public void setStack(ItemStack stack) {
@@ -52,7 +58,7 @@ public class TilePrimogenitus extends TileEntity {
 	
 	@Override
 	public void updateEntity() {
-		if (this.worldObj != null && !this.worldObj.isRemote)
+		if (this.worldObj != null && !this.worldObj.isRemote && this.hasPower())
         {
 			tick++;
 			if(tick % tickMod == 0){

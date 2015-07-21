@@ -2,6 +2,11 @@ package hok.chompzki.biocristals.registrys;
 
 import hok.chompzki.biocristals.BioCristalsMod;
 import hok.chompzki.biocristals.blocks.BlockBiomass;
+import hok.chompzki.biocristals.blocks.BlockCrootCore;
+import hok.chompzki.biocristals.blocks.BlockCrootLeaves;
+import hok.chompzki.biocristals.blocks.BlockCrootRoots;
+import hok.chompzki.biocristals.blocks.BlockCrootSapling;
+import hok.chompzki.biocristals.blocks.BlockCrootTrunk;
 import hok.chompzki.biocristals.blocks.BlockPrimogenitus;
 import hok.chompzki.biocristals.blocks.BlockReagentPurifier;
 import hok.chompzki.biocristals.blocks.BlockSulphurTuft;
@@ -26,6 +31,11 @@ public class BlockRegistry {
 	public static Block sulphurTuft = null;
 	public static Block reagentPurifier = null;
 	public static Block primogenitus = null;
+	public static Block crootSapling = null;
+	public static Block crootRoots = null;
+	public static Block crootCore = null;
+	public static Block crootLeaves = null;
+	public static Block crootTrunk = null;
 	
 	
 	public void registerBlocks(){
@@ -39,6 +49,11 @@ public class BlockRegistry {
 		sulphurTuft = new BlockSulphurTuft();
 		reagentPurifier = new BlockReagentPurifier();
 		primogenitus = new BlockPrimogenitus();
+		crootSapling = new BlockCrootSapling();
+		crootRoots = new BlockCrootRoots();
+		crootCore = new BlockCrootCore();
+		crootLeaves = new BlockCrootLeaves();
+		crootTrunk = new BlockCrootTrunk();
 		
 		GameRegistry.registerBlock(biomass, BlockBiomass.NAME);
 		GameRegistry.registerBlock(wheatCristal, "blockWheatCristal");
@@ -50,6 +65,11 @@ public class BlockRegistry {
 		GameRegistry.registerBlock(sulphurTuft, BlockSulphurTuft.NAME);
 		GameRegistry.registerBlock(reagentPurifier, BlockReagentPurifier.NAME);
 		GameRegistry.registerBlock(primogenitus, BlockPrimogenitus.NAME);
+		GameRegistry.registerBlock(crootSapling, BlockCrootSapling.NAME);
+		GameRegistry.registerBlock(crootRoots, BlockCrootRoots.NAME);
+		GameRegistry.registerBlock(crootCore, BlockCrootCore.NAME);
+		GameRegistry.registerBlock(crootLeaves, BlockCrootLeaves.NAME);
+		GameRegistry.registerBlock(crootTrunk, BlockCrootTrunk.NAME);
 	}
 	
 	

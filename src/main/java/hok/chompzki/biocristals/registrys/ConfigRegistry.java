@@ -18,7 +18,7 @@ public class ConfigRegistry {
 	
 	public static int maxBlocksCollector = 81;
 	public static int maxBlocksCatalystInjector = 81;
-	public static int weakCristalGrowthChance = 50;
+	public static int weakCristalGrowthChance = 10;
 	
 	public static Configuration config;
 	
@@ -43,7 +43,7 @@ public class ConfigRegistry {
     private static void loadConfig() {
     	maxBlocksCollector = config.getInt("Max Block Search (Collector)", "Track ranges", 81, 10, 500, "");
     	maxBlocksCatalystInjector = config.getInt("Max Block Search (Catalyst Injector)", "Track ranges", 81, 10, 500, "");
-    	weakCristalGrowthChance = config.getInt("Weakcristal", "Growth chances", 50, 5, 1000, "");
+    	weakCristalGrowthChance = config.getInt("Weakcristal", "Growth chances", 10, 5, 1000, "");
     	
     	recipeData.clear();
     	ConfigCategory recipes = config.getCategory("Recipes");

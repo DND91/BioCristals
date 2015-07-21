@@ -7,7 +7,10 @@ import java.util.Random;
 import hok.chompzki.biocristals.BioCristalsMod;
 import hok.chompzki.biocristals.api.BioHelper;
 import hok.chompzki.biocristals.api.IGrowthCristal;
+import hok.chompzki.biocristals.blocks.croot.BlockConsumer;
+import hok.chompzki.biocristals.blocks.croot.ICrootPowerCon;
 import hok.chompzki.biocristals.registrys.ConfigRegistry;
+import hok.chompzki.biocristals.tile_enteties.TileCrootOneConsumer;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -17,11 +20,12 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-public class BlockWeakCristal extends Block implements IGrowthCristal{
+public class BlockWeakCristal extends BlockConsumer implements IGrowthCristal{
 	
 	//Plants: Wheat, Carrots, Suger Cane, Potato, Melon, Pumpkin
 	
@@ -34,7 +38,6 @@ public class BlockWeakCristal extends Block implements IGrowthCristal{
 		private final ItemStack[] drops;
 		
 		public BlockWeakCristal(String name, int maxMeta, ItemStack... drops) {
-			super(Material.iron);
 			this.name = name;
 			this.maxMeta = maxMeta;
 			
@@ -50,7 +53,9 @@ public class BlockWeakCristal extends Block implements IGrowthCristal{
 		public void updateTick(World world, int x, int y, int z, Random rand)
 	    {
 	        super.updateTick(world, x, y, z, rand);
-	        
+	        ICrootPowerCon con = (ICrootPowerCon) world.getTileEntity(x, y, z);
+			if(!con.hasPower())
+				return;
             if (rand.nextInt(ConfigRegistry.weakCristalGrowthChance) == 0)
             {
                 this.grow(world, x, y, z);
@@ -125,6 +130,11 @@ public class BlockWeakCristal extends Block implements IGrowthCristal{
 	        	++l;
                 world.setBlockMetadataWithNotify(x, y, z, l, 2);
 	        }
+		}
+		
+		@Override
+		public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
+			return new TileCrootOneConsumer(0.05f);
 		}
 
 }

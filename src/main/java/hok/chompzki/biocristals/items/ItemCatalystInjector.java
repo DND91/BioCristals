@@ -50,7 +50,7 @@ public class ItemCatalystInjector extends Item {
 	@Override
 	public int getMaxItemUseDuration(ItemStack p_77626_1_)
     {
-        return 50;
+        return 10;
     }
 	
 	@Override

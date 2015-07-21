@@ -3,6 +3,7 @@ package hok.chompzki.biocristals.registrys;
 import net.minecraftforge.common.MinecraftForge;
 import hok.chompzki.biocristals.BioCristalsMod;
 import hok.chompzki.biocristals.client.GuiHandler;
+import hok.chompzki.biocristals.croot.CrootRegistry;
 import hok.chompzki.biocristals.research.data.PlayerStorage;
 import hok.chompzki.biocristals.research.data.StorageHandler;
 import hok.chompzki.biocristals.research.events.CraftingEvents;
@@ -49,6 +50,8 @@ public class CommonProxy { //Server sided
     	
     	VillagerBank bank = new VillagerBank();
     	bank.init(event);
+    	CrootRegistry croot = new CrootRegistry();
+    	croot.register();
 	}
 
     

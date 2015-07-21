@@ -3,6 +3,7 @@ package hok.chompzki.biocristals.blocks;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import hok.chompzki.biocristals.BioCristalsMod;
+import hok.chompzki.biocristals.blocks.croot.BlockConsumer;
 import hok.chompzki.biocristals.items.ItemBioBlob;
 import hok.chompzki.biocristals.tile_enteties.TilePrimogenitus;
 import hok.chompzki.biocristals.tile_enteties.TileReagentPurifier;
@@ -17,14 +18,13 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class BlockPrimogenitus extends BlockContainer {
+public class BlockPrimogenitus extends BlockConsumer {
 	
 	public static final String NAME = "blockPromogenitus";
 	
 	private IIcon[] iconArray = new IIcon[2];
 	
 	public BlockPrimogenitus() {
-		super(Material.wood);
 		setBlockName(BioCristalsMod.MODID + "_" + NAME);
 		this.setCreativeTab(BioCristalsMod.creativeTab);
 		setBlockTextureName(BioCristalsMod.MODID + ":" + NAME);

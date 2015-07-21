@@ -6,14 +6,19 @@ import java.util.List;
 import java.util.UUID;
 
 import hok.chompzki.biocristals.BioCristalsMod;
+import hok.chompzki.biocristals.blocks.croot.ICrootPowerGen;
+import hok.chompzki.biocristals.croot.CrootHelper;
+import hok.chompzki.biocristals.registrys.BlockRegistry;
 import hok.chompzki.biocristals.research.data.PlayerResearch;
 import hok.chompzki.biocristals.research.data.PlayerStorage;
 import hok.chompzki.biocristals.research.data.Research;
 import hok.chompzki.biocristals.research.data.ReserchDataNetwork;
 import hok.chompzki.biocristals.research.logic.ResearchLogicNetwork;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 public class ItemDebuggerStick extends Item {
@@ -33,12 +38,36 @@ public class ItemDebuggerStick extends Item {
 		if(!world.isRemote)
 			return stack;
 		
-		PlayerResearch data = PlayerStorage.instance().get(player.getGameProfile().getId());
-		System.out.println("CURRENT USER: " + data.getUsername(world));
 		
-		PlayerStorage.instance().printLissensOn(data.getOwnerId());
 		
 		
         return stack;
     }
+	
+	@Override
+	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float p_77648_8_, float p_77648_9_, float p_77648_10_)
+    {
+		if(world.isRemote)
+			return true;
+		
+		TileEntity te = world.getTileEntity(x, y, z);
+		if(te != null && te instanceof ICrootPowerGen){
+			ICrootPowerGen gen = (ICrootPowerGen) te;
+			System.out.println("FREE POWER: " + gen.getFreePower() + "/" + gen.getTotalPower());
+			
+		}
+        return true;
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
