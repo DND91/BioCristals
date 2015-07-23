@@ -1,16 +1,17 @@
-package hok.chompzki.biocristals.research.logic.content;
+package hok.chompzki.biocristals.research.logic.content.lore;
 
 import net.minecraft.item.ItemStack;
+import hok.chompzki.biocristals.client.GuiCraftingHelper;
 import hok.chompzki.biocristals.registrys.BlockRegistry;
 import hok.chompzki.biocristals.registrys.ItemRegistry;
 import hok.chompzki.biocristals.research.data.ArticleContent;
-import hok.chompzki.biocristals.research.data.ArticleContent.Content;
+import hok.chompzki.biocristals.research.data.ArticleContent.EnumContent;
 import hok.chompzki.biocristals.research.gui.KnowledgeDescriptions;
 
 public class Rabarberpaj extends ArticleContent {
 	
 	@Override
-	public String textOnPage(Content content, int p){
+	public String textOnPage(EnumContent content, int p){
 		String s = "";
 		switch(p){
 		case 0:
@@ -26,8 +27,15 @@ public class Rabarberpaj extends ArticleContent {
 	
 	
 	@Override
-	public int numberOfPages(Content content){
+	public int numberOfPages(EnumContent content){
 		return 1;
+	}
+
+
+	@Override
+	public GuiCraftingHelper getFaved() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

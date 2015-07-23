@@ -42,6 +42,20 @@ public class CraftingEvents {
 			if(!research.hasCompleted(ReserchRegistry.cubeMass)){
 				research.addCompleted(ReserchRegistry.cubeMass);
 			} 
+		}else if (event.crafting.getItem() == Item.getItemFromBlock(BlockRegistry.crootSapling)){
+			UUID id = event.player.getGameProfile().getId();
+			PlayerResearch research = PlayerStorage.instance().get(id);
+			
+			if(!research.hasCompleted(ReserchRegistry.crootSapling)){
+				research.addCompleted(ReserchRegistry.crootSapling);
+			} 
+		}else if (event.crafting.getItem() == Item.getItemFromBlock(BlockRegistry.sulphurTuft)){
+			UUID id = event.player.getGameProfile().getId();
+			PlayerResearch research = PlayerStorage.instance().get(id);
+			
+			if(!research.hasCompleted(ReserchRegistry.tuft)){
+				research.addCompleted(ReserchRegistry.tuft);
+			} 
 		}
 		
 	}

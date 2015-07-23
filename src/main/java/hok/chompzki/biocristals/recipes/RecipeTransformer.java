@@ -24,6 +24,18 @@ public class RecipeTransformer {
 	 */
 	
 	public static ItemStack dataToItemStack(String data){
+		if(data.contains("dyePowder")){
+			data = data.replace("dyePowder", "dye");
+		}
+		if(data.contains("spiderEye")){
+			data = data.replace("spiderEye", "spider_eye");
+		}
+		if(data.contains("cloth")){
+			data = data.replace("cloth", "wool");
+		}
+		if(data.contains("enderPearl")){
+			data = data.replace("enderPearl", "ender_pearl");
+		}
 		
 		String name;
 	    String domain = null;
@@ -43,8 +55,8 @@ public class RecipeTransformer {
             metaIndex= item.indexOf(':');
 
             if (metaIndex >= 0) {
-                meta = Integer.parseInt(item.substring(meta + 1, item.length()));
-                name = item.substring(0, meta);
+                meta = Integer.parseInt(item.substring(metaIndex+1, item.length()));
+                name = item.substring(0, metaIndex);
             } else {
                 name = item;
                 meta = 0;
@@ -64,7 +76,7 @@ public class RecipeTransformer {
             }else{
             	Item i = (Item)Item.itemRegistry.getObject("minecraft:" + name);
             	if(i == null){
-            		i = GameRegistry.findItem(domain, name);
+            		i = GameRegistry.findItem("minecraft", name);
             	}
             	
             	stack = new ItemStack(i, 1, meta);

@@ -14,7 +14,7 @@ public class GuiCristalRecipe extends GuiCraftingHelper {
 	private String tag;
 
 	public GuiCristalRecipe(Minecraft minecraft, String code, ItemStack result, String tag) {
-		super(minecraft, ReserchDataNetwork.instance().getResearch(code), result);
+		super(minecraft, ReserchDataNetwork.instance().getResearch(code), result, null);
 		this.tag = tag;
 	}
 	

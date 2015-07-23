@@ -4,7 +4,7 @@ public interface ICrootPowerMem {
 
 	public void setCore(int xCoord, int yCoord, int zCoord);
 
-	public float getProduction();
+	public int getProduction();
 	
 	public ICrootPowerGen genCore();
 	

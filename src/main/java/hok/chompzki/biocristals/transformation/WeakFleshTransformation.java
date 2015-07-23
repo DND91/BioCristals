@@ -2,6 +2,7 @@ package hok.chompzki.biocristals.transformation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -13,15 +14,19 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import hok.chompzki.biocristals.api.BioHelper;
 import hok.chompzki.biocristals.api.IEntityTransformation;
+import hok.chompzki.biocristals.research.data.PlayerResearch;
+import hok.chompzki.biocristals.research.data.PlayerStorage;
 
 public class WeakFleshTransformation implements IEntityTransformation {
 	
 	private Class<? extends EntityLiving> input;
 	private ItemStack[] output;
+	private String code = null;
 	
-	public WeakFleshTransformation(Class<? extends EntityLiving> input, ItemStack... output){
+	public WeakFleshTransformation(Class<? extends EntityLiving> input, String code, ItemStack... output){
 		this.input = input;
 		this.output = output;
+		this.code = code;
 	}
 
 	
@@ -51,6 +56,14 @@ public class WeakFleshTransformation implements IEntityTransformation {
 		for(ItemStack s : this.output)
 			list.add(s.copy());
 		BioHelper.dropItems(world, list, (int)player.posX, (int)player.posY, (int)player.posZ);
+		
+		if(code != null){
+			UUID id = player.getGameProfile().getId();
+			PlayerResearch research = PlayerStorage.instance().get(id);
+			if(!research.hasCompleted(code)){
+				research.addCompleted(code);
+			} 
+		}
 	}
 
 }

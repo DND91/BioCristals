@@ -23,8 +23,10 @@ public class PlayerResearch implements Serializable {
 	
 	private ArrayList<String> completed = new ArrayList<String>();
 	private ArrayList<String> headCompleted = new ArrayList<String>();
+	private ArrayList<String> favorised = new ArrayList<String>();
 	
-	transient private PlayerStorage currentStorage;
+	
+	transient private PlayerStorage currentStorage = null;
 	
 	public PlayerResearch(UUID id) {
 		ownerId = id;
@@ -41,6 +43,22 @@ public class PlayerResearch implements Serializable {
 	
 	public void addCompleted(String code) {
 		this.completed.add(code);
+		if(currentStorage != null)
+			currentStorage.activate(this);
+	}
+	
+	public boolean hasFaved(String code) {
+		return favorised.contains(code);
+	}
+	
+	public void addFaved(String code) {
+		this.favorised.add(code);
+		if(currentStorage != null)
+			currentStorage.activate(this);
+	}
+	
+	public void removeFaved(String code) {
+		this.favorised.remove(code);
 		if(currentStorage != null)
 			currentStorage.activate(this);
 	}
@@ -78,6 +96,10 @@ public class PlayerResearch implements Serializable {
 		list.addAll(completed);
 		list.addAll(headCompleted);
 		return list;
+	}
+
+	public List<String> getFaved() {
+		return this.favorised;
 	}
 	
 	

@@ -26,7 +26,7 @@ public class TilePrimogenitus extends TileCrootConsumer {
 	private long tick = 0;
 	
 	public TilePrimogenitus(){
-		super(10.0f);
+		super(10);
 		
 	}
 	

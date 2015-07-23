@@ -79,7 +79,7 @@ public class BlockSulphurTuft extends BlockConsumer {
 	
 	@Override
 	public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
-		return new TileCrootOneConsumer(1.0f);
+		return new TileCrootOneConsumer(1);
 	}
 
 }

@@ -66,7 +66,7 @@ public class BlockCrootTrunk extends BlockMember {
     
 	@Override
 	public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
-		return new TileCrootOneMember(0.05f);
+		return new TileCrootOneMember(1);
 	}
 	
 }

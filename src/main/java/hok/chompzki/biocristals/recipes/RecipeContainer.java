@@ -9,11 +9,12 @@ public class RecipeContainer{
 	public Object[] input;
 	public HashMap<Character, ItemStack> idToItem = new HashMap<Character, ItemStack>();
 	public Character[][] craftingGrid = null;
+	public int length = 0;
 	
 	public RecipeContainer(ItemStack out, Object[] in){
 		this.output = out;
 		this.input = in;
-		int length = ((String)in[0]).length();
+		length = ((String)in[0]).length();
 		for(int i = length; i < in.length-1; i += 2){
 			idToItem.put((Character)in[i], (ItemStack)in[i+1]);
 		}
@@ -23,5 +24,11 @@ public class RecipeContainer{
 				craftingGrid[y][x] = ((String)in[y]).charAt(x);
 			}
 		}
+	}
+	
+	public ItemStack getItemStack(int slot){
+		int y = slot / length;
+		int x = slot % length;
+		return idToItem.get(craftingGrid[y][x]);
 	}
 }

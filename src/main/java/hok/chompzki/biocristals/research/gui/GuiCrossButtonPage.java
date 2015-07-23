@@ -32,7 +32,7 @@ public class GuiCrossButtonPage extends GuiButton {
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             par1Minecraft.renderEngine.bindTexture(new ResourceLocation(BioCristalsMod.MODID + ":textures/client/gui/book.png"));
             int k = 38;
-            int l = 193;
+            int l = 192;
 
         	this.drawTexturedModalRect(this.xPosition, this.yPosition, k+14, l, 13, 13);
         }

@@ -1,23 +1,37 @@
 package hok.chompzki.biocristals.client;
 
 import hok.chompzki.biocristals.BioCristalsMod;
+import hok.chompzki.biocristals.recipes.RecipeContainer;
 import hok.chompzki.biocristals.research.data.DataHelper;
-import hok.chompzki.biocristals.research.data.ArticleContent.Content;
+import hok.chompzki.biocristals.research.data.PlayerStorage;
+import hok.chompzki.biocristals.research.data.ArticleContent.EnumContent;
+import hok.chompzki.biocristals.research.data.network.PlayerStorageFaveMessage;
+import hok.chompzki.biocristals.research.data.network.PlayerStorageSyncMessage;
+import hok.chompzki.biocristals.research.events.MessageInsertCrafting;
 import hok.chompzki.biocristals.research.gui.GuiArticle;
+import hok.chompzki.biocristals.research.gui.GuiButtonAutoPage;
 import hok.chompzki.biocristals.research.gui.GuiButtonHomePage;
 import hok.chompzki.biocristals.research.gui.GuiButtonNextPage;
 import hok.chompzki.biocristals.research.gui.GuiCrossButtonPage;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderer.ItemRendererHelper;
@@ -31,6 +45,7 @@ public class CraftingHelper {
     private GuiButtonNextPage buttonPreviousPage;
     private GuiCrossButtonPage buttonClosePage;
     private GuiButtonHomePage buttonHomePage;
+    private GuiButtonAutoPage buttonAutoPage;
     
     private boolean mousePress = false;
     
@@ -41,15 +56,18 @@ public class CraftingHelper {
         this.buttonPreviousPage = new GuiButtonNextPage(2, 0, 0, false);
         this.buttonClosePage = new GuiCrossButtonPage(3, 0, 0);
         this.buttonHomePage = new GuiButtonHomePage(3, 0, 0);
+        this.buttonAutoPage = new GuiButtonAutoPage(4, 0, 0);
     }
 	
 	public void next(){
 		currentGui = (currentGui-1) % guis.size();
 		currentGui = currentGui < 0 ? guis.size() - 1 : currentGui;
+		this.updateButtons();
 	}
 	
 	public void back(){
 		currentGui = (currentGui+1) % guis.size();
+		this.updateButtons();
 	}
 	
 	public void drawCurrentSelected(GuiScreen currentScreen, Minecraft mc, World world, EntityPlayer player, ItemStack currentStack, int mouseX, int mouseY, float renderPartialTicks) {
@@ -58,7 +76,7 @@ public class CraftingHelper {
 		RenderHelper.enableGUIStandardItemLighting();
 		GuiCraftingHelper gui = guis.get(currentGui);
 		gui.rescale(mc, currentScreen);
-		gui.drawGui(currentScreen, mc, world, player, currentStack, mouseX, mouseY, renderPartialTicks);
+		gui.drawBackground(currentScreen, mc, world, player, currentStack, mouseX, mouseY, renderPartialTicks);
 		
 		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
@@ -76,10 +94,18 @@ public class CraftingHelper {
 		buttonHomePage.xPosition = gui.getWidth() / 2 - 7;
 		buttonHomePage.yPosition = gui.getHeight() - 20;
 		
+		buttonAutoPage.xPosition = gui.getWidth() - 20;
+		buttonAutoPage.yPosition = gui.getHeight() / 2 - 10;
+		
 		buttonPreviousPage.drawButton(mc, mouseX, mouseY);
 		buttonNextPage.drawButton(mc, mouseX, mouseY);
 		buttonClosePage.drawButton(mc, mouseX, mouseY);
 		buttonHomePage.drawButton(mc, mouseX, mouseY);
+		buttonAutoPage.drawButton(mc, mouseX, mouseY);
+		
+		gui.rescale(mc, currentScreen);
+		gui.drawGui(currentScreen, mc, world, player, currentStack, mouseX, mouseY, renderPartialTicks);
+		
 		
 		GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glEnable(GL11.GL_DEPTH_TEST);
@@ -92,20 +118,28 @@ public class CraftingHelper {
         	}else if(this.buttonPreviousPage.mousePressed(mc, mouseX, mouseY)){
         		this.back();
         	}else if(this.buttonClosePage.mousePressed(mc, mouseX, mouseY)){
-        		this.removreCurrent();
+        		PlayerStorage.instance().sendToServer(new PlayerStorageFaveMessage(player.getGameProfile().getId().toString(), gui.getResearch().getCode()));
         	}else if(this.buttonHomePage.mousePressed(mc, mouseX, mouseY)){
-        		 this.nextBookArticle = new GuiArticle(Minecraft.getMinecraft().thePlayer, gui.getResearch());
+        		 this.nextBookArticle = new GuiArticle(Minecraft.getMinecraft().thePlayer, gui.getResearch(), UUID.fromString(DataHelper.getOwner(currentStack)));
         		 DataHelper.belongsTo(player, player.inventory.getCurrentItem());
         		 
         		 player.closeScreen();
         		 
         		 player.openGui(BioCristalsMod.instance, 100, world, (int)player.posX, (int)player.posY, (int)player.posZ);
+        	}else if(this.buttonAutoPage.mousePressed(mc, mouseX, mouseY)){
+        		if(currentScreen instanceof GuiContainer){
+        			if(gui.getInput() == null || gui.getResult() == null)
+        				return;
+        			PlayerStorage.instance().sendToServer(new MessageInsertCrafting(gui.getResult()));
+        		}
         	}
+        	
+        	
+        	
         }
         
         mousePress = currentMouse;
 	}
-	
 	
 	public GuiArticle getBooked(){
     	GuiArticle t = nextBookArticle;
@@ -113,17 +147,17 @@ public class CraftingHelper {
     	return t;
     }
 	
-	public boolean contains(ItemStack itemStack) {
+	public boolean contains(String code) {
 		for(GuiCraftingHelper gui : guis){
-			if(gui.getResult().isItemEqual(itemStack))
+			if(gui.getResearch().getCode().equals(code))
 				return true;
 		}
 		return false;
 	}
 	
-	public void remove(ItemStack itemStack) {
+	public void remove(String code) {
 		for(int i = 0; i < guis.size(); i++){
-			if(guis.get(i).getResult().isItemEqual(itemStack))
+			if(guis.get(i).getResearch().getCode().equals(code))
 				guis.remove(i);
 		}
 		updateButtons();
@@ -131,7 +165,9 @@ public class CraftingHelper {
 	}
 	
 	public void add(GuiCraftingHelper guiCraftRecipe) {
-		if(!this.contains(guiCraftRecipe.getResult()))
+		if(guiCraftRecipe == null)
+			return;
+		if(!this.contains(guiCraftRecipe.getResearch().getCode()))
 			guis.add(guiCraftRecipe);
 		updateButtons();
 	}
@@ -146,6 +182,14 @@ public class CraftingHelper {
 		this.buttonNextPage.visible = 1 < guis.size();
 		this.buttonPreviousPage.visible = 1 < guis.size();
 		this.buttonClosePage.visible = 0 < guis.size();
+		if(0 < guis.size() && guis.size() <= currentGui)
+			currentGui = guis.size() - 1;
+		this.buttonAutoPage.visible = 0 < guis.size() && guis.get(currentGui).getInput() != null;
+	}
+
+	public void clear() {
+		this.guis.clear();
+		this.updateButtons();
 	}
 	
 }

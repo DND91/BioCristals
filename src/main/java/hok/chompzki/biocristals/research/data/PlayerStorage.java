@@ -1,8 +1,14 @@
 package hok.chompzki.biocristals.research.data;
 
+import hok.chompzki.biocristals.client.GuiInventoryOverlay;
+import hok.chompzki.biocristals.registrys.ItemRegistry;
 import hok.chompzki.biocristals.research.data.network.PlayerStorageDelissenHandler;
 import hok.chompzki.biocristals.research.data.network.PlayerStorageDelissenMessage;
+import hok.chompzki.biocristals.research.data.network.PlayerStorageFaveHandler;
+import hok.chompzki.biocristals.research.data.network.PlayerStorageFaveMessage;
 import hok.chompzki.biocristals.research.data.network.PlayerStorageSyncMessage;
+import hok.chompzki.biocristals.research.events.MessageHandlerInserCrafting;
+import hok.chompzki.biocristals.research.events.MessageInsertCrafting;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.serialization.ObjectEncoder;
 
@@ -23,6 +29,7 @@ import java.util.UUID;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
@@ -54,13 +61,15 @@ public class PlayerStorage implements IDataFile, IMessageHandler<PlayerStorageSy
 		network = NetworkRegistry.INSTANCE.newSimpleChannel("BioC_PS");
 	    network.registerMessage(this, PlayerStorageSyncMessage.class, 0, Side.CLIENT);
 	    network.registerMessage(PlayerStorageDelissenHandler.class, PlayerStorageDelissenMessage.class, 1, Side.SERVER);
+	    network.registerMessage(MessageHandlerInserCrafting.class, MessageInsertCrafting.class, 2, Side.SERVER);
+	    network.registerMessage(PlayerStorageFaveHandler.class, PlayerStorageFaveMessage.class, 3, Side.SERVER);
 	}
 	
 	public PlayerResearch get(UUID id){
 		if(!players.containsKey(id)){
 			players.put(id, new PlayerResearch(id));
-			players.get(id).setStorage(this);
 		}
+		players.get(id).setStorage(this);
 		return players.get(id);
 	}
 	
@@ -80,6 +89,10 @@ public class PlayerStorage implements IDataFile, IMessageHandler<PlayerStorageSy
 	@Override
 	public Serializable getObject() {
 		return players;
+	}
+	
+	public void sendToServer(IMessage message){
+		network.sendToServer(message);
 	}
 	
 	@Override
@@ -124,6 +137,11 @@ public class PlayerStorage implements IDataFile, IMessageHandler<PlayerStorageSy
 	public void playerLogin(PlayerLoggedInEvent event){
 		System.out.println("LOG IN!!!");
 		UUID id = event.player.getGameProfile().getId();
+		if(!this.players.containsKey(id)){
+			EntityPlayerMP player = (EntityPlayerMP) MinecraftServer.getServer().getEntityWorld().func_152378_a(id);
+			player.inventory.addItemStackToInventory(new ItemStack(ItemRegistry.researchBook));
+			this.get(id);
+		}
 		registerLissner(id, id);
 	}
 	
@@ -161,6 +179,16 @@ public class PlayerStorage implements IDataFile, IMessageHandler<PlayerStorageSy
 			return null;
 		UUID id = research.getOwnerId();
 		this.players.put(id, research);
+		
+		if(Minecraft.getMinecraft().thePlayer.getGameProfile().getId().equals(id)){
+			GuiInventoryOverlay.craftingHelper.clear();
+			for(String code : research.getFaved()){
+				if(ReserchDataNetwork.instance().getResearch(code) == null)
+					continue;
+				ArticleContent content = ReserchDataNetwork.instance().getResearch(code).getContent();
+				GuiInventoryOverlay.craftingHelper.add(content.getFaved());
+			}
+		}
 		
 		return null;
 	}

@@ -4,9 +4,9 @@ public interface ICrootPowerGen {
 	
 	public void breakTile();
 	
-	public float getFreePower();
+	public int getFreePower();
 	
-	public float getTotalPower();
+	public int getTotalPower();
 	
 	public void unregister(ICrootPowerCon consumer);
 	

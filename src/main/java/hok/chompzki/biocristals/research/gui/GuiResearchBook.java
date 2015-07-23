@@ -8,6 +8,7 @@ import hok.chompzki.biocristals.research.data.PlayerResearch;
 import hok.chompzki.biocristals.research.data.PlayerStorage;
 import hok.chompzki.biocristals.research.data.Research;
 import hok.chompzki.biocristals.research.data.network.PlayerStorageDelissenMessage;
+import hok.chompzki.biocristals.research.data.network.PlayerStorageFaveMessage;
 import hok.chompzki.biocristals.research.logic.ResearchLogicNetwork;
 
 import java.awt.Rectangle;
@@ -88,6 +89,10 @@ public class GuiResearchBook extends GuiScreen {
         if(article != null){
         	article.setLast(this);
         	article.setWorldAndResolution(Minecraft.getMinecraft(), width, height, null);
+        }else{
+        	article = new GuiTutorialArticle(player);
+        	article.setLast(this);
+        	article.setWorldAndResolution(Minecraft.getMinecraft(), width, height, null);
         }
 	}
 	
@@ -139,8 +144,7 @@ public class GuiResearchBook extends GuiScreen {
         		article.back();
         		return;
         	}else if(par2 == Keyboard.KEY_2 && DataHelper.belongsTo(reader, reader.getCurrentEquippedItem())){
-        		boolean b = article.getContent().initSelection();
-        		article.getContent().selected(!b);
+        		PlayerStorage.instance().sendToServer(new PlayerStorageFaveMessage(reader.getGameProfile().getId().toString(), article.getResearch().getCode()));
         		return;
         	}else if(par2 == Keyboard.KEY_3){
         		article.next();
@@ -156,14 +160,13 @@ public class GuiResearchBook extends GuiScreen {
     {
 		if(btn == 0 && this.tooltipResearch != null){
         	//this.mc.displayGuiScreen(new GuiDescription(this, tooltipKnowledge.getDescription()));
-			article = new GuiArticle(reader, tooltipResearch);
+			article = new GuiArticle(reader, tooltipResearch, player);
 			article.setLast(this);
 			article.setWorldAndResolution(mc, width, height, null);
 			this.initGui();
         }else if(btn == 1 && this.tooltipResearch != null && DataHelper.belongsTo(reader, reader.getCurrentEquippedItem())){
-        	
-			boolean b = tooltipResearch.getContent().initSelection();
-			tooltipResearch.getContent().selected(!b);
+        	PlayerStorage.instance().sendToServer(new PlayerStorageFaveMessage(reader.getGameProfile().getId().toString(), tooltipResearch.getCode()));
+        	//tooltipResearch.getContent().selected(!b);
 			
         }else{
         	super.mouseClicked(x, y, btn);
@@ -534,7 +537,7 @@ public class GuiResearchBook extends GuiScreen {
          if (research.getSpecial())
          {
              this.drawTexturedModalRect(x - 2, y - 2, 26, 202, 26, 26);
-             if(DataHelper.belongsTo(reader, reader.getCurrentEquippedItem()) && research.getContent().initSelection()){
+             if(PlayerStorage.instance().get(player).hasFaved(research.getCode())){
             	 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             	 this.drawTexturedModalRect(x - 2, y - 2, 26, 202 + 26, 26, 26);
             	 GL11.glColor4f(f3, f3, f3, 1.0F);
@@ -543,7 +546,7 @@ public class GuiResearchBook extends GuiScreen {
          else
          {
              drawTexturedModalRect(x - 2, y - 2, 0, 202, 26, 26);
-             if(DataHelper.belongsTo(reader, reader.getCurrentEquippedItem()) && research.getContent().initSelection()){
+             if(PlayerStorage.instance().get(player).hasFaved(research.getCode())){
             	 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             	 drawTexturedModalRect(x - 2, y - 2, 0, 202 + 26, 26, 26);
             	 GL11.glColor4f(f3, f3, f3, 1.0F);

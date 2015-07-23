@@ -16,6 +16,8 @@ itemGroup.Bio Cristal=Bio Cristal
 
 research.babySteps.title=Baby Steps
 research.babySteps.text=Many Piron steps...
+research.crootSapling.title=Croot Sapling
+research.crootSapling.text=Creator Rabarberpaj
 research.theWorldAroundUs.title=The World Around Us
 research.theWorldAroundUs.text=Why is dirt and life so diffrent?
 research.reaction.title=Biological Reagent
@@ -33,3 +35,7 @@ research.carla_fleur.title=Carla & Fleur
 research.carla_fleur.text=Labratory explorers
 research.cara_rot.title=Carra Rot
 research.cara_rot.text=Crystal Maniac
+
+research.BookTutorial.title=Book Tutorial
+research.BookTutorial.text=A try in helping you...
+

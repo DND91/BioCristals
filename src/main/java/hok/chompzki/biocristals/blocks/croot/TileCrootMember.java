@@ -8,7 +8,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public abstract class TileCrootMember extends TileEntity implements ICrootPowerMem {
 	
-	private float power = 0.0f;
+	private int power = 0;
 	
 	private boolean hasCore = false;
 	
@@ -20,7 +20,7 @@ public abstract class TileCrootMember extends TileEntity implements ICrootPowerM
 		
 	}
 	
-	public TileCrootMember(float power){
+	public TileCrootMember(int power){
 		this.power = power;
 	}
 	
@@ -45,7 +45,7 @@ public abstract class TileCrootMember extends TileEntity implements ICrootPowerM
         coreX = nbt.getInteger("CORE_X");
         coreY = nbt.getInteger("CORE_Y");
         coreZ = nbt.getInteger("CORE_Z");
-        power = nbt.getFloat("POWER");
+        power = nbt.getInteger("POWER");
         hasCore = nbt.getBoolean("HAS_CORE");
     }
 	
@@ -55,12 +55,12 @@ public abstract class TileCrootMember extends TileEntity implements ICrootPowerM
         nbt.setInteger("CORE_X", coreX);
         nbt.setInteger("CORE_Y", coreY);
         nbt.setInteger("coreZ", coreZ);
-        nbt.setFloat("POWER", power);
+        nbt.setInteger("POWER", power);
         nbt.setBoolean("HAS_CORE", hasCore);
     }
 
 	@Override
-	public float getProduction() {
+	public int getProduction() {
 		return power;
 	}
 	

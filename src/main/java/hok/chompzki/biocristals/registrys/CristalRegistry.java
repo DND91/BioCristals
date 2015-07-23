@@ -60,22 +60,22 @@ private static ArrayList<IEntityTransformation> entityTransformations = new Arra
 	
 	public static void registerAll(){
 		CristalRegistry.register(new WeakCristalTransformation(Items.wheat, BlockRegistry.wheatCristal, ReserchRegistry.wheatCristalisation));
-		CristalRegistry.register(new WeakCristalTransformation(Items.carrot, BlockRegistry.carrotCristal, null));
-		CristalRegistry.register(new WeakCristalTransformation(Items.reeds, BlockRegistry.sugerCaneCristal, null));
-		CristalRegistry.register(new WeakCristalTransformation(Items.potato, BlockRegistry.potatoCristal, null));
-		CristalRegistry.register(new WeakCristalTransformation(Items.melon, BlockRegistry.melonCristal, null));
-		CristalRegistry.register(new WeakCristalTransformation((new ItemStack(Blocks.pumpkin)).getItem(), BlockRegistry.wheatCristal, null));
+		CristalRegistry.register(new WeakCristalTransformation(Items.carrot, BlockRegistry.carrotCristal, ReserchRegistry.carrotCristalisation));
+		CristalRegistry.register(new WeakCristalTransformation(Items.reeds, BlockRegistry.reedsCristal, ReserchRegistry.reedsCristalisation));
+		CristalRegistry.register(new WeakCristalTransformation(Items.potato, BlockRegistry.potatoCristal, ReserchRegistry.potatoCristalisation));
+		CristalRegistry.register(new WeakCristalTransformation(Items.melon, BlockRegistry.melonCristal, ReserchRegistry.melonCristalisation));
+		CristalRegistry.register(new WeakCristalTransformation((new ItemStack(Blocks.pumpkin)).getItem(), BlockRegistry.wheatCristal, ReserchRegistry.pumpkinCristalisation));
 		
-		CristalRegistry.register(new WeakFleshTransformation(EntitySheep.class, new ItemStack(Blocks.wool)));
-		CristalRegistry.register(new WeakFleshTransformation(EntityCow.class, new ItemStack(Items.leather)));
-		CristalRegistry.register(new WeakFleshTransformation(EntityPig.class, new ItemStack(Items.carrot)));
-		CristalRegistry.register(new WeakFleshTransformation(EntityChicken.class, new ItemStack(Items.egg), new ItemStack(Items.feather)));
-		CristalRegistry.register(new WeakFleshTransformation(EntityHorse.class, new ItemStack(Items.leather)));
-		CristalRegistry.register(new WeakFleshTransformation(EntityVillager.class, new ItemStack(Items.gold_nugget)));
-		CristalRegistry.register(new WeakFleshTransformation(EntityZombie.class, new ItemStack(Items.rotten_flesh)));
-		CristalRegistry.register(new WeakFleshTransformation(EntitySkeleton.class, new ItemStack(Items.bone)));
-		CristalRegistry.register(new WeakFleshTransformation(EntitySpider.class, new ItemStack(Items.spider_eye), new ItemStack(Items.string)));
-		CristalRegistry.register(new WeakFleshTransformation(EntitySlime.class, new ItemStack(Items.slime_ball)));
-		CristalRegistry.register(new WeakFleshTransformation(EntityEnderman.class, new ItemStack(Items.ender_pearl)));
+		CristalRegistry.register(new WeakFleshTransformation(EntitySheep.class, ReserchRegistry.sheepSkin, new ItemStack(Blocks.wool)));
+		CristalRegistry.register(new WeakFleshTransformation(EntityCow.class, ReserchRegistry.leatherHound, new ItemStack(Items.leather)));
+		CristalRegistry.register(new WeakFleshTransformation(EntityPig.class, ReserchRegistry.pinkBlouse, new ItemStack(Items.carrot)));
+		CristalRegistry.register(new WeakFleshTransformation(EntityChicken.class, ReserchRegistry.featherFriend, new ItemStack(Items.egg), new ItemStack(Items.feather)));
+		CristalRegistry.register(new WeakFleshTransformation(EntityHorse.class, ReserchRegistry.leatherBeast, new ItemStack(Items.leather)));
+		CristalRegistry.register(new WeakFleshTransformation(EntityVillager.class, ReserchRegistry.payingTaxes, new ItemStack(Items.gold_nugget)));
+		CristalRegistry.register(new WeakFleshTransformation(EntityZombie.class, ReserchRegistry.fleshRapture, new ItemStack(Items.rotten_flesh)));
+		CristalRegistry.register(new WeakFleshTransformation(EntitySkeleton.class, ReserchRegistry.boneWreck, new ItemStack(Items.bone)));
+		CristalRegistry.register(new WeakFleshTransformation(EntitySpider.class, ReserchRegistry.widowMaker, new ItemStack(Items.spider_eye), new ItemStack(Items.string)));
+		CristalRegistry.register(new WeakFleshTransformation(EntitySlime.class, ReserchRegistry.puddingSplit, new ItemStack(Items.slime_ball)));
+		CristalRegistry.register(new WeakFleshTransformation(EntityEnderman.class, ReserchRegistry.darkWarp, new ItemStack(Items.ender_pearl)));
 	}
 }

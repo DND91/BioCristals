@@ -25,7 +25,7 @@ public abstract class BlockGenerator extends BlockContainer implements IGrowthCr
         {
             if (world.getBlockLightValue(x, y + 1, z) >= 9 && rand.nextInt(2) == 0)
             {
-                //this.grow(world, x, y, z);
+                this.grow(world, x, y, z);
             }
         }
     }

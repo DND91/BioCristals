@@ -2,7 +2,7 @@ package hok.chompzki.biocristals.blocks.croot;
 
 public interface ICrootPowerCon {
 	
-	public float getConsumption();
+	public int getConsumption();
 	
 	public int getX();
 	

@@ -124,7 +124,7 @@ public class BlockCrootSapling extends Block implements IGrowthCristal {
         {
         	this.checkAndDropBlock(world, x, y, z);
 
-            if (world.getBlockLightValue(x, y + 1, z) >= 9 && rand.nextInt(7) == 0)
+            if (world.getBlockLightValue(x, y + 1, z) >= 9 && rand.nextInt(3) == 0)
             {
                 this.grow(world, x, y, z);
             }

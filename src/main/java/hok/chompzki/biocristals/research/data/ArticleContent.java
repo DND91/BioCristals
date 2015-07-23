@@ -1,8 +1,10 @@
 package hok.chompzki.biocristals.research.data;
 
+import hok.chompzki.biocristals.client.GuiCraftingHelper;
+
 public abstract class ArticleContent {
 	
-	public enum Content{
+	public enum EnumContent{
 		INTRO,
 		THEORY,
 		METHOD,
@@ -19,23 +21,14 @@ public abstract class ArticleContent {
 		this.code = code;
 	}
 	
-	public String textOnPage(Content content, int p){
+	public String textOnPage(EnumContent content, int p){
 		return "";
 	}
 	
-	public int numberOfPages(Content content){
+	public int numberOfPages(EnumContent content){
 		return 1;
 	}
+
+	public abstract GuiCraftingHelper getFaved();
 	
-	public boolean hasPageSelection(int i){
-		return false;
-	}
-	
-	public boolean initSelection(){
-		return false;
-	}
-	
-	public void selected(boolean selection){
-		
-	}
 }

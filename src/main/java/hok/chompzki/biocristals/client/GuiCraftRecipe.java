@@ -1,6 +1,8 @@
 package hok.chompzki.biocristals.client;
 
+import hok.chompzki.biocristals.recipes.RecipeContainer;
 import hok.chompzki.biocristals.registrys.ItemRegistry;
+import hok.chompzki.biocristals.registrys.RecipeRegistry;
 import hok.chompzki.biocristals.research.data.Research;
 import hok.chompzki.biocristals.research.data.ReserchDataNetwork;
 import hok.chompzki.biocristals.research.gui.KnowledgeDescriptions;
@@ -14,7 +16,7 @@ import net.minecraft.world.World;
 public class GuiCraftRecipe extends GuiCraftingHelper {
 
 	public GuiCraftRecipe(Minecraft minecraft, String code, ItemStack result) {
-		super(minecraft, ReserchDataNetwork.instance().getResearch(code), result);
+		super(minecraft, ReserchDataNetwork.instance().getResearch(code), result, RecipeRegistry.getRecipreFor(result));
 		
 	}
 	

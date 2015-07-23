@@ -8,7 +8,7 @@ public class TileCrootOneConsumer extends TileCrootConsumer {
 		
 	}
 	
-	public TileCrootOneConsumer(float power){
+	public TileCrootOneConsumer(int power){
 		super(power);
 	}
 

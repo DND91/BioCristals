@@ -1,16 +1,17 @@
 package hok.chompzki.biocristals.research.logic.content;
 
+import hok.chompzki.biocristals.client.GuiCraftingHelper;
 import hok.chompzki.biocristals.registrys.BlockRegistry;
 import hok.chompzki.biocristals.registrys.ItemRegistry;
 import hok.chompzki.biocristals.research.data.ArticleContent;
-import hok.chompzki.biocristals.research.data.ArticleContent.Content;
+import hok.chompzki.biocristals.research.data.ArticleContent.EnumContent;
 import hok.chompzki.biocristals.research.gui.KnowledgeDescriptions;
 import net.minecraft.item.ItemStack;
 
 public class TheWorldAroundUs extends ArticleContent {
 	
 	@Override
-	public String textOnPage(Content content, int p){
+	public String textOnPage(EnumContent content, int p){
 		//Basic stuff Attuner, Biological Reagent & Biomass
 		String s = "";
 		switch(p){
@@ -71,8 +72,15 @@ public class TheWorldAroundUs extends ArticleContent {
 	
 	
 	@Override
-	public int numberOfPages(Content content){
+	public int numberOfPages(EnumContent content){
 		return 8;
+	}
+
+
+	@Override
+	public GuiCraftingHelper getFaved() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

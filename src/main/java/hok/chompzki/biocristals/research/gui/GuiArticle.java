@@ -1,12 +1,15 @@
 package hok.chompzki.biocristals.research.gui;
 
 import java.util.List;
+import java.util.UUID;
 
 import hok.chompzki.biocristals.BioCristalsMod;
 import hok.chompzki.biocristals.research.data.ArticleContent;
-import hok.chompzki.biocristals.research.data.ArticleContent.Content;
+import hok.chompzki.biocristals.research.data.ArticleContent.EnumContent;
 import hok.chompzki.biocristals.research.data.DataHelper;
+import hok.chompzki.biocristals.research.data.PlayerStorage;
 import hok.chompzki.biocristals.research.data.Research;
+import hok.chompzki.biocristals.research.data.network.PlayerStorageFaveMessage;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
@@ -22,28 +25,34 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
 public class GuiArticle extends GuiScreen {
-	private int currPage = 0;
-	private ArticleContent content;
+	protected int currPage = 0;
+	protected ArticleContent content;
 	
 	public static final int pageImageWidth = 150;
 	public static final int pageImageHeight = 192;
     
-    private int updateCount = 0;
+    protected int updateCount = 0;
     
-    private GuiButtonNextPage buttonNextPage;
-    private GuiButtonNextPage buttonPreviousPage;
-    private GuiCheckboxPage buttonCheckboxPage;
+    protected GuiButtonNextPage buttonNextPage;
+    protected GuiButtonNextPage buttonPreviousPage;
+    protected GuiCheckboxPage buttonCheckboxPage;
     
-    private ArticleFontRenderer articleFontRenderer;
+    protected ArticleFontRenderer articleFontRenderer;
     
-    private GuiResearchBook last = null;
-    private Research research = null;
-    private EntityPlayer reader = null;
-	
-	public GuiArticle(EntityPlayer reader, Research research){
+    protected GuiResearchBook last = null;
+    protected Research research = null;
+    protected EntityPlayer reader = null;
+	protected UUID owner = null;
+    
+    public GuiArticle(){
+    	
+    }
+    
+	public GuiArticle(EntityPlayer reader, Research research, UUID owner){
 		content = research.getContent();
 		this.reader = reader;
 		this.research = research;
+		this.owner = owner;
 	}
 	
 	public void setLast(GuiResearchBook last){
@@ -92,14 +101,14 @@ public class GuiArticle extends GuiScreen {
 	
 	private void updateButtons()
     {
-        this.buttonNextPage.visible = (this.currPage < content.numberOfPages(Content.INTRO) - 1);
+        this.buttonNextPage.visible = (this.currPage < content.numberOfPages(EnumContent.INTRO) - 1);
         this.buttonPreviousPage.visible = this.currPage > 0;
         
         ItemStack stack = reader.inventory.getCurrentItem();
         
-        this.buttonCheckboxPage.visible = this.content.hasPageSelection(currPage) && DataHelper.belongsTo(reader, stack);
+        this.buttonCheckboxPage.visible = this.content.getFaved() != null && DataHelper.belongsTo(reader, stack);
         if(this.buttonCheckboxPage.visible){
-        	this.buttonCheckboxPage.selected = this.content.initSelection();
+        	this.buttonCheckboxPage.selected = PlayerStorage.instance().get(owner).hasFaved(research.getCode());
         }
     }
 	
@@ -110,7 +119,7 @@ public class GuiArticle extends GuiScreen {
         {
             if (par1GuiButton.id == 1)
             {
-                if (this.currPage < content.numberOfPages(Content.INTRO) - 1)
+                if (this.currPage < content.numberOfPages(EnumContent.INTRO) - 1)
                 {
                     ++this.currPage;
                 }
@@ -125,20 +134,20 @@ public class GuiArticle extends GuiScreen {
             else if (par1GuiButton.id == 3)
             {
                 this.buttonCheckboxPage.selected = !this.buttonCheckboxPage.selected;
-                this.content.selected(this.buttonCheckboxPage.selected);
+                PlayerStorage.instance().sendToServer(new PlayerStorageFaveMessage(reader.getGameProfile().getId().toString(), research.getCode()));
             }
             this.updateButtons();
         }
     }
 	
 	public void back(){
-		currPage = (currPage-1) % content.numberOfPages(Content.INTRO);
-    	currPage = currPage < 0 ? content.numberOfPages(Content.INTRO) - 1 : currPage;
+		currPage = (currPage-1) % content.numberOfPages(EnumContent.INTRO);
+    	currPage = currPage < 0 ? content.numberOfPages(EnumContent.INTRO) - 1 : currPage;
     	this.updateButtons();
 	}
 	
 	public void next(){
-		currPage = (currPage+1) % content.numberOfPages(Content.INTRO);
+		currPage = (currPage+1) % content.numberOfPages(EnumContent.INTRO);
     	this.updateButtons();
 	}
 	
@@ -196,16 +205,21 @@ public class GuiArticle extends GuiScreen {
 	
 	public void drawScreen(int par1, int par2, float par3)
     {
+		this.buttonCheckboxPage.visible = this.content.getFaved() != null && reader.getGameProfile().getId().equals(owner);
+        if(this.buttonCheckboxPage.visible){
+        	this.buttonCheckboxPage.selected = PlayerStorage.instance().get(owner).hasFaved(research.getCode());
+        }
+        
 		int k = last.calculateLeft() + last.getScreenWidth();
         int b0 = last.calculateTop() + 10;
 		
         String s;
         String s1;
         int l;
-        s = String.format(StatCollector.translateToLocal("book.pageIndicator"), new Object[] {Integer.valueOf(this.currPage + 1), Integer.valueOf(content.numberOfPages(Content.INTRO))});
+        s = String.format(StatCollector.translateToLocal("book.pageIndicator"), new Object[] {Integer.valueOf(this.currPage + 1), Integer.valueOf(content.numberOfPages(EnumContent.INTRO))});
         s1 = "";
         
-        s1 = this.content.textOnPage(Content.INTRO, currPage);
+        s1 = this.content.textOnPage(EnumContent.INTRO, currPage);
         
         l = this.articleFontRenderer.getStringWidth(s);
         this.articleFontRenderer.setMousePos(par1, par2);

@@ -1,12 +1,15 @@
 package hok.chompzki.biocristals.research.gui;
 
+import hok.chompzki.biocristals.client.GuiFleshRecipe;
 import hok.chompzki.biocristals.recipes.RecipeTransformer;
 
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -26,8 +29,13 @@ import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.settings.GameSettings;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -40,10 +48,14 @@ import cpw.mods.fml.relauncher.Side;
 
 @SideOnly(Side.CLIENT)
 public class ArticleFontRenderer {
+	
+	protected static HashMap<Class, EntityLivingBase> template = new HashMap<Class, EntityLivingBase>();
+	
+	protected boolean entityMode = false;
 	protected boolean itemMode = false;
 	protected boolean itemDmgMode = false;
 	protected RenderItem itemRender;
-	protected String itemID = null;
+	protected String nameID = null;
 	protected int itemDMG = 0;
 	
 	/** Array of width of all the characters in default.png */
@@ -121,8 +133,10 @@ public class ArticleFontRenderer {
     
     private Minecraft theGame;
     private ItemStack itemStack = new ItemStack(Items.golden_apple);
+    private Entity entity = null;
     
     private ItemStack stackBucket = null;
+    private EntityLivingBase entityBucket = null;
     private int mosX;
     private int mosY;
     
@@ -281,18 +295,74 @@ public class ArticleFontRenderer {
     private float renderCharAtPos(int id, char c, boolean par3)
     {
     	GL11.glScalef(scale, scale, 1.0f);
-    	if(c == '\t'){
+    	
+    	//ENTITIES!
+    	if(!this.itemMode && c == '\r'){
+    		this.entityMode = !this.entityMode;
+    		resetScale();
+    		return 0.f;
+    	}else if(this.entityMode && c == '<'){
+    		this.nameID = "";
+    		resetScale();
+    		return 0.f;
+    	}else if(this.entityMode && c == '>' && this.nameID != null){
+            this.entity = EntityList.createEntityByName(nameID, theGame.theWorld);
+            if(entity != null && entity instanceof EntityLivingBase){
+            	EntityLivingBase living = (EntityLivingBase)entity;
+            	if(template.containsKey(living.getClass())){
+            		living = template.get(living.getClass());
+            	}else{
+            		template.put(living.getClass(), living);
+            	}
+	            
+            	living.renderYawOffset = 0.0f;
+            	living.rotationYaw = 0.0f;
+            	living.rotationPitch = 0.0f;
+            	living.rotationYawHead = entity.rotationYaw;
+            	living.prevRotationYawHead = entity.rotationYaw;
+            	
+            	
+	            float k = this.posX;
+	            float l = this.posY;
+	            float offsetX = 8;// * scale * xScale;
+	            float offsetY = 8;// * scale * yScale;
+	            
+	            renderEntity((int)(k + offsetX),(int)(l + offsetY), 14, (float)(k + offsetX) - mosX, (float)(l + offsetY - 50) - mosY, living);
+            }
+            
+            //(int)this.posX + 0, (int)this.posY - 8
+            
+            Rectangle rect = new Rectangle((int)(this.posX * scale), (int)((this.posY - 8) * scale), (int)(16 * scale), (int)(16 * scale));
+            if(rect.contains(new Rectangle(mosX, mosY, 2, 2)) && entity instanceof EntityLivingBase){
+            	entityBucket = (EntityLivingBase)entity;
+            }
+            
+    		this.nameID = null;
+    		resetScale();
+    		return 16.0f;
+    	}else if(this.entityMode && c == '\f'){
+    		//this.posY += 16;
+    		resetScale();
+    		return 56.0f;
+    	}else if(this.entityMode){
+			this.nameID += c;
+    		resetScale();
+    		return 0.f;
+    	}
+    	
+    	//ITEMS & BLOCKS!
+    	if(!this.entityMode && c == '\t'){
     		this.itemMode = !this.itemMode;
     		resetScale();
     		return 0.f;
     	}else if(this.itemMode && c == '<'){
-    		this.itemID = "";
+    		this.nameID = "";
     		this.itemDMG = 0;
     		this.itemDmgMode = false;
     		resetScale();
     		return 0.f;
-    	}else if(this.itemMode && c == '>' && this.itemID != null){
-            this.itemStack = RecipeTransformer.dataToItemStack(this.itemID);
+    	}else if(this.itemMode && c == '>' && this.nameID != null){
+            this.itemStack = RecipeTransformer.dataToItemStack(this.nameID);
             if(itemStack != null){
             	this.itemStack.setItemDamage(this.itemDMG);
 	            GL11.glPushMatrix();
@@ -312,7 +382,7 @@ public class ArticleFontRenderer {
             	stackBucket = itemStack;
             }
             
-    		this.itemID = null;
+    		this.nameID = null;
     		this.itemDMG = 0;
     		this.itemDmgMode = false;
     		resetScale();
@@ -327,7 +397,7 @@ public class ArticleFontRenderer {
     		return 40.0f;
     	}else if(this.itemMode){
     		if(!itemDmgMode){
-    			this.itemID += c;
+    			this.nameID += c;
     		}else{
     			this.itemDMG *= 10;
     			this.itemDMG += c-48;
@@ -335,12 +405,76 @@ public class ArticleFontRenderer {
     		resetScale();
     		return 0.f;
     	}
+    	
     	float f = c == 32 ? 4.0F : ("\u00c0\u00c1\u00c2\u00c8\u00ca\u00cb\u00cd\u00d3\u00d4\u00d5\u00da\u00df\u00e3\u00f5\u011f\u0130\u0131\u0152\u0153\u015e\u015f\u0174\u0175\u017e\u0207\u0000\u0000\u0000\u0000\u0000\u0000\u0000 !\"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\u0000\u00c7\u00fc\u00e9\u00e2\u00e4\u00e0\u00e5\u00e7\u00ea\u00eb\u00e8\u00ef\u00ee\u00ec\u00c4\u00c5\u00c9\u00e6\u00c6\u00f4\u00f6\u00f2\u00fb\u00f9\u00ff\u00d6\u00dc\u00f8\u00a3\u00d8\u00d7\u0192\u00e1\u00ed\u00f3\u00fa\u00f1\u00d1\u00aa\u00ba\u00bf\u00ae\u00ac\u00bd\u00bc\u00a1\u00ab\u00bb\u2591\u2592\u2593\u2502\u2524\u2561\u2562\u2556\u2555\u2563\u2551\u2557\u255d\u255c\u255b\u2510\u2514\u2534\u252c\u251c\u2500\u253c\u255e\u255f\u255a\u2554\u2569\u2566\u2560\u2550\u256c\u2567\u2568\u2564\u2565\u2559\u2558\u2552\u2553\u256b\u256a\u2518\u250c\u2588\u2584\u258c\u2590\u2580\u03b1\u03b2\u0393\u03c0\u03a3\u03c3\u03bc\u03c4\u03a6\u0398\u03a9\u03b4\u221e\u2205\u2208\u2229\u2261\u00b1\u2265\u2264\u2320\u2321\u00f7\u2248\u00b0\u2219\u00b7\u221a\u207f\u00b2\u25a0\u0000".indexOf(c) != -1 && !this.unicodeFlag ? this.renderDefaultChar(id, par3) : this.renderUnicodeChar(c, par3));
     	
     	
     	
     	resetScale();
     	return f;
+    }
+    private static float t = 0.0f;
+    protected void renderEntity(int x, int y, int scale, float yawY, float pitchX, EntityLivingBase entity)
+    {
+    	GL11.glEnable(GL11.GL_COLOR_MATERIAL);
+        GL11.glPushMatrix();
+        
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glDepthMask(true);
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
+        
+        //GL11.glMatrixMode(GL11.GL_PROJECTION);
+        
+        //GL11.glMatrixMode(GL11.GL_MODELVIEW);
+        
+        GL11.glDisable(GL11.GL_ALPHA_TEST);
+        
+        GL11.glTranslatef((float)x, (float)y, 50.0F);
+        GL11.glScalef((float)(-scale), (float)scale, (float)scale);
+        GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
+        float f2 = entity.renderYawOffset;
+        float f3 = entity.rotationYaw;
+        float f4 = entity.rotationPitch;
+        float f5 = entity.prevRotationYawHead;
+        float f6 = entity.rotationYawHead;
+        GL11.glRotatef(135.0F, 0.0F, 1.0F, 0.0F);
+        RenderHelper.enableStandardItemLighting();
+        GL11.glRotatef(-135.0F, 0.0F, 1.0F, 0.0F);
+       // GL11.glRotatef(-((float)Math.atan((double)(pitchX / 40.0F))) * 20.0F, 1.0F, 0.0F, 0.0F);
+        GL11.glRotatef(15.0F, 1.0F, 0.0F, 0.0F);
+        GL11.glRotatef(25.0F, 0.0F, 1.0F, 0.0F);
+        
+       // entity.renderYawOffset = (float)Math.atan((double)(yawY / 40.0F)) * 20.0F;
+       // entity.rotationYaw = (float)Math.atan((double)(yawY / 40.0F)) * 40.0F;
+       // entity.rotationPitch = -((float)Math.atan((double)(pitchX / 40.0F))) * 20.0F;
+       // entity.rotationYawHead = entity.rotationYaw;
+       // entity.prevRotationYawHead = entity.rotationYaw;
+        
+        GL11.glTranslatef(0.0F, entity.yOffset, 0.0F);
+        
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        
+        
+        RenderManager.instance.playerViewY = 180.0F;
+        RenderManager.instance.renderEntityWithPosYaw(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
+        t += 1.0F;
+        
+        entity.renderYawOffset = f2;
+        entity.rotationYaw = f3;
+        entity.rotationPitch = f4;
+        entity.prevRotationYawHead = f5;
+        entity.rotationYawHead = f6;
+        
+        GL11.glTranslatef(0.0F, -0.22F, 0.0F);
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 255.0F * 0.8F, 255.0F * 0.8F);
+        Tessellator.instance.setBrightness(240);
+        
+        GL11.glPopMatrix();
+        RenderHelper.disableStandardItemLighting();
+        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+        OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
     }
 
     /**
@@ -1160,6 +1294,7 @@ public class ArticleFontRenderer {
 
 	public void setMousePos(int x, int y) {
 		stackBucket = null;
+		entityBucket = null;
 		mosX = x;
 		mosY = y;
 	}
@@ -1169,8 +1304,37 @@ public class ArticleFontRenderer {
 			this.renderToolTip(stackBucket, mosX, mosY, pageImageWidth, pageImageHeight);
 			stackBucket = null;
 		}
+		if(entityBucket != null){
+			this.renderToolTip(entityBucket, mosX, mosY, pageImageWidth, pageImageHeight);
+			entityBucket = null;
+		}
 	}
 	
+	private void renderToolTip(Entity entity, int x, int y,
+			int pageImageWidth, int pageImageHeight) {
+		
+		Minecraft mc = Minecraft.getMinecraft();
+        List list = new ArrayList();
+        list.add(entity.getCommandSenderName());
+
+        for (int k = 0; k < list.size(); ++k)
+        {
+            if (k == 0)
+            {
+                list.set(k, EnumChatFormatting.GOLD + (String)list.get(k));
+            }
+            else
+            {
+                list.set(k, EnumChatFormatting.GRAY + (String)list.get(k));
+            }
+        }
+        
+        FontRenderer font = null;
+        if(font == null)
+        	font = Minecraft.getMinecraft().fontRenderer;
+        drawHoveringText(list, x, y, font, pageImageWidth, pageImageHeight);
+	}
+
 	protected void renderToolTip(ItemStack p_146285_1_, int x, int y, int pageImageWidth, int pageImageHeight)
     {
 		Minecraft mc = Minecraft.getMinecraft();

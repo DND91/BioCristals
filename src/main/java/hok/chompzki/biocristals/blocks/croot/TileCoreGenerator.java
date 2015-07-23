@@ -6,6 +6,8 @@ import hok.chompzki.biocristals.croot.CrootModule;
 import hok.chompzki.biocristals.croot.CrootRegistry;
 import hok.chompzki.biocristals.croot.RegisteredCoord;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,8 +27,8 @@ public abstract class TileCoreGenerator extends TileEntity implements
 	private int maxBlocks = 0;
 	private int blocks = 0;
 	
-	private float totalPower = 0.0f;
-	private float powerUsage = 0.0f;
+	private int totalPower = 0;
+	private int powerUsage = 0;
 	
 	Set<RegisteredCoord> coords = new HashSet<RegisteredCoord>();
 	
@@ -45,8 +47,8 @@ public abstract class TileCoreGenerator extends TileEntity implements
         super.readFromNBT(nbt);
         maxBlocks = nbt.getInteger("MAX_BLOCKS");
         blocks = nbt.getInteger("BLOCKS");
-        totalPower = nbt.getFloat("TOTAL_POWER");
-        powerUsage = nbt.getFloat("POWER_USAGE");
+        totalPower = nbt.getInteger("TOTAL_POWER");
+        powerUsage = nbt.getInteger("POWER_USAGE");
        
         NBTTagList nbttaglist = nbt.getTagList("COORDS", 10);
         this.coords.clear();
@@ -64,8 +66,8 @@ public abstract class TileCoreGenerator extends TileEntity implements
         super.writeToNBT(nbt);
         nbt.setInteger("MAX_BLOCKS", maxBlocks);
         nbt.setInteger("BLOCKS", blocks);
-        nbt.setFloat("TOTAL_POWER", totalPower);
-        nbt.setFloat("POWER_USAGE", powerUsage);
+        nbt.setInteger("TOTAL_POWER", totalPower);
+        nbt.setInteger("POWER_USAGE", powerUsage);
         NBTTagList nbttaglist = new NBTTagList();
         RegisteredCoord[] list = this.coords.toArray(new RegisteredCoord[coords.size()]);
 		for(RegisteredCoord coord : list){
@@ -98,7 +100,7 @@ public abstract class TileCoreGenerator extends TileEntity implements
 	public void grow() {
 		CrootModule module = CrootRegistry.get("core_1");
 		int y = yCoord;
-		if(module.controll(worldObj, xCoord, y, zCoord)){
+		/*if(module.controll(worldObj, xCoord, y, zCoord)){
 			module = CrootRegistry.get("trunk_1");
 			y += 6;
 		}
@@ -115,13 +117,12 @@ public abstract class TileCoreGenerator extends TileEntity implements
 	}
 
 	@Override
-	public float getFreePower() {
-		System.out.println("TOTAL: " + totalPower + ", USAGE: " + powerUsage);
+	public int getFreePower() {
 		return this.totalPower - this.powerUsage;
 	}
 	
 	@Override
-	public float getTotalPower() {
+	public int getTotalPower() {
 		return this.totalPower;
 	}
 	
@@ -167,7 +168,6 @@ public abstract class TileCoreGenerator extends TileEntity implements
 		if(!coords.contains(coord)){
 			updateAfterAdd(coord);
 		}
-		
 	}
 
 	@Override

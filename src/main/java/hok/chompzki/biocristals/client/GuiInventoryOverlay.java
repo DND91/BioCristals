@@ -1,6 +1,7 @@
 package hok.chompzki.biocristals.client;
 
 import hok.chompzki.biocristals.api.IGrowthCristal;
+import hok.chompzki.biocristals.blocks.croot.ICrootPowerGen;
 import hok.chompzki.biocristals.registrys.ItemRegistry;
 import hok.chompzki.biocristals.research.data.DataHelper;
 
@@ -90,6 +91,23 @@ public class GuiInventoryOverlay extends Gui{
 					GL11.glPopMatrix();
 					return;
 				}
+				
+			}else if(!world.isAirBlock(bx, by, bz) && world.getTileEntity(bx, by, bz) != null && world.getTileEntity(bx, by, bz) instanceof ICrootPowerGen){
+				int x = 0;
+				int y = 20;
+				Block block = world.getBlock(bx, by, bz);
+				ICrootPowerGen tile = (ICrootPowerGen) world.getTileEntity(bx, by, bz);
+				
+				GL11.glPushMatrix();
+				ArrayList<String> list = new ArrayList<String>();
+				
+				list.add(StatCollector.translateToLocal(block.getLocalizedName()));
+				list.add("~ Power ~");
+				list.add("Total: " + tile.getTotalPower());
+				list.add("Free: " + tile.getFreePower());
+				
+				drawHoveringText(list, x, y, mc.fontRenderer);
+				GL11.glPopMatrix();
 				
 			}else if(!world.isAirBlock(bx, by, bz) && world.getBlock(bx, by, bz) instanceof IGrowthCristal){
 				int x = 0;

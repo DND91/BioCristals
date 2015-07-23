@@ -1,7 +1,12 @@
 package hok.chompzki.biocristals.research.gui;
 
 import hok.chompzki.biocristals.recipes.RecipeContainer;
+import hok.chompzki.biocristals.registrys.BlockRegistry;
 import hok.chompzki.biocristals.registrys.RecipeRegistry;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
@@ -74,11 +79,24 @@ public class KnowledgeDescriptions {
 		return domain + ":" + name;
 	}
 	
-	public static String transformWealCristal(ItemStack substance, ItemStack reagent, ItemStack base, ItemStack activator){
+	public static String transformWeakCristal(ItemStack substance, ItemStack reagent, ItemStack base, ItemStack activator){
 		ItemStack air = new ItemStack(Blocks.air);
 		String s = "\t\n\f";
 		s += transformItemStack(air, false) + transformItemStack(substance, false) + transformItemStack(air, false) + "\n\n";
 		s += "\f" + transformItemStack(reagent, false) + transformItemStack(base, false) + transformItemStack(activator, false) + "\n\n";
+		return s + "\t";
+	}
+	
+	public static String transformWeakFlesh(ItemStack reagent, EntityLivingBase base, ItemStack activator){
+		String air = transformItemStack(new ItemStack(Blocks.air), false);
+		String tuft = transformItemStack(new ItemStack(BlockRegistry.sulphurTuft), false);
+		
+		String s = "\r\n\n\f";
+		s += "<" + EntityList.getEntityString(base) + ">";
+		s += "\r\n";
+		
+		s += "\t\n\f";
+		s += transformItemStack(reagent, false) + tuft + transformItemStack(activator, false) + "\n\n";
 		return s + "\t";
 	}
 }

@@ -33,7 +33,7 @@ public class GuiButtonHomePage extends GuiButton {
                 k += 14;
             }
 
-            this.drawTexturedModalRect(this.xPosition, this.yPosition, k, l, 14, 14);
+            this.drawTexturedModalRect(this.xPosition, this.yPosition, k, l, 13, 13);
         }
     }
 }

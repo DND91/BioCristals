@@ -5,18 +5,19 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import hok.chompzki.biocristals.client.GuiCraftRecipe;
+import hok.chompzki.biocristals.client.GuiCraftingHelper;
 import hok.chompzki.biocristals.client.GuiInventoryOverlay;
 import hok.chompzki.biocristals.registrys.BlockRegistry;
 import hok.chompzki.biocristals.registrys.ItemRegistry;
 import hok.chompzki.biocristals.registrys.ReserchRegistry;
 import hok.chompzki.biocristals.research.data.ArticleContent;
-import hok.chompzki.biocristals.research.data.ArticleContent.Content;
+import hok.chompzki.biocristals.research.data.ArticleContent.EnumContent;
 import hok.chompzki.biocristals.research.gui.KnowledgeDescriptions;
 
 public class BabySteps extends ArticleContent {
 	
 	@Override
-	public String textOnPage(Content content, int p){
+	public String textOnPage(EnumContent content, int p){
 		//Basic stuff Attuner, Biological Reagent & Biomass TUTORIAL RESEARCH!
 		String s = "";
 		switch(p){
@@ -44,25 +45,12 @@ public class BabySteps extends ArticleContent {
 	
 	
 	@Override
-	public int numberOfPages(Content content){
+	public int numberOfPages(EnumContent content){
 		return 3;
 	}
-	
-	public boolean hasPageSelection(int i){
-		return i == 2;
-	}
-	
-	@SideOnly(Side.CLIENT)
-	public boolean initSelection(){
-		return GuiInventoryOverlay.craftingHelper.contains(new ItemStack(ItemRegistry.attuner));
-	}
-	
-	@SideOnly(Side.CLIENT)
-	public void selected(boolean selection){
-		if(selection){
-			GuiInventoryOverlay.craftingHelper.add(new GuiCraftRecipe(Minecraft.getMinecraft(), ReserchRegistry.babySteps,new ItemStack(ItemRegistry.attuner)));
-		}else{
-			GuiInventoryOverlay.craftingHelper.remove(new ItemStack(ItemRegistry.attuner));
-		}
+
+	@Override
+	public GuiCraftingHelper getFaved() {
+		return new GuiCraftRecipe(Minecraft.getMinecraft(), code,new ItemStack(ItemRegistry.attuner));
 	}
 }

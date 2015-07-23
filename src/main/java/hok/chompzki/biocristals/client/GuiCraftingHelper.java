@@ -3,6 +3,7 @@ package hok.chompzki.biocristals.client;
 import org.lwjgl.opengl.GL11;
 
 import hok.chompzki.biocristals.BioCristalsMod;
+import hok.chompzki.biocristals.recipes.RecipeContainer;
 import hok.chompzki.biocristals.research.data.Research;
 import hok.chompzki.biocristals.research.gui.ArticleFontRenderer;
 import net.minecraft.client.Minecraft;
@@ -35,15 +36,21 @@ public abstract class GuiCraftingHelper extends Gui {
     private Research research = null;
     
     protected final ItemStack result;
+    protected final RecipeContainer input;
     
     public ItemStack getResult(){
     	return result;
     }
     
-    public GuiCraftingHelper(Minecraft minecraft, Research research, ItemStack result){
+    public RecipeContainer getInput(){
+    	return input;
+    }
+    
+    public GuiCraftingHelper(Minecraft minecraft, Research research, ItemStack result, RecipeContainer input){
     	this.articleFontRenderer = new ArticleFontRenderer(minecraft, minecraft.gameSettings, "textures/font/ascii.png", minecraft.renderEngine, false);
     	this.result = result;
     	this.research = research;
+    	this.input = input;
     }
     
     public int getWidth(){
@@ -78,7 +85,7 @@ public abstract class GuiCraftingHelper extends Gui {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     }
     
-	public void drawGui(GuiScreen currentScreen, Minecraft mc, World world, EntityPlayer player, ItemStack currentStack, int mouseX, int mouseY, float renderPartialTicks) {
+	public void drawBackground(GuiScreen currentScreen, Minecraft mc, World world, EntityPlayer player, ItemStack currentStack, int mouseX, int mouseY, float renderPartialTicks) {
 		
 		//GL11.glDisable(GL11.GL_LIGHTING);
 		//GL11.glDisable(GL11.GL_DEPTH_TEST);
@@ -86,6 +93,11 @@ public abstract class GuiCraftingHelper extends Gui {
 		//GL11.glDisable(GL11.GL_BLEND);
 		mc.renderEngine.bindTexture(bgTextures);
 		this.drawTexturedModalRect(xPosition, yPosition, 0, 0, width, height);
+		normalScale();
+	}
+	
+	public void drawGui(GuiScreen currentScreen, Minecraft mc, World world, EntityPlayer player, ItemStack currentStack, int mouseX, int mouseY, float renderPartialTicks) {
+		
 		normalScale();
 	}
 	

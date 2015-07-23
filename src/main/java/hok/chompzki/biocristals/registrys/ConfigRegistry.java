@@ -92,6 +92,19 @@ public class ConfigRegistry {
 		sulphurTuft.put("output", new Property("output", "BioCristals:blockSulphurTuft", Property.Type.STRING));
 		sulphurTuft.put("quantity", new Property("quantity", "1", Property.Type.INTEGER));
 		
+		ConfigCategory string = new ConfigCategory("String", recipes);
+		string.put("input", new Property("input", "minecraft:wool", Property.Type.STRING));
+		string.put("output", new Property("output", "minecraft:string", Property.Type.STRING));
+		string.put("quantity", new Property("quantity", "8", Property.Type.INTEGER));
 		
+		ConfigCategory crootSapling = new ConfigCategory("CrootSapling", recipes);
+		crootSapling.put("input", new Property("input", "minecraft:dye:1__minecraft:string__minecraft:dye:11__minecraft:string__minecraft:log__minecraft:string__minecraft:dye:11__minecraft:sapling__minecraft:dye:1", Property.Type.STRING));
+		crootSapling.put("output", new Property("output", "BioCristals:croot_sapling", Property.Type.STRING));
+		crootSapling.put("quantity", new Property("quantity", "1", Property.Type.INTEGER));
+		
+		ConfigCategory researchBook = new ConfigCategory("researchBook", recipes);
+		researchBook.put("input", new Property("input", "minecraft:sapling__minecraft:book", Property.Type.STRING));
+		researchBook.put("output", new Property("output", "BioCristals:itemResearchBook", Property.Type.STRING));
+		researchBook.put("quantity", new Property("quantity", "1", Property.Type.INTEGER));
     }
 }
