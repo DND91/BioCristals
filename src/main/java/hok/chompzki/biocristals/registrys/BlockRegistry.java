@@ -3,9 +3,11 @@ package hok.chompzki.biocristals.registrys;
 import hok.chompzki.biocristals.BioCristalsMod;
 import hok.chompzki.biocristals.blocks.BlockBiomass;
 import hok.chompzki.biocristals.blocks.BlockCrootCore;
+import hok.chompzki.biocristals.blocks.BlockCrootHollow;
 import hok.chompzki.biocristals.blocks.BlockCrootLeaves;
 import hok.chompzki.biocristals.blocks.BlockCrootRoots;
 import hok.chompzki.biocristals.blocks.BlockCrootSapling;
+import hok.chompzki.biocristals.blocks.BlockCrootStreamStem;
 import hok.chompzki.biocristals.blocks.BlockCrootTrunk;
 import hok.chompzki.biocristals.blocks.BlockPrimogenitus;
 import hok.chompzki.biocristals.blocks.BlockReagentPurifier;
@@ -36,16 +38,18 @@ public class BlockRegistry {
 	public static Block crootCore = null;
 	public static Block crootLeaves = null;
 	public static Block crootTrunk = null;
-	
+	public static Block crootStem = null;
+	public static Block crootHollow = null;
 	
 	public void registerBlocks(){
 		biomass = new BlockBiomass();
-		wheatCristal = new BlockWeakCristal("blockWheatCristal", 3, new ItemStack(Items.wheat, 2));
-		carrotCristal = new BlockWeakCristal("blockCarrotCristal", 3, new ItemStack(Items.carrot, 2));
-		reedsCristal = new BlockWeakCristal("blockSugerCaneCristal", 3, new ItemStack(Items.reeds, 2));
-		potatoCristal = new BlockWeakCristal("blockPotatoCristal", 3, new ItemStack(Items.potato, 2));
-		melonCristal = new BlockWeakCristal("blockMelonCristal", 3, new ItemStack(Items.melon, 2));
-		pumpkinCristal = new BlockWeakCristal("blockPumpkinCristal", 3, new ItemStack(Blocks.pumpkin, 1));
+		int maxMeta = 3;
+		wheatCristal = new BlockWeakCristal("blockWheatCristal", maxMeta, 0xF0E68C, new ItemStack(Items.wheat, 2));
+		carrotCristal = new BlockWeakCristal("blockCarrotCristal", maxMeta, 0xFFA500, new ItemStack(Items.carrot, 2));
+		reedsCristal = new BlockWeakCristal("blockSugerCaneCristal", maxMeta, 0x006400, new ItemStack(Items.reeds, 2));
+		potatoCristal = new BlockWeakCristal("blockPotatoCristal", maxMeta, 0xF4A460, new ItemStack(Items.potato, 2));
+		melonCristal = new BlockWeakCristal("blockMelonCristal", maxMeta, 0x458B00, new ItemStack(Items.melon, 2));
+		pumpkinCristal = new BlockWeakCristal("blockPumpkinCristal", maxMeta, 0xFF7619, new ItemStack(Blocks.pumpkin, 1));
 		sulphurTuft = new BlockSulphurTuft();
 		reagentPurifier = new BlockReagentPurifier();
 		primogenitus = new BlockPrimogenitus();
@@ -54,6 +58,8 @@ public class BlockRegistry {
 		crootCore = new BlockCrootCore();
 		crootLeaves = new BlockCrootLeaves();
 		crootTrunk = new BlockCrootTrunk();
+		crootStem = new BlockCrootStreamStem();
+		crootHollow = new BlockCrootHollow();
 		
 		GameRegistry.registerBlock(biomass, BlockBiomass.NAME);
 		GameRegistry.registerBlock(wheatCristal, "blockWheatCristal");
@@ -70,6 +76,8 @@ public class BlockRegistry {
 		GameRegistry.registerBlock(crootCore, BlockCrootCore.NAME);
 		GameRegistry.registerBlock(crootLeaves, BlockCrootLeaves.NAME);
 		GameRegistry.registerBlock(crootTrunk, BlockCrootTrunk.NAME);
+		GameRegistry.registerBlock(crootStem, BlockCrootStreamStem.NAME);
+		GameRegistry.registerBlock(crootHollow, BlockCrootHollow.NAME);
 	}
 	
 	

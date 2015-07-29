@@ -4,7 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
-import hok.chompzki.biocristals.client.GuiCraftRecipe;
+import hok.chompzki.biocristals.client.GuiCraft;
 import hok.chompzki.biocristals.client.GuiCraftingHelper;
 import hok.chompzki.biocristals.client.GuiInventoryOverlay;
 import hok.chompzki.biocristals.registrys.BlockRegistry;
@@ -27,11 +27,11 @@ public class CubeMass extends ArticleContent {
 			s += "After many experiments involving rabbits, hawks and cabageheads (all extinct) they found 'Biomass'.";
 			break;
 		case 1:
-			s += "Carla & Fleur's biomass\n\n";
-			s += "        ~ Structure ~\n";
-			s += KnowledgeDescriptions.transformRecipe(new ItemStack(BlockRegistry.biomass));
-			s += "        ~ Creation ~\n\n";
-			s += KnowledgeDescriptions.transformOutput(new ItemStack(BlockRegistry.biomass));
+			s += KnowledgeDescriptions.getDisplayName(code) + "\n\n";
+			s += "       ~ Structure ~\n";
+			s += KnowledgeDescriptions.getStructure(code);
+			s += "       ~ Creation ~\n\n";
+			s += KnowledgeDescriptions.getResult(code);
 			break;
 		}
 		return s;
@@ -45,7 +45,7 @@ public class CubeMass extends ArticleContent {
 	
 	@Override
 	public GuiCraftingHelper getFaved() {
-		return new GuiCraftRecipe(Minecraft.getMinecraft(), code, new ItemStack(BlockRegistry.biomass));
+		return new GuiCraft(Minecraft.getMinecraft(), code);
 	}
 	
 }

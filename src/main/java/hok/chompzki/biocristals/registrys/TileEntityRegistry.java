@@ -1,8 +1,8 @@
 package hok.chompzki.biocristals.registrys;
 
-import hok.chompzki.biocristals.blocks.croot.TileCrootConsumer;
-import hok.chompzki.biocristals.blocks.croot.TileCrootMember;
+import hok.chompzki.biocristals.croot.TileCroot;
 import hok.chompzki.biocristals.tile_enteties.TileCrootCore;
+import hok.chompzki.biocristals.tile_enteties.TileCrootHollow;
 import hok.chompzki.biocristals.tile_enteties.TileCrootOneConsumer;
 import hok.chompzki.biocristals.tile_enteties.TileCrootOneMember;
 import hok.chompzki.biocristals.tile_enteties.TilePrimogenitus;
@@ -15,10 +15,10 @@ public class TileEntityRegistry {
 		GameRegistry.registerTileEntity(TileReagentPurifier.class, "biocristals_tile_reagentpurifier");
 		GameRegistry.registerTileEntity(TilePrimogenitus.class, "biocristals_tile_primogenitus");
 		GameRegistry.registerTileEntity(TileCrootCore.class, "biocristals_tile_crootcore");
-		
 		GameRegistry.registerTileEntity(TileCrootOneMember.class, "biocristals_tile_croot_one_member");
-		
 		GameRegistry.registerTileEntity(TileCrootOneConsumer.class, "biocristals_tile_croot_one_consumer");
+		
+		GameRegistry.registerTileEntity(TileCrootHollow.class, "biocristals_tile_croot_hollow");
 	}
 	
 }

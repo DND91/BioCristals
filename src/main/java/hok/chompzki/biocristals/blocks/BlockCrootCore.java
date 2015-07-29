@@ -7,12 +7,12 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import hok.chompzki.biocristals.BioCristalsMod;
 import hok.chompzki.biocristals.api.IGrowthCristal;
-import hok.chompzki.biocristals.blocks.croot.BlockGenerator;
-import hok.chompzki.biocristals.blocks.croot.ICrootPowerGen;
-import hok.chompzki.biocristals.blocks.croot.TileCrootMember;
-import hok.chompzki.biocristals.croot.CrootBlock;
+import hok.chompzki.biocristals.croot.BlockCore;
 import hok.chompzki.biocristals.croot.CrootHelper;
-import hok.chompzki.biocristals.croot.CrootModule;
+import hok.chompzki.biocristals.croot.ICrootCore;
+import hok.chompzki.biocristals.croot.TileCroot;
+import hok.chompzki.biocristals.croot_old.CrootBlock;
+import hok.chompzki.biocristals.croot_old.CrootModule;
 import hok.chompzki.biocristals.tile_enteties.TileCrootCore;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -28,11 +28,11 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-public class BlockCrootCore extends BlockGenerator {
+public class BlockCrootCore extends BlockCore {
 	
 	public static final String[] subtypes = new String[] {"normal"};
     private static final IIcon[] icons = new IIcon[subtypes.length];
-    public static final String NAME = "croot_core";
+    public static final String NAME = "crootCore";
     
     
     

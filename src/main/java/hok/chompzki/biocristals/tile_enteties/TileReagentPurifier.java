@@ -1,10 +1,14 @@
 package hok.chompzki.biocristals.tile_enteties;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 import hok.chompzki.biocristals.api.BioHelper;
+import hok.chompzki.biocristals.croot.TileCroot;
 import hok.chompzki.biocristals.recipes.RecipePurifier;
 import hok.chompzki.biocristals.registrys.RecipeRegistry;
+import hok.chompzki.biocristals.research.data.PlayerResearch;
+import hok.chompzki.biocristals.research.data.PlayerStorage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.DataWatcher;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,7 +23,7 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileReagentPurifier extends TileEntity implements IInventory{
+public class TileReagentPurifier extends TileCroot implements IInventory{
 
     private ForgeDirection outputSide = ForgeDirection.UP;
     private ForgeDirection[] inputSides = {ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.EAST};
@@ -28,10 +32,21 @@ public class TileReagentPurifier extends TileEntity implements IInventory{
 	private long tick = 0;
 	
 	private ItemStack stored_result = null;
+	private UUID owner = null;
+	private RecipePurifier recipe = null;
+	private int timeLeft = 0;
 	
 	public TileReagentPurifier(){
-		super();
+		super(-5);
 		
+	}
+	
+	public int getTimeLeft(){
+		return timeLeft;
+	}
+	
+	public ItemStack getStored(){
+		return stored_result;
 	}
 	
 	@Override
@@ -122,6 +137,15 @@ public class TileReagentPurifier extends TileEntity implements IInventory{
         	int side = nbt.getInteger("OUTPUT_SIDE");
         	this.setOutputSide(ForgeDirection.getOrientation(side));
         }
+       
+       if(nbt.hasKey("OWNER")){
+    	   owner = UUID.fromString(nbt.getString("OWNER"));
+       }
+       if(nbt.hasKey("RECIPE")){
+    	   this.recipe = RecipeRegistry.getRecipePurifier(nbt.getString("RECIPE"));
+       }
+       
+       this.timeLeft = nbt.getInteger("TIME_LEFT");
     }
 	
     public void writeToNBT(NBTTagCompound nbt)
@@ -140,19 +164,33 @@ public class TileReagentPurifier extends TileEntity implements IInventory{
         nbt.setTag("Items", nbttaglist);
         
         nbt.setInteger("OUTPUT_SIDE", this.outputSide.ordinal());
+        if(owner != null){
+        	nbt.setString("OWNER", owner.toString());
+        }
+        if(this.recipe != null){
+        	nbt.setString("RECIPE", recipe.name());
+        }
+        
+        nbt.setInteger("TIME_LEFT", this.timeLeft);
     }
-	
+    
+    @Override
+	public boolean canUpdate(){
+		return true;
+	}
 	
 	@Override
 	public void updateEntity() {
-		if (this.worldObj != null && !this.worldObj.isRemote)
+		super.updateEntity();
+		if (this.worldObj != null && !this.worldObj.isRemote && this.treeForm != null && this.treeForm.getStabel())
         {
 			tick++;
-			if(tick % tickMod == 0 && canFunction()){
+			if(canFunction()){
 				transformation();
 			}
         }
 	}
+	
     public void setOutputSide(ForgeDirection side) {
         ArrayList<ForgeDirection> newIn = new ArrayList<ForgeDirection>();
         
@@ -195,9 +233,8 @@ public class TileReagentPurifier extends TileEntity implements IInventory{
 	}
 	
 	public void transformation(){
-		if(stored_result == null){
+		if(stored_result == null && recipe == null){
 			IInventory[] inputs = BioHelper.getInventories(this, inputSides);
-			IInventory output = (IInventory) BioHelper.getTileEntityOnSide(this, outputSide);
 			IInventory filter = (IInventory) BioHelper.getTileEntityOnSide(this, getFilterSide());
 			ArrayList<ItemStack> filters = new ArrayList<ItemStack>();
 			for(int i = 0; i < filter.getSizeInventory(); i++){
@@ -206,16 +243,43 @@ public class TileReagentPurifier extends TileEntity implements IInventory{
 					continue;
 				filters.add(stack);
 			}
-			RecipePurifier recp = RecipeRegistry.getRecipePurifier(filters, inputs);
-			if(recp == null)
+			recipe = RecipeRegistry.getRecipePurifier(filters, inputs);
+			if(recipe == null)
 				return;
-			ItemStack result = recp.result();
+			recipe.pay(inputs);
+			timeLeft = recipe.time();
+			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			markDirty(); 
+		}else if(stored_result == null && recipe != null){
+			this.timeLeft--;
+			if(0 < timeLeft)
+				return;
+			IInventory output = (IInventory) BioHelper.getTileEntityOnSide(this, outputSide);
 			
-			recp.pay(inputs);
-			if(!BioHelper.addItemStackToInventory(result, output) || 0 < result.stackSize){
-				stored_result = result;
+			ItemStack[] res = recipe.result();
+			
+			for(ItemStack stack : res){
+				ItemStack result = stack.copy();
+				if(!BioHelper.addItemStackToInventory(result, output) || 0 < result.stackSize){
+					stored_result = result;
+					break;
+				}
 			}
-		}else{
+			
+			timeLeft = 0;
+			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			markDirty(); 
+			
+			if(owner == null || recipe.code().equals("NONE")){
+				recipe = null;
+				return;
+			}
+			PlayerResearch research = PlayerStorage.instance().get(owner);
+			if(!research.hasCompleted(recipe.code())){
+				research.addCompleted(recipe.code());
+			}
+			recipe = null;
+		} else{
 			IInventory output = (IInventory) BioHelper.getTileEntityOnSide(this, outputSide);
 			if(BioHelper.addItemStackToInventory(stored_result, output) && stored_result.stackSize <= 0){
 				stored_result = null;
@@ -250,4 +314,12 @@ public class TileReagentPurifier extends TileEntity implements IInventory{
 		this.writeToNBT(nbt);
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, blockMetadata, nbt);
     }
+
+	public void setOwner(UUID id) {
+		owner = id;
+	}
+
+	public String getWork() {
+		return this.recipe.name();
+	}
 }

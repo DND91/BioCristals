@@ -82,6 +82,8 @@ public class CraftingHelper {
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		
+		gui.drawCenteredString(Minecraft.getMinecraft().fontRenderer, (this.currentGui+1) + "/" + this.guis.size(), gui.getWidth() / 2, gui.getHeight(), 0xFFFFFF);
+		
 		buttonPreviousPage.xPosition = 10;
 		buttonPreviousPage.yPosition = gui.getHeight() - 20;
 		
@@ -118,7 +120,7 @@ public class CraftingHelper {
         	}else if(this.buttonPreviousPage.mousePressed(mc, mouseX, mouseY)){
         		this.back();
         	}else if(this.buttonClosePage.mousePressed(mc, mouseX, mouseY)){
-        		PlayerStorage.instance().sendToServer(new PlayerStorageFaveMessage(player.getGameProfile().getId().toString(), gui.getResearch().getCode()));
+        		BioCristalsMod.network.sendToServer(new PlayerStorageFaveMessage(player.getGameProfile().getId().toString(), gui.getResearch().getCode()));
         	}else if(this.buttonHomePage.mousePressed(mc, mouseX, mouseY)){
         		 this.nextBookArticle = new GuiArticle(Minecraft.getMinecraft().thePlayer, gui.getResearch(), UUID.fromString(DataHelper.getOwner(currentStack)));
         		 DataHelper.belongsTo(player, player.inventory.getCurrentItem());
@@ -127,10 +129,12 @@ public class CraftingHelper {
         		 
         		 player.openGui(BioCristalsMod.instance, 100, world, (int)player.posX, (int)player.posY, (int)player.posZ);
         	}else if(this.buttonAutoPage.mousePressed(mc, mouseX, mouseY)){
+        		System.out.println("TRY!!!!!!!!!!!!!!");
         		if(currentScreen instanceof GuiContainer){
-        			if(gui.getInput() == null || gui.getResult() == null)
+        			if(gui.getInput() == null || gui.getOutput() == null)
         				return;
-        			PlayerStorage.instance().sendToServer(new MessageInsertCrafting(gui.getResult()));
+        			System.out.println("CLICK!!!!!!!!!!");
+        			BioCristalsMod.network.sendToServer(new MessageInsertCrafting(gui.getOutput()));
         		}
         	}
         	
@@ -186,10 +190,23 @@ public class CraftingHelper {
 			currentGui = guis.size() - 1;
 		this.buttonAutoPage.visible = 0 < guis.size() && guis.get(currentGui).getInput() != null;
 	}
+	
+	public int place(){
+		return this.currentGui;
+	}
 
 	public void clear() {
 		this.guis.clear();
 		this.updateButtons();
+	}
+
+	public void setPage(int place) {
+		this.currentGui = place;
+		if(this.guis.size() != 0)
+			currentGui %= this.guis.size();
+		else
+			currentGui = 0;
+		this.currentGui = Math.max(currentGui, 0);
 	}
 	
 }

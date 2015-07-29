@@ -3,8 +3,10 @@ package hok.chompzki.biocristals.research.events;
 import java.util.UUID;
 
 import net.minecraft.item.Item;
+import hok.chompzki.biocristals.recipes.RecipeContainer;
 import hok.chompzki.biocristals.registrys.BlockRegistry;
 import hok.chompzki.biocristals.registrys.ItemRegistry;
+import hok.chompzki.biocristals.registrys.RecipeRegistry;
 import hok.chompzki.biocristals.registrys.ReserchRegistry;
 import hok.chompzki.biocristals.research.data.PlayerResearch;
 import hok.chompzki.biocristals.research.data.PlayerStorage;
@@ -20,44 +22,17 @@ public class CraftingEvents {
 		if(event.player.worldObj.isRemote)
 			return;
 		
-		if (event.crafting.getItem() == ItemRegistry.attuner){
-			UUID id = event.player.getGameProfile().getId();
-			PlayerResearch research = PlayerStorage.instance().get(id);
-			
-			if(!research.hasCompleted(ReserchRegistry.babySteps)){
-				research.addCompleted(ReserchRegistry.babySteps);
-			} 
-			
-		}else if (event.crafting.getItem() == ItemRegistry.bioReagent){
-			UUID id = event.player.getGameProfile().getId();
-			PlayerResearch research = PlayerStorage.instance().get(id);
-			
-			if(!research.hasCompleted(ReserchRegistry.reaction)){
-				research.addCompleted(ReserchRegistry.reaction);
-			} 
-		}else if (event.crafting.getItem() == Item.getItemFromBlock(BlockRegistry.biomass)){
-			UUID id = event.player.getGameProfile().getId();
-			PlayerResearch research = PlayerStorage.instance().get(id);
-			
-			if(!research.hasCompleted(ReserchRegistry.cubeMass)){
-				research.addCompleted(ReserchRegistry.cubeMass);
-			} 
-		}else if (event.crafting.getItem() == Item.getItemFromBlock(BlockRegistry.crootSapling)){
-			UUID id = event.player.getGameProfile().getId();
-			PlayerResearch research = PlayerStorage.instance().get(id);
-			
-			if(!research.hasCompleted(ReserchRegistry.crootSapling)){
-				research.addCompleted(ReserchRegistry.crootSapling);
-			} 
-		}else if (event.crafting.getItem() == Item.getItemFromBlock(BlockRegistry.sulphurTuft)){
-			UUID id = event.player.getGameProfile().getId();
-			PlayerResearch research = PlayerStorage.instance().get(id);
-			
-			if(!research.hasCompleted(ReserchRegistry.tuft)){
-				research.addCompleted(ReserchRegistry.tuft);
-			} 
+		for(RecipeContainer con : RecipeRegistry.recipes){
+			if(con.code.equals("NONE"))
+				continue;
+			if(con.output.isItemEqual(event.crafting)){
+				UUID id = event.player.getGameProfile().getId();
+				PlayerResearch research = PlayerStorage.instance().get(id);
+				if(!research.hasCompleted(con.code)){
+					research.addCompleted(con.code);
+				} 
+			}
 		}
-		
 	}
 	
 }

@@ -1,6 +1,5 @@
 package hok.chompzki.biocristals.research.gui;
 
-import hok.chompzki.biocristals.client.GuiFleshRecipe;
 import hok.chompzki.biocristals.recipes.RecipeTransformer;
 
 import java.awt.Rectangle;
@@ -369,7 +368,10 @@ public class ArticleFontRenderer {
 	            RenderHelper.enableGUIStandardItemLighting();
 	            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 	            GL11.glDisable(GL11.GL_LIGHTING);
+	            
 	    		this.itemRender.renderItemAndEffectIntoGUI(this.theGame.fontRenderer, this.theGame.renderEngine, this.itemStack, (int)this.posX + 0, (int)this.posY - 8);
+	    		this.itemRender.renderItemOverlayIntoGUI(this.theGame.fontRenderer, this.theGame.renderEngine, this.itemStack, (int)this.posX + 0, (int)this.posY - 8);
+	    		
 	    		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 	    		GL11.glEnable(GL11.GL_BLEND);
 	            GL11.glPopMatrix();
@@ -444,11 +446,11 @@ public class ArticleFontRenderer {
         GL11.glRotatef(15.0F, 1.0F, 0.0F, 0.0F);
         GL11.glRotatef(25.0F, 0.0F, 1.0F, 0.0F);
         
-       // entity.renderYawOffset = (float)Math.atan((double)(yawY / 40.0F)) * 20.0F;
+       //entity.renderYawOffset = (float)Math.atan((double)(yawY / 40.0F)) * 20.0F;
        // entity.rotationYaw = (float)Math.atan((double)(yawY / 40.0F)) * 40.0F;
        // entity.rotationPitch = -((float)Math.atan((double)(pitchX / 40.0F))) * 20.0F;
-       // entity.rotationYawHead = entity.rotationYaw;
-       // entity.prevRotationYawHead = entity.rotationYaw;
+       entity.rotationYawHead = 0.0f;
+       entity.prevRotationYawHead = 0.0f;
         
         GL11.glTranslatef(0.0F, entity.yOffset, 0.0F);
         
@@ -1344,7 +1346,7 @@ public class ArticleFontRenderer {
         {
             if (k == 0)
             {
-                list.set(k, p_146285_1_.getRarity().rarityColor + (String)list.get(k));
+                list.set(k, p_146285_1_.stackSize + "x " +p_146285_1_.getRarity().rarityColor + (String)list.get(k));
             }
             else
             {

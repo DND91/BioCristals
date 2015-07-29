@@ -2,12 +2,22 @@ package hok.chompzki.biocristals.registrys;
 
 import hok.chompzki.biocristals.api.IEntityTransformation;
 import hok.chompzki.biocristals.api.ITransformation;
+import hok.chompzki.biocristals.recipes.RecipeContainer;
+import hok.chompzki.biocristals.recipes.RecipeData;
+import hok.chompzki.biocristals.recipes.RecipeTransformer;
+import hok.chompzki.biocristals.recipes.TransformData;
+import hok.chompzki.biocristals.recipes.TransformEntityData;
+import hok.chompzki.biocristals.recipes.TransformerContainer;
+import hok.chompzki.biocristals.recipes.TransformerEntityContainer;
 import hok.chompzki.biocristals.transformation.WeakCristalTransformation;
 import hok.chompzki.biocristals.transformation.WeakFleshTransformation;
 
 import java.util.ArrayList;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntitySlime;
@@ -24,11 +34,15 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class CristalRegistry {
 	
+	public static ArrayList<TransformerEntityContainer> transformationEntityContainer = new ArrayList<TransformerEntityContainer>();
+	private static ArrayList<IEntityTransformation> entityTransformations = new ArrayList<IEntityTransformation>();
 	
-private static ArrayList<IEntityTransformation> entityTransformations = new ArrayList<IEntityTransformation>();
+	public static ArrayList<TransformerContainer> transformationContainer = new ArrayList<TransformerContainer>();
+	private static ArrayList<ITransformation> transformations = new ArrayList<ITransformation>();
 	
 	public static void register(IEntityTransformation trans){
 		entityTransformations.add(trans);
@@ -43,7 +57,20 @@ private static ArrayList<IEntityTransformation> entityTransformations = new Arra
 		return null;
 	}
 	
-	private static ArrayList<ITransformation> transformations = new ArrayList<ITransformation>();
+	public static TransformerEntityContainer get(Class cls){
+		if(cls == null)
+			return null;
+		TransformerEntityContainer found = null;
+		for(TransformerEntityContainer con : CristalRegistry.transformationEntityContainer){
+			if(con.input == cls){
+				found = con;
+				break;
+			}
+		}
+		return found;
+	}
+	
+	
 	
 	public static void register(ITransformation struct){
 		transformations.add(struct);
@@ -59,23 +86,45 @@ private static ArrayList<IEntityTransformation> entityTransformations = new Arra
 	}
 	
 	public static void registerAll(){
-		CristalRegistry.register(new WeakCristalTransformation(Items.wheat, BlockRegistry.wheatCristal, ReserchRegistry.wheatCristalisation));
-		CristalRegistry.register(new WeakCristalTransformation(Items.carrot, BlockRegistry.carrotCristal, ReserchRegistry.carrotCristalisation));
-		CristalRegistry.register(new WeakCristalTransformation(Items.reeds, BlockRegistry.reedsCristal, ReserchRegistry.reedsCristalisation));
-		CristalRegistry.register(new WeakCristalTransformation(Items.potato, BlockRegistry.potatoCristal, ReserchRegistry.potatoCristalisation));
-		CristalRegistry.register(new WeakCristalTransformation(Items.melon, BlockRegistry.melonCristal, ReserchRegistry.melonCristalisation));
-		CristalRegistry.register(new WeakCristalTransformation((new ItemStack(Blocks.pumpkin)).getItem(), BlockRegistry.wheatCristal, ReserchRegistry.pumpkinCristalisation));
+		loadTransformer();
+		loadEntityTransformer();
+	}
+
+	private static void loadTransformer() {
+		for(TransformData data : ConfigRegistry.transformData){
+			ItemStack output = RecipeTransformer.dataToItemStack(data.output);
+			ItemStack input = RecipeTransformer.dataToItemStack(data.input);
+			
+			System.out.println("---------------- INPUT -----------------");
+			System.out.println("INPUT: " + data.input);
+			System.out.println("---------------- OUTPUT -----------------");
+			System.out.println("OUTPUT: " + data.output + " -> " + (output == null ? "NULL" : output.toString()));
+			System.out.println("CODE: " + data.code);
+			
+			transformationContainer.add(new TransformerContainer(input, output, data.code));
+		}
 		
-		CristalRegistry.register(new WeakFleshTransformation(EntitySheep.class, ReserchRegistry.sheepSkin, new ItemStack(Blocks.wool)));
-		CristalRegistry.register(new WeakFleshTransformation(EntityCow.class, ReserchRegistry.leatherHound, new ItemStack(Items.leather)));
-		CristalRegistry.register(new WeakFleshTransformation(EntityPig.class, ReserchRegistry.pinkBlouse, new ItemStack(Items.carrot)));
-		CristalRegistry.register(new WeakFleshTransformation(EntityChicken.class, ReserchRegistry.featherFriend, new ItemStack(Items.egg), new ItemStack(Items.feather)));
-		CristalRegistry.register(new WeakFleshTransformation(EntityHorse.class, ReserchRegistry.leatherBeast, new ItemStack(Items.leather)));
-		CristalRegistry.register(new WeakFleshTransformation(EntityVillager.class, ReserchRegistry.payingTaxes, new ItemStack(Items.gold_nugget)));
-		CristalRegistry.register(new WeakFleshTransformation(EntityZombie.class, ReserchRegistry.fleshRapture, new ItemStack(Items.rotten_flesh)));
-		CristalRegistry.register(new WeakFleshTransformation(EntitySkeleton.class, ReserchRegistry.boneWreck, new ItemStack(Items.bone)));
-		CristalRegistry.register(new WeakFleshTransformation(EntitySpider.class, ReserchRegistry.widowMaker, new ItemStack(Items.spider_eye), new ItemStack(Items.string)));
-		CristalRegistry.register(new WeakFleshTransformation(EntitySlime.class, ReserchRegistry.puddingSplit, new ItemStack(Items.slime_ball)));
-		CristalRegistry.register(new WeakFleshTransformation(EntityEnderman.class, ReserchRegistry.darkWarp, new ItemStack(Items.ender_pearl)));
+		for(TransformerContainer con : transformationContainer){
+			CristalRegistry.register(new WeakCristalTransformation(con.input.getItem(), Block.getBlockFromItem(con.output.getItem()), con.code));
+		}
+	}
+	
+	private static void loadEntityTransformer() {
+		for(TransformEntityData data : ConfigRegistry.transformEntityData){
+			Class input = (Class) EntityList.stringToClassMapping.get(data.input);
+			ItemStack[] output = RecipeTransformer.dataToItemStacks(data.output.split("__"));
+			
+			System.out.println("---------------- INPUT -----------------");
+			System.out.println("INPUT: " + data.input + " -> " + (input == null ? "NULL" : input.toString()));
+			System.out.println("---------------- OUTPUT -----------------");
+			System.out.println("OUTPUT: " + data.output + " -> " + (output == null ? "NULL" : output));
+			System.out.println("CODE: " + data.code);
+			
+			transformationEntityContainer.add(new TransformerEntityContainer(input, data.code, output));
+		}
+		
+		for(TransformerEntityContainer con : transformationEntityContainer){
+			CristalRegistry.register(new WeakFleshTransformation(con.input, con.code, con.output));
+		}
 	}
 }

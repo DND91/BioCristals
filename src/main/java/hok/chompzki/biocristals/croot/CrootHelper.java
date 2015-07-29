@@ -1,20 +1,94 @@
 package hok.chompzki.biocristals.croot;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
+import hok.chompzki.biocristals.croot_old.AStar;
+import hok.chompzki.biocristals.croot_old.CrootBlock;
+import hok.chompzki.biocristals.croot_old.CrootModule;
+import hok.chompzki.biocristals.croot_old.RegisteredCoord;
 import hok.chompzki.biocristals.registrys.BlockRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class CrootHelper {
+	
+	public static final Block[] startOn = {Blocks.dirt, Blocks.grass, BlockRegistry.crootRoots};
+	
+	public static boolean startsOn(Block block){
+		for(Block b : startOn)
+			if(b == block)
+				return true;
+		return false;
+	}
+	
+	public static boolean hasZoneOwner(World world, int x, int y, int z, int radius){
+		
+		int radiusSquared = radius * radius;
+		
+		for(int i = radius * -1; i <= radius; ++i)
+        {
+            for(int j = radius * -1; j <= radius; ++j)
+            {
+            	for(int k = radius * -1; k <= radius; ++k){
+            		if(x == x + i && y == y + j && z == z + k)
+        				continue;
+            		
+	            	int distance = ((i * i) + (j * j) + (k * k));
+	        		if(distance <= radiusSquared && world.blockExists(x + i, y+ j, z + k)){
+	        			Block block = world.getBlock(x + i, y + j, z + k);
+	        			if(block == BlockRegistry.crootSapling || block instanceof BlockCore)
+	        				return true;
+	        			
+	        			if(block instanceof BlockCroot){
+	        				TileCroot tile = (TileCroot) world.getTileEntity(x + i, y + j, z + k);
+	        				if(tile.genCore() != null)
+	        					return true;
+	        			}
+	        		}
+            	}
+            }
+        }
+        return false;
+	}
+	
+	public static boolean hasZoneOwner(TileCore core, World world, int x, int y, int z, int radius){
+		int radiusSquared = radius * radius;
+		
+		for(int i = radius * -1; i <= radius; ++i)
+        {
+            for(int j = radius * -1; j <= radius; ++j)
+            {
+            	for(int k = radius * -1; k <= radius; ++k){
+	            	int distance = ((i * i) + (j * j) + (k * k));
+	        		if(distance <= radiusSquared && world.blockExists(x + i, y+ j, z + k)){
+	        			if(x == x + i && y == y + j && z == z + k)
+	        				continue;
+	        			
+	        			Block block = world.getBlock(x + i, y + j, z + k);
+	        			if(block == BlockRegistry.crootSapling || block instanceof BlockCore)
+	        				return true;
+	        			
+	        			if(core != null && block instanceof BlockCroot){
+	        				TileCroot tile = (TileCroot) world.getTileEntity(x + i, y + j, z + k);
+	        				if(tile != null && tile.getForm() != null && tile.getForm().coreCoord != null&& !tile.getForm().coreCoord.equals(core.getCoords()))
+	        					return core.getForm().getPowerTotal() < tile.getForm().getPowerTotal(); //TODO: FIX CONFLICT BETWEEN CORES!
+	        			}
+	        		}
+            	}
+            }
+        }
+        return false;
+	}
 	
 	public static void spawnCircle(World world, int x, int y, int z, int radius, Block outer, Block inner){
 		int radiusOutsideSquared = radius * radius;
@@ -183,27 +257,29 @@ public class CrootHelper {
 		return 0 < star.astar(a, b).size();
 	}
 	
-	public static Set<RegisteredCoord> getEdges(RegisteredCoord node){
-		Set<RegisteredCoord> edges = new HashSet<RegisteredCoord>();
+	public static Set<WorldCoord> getEdges(World world, WorldCoord node){
+		Set<WorldCoord> edges = new HashSet<WorldCoord>();
 		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS){
 			if(dir == ForgeDirection.UNKNOWN)
 				continue;
-			RegisteredCoord coord = new RegisteredCoord(node.getWorld(), node.x + dir.offsetX, node.y + dir.offsetY, node.z + dir.offsetZ);
+			WorldCoord coord = new WorldCoord(node.x + dir.offsetX, node.y + dir.offsetY, node.z + dir.offsetZ, world.provider.dimensionId);
 			edges.add(coord);
 		}
 		return edges;
 	}
 	
-	public static Set<RegisteredCoord> safe(Set<RegisteredCoord> unkowns, RegisteredCoord startPoint){
-		Set<RegisteredCoord> safe = new HashSet<RegisteredCoord>(); //Identiferade unkowns + kringliggande punkter
-		Queue<RegisteredCoord> openQueue = new ArrayDeque<RegisteredCoord>(); //Identiferade Unkowns
+	public static Set<WorldCoord> safe(World world, Set<WorldCoord> unkowns, WorldCoord startPoint){
+		Set<WorldCoord> safe = new HashSet<WorldCoord>(); //Identiferade unkowns + kringliggande punkter
+		Queue<WorldCoord> openQueue = new ArrayDeque<WorldCoord>(); //Identiferade Unkowns
 		
 		openQueue.add(startPoint);
 		
 		while(!openQueue.isEmpty()){
-			RegisteredCoord current = openQueue.poll();
-			Set<RegisteredCoord> edges = getEdges(current);
-			for(RegisteredCoord edge : edges){
+			WorldCoord current = openQueue.poll();
+			if(!current.isValid(world))
+				continue;
+			Set<WorldCoord> edges = getEdges(world, current);
+			for(WorldCoord edge : edges){
 				if(unkowns.contains(edge) && !safe.contains(edge)){
 					openQueue.add(edge);
 					safe.add(edge);
@@ -216,12 +292,12 @@ public class CrootHelper {
 		return safe;
 	}
 	
-	public static Set<RegisteredCoord> unsafe(Set<RegisteredCoord> unkowns, RegisteredCoord startPoint){
+	public static Set<WorldCoord> unsafe(World world, Set<WorldCoord> unkowns, WorldCoord startPoint){
 		System.out.println("UNKOWNS: " + unkowns.size());
-		Set<RegisteredCoord> safe = safe(unkowns, startPoint);
+		Set<WorldCoord> safe = safe(world, unkowns, startPoint);
 		System.out.println("SAFE: " + safe.size());
-		Set<RegisteredCoord> unsafe = new HashSet<RegisteredCoord>();
-		for(RegisteredCoord coord : unkowns){
+		Set<WorldCoord> unsafe = new HashSet<WorldCoord>();
+		for(WorldCoord coord : unkowns){
 			if(!safe.contains(coord))
 				unsafe.add(coord);
 		}
@@ -229,20 +305,20 @@ public class CrootHelper {
 		return unsafe;
 	}
 	
-	public static Set<RegisteredCoord> unregistered(World world, RegisteredCoord startPoint){
-		Set<RegisteredCoord> unregistered = new HashSet<RegisteredCoord>(); //Identiferade unowned croots
-		Queue<RegisteredCoord> openQueue = new ArrayDeque<RegisteredCoord>(); //Identiferade potentiella croots
+	public static Set<WorldCoord> unregistered(World world, WorldCoord startPoint){
+		Set<WorldCoord> unregistered = new HashSet<WorldCoord>(); //Identiferade unowned croots
+		Queue<WorldCoord> openQueue = new ArrayDeque<WorldCoord>(); //Identiferade potentiella croots
 		
 		openQueue.add(startPoint);
 		unregistered.add(startPoint);
 		
 		while(!openQueue.isEmpty()){
-			RegisteredCoord current = openQueue.poll();
-			Set<RegisteredCoord> edges = getEdges(current);
-			for(RegisteredCoord edge : edges){
-				if(!edge.isValid())
+			WorldCoord current = openQueue.poll();
+			Set<WorldCoord> edges = getEdges(world, current);
+			for(WorldCoord edge : edges){
+				if(!edge.isValid(world))
 					continue;
-				if(edge.hasCore())
+				if(edge.hasCore(world))
 					continue;
 				
 				if(!unregistered.contains(edge)){

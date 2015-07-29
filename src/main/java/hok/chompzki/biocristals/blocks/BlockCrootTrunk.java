@@ -1,8 +1,8 @@
 package hok.chompzki.biocristals.blocks;
 
 import hok.chompzki.biocristals.BioCristalsMod;
-import hok.chompzki.biocristals.blocks.croot.BlockMember;
-import hok.chompzki.biocristals.blocks.croot.TileCrootMember;
+import hok.chompzki.biocristals.croot.BlockCroot;
+import hok.chompzki.biocristals.croot.TileCroot;
 import hok.chompzki.biocristals.tile_enteties.TileCrootOneMember;
 
 import java.util.List;
@@ -21,11 +21,11 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-public class BlockCrootTrunk extends BlockMember {
+public class BlockCrootTrunk extends BlockCroot {
 
 	public static final String[] subtypes = new String[] {"normal"};
     private static final IIcon[] icons = new IIcon[subtypes.length];
-    public static final String NAME = "croot_trunk";
+    public static final String NAME = "crootTrunk";
     
     public BlockCrootTrunk()
     {

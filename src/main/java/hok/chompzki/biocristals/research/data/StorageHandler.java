@@ -35,6 +35,9 @@ public class StorageHandler {
 	
 	@SubscribeEvent
 	public void load(WorldEvent.Load event){
+		if(event.world.isRemote)
+			return;
+		
 		String dict = event.world.getSaveHandler().getWorldDirectoryName();
 		if(dict.equals("none")){
 			return;
@@ -77,6 +80,9 @@ public class StorageHandler {
 	
 	@SubscribeEvent
 	public void save(WorldEvent.Save event){
+		if(event.world.isRemote)
+			return;
+		
 		String dict = event.world.getSaveHandler().getWorldDirectoryName();
 		if(dict.equals("none")){
 			return;

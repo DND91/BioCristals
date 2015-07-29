@@ -1,9 +1,11 @@
 package hok.chompzki.biocristals.client;
 
 import hok.chompzki.biocristals.api.IGrowthCristal;
-import hok.chompzki.biocristals.blocks.croot.ICrootPowerGen;
+import hok.chompzki.biocristals.croot.ICrootCore;
+import hok.chompzki.biocristals.croot.TileCore;
 import hok.chompzki.biocristals.registrys.ItemRegistry;
 import hok.chompzki.biocristals.research.data.DataHelper;
+import hok.chompzki.biocristals.tile_enteties.TileReagentPurifier;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -46,6 +48,10 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 public class GuiInventoryOverlay extends Gui{
 	
 	public static CraftingHelper craftingHelper = new CraftingHelper();
+	public static GuiUnlockedResearch unlockedGui = new GuiUnlockedResearch(Minecraft.getMinecraft());
+	
+	private static  int tick = 0;
+	private static  int tickMod = 20;
 	
 	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
     public void onEventGui(InitGuiEvent.Post event)
@@ -59,73 +65,92 @@ public class GuiInventoryOverlay extends Gui{
         
     }
 	
+	
+	
 	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
     public void onEventDraw(RenderGameOverlayEvent.Pre event)
     {
+			tick++;
+			
 			Minecraft mc = Minecraft.getMinecraft();
 			EntityPlayer player = mc.thePlayer;
 			World world = mc.theWorld;
 			ItemStack currentStack = player.getCurrentEquippedItem();
 			
-			if(currentStack == null || currentStack.getItem() != ItemRegistry.attuner)
-				return;
-			
-			int bx = Minecraft.getMinecraft().objectMouseOver.blockX;
-			int by = Minecraft.getMinecraft().objectMouseOver.blockY;
-			int bz = Minecraft.getMinecraft().objectMouseOver.blockZ;
-			Entity entity  = Minecraft.getMinecraft().objectMouseOver.entityHit;
-			if(entity != null)
-				entity = world.getEntityByID(entity.getEntityId());
-			
-			if(entity != null && entity instanceof EntityLiving){
-				int x = 0;
-				int y = 20;
+			if(currentStack != null && currentStack.getItem() == ItemRegistry.attuner){
+				int bx = Minecraft.getMinecraft().objectMouseOver.blockX;
+				int by = Minecraft.getMinecraft().objectMouseOver.blockY;
+				int bz = Minecraft.getMinecraft().objectMouseOver.blockZ;
+				Entity entity  = Minecraft.getMinecraft().objectMouseOver.entityHit;
+				if(entity != null)
+					entity = world.getEntityByID(entity.getEntityId());
 				
-				EntityLiving target = (EntityLiving)entity;
-				if(target.isPotionActive(Potion.moveSlowdown)){
+				if(entity != null && entity instanceof EntityLiving){
+					int x = 0;
+					int y = 20;
+					
+					EntityLiving target = (EntityLiving)entity;
+					if(target.isPotionActive(Potion.moveSlowdown)){
+						GL11.glPushMatrix();
+						ArrayList<String> list = new ArrayList<String>();
+						list.add(StatCollector.translateToLocal(target.getCommandSenderName()));
+						list.add("Is paralysed");
+						drawHoveringText(list, x, y, mc.fontRenderer);
+						GL11.glPopMatrix();
+					}
+					
+				}else if(!world.isAirBlock(bx, by, bz) && world.getTileEntity(bx, by, bz) != null && world.getTileEntity(bx, by, bz) instanceof TileCore){
+					int x = 0;
+					int y = 20;
+					Block block = world.getBlock(bx, by, bz);
+					TileCore tile = (TileCore) world.getTileEntity(bx, by, bz);
+					
+					
 					GL11.glPushMatrix();
 					ArrayList<String> list = new ArrayList<String>();
-					list.add(StatCollector.translateToLocal(target.getCommandSenderName()));
-					list.add("Is paralysed");
+					
+					list.add(StatCollector.translateToLocal(block.getLocalizedName()));
+					list.add("~ Power ~");
+					list.add("Total: " + tile.totalPower);
+					list.add("Usage: " + tile.powerUsage);
+					
 					drawHoveringText(list, x, y, mc.fontRenderer);
 					GL11.glPopMatrix();
-					return;
+					
+				}else if(!world.isAirBlock(bx, by, bz) && world.getBlock(bx, by, bz) instanceof IGrowthCristal){
+					int x = 0;
+					int y = 20;
+					Block block = world.getBlock(bx, by, bz);
+					IGrowthCristal cristal = (IGrowthCristal)block;
+					GL11.glPushMatrix();
+					ArrayList<String> list = new ArrayList<String>();
+					
+					list.add(StatCollector.translateToLocal(block.getLocalizedName()));
+					list.add(cristal.isMature(world, player, currentStack, bx, by, bz) ? "Mature: True" : "Mature: False");
+					
+					drawHoveringText(list, x, y, mc.fontRenderer);
+					GL11.glPopMatrix();
+					
+				}else if(!world.isAirBlock(bx, by, bz) && world.getTileEntity(bx, by, bz) != null && world.getTileEntity(bx, by, bz) instanceof TileReagentPurifier){
+					int x = 0;
+					int y = 20;
+					Block block = world.getBlock(bx, by, bz);
+					TileReagentPurifier tile = (TileReagentPurifier) world.getTileEntity(bx, by, bz);
+					
+					GL11.glPushMatrix();
+					ArrayList<String> list = new ArrayList<String>();
+					
+					list.add((block.getLocalizedName()));
+					list.add(tile.getTimeLeft() <= 0 ? "Not working..." : "Working on " + tile.getWork());
+					list.add(tile.getStored() == null ? "Not choking" : "Choking on " + tile.getStored().getDisplayName());
+					
+					drawHoveringText(list, x, y, mc.fontRenderer);
+					GL11.glPopMatrix();
+					
 				}
-				
-			}else if(!world.isAirBlock(bx, by, bz) && world.getTileEntity(bx, by, bz) != null && world.getTileEntity(bx, by, bz) instanceof ICrootPowerGen){
-				int x = 0;
-				int y = 20;
-				Block block = world.getBlock(bx, by, bz);
-				ICrootPowerGen tile = (ICrootPowerGen) world.getTileEntity(bx, by, bz);
-				
-				GL11.glPushMatrix();
-				ArrayList<String> list = new ArrayList<String>();
-				
-				list.add(StatCollector.translateToLocal(block.getLocalizedName()));
-				list.add("~ Power ~");
-				list.add("Total: " + tile.getTotalPower());
-				list.add("Free: " + tile.getFreePower());
-				
-				drawHoveringText(list, x, y, mc.fontRenderer);
-				GL11.glPopMatrix();
-				
-			}else if(!world.isAirBlock(bx, by, bz) && world.getBlock(bx, by, bz) instanceof IGrowthCristal){
-				int x = 0;
-				int y = 20;
-				Block block = world.getBlock(bx, by, bz);
-				IGrowthCristal cristal = (IGrowthCristal)block;
-				GL11.glPushMatrix();
-				ArrayList<String> list = new ArrayList<String>();
-				
-				list.add(StatCollector.translateToLocal(block.getLocalizedName()));
-				list.add(cristal.isMature(world, player, currentStack, bx, by, bz) ? "Mature: True" : "Mature: False");
-				
-				drawHoveringText(list, x, y, mc.fontRenderer);
-				GL11.glPopMatrix();
-				
 			}
+			this.unlockedGui.updateResearchWindow();
     }
-
 	
 	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
     public void onEventDraw(DrawScreenEvent.Post event)
@@ -143,6 +168,8 @@ public class GuiInventoryOverlay extends Gui{
 			if(DataHelper.belongsTo(player, currentStack))
 				this.craftingHelper.drawCurrentSelected(currentScreen, mc, world, player, currentStack, event.mouseX, event.mouseY, event.renderPartialTicks);
 		}
+		
+		this.unlockedGui.updateResearchWindow();
     }
 	
 	

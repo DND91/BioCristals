@@ -6,9 +6,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import hok.chompzki.biocristals.client.GuiCraftRecipe;
+import hok.chompzki.biocristals.client.GuiCraft;
 import hok.chompzki.biocristals.client.GuiCraftingHelper;
-import hok.chompzki.biocristals.client.GuiCristalRecipe;
 import hok.chompzki.biocristals.client.GuiInventoryOverlay;
 import hok.chompzki.biocristals.registrys.BlockRegistry;
 import hok.chompzki.biocristals.registrys.ItemRegistry;
@@ -31,10 +30,11 @@ public class PumpkinCristalisation extends ArticleContent {
 			s += "All cristals need to be placed near croot.";
 			break;
 		case 1:
-			s += "       ~ Crystallization ~\n";
-			s += KnowledgeDescriptions.transformWeakCristal(new ItemStack(Blocks.pumpkin), new ItemStack(ItemRegistry.bioReagent), new ItemStack(BlockRegistry.biomass), new ItemStack(ItemRegistry.attuner));
+			s += KnowledgeDescriptions.getDisplayName(code) + "\n\n";
+			s += "       ~ Structure ~\n";
+			s += KnowledgeDescriptions.getStructure(code);
 			s += "       ~ Creation ~\n\n";
-			s += KnowledgeDescriptions.transformOutput(new ItemStack(BlockRegistry.pumpkinCristal));
+			s += KnowledgeDescriptions.getResult(code);
 			s += "\n";
 			s += "1. Place biomass\n";
 			s += "2. Throw biological reagent\n";
@@ -53,6 +53,6 @@ public class PumpkinCristalisation extends ArticleContent {
 	
 	@Override
 	public GuiCraftingHelper getFaved() {
-		return new GuiCristalRecipe(Minecraft.getMinecraft(), code, new ItemStack(BlockRegistry.pumpkinCristal), KnowledgeDescriptions.transformWeakCristal(new ItemStack(Blocks.pumpkin), new ItemStack(ItemRegistry.bioReagent), new ItemStack(BlockRegistry.biomass), new ItemStack(ItemRegistry.attuner)));
+		return new GuiCraft(Minecraft.getMinecraft(), code);
 	}
 }

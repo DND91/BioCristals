@@ -13,10 +13,8 @@ import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import hok.chompzki.biocristals.client.GuiCraftRecipe;
+import hok.chompzki.biocristals.client.GuiCraft;
 import hok.chompzki.biocristals.client.GuiCraftingHelper;
-import hok.chompzki.biocristals.client.GuiCristalRecipe;
-import hok.chompzki.biocristals.client.GuiFleshRecipe;
 import hok.chompzki.biocristals.client.GuiInventoryOverlay;
 import hok.chompzki.biocristals.registrys.BlockRegistry;
 import hok.chompzki.biocristals.registrys.ItemRegistry;
@@ -27,34 +25,19 @@ import hok.chompzki.biocristals.research.gui.KnowledgeDescriptions;
 
 public class PuddingSplit extends ArticleContent {
 	
-	public static EntityLivingBase slime = null;
-	
-	public EntityLivingBase getEntity(){
-		if(slime != null)
-			return slime;
-		
-		slime = new EntitySlime(Minecraft.getMinecraft().theWorld);
-		try{
-			Method setSlimeSize = EntitySlime.class.getDeclaredMethod("setSlimeSize", int.class);
-			setSlimeSize.setAccessible(true);
-			setSlimeSize.invoke(slime, 1);
-		} catch (Exception e) {
-		}
-		return slime;
-	}
-
 	@Override
 	public String textOnPage(EnumContent content, int p){
 		String s = "";
 		switch(p){
 		case 0:
-			s += "";
+			s += "D'berry found that Flesh Transformation also works on slimes...";
 			break;
 		case 1:
-			s += "    ~ Crystallization ~\n";
-			s += KnowledgeDescriptions.transformWeakFlesh(new ItemStack(ItemRegistry.bioReagent), getEntity(), new ItemStack(ItemRegistry.attuner));
+			s += KnowledgeDescriptions.getDisplayName(code) + "\n\n";
+			s += "       ~ Structure ~\n";
+			s += KnowledgeDescriptions.getStructure(code);
 			s += "       ~ Creation ~\n\n";
-			s += KnowledgeDescriptions.transformOutput(new ItemStack(Items.slime_ball));
+			s += KnowledgeDescriptions.getResult(code);
 			s += "\n";
 			s += "1. Place Sulphur Tuft\n";
 			s += "2. Throw biological reagent\n";
@@ -74,6 +57,6 @@ public class PuddingSplit extends ArticleContent {
 
 	@Override
 	public GuiCraftingHelper getFaved() {
-		return new GuiFleshRecipe(Minecraft.getMinecraft(), code, new ItemStack(ItemRegistry.bioReagent), getEntity(), new ItemStack(ItemRegistry.attuner), new ItemStack(Items.slime_ball));
+		return new GuiCraft(Minecraft.getMinecraft(), code);
 	}
 }

@@ -1,5 +1,6 @@
 package hok.chompzki.biocristals.blocks;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -15,9 +16,11 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
@@ -28,11 +31,12 @@ public class BlockCrootSapling extends Block implements IGrowthCristal {
 	
 	public static final String[] subtypes = new String[] {"normal"};
     private static final IIcon[] icons = new IIcon[subtypes.length];
-    public static final String NAME = "croot_sapling";
+    public static final String NAME = "crootSapling";
     
     public BlockCrootSapling()
     {
     	super(Material.wood);
+    	
         float f = 0.4F;
         this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, f * 2.0F, 0.5F + f);
         this.setTickRandomly(true);
@@ -95,7 +99,16 @@ public class BlockCrootSapling extends Block implements IGrowthCristal {
     
     public boolean canBlockStay(World world, int x, int y, int z)
     {
-        return  !world.isAirBlock(x, y-1, z);
+    	if(world.isAirBlock(x, y-1, z))
+    		return false;
+    	Block block = world.getBlock(x, y-1, z);
+    	if(!CrootHelper.startsOn(block))
+    		return false;
+    	
+    	if(CrootHelper.hasZoneOwner(world, x, y, z, 16))
+    		return false;	
+    	
+        return  true;
     }
     
     public boolean canPlaceBlockAt(World world, int x, int y, int z)

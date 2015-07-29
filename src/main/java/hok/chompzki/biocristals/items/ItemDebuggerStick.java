@@ -6,8 +6,9 @@ import java.util.List;
 import java.util.UUID;
 
 import hok.chompzki.biocristals.BioCristalsMod;
-import hok.chompzki.biocristals.blocks.croot.ICrootPowerGen;
 import hok.chompzki.biocristals.croot.CrootHelper;
+import hok.chompzki.biocristals.croot.ICroot;
+import hok.chompzki.biocristals.croot.ICrootCore;
 import hok.chompzki.biocristals.registrys.BlockRegistry;
 import hok.chompzki.biocristals.research.data.PlayerResearch;
 import hok.chompzki.biocristals.research.data.PlayerStorage;
@@ -50,12 +51,8 @@ public class ItemDebuggerStick extends Item {
 		if(world.isRemote)
 			return true;
 		
-		TileEntity te = world.getTileEntity(x, y, z);
-		if(te != null && te instanceof ICrootPowerGen){
-			ICrootPowerGen gen = (ICrootPowerGen) te;
-			System.out.println("FREE POWER: " + gen.getFreePower() + "/" + gen.getTotalPower());
-			
-		}
+		
+		
         return true;
     }
 }

@@ -3,6 +3,7 @@ item.BioCristals_itemBioReagent.name=Biological Reagent
 item.BioCristals_itemCollector.name=Collector
 item.BioCristals_itemCatalystInjector.name=Catalyst Inducer
 item.BioCristals_itemResearchBook.name=Research Book
+item.BioCristals_itemBioBlob.name=Bio Blob
 tile.BioCristals_blockBiomass.name=Biomass
 tile.BioCristals_blockWheatCristal.name=Wheat Cristal
 tile.BioCristals_blockCarrotCristal.name=Carrot Cristal
@@ -12,6 +13,16 @@ tile.BioCristals_blockMelonCristal.name=Melon Cristal
 tile.BioCristals_blockPumpkinCristal.name=Pumpkin Cristal
 tile.BioCristals_blockSulphurTuft.name=Sulphur Tuft
 tile.BioCristals_blockReagentPurifier.name=Reagent Purifier
+tile.BioCristals_crootSapling.name=Croot Sapling
+tile.BioCristals_blockPromogenitus.name=Promogenitus
+tile.BioCristals_crootTrunk.name=Croot Trunk
+tile.BioCristals_crootRoots.name=Croot Roots
+tile.BioCristals_crootLeaves.name=Croot Leaves
+tile.BioCristals_crootCore.name=Croot Core
+tile.BioCristals_crootStreamStem.name=Croot Stem
+tile.BioCristals_blockCrootHollow.name=Croot Hollow
+
+
 itemGroup.Bio Cristal=Bio Cristal
 
 research.babySteps.title=Baby Steps
@@ -24,9 +35,18 @@ research.reaction.title=Biological Reagent
 research.reaction.text=Author D'rry
 research.wheatCristalisation.title=Cristalisation: Wheat
 research.wheatCristalisation.text=Author Rot
+research.carrotCristalisation.title=Cristalisation: Carrot
+research.carrotCristalisation.text=Author Rot
+research.reedsCristalisation.title=Cristalisation: Reeds
+research.reedsCristalisation.text=Author Rot
+research.potatoCristalisation.title=Cristalisation: Potato
+research.potatoCristalisation.text=Author Rot
+research.melonCristalisation.title=Cristalisation: Melon
+research.melonCristalisation.text=Author Rot
+research.pumpkinCristalisation.title=Cristalisation: Pumpkin
+research.pumpkinCristalisation.text=Author Rot
 research.cubeMass.title=Cubic Biomass
-research.cubeMass.text=Author Carla & Fleur
-
+research.cubeMass.text=Author: Carla & Fleur
 research.rabarberpaj.title=Rabarberpaj
 research.rabarberpaj.text=Knowledge founder
 research.dberry.title=Ellen D'berry
@@ -35,7 +55,49 @@ research.carla_fleur.title=Carla & Fleur
 research.carla_fleur.text=Labratory explorers
 research.cara_rot.title=Carra Rot
 research.cara_rot.text=Crystal Maniac
-
 research.BookTutorial.title=Book Tutorial
 research.BookTutorial.text=A try in helping you...
 
+research.tuft.title=Tuft
+research.tuft.text=Stand still...
+
+research.sheepSkin.title=Sheep Skin
+research.sheepSkin.text=Author: D'berry
+research.featherFriend.title=Feather Friend
+research.featherFriend.text=Author: D'berry
+research.widowMaker.title=Widow Maker
+research.widowMaker.text=Author: D'berry
+research.pinkBlouse.title=Pink Blouse
+research.pinkBlouse.text=Author: D'berry
+research.fleshRapture.title=Flesh Rapture
+research.fleshRapture.text=Author: D'berry
+research.puddingSplit.title=Pudding Split
+research.puddingSplit.text=Author: D'berry
+research.boneWreck.title=Bone Wreck
+research.boneWreck.text=Author: D'berry
+research.leatherHound.title=Leather Hound
+research.leatherHound.text=Author: D'berry
+research.leatherBeast.title=Leather Beast
+research.leatherBeast.text=Author: D'berry
+research.darkWarp.title=Dark Warp
+research.darkWarp.text=Author: D'berry
+research.payingTaxes.title=Paying Taxes
+research.payingTaxes.text=Author: D'berry
+
+research.crootStem.title=Croot Stem
+research.crootStem.text=Author: Rabarberpaj
+research.crootHollow.title=Croot Hollow
+research.crootHollow.text=Author: Rabarberpaj
+research.purifier.title=Purifing
+research.purifier.text=Author: Carla & Fleur
+
+research.biomassmk1.title=Biomass MK1
+research.biomassmk1.text=Author: Carla & Fleur
+research.bioBlob.title=Biomass MK1
+research.bioBlob.text=Author: Carla & Fleur
+research.promogenitus.title=Promogenitus
+research.promogenitus.text=Author: Carla & Fleur
+
+Research.get=RESEARCH UNLOCKED
+
+container.croot.hollow=Croot Hollow

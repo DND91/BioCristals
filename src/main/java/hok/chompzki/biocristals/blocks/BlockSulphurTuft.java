@@ -1,8 +1,8 @@
 package hok.chompzki.biocristals.blocks;
 
 import hok.chompzki.biocristals.BioCristalsMod;
-import hok.chompzki.biocristals.blocks.croot.BlockConsumer;
-import hok.chompzki.biocristals.blocks.croot.ICrootPowerCon;
+import hok.chompzki.biocristals.croot.BlockCroot;
+import hok.chompzki.biocristals.croot.ICroot;
 import hok.chompzki.biocristals.tile_enteties.TileCrootOneConsumer;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -16,7 +16,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 
-public class BlockSulphurTuft extends BlockConsumer {
+public class BlockSulphurTuft extends BlockCroot {
 	
 	public static final String NAME = "blockSulphurTuft";
 	
@@ -53,8 +53,7 @@ public class BlockSulphurTuft extends BlockConsumer {
 		if(entity instanceof EntityPlayer)
 			return;
 		
-		ICrootPowerCon con = (ICrootPowerCon) world.getTileEntity(x, y, z);
-		if(!con.hasPower())
+		if(!stable(world, x, y, z))
 			return;
 		
 		
@@ -79,7 +78,7 @@ public class BlockSulphurTuft extends BlockConsumer {
 	
 	@Override
 	public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
-		return new TileCrootOneConsumer(1);
+		return new TileCrootOneConsumer(-10);
 	}
 
 }

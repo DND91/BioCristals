@@ -4,7 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import hok.chompzki.biocristals.client.GuiCraftRecipe;
+import hok.chompzki.biocristals.client.GuiCraft;
 import hok.chompzki.biocristals.client.GuiCraftingHelper;
 import hok.chompzki.biocristals.client.GuiInventoryOverlay;
 import hok.chompzki.biocristals.registrys.BlockRegistry;
@@ -28,11 +28,11 @@ public class CrootSapling extends ArticleContent {
 			s += "such as self reparing and slow growing rather then the normal spurt growths found in many of nature plants. ";
 			break;
 		case 1:
-			s += " Croot Sapling\n\n";
+			s += KnowledgeDescriptions.getDisplayName(code) + "\n\n";
 			s += "       ~ Structure ~\n";
-			s += KnowledgeDescriptions.transformRecipe(new ItemStack(BlockRegistry.crootSapling));
+			s += KnowledgeDescriptions.getStructure(code);
 			s += "       ~ Creation ~\n\n";
-			s += KnowledgeDescriptions.transformOutput(new ItemStack(BlockRegistry.crootSapling));
+			s += KnowledgeDescriptions.getResult(code);
 			s += "\nNOTE: This plant will grow over time and eat anything in it's path...!";
 			break;
 
@@ -48,7 +48,7 @@ public class CrootSapling extends ArticleContent {
 
 	@Override
 	public GuiCraftingHelper getFaved() {
-		return new GuiCraftRecipe(Minecraft.getMinecraft(), code, new ItemStack(BlockRegistry.crootSapling));
+		return new GuiCraft(Minecraft.getMinecraft(), code);
 	}
 	
 }

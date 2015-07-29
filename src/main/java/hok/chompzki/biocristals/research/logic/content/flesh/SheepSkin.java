@@ -9,10 +9,8 @@ import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import hok.chompzki.biocristals.client.GuiCraftRecipe;
+import hok.chompzki.biocristals.client.GuiCraft;
 import hok.chompzki.biocristals.client.GuiCraftingHelper;
-import hok.chompzki.biocristals.client.GuiCristalRecipe;
-import hok.chompzki.biocristals.client.GuiFleshRecipe;
 import hok.chompzki.biocristals.client.GuiInventoryOverlay;
 import hok.chompzki.biocristals.registrys.BlockRegistry;
 import hok.chompzki.biocristals.registrys.ItemRegistry;
@@ -28,13 +26,17 @@ public class SheepSkin extends ArticleContent {
 		String s = "";
 		switch(p){
 		case 0:
-			s += "";
+			s += "While research on the 'Sulphur Tuft' continued, D'berry need a test subject that didn't ";
+			s += "brake her or the lab, something soft and bouncy. That's when she bought some sheeps. ";
+			s += "Becouse of this the first subject that went through a infamous 'flesh ripping' or more academically called ";
+			s += "'Flesh Transformation' was a sheep. ";
 			break;
 		case 1:
-			s += "    ~ Crystallization ~\n";
-			s += KnowledgeDescriptions.transformWeakFlesh(new ItemStack(ItemRegistry.bioReagent), new EntitySheep(Minecraft.getMinecraft().theWorld), new ItemStack(ItemRegistry.attuner));
+			s += KnowledgeDescriptions.getDisplayName(code) + "\n\n";
+			s += "       ~ Structure ~\n";
+			s += KnowledgeDescriptions.getStructure(code);
 			s += "       ~ Creation ~\n\n";
-			s += KnowledgeDescriptions.transformOutput(new ItemStack(Blocks.wool));
+			s += KnowledgeDescriptions.getResult(code);
 			s += "\n";
 			s += "1. Place Sulphur Tuft\n";
 			s += "2. Throw biological reagent\n";
@@ -53,6 +55,6 @@ public class SheepSkin extends ArticleContent {
 
 	@Override
 	public GuiCraftingHelper getFaved() {
-		return new GuiFleshRecipe(Minecraft.getMinecraft(), code, new ItemStack(ItemRegistry.bioReagent), new EntitySheep(Minecraft.getMinecraft().theWorld), new ItemStack(ItemRegistry.attuner), new ItemStack(Blocks.wool));
+		return new GuiCraft(Minecraft.getMinecraft(), code);
 	}
 }

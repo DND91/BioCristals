@@ -5,14 +5,20 @@ import net.minecraft.item.ItemStack;
 
 public class RecipePurifier {
 	
-	private ItemStack result = null;
-	private final ItemStack filter;
-	private ItemStack[] cost = null;
+	public String name;
+	public ItemStack filter;
+	public String code;
+	public ItemStack[] result;
+	public ItemStack[] cost;
+	public Integer time;
 	
-	public RecipePurifier(ItemStack output, ItemStack filter, ItemStack... input){
+	public RecipePurifier(String name, ItemStack filter, String code, ItemStack[] input, ItemStack[] output, Integer time){
+		this.name = name;
+		this.filter = filter;
 		this.result = output;
 		this.cost = input;
-		this.filter = filter;
+		this.code = code;
+		this.time = time;
 	}
 	
 	public boolean affordsItemStack(ItemStack stack, IInventory inv){
@@ -60,12 +66,24 @@ public class RecipePurifier {
 		}
 	}
 	
-	public ItemStack result(){
-		return result.copy();
+	public ItemStack[] result(){
+		return result;
 	}
 	
 	public ItemStack filter(){
 		return filter;
+	}
+	
+	public String code(){
+		return code;
+	}
+	
+	public Integer time(){
+		return time;
+	}
+	
+	public String name(){
+		return name;
 	}
 	
 	public static boolean areItemStacksEqual(ItemStack p_77989_0_, ItemStack p_77989_1_)

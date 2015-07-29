@@ -1,5 +1,7 @@
 package hok.chompzki.biocristals.registrys;
 
+import hok.chompzki.biocristals.recipes.PurifierContainer;
+import hok.chompzki.biocristals.recipes.PurifierData;
 import hok.chompzki.biocristals.recipes.RecipeContainer;
 import hok.chompzki.biocristals.recipes.RecipeData;
 import hok.chompzki.biocristals.recipes.RecipePurifier;
@@ -24,7 +26,10 @@ import cpw.mods.fml.common.registry.GameRegistry;
 public class RecipeRegistry {
 	
 	public static List<RecipeContainer> recipes = new ArrayList<RecipeContainer>();
+	
+	public static List<PurifierContainer> purifierContainers = new ArrayList<PurifierContainer>();
 	public static Map<Item, List<RecipePurifier>> purifierRecipes = new HashMap<Item, List<RecipePurifier>>();
+	public static Map<String, RecipePurifier> namtToPurifierRecipes = new HashMap<String, RecipePurifier> ();
 	
 	public static void register(RecipePurifier pur){
 		ItemStack filter = pur.filter();
@@ -32,6 +37,11 @@ public class RecipeRegistry {
 			purifierRecipes.put(filter.getItem(), new ArrayList<RecipePurifier>());
 		List<RecipePurifier> lst = purifierRecipes.get(filter.getItem());
 		lst.add(pur);
+		namtToPurifierRecipes.put(pur.name(), pur);
+	}
+	
+	public static RecipePurifier getRecipePurifier(String name){
+		return namtToPurifierRecipes.get(name);
 	}
 	
 	public static RecipePurifier getRecipePurifier(List<ItemStack> filters, IInventory[] inputs){
@@ -50,9 +60,7 @@ public class RecipeRegistry {
 	
 	public void registerRecipes(){
 		load();
-		
-		register(new RecipePurifier(new ItemStack(ItemRegistry.bioReagent, 8), new ItemStack(Items.stick), new ItemStack(Items.wheat, 4), new ItemStack(Items.slime_ball), new ItemStack(Items.potato), new ItemStack(Blocks.dirt)));
-		register(new RecipePurifier(new ItemStack(BlockRegistry.biomass, 1), new ItemStack(Items.stick), new ItemStack(ItemRegistry.bioReagent, 8), new ItemStack(Blocks.dirt, 1)));
+		loadPurifing();
 	}
 	
 	public static void load(){
@@ -77,7 +85,7 @@ public class RecipeRegistry {
 			for(int i = 0; i < trueInput.length; i++)
 				System.out.println(trueInput[i]);
 			
-			recipes.add(new RecipeContainer(output, trueInput));
+			recipes.add(new RecipeContainer(data.code ,output, trueInput));
 		}
 		
 		for(RecipeContainer con : recipes){
@@ -92,6 +100,33 @@ public class RecipeRegistry {
 			}
 		}
 		return null;
+	}
+	
+	public static void loadPurifing(){
+		for(PurifierData data : ConfigRegistry.purifierData){
+			
+			ItemStack filter = RecipeTransformer.dataToItemStack(data.filter);
+			ItemStack[] outputs = RecipeTransformer.dataToItemStacks(data.output.split("__"));
+			ItemStack[] inputs = RecipeTransformer.dataToItemStacks(data.input.split("__"));
+			
+			System.out.println("---------------- INPUT -----------------");
+			System.out.println("CODE: " + data.code);
+			System.out.println("TIME: " + data.time);
+			System.out.println("FILTER: " + (filter == null ? "null" : filter.toString()));
+			System.out.println("INPUT: " + data.input);
+			for(int i = 0; i < inputs.length; i++)
+				System.out.println(inputs[i] == null ? "null" : inputs[i].toString());
+			System.out.println("---------------- OUTPUT -----------------");
+			System.out.println("OUTPUT: " + data.output);
+			for(int i = 0; i < outputs.length; i++)
+				System.out.println(outputs[i] == null ? "null" : outputs[i].toString());
+			
+			purifierContainers.add(new PurifierContainer(data.name, filter, data.code, inputs, outputs, data.time));
+		}
+		
+		for(PurifierContainer con : purifierContainers){
+			register(new RecipePurifier(con.name, con.filter, con.code, con.input, con.output, con.time));
+		}
 	}
 	
 }

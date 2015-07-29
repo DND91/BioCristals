@@ -36,10 +36,23 @@ public class RecipeTransformer {
 		if(data.contains("enderPearl")){
 			data = data.replace("enderPearl", "ender_pearl");
 		}
+		if(data.contains("blockIron")){
+			data = data.replace("blockIron", "iron_block");
+		}
+		if(data.contains("ingotGold")){
+			data = data.replace("ingotGold", "gold_ingot");
+		}
+		if(data.contains("blockGold")){
+			data = data.replace("blockGold", "gold_block");
+		}
+		if(data.contains("ingotIron")){
+			data = data.replace("ingotIron", "iron_ingot");
+		}
 		
 		String name;
 	    String domain = null;
 	    int meta = 0;
+	    int qunatity = 1;
 
 	    String item;
 	    int colonIndex;
@@ -47,7 +60,24 @@ public class RecipeTransformer {
 		
 		if (data.equals("empty")){
             return null;
-        }else if (data.contains(":")) {
+        }
+		
+		if(Character.isDigit(data.charAt(0))){
+			String num = "";
+			while(Character.isDigit(data.charAt(0))){
+				num += data.charAt(0);
+				data = data.substring(1);
+			}
+			
+			if(data.charAt(0) == 'x'){
+				data = data.substring(1);
+			}
+			qunatity = Integer.parseInt(num);
+		}
+		if(qunatity <= 0){
+			qunatity = 1;
+		}
+		if (data.contains(":")) {
 
             colonIndex = data.indexOf(':');
             domain = data.substring(0, colonIndex);
@@ -79,7 +109,7 @@ public class RecipeTransformer {
             		i = GameRegistry.findItem("minecraft", name);
             	}
             	
-            	stack = new ItemStack(i, 1, meta);
+            	stack = new ItemStack(i, qunatity, meta);
             	if(stack.getItem() == null)
             		return null;
             }
@@ -89,7 +119,7 @@ public class RecipeTransformer {
         		i = GameRegistry.findItem(domain, name);
         	}
         	
-        	stack = new ItemStack(i, 1, meta);
+        	stack = new ItemStack(i, qunatity, meta);
         	if(stack.getItem() == null)
         		return null;
         }else{

@@ -5,8 +5,8 @@ import java.util.List;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import hok.chompzki.biocristals.BioCristalsMod;
-import hok.chompzki.biocristals.blocks.croot.BlockMember;
-import hok.chompzki.biocristals.blocks.croot.TileCrootMember;
+import hok.chompzki.biocristals.croot.BlockCroot;
+import hok.chompzki.biocristals.croot.TileCroot;
 import hok.chompzki.biocristals.tile_enteties.TileCrootOneMember;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -20,11 +20,11 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-public class BlockCrootLeaves extends BlockMember {
+public class BlockCrootLeaves extends BlockCroot {
 	
 	public static final String[] subtypes = new String[] {"normal"};
     private static final IIcon[] icons = new IIcon[subtypes.length];
-    public static final String NAME = "croot_leaves";
+    public static final String NAME = "crootLeaves";
     
     public BlockCrootLeaves()
     {
@@ -65,6 +65,6 @@ public class BlockCrootLeaves extends BlockMember {
 
 	@Override
 	public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
-		return new TileCrootOneMember(1);
+		return new TileCrootOneMember(4);
 	}
 }

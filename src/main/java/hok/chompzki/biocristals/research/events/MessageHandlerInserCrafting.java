@@ -26,17 +26,21 @@ public class MessageHandlerInserCrafting implements IMessageHandler<MessageInser
 	
 	@Override
 	public IMessage onMessage(MessageInsertCrafting message, MessageContext ctx) {
+		System.out.println("MESSAGE RECIVED!!!!!!!!!!");
 		EntityPlayer player = ctx.getServerHandler().playerEntity;
 		Container container = player.openContainer;
 		if(container == null)
 			container = player.inventoryContainer;
 		
 		if(container != null){
+			System.out.println("CONTAINER FOUND!");
 			List<SlotCrafting> craftingSlots = getCraftingSlots(container);
+			if(craftingSlots.size() == 0)
+				System.out.println("NO CRAFTING SLOTS FOUND!");
 			RecipeContainer recipe = RecipeRegistry.getRecipreFor(message.getResult());
 			if(recipe == null)
 				return null;
-			
+			System.out.println("RECIPES FOUND!");
 			for(SlotCrafting slot : craftingSlots){
 				IInventory grid = getCraftMatrix(slot);
 				if(grid == null)

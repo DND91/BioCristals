@@ -95,7 +95,7 @@ public class ItemAttuner extends Item {
 					return;
 				}
 				
-				EntityItem item = BioHelper.getFirstEntityItemWithinAABB(world, player, ItemRegistry.bioReagent, 10, 10, 10);
+				EntityItem item = BioHelper.getFirstEntityItemWithinAABB(world, player, ItemRegistry.bioReagent, 2, 2, 2);
 				if(item == null){
 					player.addChatMessage(new ChatComponentText("Crystaline transformation is missing a reagent..."));
 					return;
@@ -115,7 +115,7 @@ public class ItemAttuner extends Item {
 					return;
 				}
 				
-				EntityItem item = BioHelper.getFirstEntityItemWithinAABB(world, player, ItemRegistry.bioReagent, 10, 10, 10);
+				EntityItem item = BioHelper.getFirstEntityItemWithinAABB(world, player, ItemRegistry.bioReagent, 2, 2, 2);
 				if(item == null){
 					player.addChatMessage(new ChatComponentText("Crystaline transformation is missing a reagent..."));
 					return;

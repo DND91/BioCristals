@@ -1,8 +1,8 @@
 package hok.chompzki.biocristals.tile_enteties;
 
-import hok.chompzki.biocristals.blocks.croot.TileCrootMember;
+import hok.chompzki.biocristals.croot.TileCroot;
 
-public class TileCrootOneMember extends TileCrootMember {
+public class TileCrootOneMember extends TileCroot {
 	
 	public TileCrootOneMember(){
 		

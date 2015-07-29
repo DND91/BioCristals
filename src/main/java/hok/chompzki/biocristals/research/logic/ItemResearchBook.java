@@ -36,6 +36,9 @@ public class ItemResearchBook extends Item {
 		
 		if(DataHelper.hasOwner(itemstack)){
 			list.add("Owner: " + DataHelper.getOwnerName(itemstack, par2EntityPlayer.worldObj));
+			list.add("OWNER: " + DataHelper.getOwner(itemstack));
+			list.add("YOU: " + par2EntityPlayer.getGameProfile().getId().toString());
+			
 		}else{
 			list.add("Owner: None");
 		}
@@ -53,6 +56,9 @@ public class ItemResearchBook extends Item {
 		
 		if(!DataHelper.hasOwner(itemstack))
 			return itemstack;
+		
+		System.out.println(world.isRemote + "OWNER: " + DataHelper.getOwner(itemstack));
+		System.out.println(world.isRemote + "YOU: " + player.getGameProfile().getId().toString());
 		
 		player.openGui(BioCristalsMod.instance, 100, world, (int)player.posX, (int)player.posY, (int)player.posZ);
 		

@@ -4,7 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
-import hok.chompzki.biocristals.client.GuiCraftRecipe;
+import hok.chompzki.biocristals.client.GuiCraft;
 import hok.chompzki.biocristals.client.GuiCraftingHelper;
 import hok.chompzki.biocristals.client.GuiInventoryOverlay;
 import hok.chompzki.biocristals.registrys.BlockRegistry;
@@ -29,11 +29,11 @@ public class SulphurTuft extends ArticleContent {
 			s += "Needs to be placed close to croot. ";
 			break;
 		case 1:
-			s += "D'berrys Sulphur Tuft\n\n";
-			s += "        ~ Structure ~\n";
-			s += KnowledgeDescriptions.transformRecipe(new ItemStack(BlockRegistry.sulphurTuft));
-			s += "        ~ Creation ~\n\n";
-			s += KnowledgeDescriptions.transformOutput(new ItemStack(BlockRegistry.sulphurTuft));
+			s += KnowledgeDescriptions.getDisplayName(code) + "\n\n";
+			s += "       ~ Structure ~\n";
+			s += KnowledgeDescriptions.getStructure(code);
+			s += "       ~ Creation ~\n\n";
+			s += KnowledgeDescriptions.getResult(code);
 			break;
 		}
 		return s;
@@ -47,7 +47,7 @@ public class SulphurTuft extends ArticleContent {
 
 	@Override
 	public GuiCraftingHelper getFaved() {
-		return new GuiCraftRecipe(Minecraft.getMinecraft(), code, new ItemStack(BlockRegistry.sulphurTuft));
+		return new GuiCraft(Minecraft.getMinecraft(), code);
 	}
 	
 }

@@ -33,24 +33,21 @@ public abstract class GuiCraftingHelper extends Gui {
     public float xScale = 0.5f;
     public float yScale = 1.0f;
     
-    private Research research = null;
-    
-    protected final ItemStack result;
-    protected final RecipeContainer input;
-    
-    public ItemStack getResult(){
-    	return result;
-    }
+    protected Research research = null;
+    protected RecipeContainer input;
+    protected ItemStack output;
     
     public RecipeContainer getInput(){
     	return input;
     }
     
-    public GuiCraftingHelper(Minecraft minecraft, Research research, ItemStack result, RecipeContainer input){
+    public ItemStack getOutput(){
+    	return output;
+    }
+    
+    public GuiCraftingHelper(Minecraft minecraft, Research research){
     	this.articleFontRenderer = new ArticleFontRenderer(minecraft, minecraft.gameSettings, "textures/font/ascii.png", minecraft.renderEngine, false);
-    	this.result = result;
     	this.research = research;
-    	this.input = input;
     }
     
     public int getWidth(){

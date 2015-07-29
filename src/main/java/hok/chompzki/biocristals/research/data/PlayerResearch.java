@@ -101,6 +101,18 @@ public class PlayerResearch implements Serializable {
 	public List<String> getFaved() {
 		return this.favorised;
 	}
+
+	public List<String> notIn(PlayerResearch research) {
+		List<String> diff = new ArrayList<String>();
+		
+		for(String code : this.getCompleted()){
+			if(!research.hasCompleted(code)){
+				diff.add(code);
+			}
+		}
+		
+		return diff;
+	}
 	
 	
 	

@@ -4,7 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
-import hok.chompzki.biocristals.client.GuiCraftRecipe;
+import hok.chompzki.biocristals.client.GuiCraft;
 import hok.chompzki.biocristals.client.GuiCraftingHelper;
 import hok.chompzki.biocristals.client.GuiInventoryOverlay;
 import hok.chompzki.biocristals.registrys.BlockRegistry;
@@ -32,11 +32,11 @@ public class BabySteps extends ArticleContent {
 			s += "have to this day been the most popular tool of trade.";
 			break;
 		case 2:
-			s += " Rabarberpaj's Attuner\n\n";
+			s += KnowledgeDescriptions.getDisplayName(code) + "\n\n";
 			s += "       ~ Structure ~\n";
-			s += KnowledgeDescriptions.transformRecipe(new ItemStack(ItemRegistry.attuner));
+			s += KnowledgeDescriptions.getStructure(code);
 			s += "       ~ Creation ~\n\n";
-			s += KnowledgeDescriptions.transformOutput(new ItemStack(ItemRegistry.attuner));
+			s += KnowledgeDescriptions.getResult(code);
 			break;
 
 		}
@@ -51,6 +51,6 @@ public class BabySteps extends ArticleContent {
 
 	@Override
 	public GuiCraftingHelper getFaved() {
-		return new GuiCraftRecipe(Minecraft.getMinecraft(), code,new ItemStack(ItemRegistry.attuner));
+		return new GuiCraft(Minecraft.getMinecraft(), code);
 	}
 }

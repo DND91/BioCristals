@@ -9,10 +9,8 @@ import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import hok.chompzki.biocristals.client.GuiCraftRecipe;
+import hok.chompzki.biocristals.client.GuiCraft;
 import hok.chompzki.biocristals.client.GuiCraftingHelper;
-import hok.chompzki.biocristals.client.GuiCristalRecipe;
-import hok.chompzki.biocristals.client.GuiFleshRecipe;
 import hok.chompzki.biocristals.client.GuiInventoryOverlay;
 import hok.chompzki.biocristals.registrys.BlockRegistry;
 import hok.chompzki.biocristals.registrys.ItemRegistry;
@@ -28,13 +26,14 @@ public class DarkWarp extends ArticleContent {
 		String s = "";
 		switch(p){
 		case 0:
-			s += "";
+			s += "D'berry found that Flesh Transformation also works on enderman...";
 			break;
 		case 1:
-			s += "    ~ Crystallization ~\n";
-			s += KnowledgeDescriptions.transformWeakFlesh(new ItemStack(ItemRegistry.bioReagent), new EntityEnderman(Minecraft.getMinecraft().theWorld), new ItemStack(ItemRegistry.attuner));
+			s += KnowledgeDescriptions.getDisplayName(code) + "\n\n";
+			s += "       ~ Structure ~\n";
+			s += KnowledgeDescriptions.getStructure(code);
 			s += "       ~ Creation ~\n\n";
-			s += KnowledgeDescriptions.transformOutput(new ItemStack(Items.ender_pearl));
+			s += KnowledgeDescriptions.getResult(code);
 			s += "\n";
 			s += "1. Place Sulphur Tuft\n";
 			s += "2. Throw biological reagent\n";
@@ -53,6 +52,6 @@ public class DarkWarp extends ArticleContent {
 
 	@Override
 	public GuiCraftingHelper getFaved() {
-		return new GuiFleshRecipe(Minecraft.getMinecraft(), code, new ItemStack(ItemRegistry.bioReagent), new EntityEnderman(Minecraft.getMinecraft().theWorld), new ItemStack(ItemRegistry.attuner), new ItemStack(Items.ender_pearl));
+		return new GuiCraft(Minecraft.getMinecraft(), code);
 	}
 }

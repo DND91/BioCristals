@@ -5,13 +5,15 @@ import java.util.HashMap;
 import net.minecraft.item.ItemStack;
 
 public class RecipeContainer{
+	public String code;
 	public ItemStack output;
 	public Object[] input;
 	public HashMap<Character, ItemStack> idToItem = new HashMap<Character, ItemStack>();
 	public Character[][] craftingGrid = null;
 	public int length = 0;
 	
-	public RecipeContainer(ItemStack out, Object[] in){
+	public RecipeContainer(String code, ItemStack out, Object[] in){
+		this.code = code;
 		this.output = out;
 		this.input = in;
 		length = ((String)in[0]).length();

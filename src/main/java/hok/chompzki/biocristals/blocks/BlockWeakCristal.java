@@ -7,8 +7,8 @@ import java.util.Random;
 import hok.chompzki.biocristals.BioCristalsMod;
 import hok.chompzki.biocristals.api.BioHelper;
 import hok.chompzki.biocristals.api.IGrowthCristal;
-import hok.chompzki.biocristals.blocks.croot.BlockConsumer;
-import hok.chompzki.biocristals.blocks.croot.ICrootPowerCon;
+import hok.chompzki.biocristals.croot.BlockCroot;
+import hok.chompzki.biocristals.croot.ICroot;
 import hok.chompzki.biocristals.registrys.ConfigRegistry;
 import hok.chompzki.biocristals.tile_enteties.TileCrootOneConsumer;
 import cpw.mods.fml.relauncher.Side;
@@ -23,9 +23,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.ColorizerGrass;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockWeakCristal extends BlockConsumer implements IGrowthCristal{
+public class BlockWeakCristal extends BlockCroot implements IGrowthCristal{
 	
 	//Plants: Wheat, Carrots, Suger Cane, Potato, Melon, Pumpkin
 	
@@ -36,44 +38,21 @@ public class BlockWeakCristal extends BlockConsumer implements IGrowthCristal{
 		public final String name;
 		private final int maxMeta;
 		private final ItemStack[] drops;
+		private final int color;
 		
-		public BlockWeakCristal(String name, int maxMeta, ItemStack... drops) {
+		public BlockWeakCristal(String name, int maxMeta, int color, ItemStack... drops) {
 			this.name = name;
 			this.maxMeta = maxMeta;
+			this.color = color;
 			
 			setBlockName(BioCristalsMod.MODID + "_" + name);
 			setCreativeTab(BioCristalsMod.creativeTab);
-			setBlockTextureName(BioCristalsMod.MODID + ":" + name);
+			setBlockTextureName(BioCristalsMod.MODID + ":" + "weakCristal");
 			
 			this.setTickRandomly(true);
 			this.setStepSound(soundTypeGrass);
 			this.drops = drops;
 		}
-		
-		public void updateTick(World world, int x, int y, int z, Random rand)
-	    {
-	        super.updateTick(world, x, y, z, rand);
-	        ICrootPowerCon con = (ICrootPowerCon) world.getTileEntity(x, y, z);
-			if(!con.hasPower())
-				return;
-            if (rand.nextInt(ConfigRegistry.weakCristalGrowthChance) == 0)
-            {
-                this.grow(world, x, y, z);
-            }
-	    }
-		
-		public void func_149863_m(World p_149863_1_, int p_149863_2_, int p_149863_3_, int p_149863_4_)
-	    {
-	        int l = p_149863_1_.getBlockMetadata(p_149863_2_, p_149863_3_, p_149863_4_) + MathHelper.getRandomIntegerInRange(p_149863_1_.rand, 2, 5);
-
-	        if (l > maxMeta)
-	        {
-	            l = maxMeta;
-	        }
-
-	        p_149863_1_.setBlockMetadataWithNotify(p_149863_2_, p_149863_3_, p_149863_4_, l, 2);
-	    }
-		
 		
 		@SideOnly(Side.CLIENT)
 	    public IIcon getIcon(int p_149691_1_, int p_149691_2_)
@@ -96,6 +75,54 @@ public class BlockWeakCristal extends BlockConsumer implements IGrowthCristal{
 	            this.field_149867_a[i] = p_149651_1_.registerIcon(this.getTextureName() + "_" + i);
 	            
 	        }
+	    }
+		
+		@SideOnly(Side.CLIENT)
+	    public int getBlockColor()
+	    {
+	        return color;
+	    }
+
+	    /**
+	     * Returns the color this block should be rendered. Used by leaves.
+	     */
+	    @SideOnly(Side.CLIENT)
+	    public int getRenderColor(int p_149741_1_)
+	    {
+	        return color;
+	    }
+
+	    /**
+	     * Returns a integer with hex for 0xrrggbb with this color multiplied against the blocks color. Note only called
+	     * when first determining what to render.
+	     */
+	    @SideOnly(Side.CLIENT)
+	    public int colorMultiplier(IBlockAccess p_149720_1_, int p_149720_2_, int p_149720_3_, int p_149720_4_)
+	    {
+	        return color;
+	    }
+		
+		public void updateTick(World world, int x, int y, int z, Random rand)
+	    {
+	        super.updateTick(world, x, y, z, rand);
+	        if(!stable(world, x, y, z))
+				return;
+            if (rand.nextInt(ConfigRegistry.weakCristalGrowthChance) == 0)
+            {
+                this.grow(world, x, y, z);
+            }
+	    }
+		
+		public void func_149863_m(World p_149863_1_, int p_149863_2_, int p_149863_3_, int p_149863_4_)
+	    {
+	        int l = p_149863_1_.getBlockMetadata(p_149863_2_, p_149863_3_, p_149863_4_) + MathHelper.getRandomIntegerInRange(p_149863_1_.rand, 2, 5);
+
+	        if (l > maxMeta)
+	        {
+	            l = maxMeta;
+	        }
+
+	        p_149863_1_.setBlockMetadataWithNotify(p_149863_2_, p_149863_3_, p_149863_4_, l, 2);
 	    }
 
 		@Override
@@ -134,7 +161,7 @@ public class BlockWeakCristal extends BlockConsumer implements IGrowthCristal{
 		
 		@Override
 		public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
-			return new TileCrootOneConsumer(1);
+			return new TileCrootOneConsumer(-4);
 		}
 
 }

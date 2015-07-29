@@ -4,7 +4,8 @@ import java.util.List;
 import java.util.Random;
 
 import hok.chompzki.biocristals.api.BioHelper;
-import hok.chompzki.biocristals.blocks.croot.TileCrootConsumer;
+import hok.chompzki.biocristals.croot.TileCroot;
+import hok.chompzki.biocristals.croot.WorldCoord;
 import hok.chompzki.biocristals.research.data.DataHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -16,17 +17,17 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TilePrimogenitus extends TileCrootConsumer {
+public class TilePrimogenitus extends TileCroot {
 	
 	private Random rand = new Random();
 	
 	NBTTagCompound entnbt = null;
 	
-	public final static int tickMod = 40;
+	public final static int tickMod = 1000;
 	private long tick = 0;
 	
 	public TilePrimogenitus(){
-		super(10);
+		super(-20);
 		
 	}
 	
@@ -58,7 +59,7 @@ public class TilePrimogenitus extends TileCrootConsumer {
 	
 	@Override
 	public void updateEntity() {
-		if (this.worldObj != null && !this.worldObj.isRemote && this.hasPower())
+		if (this.worldObj != null && !this.worldObj.isRemote && treeForm != null && treeForm.getStabel())
         {
 			tick++;
 			if(tick % tickMod == 0){
@@ -84,5 +85,4 @@ public class TilePrimogenitus extends TileCrootConsumer {
 			}
 		}
 	}
-	
 }

@@ -9,6 +9,7 @@ import hok.chompzki.biocristals.research.data.PlayerStorage;
 import hok.chompzki.biocristals.research.data.Research;
 import hok.chompzki.biocristals.research.data.network.PlayerStorageDelissenMessage;
 import hok.chompzki.biocristals.research.data.network.PlayerStorageFaveMessage;
+import hok.chompzki.biocristals.research.data.network.PlayerStorageSyncHandler;
 import hok.chompzki.biocristals.research.logic.ResearchLogicNetwork;
 
 import java.awt.Rectangle;
@@ -144,7 +145,7 @@ public class GuiResearchBook extends GuiScreen {
         		article.back();
         		return;
         	}else if(par2 == Keyboard.KEY_2 && DataHelper.belongsTo(reader, reader.getCurrentEquippedItem())){
-        		PlayerStorage.instance().sendToServer(new PlayerStorageFaveMessage(reader.getGameProfile().getId().toString(), article.getResearch().getCode()));
+        		BioCristalsMod.network.sendToServer(new PlayerStorageFaveMessage(reader.getGameProfile().getId().toString(), article.getResearch().getCode()));
         		return;
         	}else if(par2 == Keyboard.KEY_3){
         		article.next();
@@ -165,7 +166,7 @@ public class GuiResearchBook extends GuiScreen {
 			article.setWorldAndResolution(mc, width, height, null);
 			this.initGui();
         }else if(btn == 1 && this.tooltipResearch != null && DataHelper.belongsTo(reader, reader.getCurrentEquippedItem())){
-        	PlayerStorage.instance().sendToServer(new PlayerStorageFaveMessage(reader.getGameProfile().getId().toString(), tooltipResearch.getCode()));
+        	BioCristalsMod.network.sendToServer(new PlayerStorageFaveMessage(reader.getPersistentID().toString(), tooltipResearch.getCode()));
         	//tooltipResearch.getContent().selected(!b);
 			
         }else{
@@ -205,6 +206,7 @@ public class GuiResearchBook extends GuiScreen {
 	@Override
 	public void drawScreen(int par1, int par2, float par3)
     {
+		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0F);
 		float speedY = 0.0f;
 		float speedX = 0.0f;
 		
@@ -251,36 +253,46 @@ public class GuiResearchBook extends GuiScreen {
         {
             this.isMouseButtonDown = 0;
         }
-		
+		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0F);
 		this.drawDefaultBackground();
+		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0F);
 		this.genBioBookBackground(par1, par2, par3);
 		//Draw Relations
-		
+		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0F);
 		this.drawIcons(par1, par2, par3);
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glPushMatrix();
+		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0F);
     	GuiArticle.drawBackground(mc, this, par1, par2, par3);
         GL11.glPopMatrix();
-        
+        GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0F);
 		this.drawOverlay(par1, par2, par3);
+		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0F);
 		super.drawScreen(par1, par2, par3);
 		
 		GL11.glDisable(GL11.GL_BLEND);
 		
 		if(article != null){
+			GL11.glColor3f(1.0f, 1.0f, 1.0f);
 			article.drawScreen(par1, par2, par3);
+			GL11.glColor3f(1.0f, 1.0f, 1.0f);
 			article.drawTooltip();
 			Research research = article.getResearch();
 			int k = this.calculateLeft() + this.getScreenWidth();
 	        int b0 = this.calculateTop();
 	        
+	        GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0F);
 	        this.renderTitle(research, k + 13, b0);
+	        GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0F);
 	        this.drawIcon(research, k, b0 - 13, true, true);
 		}
 		
-		if(tooltipResearch != null)
+		if(tooltipResearch != null){
+			GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0F);
 			this.drawTooltip(par1, par2, par3);
+		}
 		
+		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0F);
     }
 	
 	@Override
@@ -537,6 +549,13 @@ public class GuiResearchBook extends GuiScreen {
          if (research.getSpecial())
          {
              this.drawTexturedModalRect(x - 2, y - 2, 26, 202, 26, 26);
+             
+             if(PlayerStorageSyncHandler.totallyNew.contains(research.getCode())){
+            	 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            	 this.drawTexturedModalRect(x - 3, y - 1, 52, 202 + 26, 26, 26);
+            	 GL11.glColor4f(f3, f3, f3, 1.0F);
+             }
+             
              if(PlayerStorage.instance().get(player).hasFaved(research.getCode())){
             	 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             	 this.drawTexturedModalRect(x - 2, y - 2, 26, 202 + 26, 26, 26);
@@ -546,6 +565,11 @@ public class GuiResearchBook extends GuiScreen {
          else
          {
              drawTexturedModalRect(x - 2, y - 2, 0, 202, 26, 26);
+             if(PlayerStorageSyncHandler.totallyNew.contains(research.getCode())){
+            	 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            	 this.drawTexturedModalRect(x - 3, y - 1, 52, 202, 26, 26);
+            	 GL11.glColor4f(f3, f3, f3, 1.0F);
+             }
              if(PlayerStorage.instance().get(player).hasFaved(research.getCode())){
             	 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             	 drawTexturedModalRect(x - 2, y - 2, 0, 202 + 26, 26, 26);
@@ -697,8 +721,11 @@ public class GuiResearchBook extends GuiScreen {
 		UUID observer = reader.getGameProfile().getId();
 		UUID subject = UUID.fromString(DataHelper.getOwner(book));
 		if(observer.compareTo(subject) != 0){
-			PlayerStorage.instance().getNetwork().sendToServer(new PlayerStorageDelissenMessage(observer, subject));
+			BioCristalsMod.network.sendToServer(new PlayerStorageDelissenMessage(observer, subject));
+		}else{
+			PlayerStorageSyncHandler.totallyNew.clear();
 		}
+		
 	}
 	
 	@Override

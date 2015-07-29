@@ -134,7 +134,7 @@ public class GuiArticle extends GuiScreen {
             else if (par1GuiButton.id == 3)
             {
                 this.buttonCheckboxPage.selected = !this.buttonCheckboxPage.selected;
-                PlayerStorage.instance().sendToServer(new PlayerStorageFaveMessage(reader.getGameProfile().getId().toString(), research.getCode()));
+                BioCristalsMod.network.sendToServer(new PlayerStorageFaveMessage(reader.getGameProfile().getId().toString(), research.getCode()));
             }
             this.updateButtons();
         }
@@ -198,9 +198,9 @@ public class GuiArticle extends GuiScreen {
         int b0 = last.calculateTop() + 10;
         last.drawTexturedModalRect(k, b0, 255 - pageImageWidth, 0, pageImageWidth, pageImageHeight);
         
-        GL11.glDepthFunc(GL11.GL_LEQUAL);
-        GL11.glDisable(GL11.GL_DEPTH_TEST);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        //GL11.glDepthFunc(GL11.GL_LEQUAL);
+        //GL11.glDisable(GL11.GL_DEPTH_TEST);
+        //GL11.glEnable(GL11.GL_TEXTURE_2D);
 	}
 	
 	public void drawScreen(int par1, int par2, float par3)

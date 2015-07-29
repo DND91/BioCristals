@@ -1,11 +1,13 @@
 package hok.chompzki.biocristals.research.data;
 
+import hok.chompzki.biocristals.BioCristalsMod;
 import hok.chompzki.biocristals.client.GuiInventoryOverlay;
 import hok.chompzki.biocristals.registrys.ItemRegistry;
 import hok.chompzki.biocristals.research.data.network.PlayerStorageDelissenHandler;
 import hok.chompzki.biocristals.research.data.network.PlayerStorageDelissenMessage;
 import hok.chompzki.biocristals.research.data.network.PlayerStorageFaveHandler;
 import hok.chompzki.biocristals.research.data.network.PlayerStorageFaveMessage;
+import hok.chompzki.biocristals.research.data.network.PlayerStorageSyncHandler;
 import hok.chompzki.biocristals.research.data.network.PlayerStorageSyncMessage;
 import hok.chompzki.biocristals.research.events.MessageHandlerInserCrafting;
 import hok.chompzki.biocristals.research.events.MessageInsertCrafting;
@@ -31,6 +33,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
@@ -41,28 +44,30 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
 
-public class PlayerStorage implements IDataFile, IMessageHandler<PlayerStorageSyncMessage, IMessage> {
+public class PlayerStorage implements IDataFile{
 	//TODO: Insert instance() somewhere in the game loading... so that it dosn't happen first time in world
-	protected static PlayerStorage storage = null;
+	private static PlayerStorage clientStorage = null;
+	private static PlayerStorage serverStorage = null;
 	
 	public static PlayerStorage instance(){
-		if(storage == null){
-			storage = new PlayerStorage();
+		Side side = FMLCommonHandler.instance().getEffectiveSide();
+		
+		if(clientStorage == null && side == Side.CLIENT){
+			clientStorage = new PlayerStorage();
 		}
-		return storage;
+		if(serverStorage == null && side == Side.SERVER){
+			serverStorage = new PlayerStorage();
+		}
+		
+		return side == Side.SERVER ? serverStorage : clientStorage;
 	}
 	
 	protected HashMap<UUID, PlayerResearch> players =  new HashMap<UUID, PlayerResearch>();
 	protected HashMap<UUID, List<UUID>> lissensOn = new HashMap<UUID, List<UUID>>();
-	protected SimpleNetworkWrapper network;
+	
 	
 	protected PlayerStorage(){
 		StorageHandler.register(this);
-		network = NetworkRegistry.INSTANCE.newSimpleChannel("BioC_PS");
-	    network.registerMessage(this, PlayerStorageSyncMessage.class, 0, Side.CLIENT);
-	    network.registerMessage(PlayerStorageDelissenHandler.class, PlayerStorageDelissenMessage.class, 1, Side.SERVER);
-	    network.registerMessage(MessageHandlerInserCrafting.class, MessageInsertCrafting.class, 2, Side.SERVER);
-	    network.registerMessage(PlayerStorageFaveHandler.class, PlayerStorageFaveMessage.class, 3, Side.SERVER);
 	}
 	
 	public PlayerResearch get(UUID id){
@@ -73,26 +78,23 @@ public class PlayerStorage implements IDataFile, IMessageHandler<PlayerStorageSy
 		return players.get(id);
 	}
 	
+	public void put(UUID id, PlayerResearch res){
+		players.put(id, res);
+	}
+	
 	public Collection<PlayerResearch> getAllCurrent(){
 		return players.values();
 	}
 	
-	public SimpleNetworkWrapper getNetwork(){
-		return network;
-	}
-	
 	@Override
 	public String getFile() {
-		return "playerResearch.dat";
+		Side side = FMLCommonHandler.instance().getEffectiveSide();
+		return side + "playerResearch.dat";
 	}
 
 	@Override
 	public Serializable getObject() {
 		return players;
-	}
-	
-	public void sendToServer(IMessage message){
-		network.sendToServer(message);
 	}
 	
 	@Override
@@ -114,7 +116,9 @@ public class PlayerStorage implements IDataFile, IMessageHandler<PlayerStorageSy
 	}
 	
 	public void activate(PlayerResearch player){
-		System.out.println("ACTIVATE!!!!");
+		Side side = FMLCommonHandler.instance().getEffectiveSide();
+		if(side == Side.CLIENT)
+			return;
 		UUID subject = player.getOwnerId();
 		for(Entry<UUID, List<UUID>> entry : lissensOn.entrySet()){
 			UUID observer = entry.getKey();
@@ -122,7 +126,7 @@ public class PlayerStorage implements IDataFile, IMessageHandler<PlayerStorageSy
 			List<UUID> subjects = entry.getValue();
 			for(UUID s : subjects)
 				if(s.compareTo(subject) == 0)
-					network.sendTo(new PlayerStorageSyncMessage(player), obs);
+					BioCristalsMod.network.sendTo(new PlayerStorageSyncMessage(player), obs);
 		}
 	}
 	
@@ -135,8 +139,8 @@ public class PlayerStorage implements IDataFile, IMessageHandler<PlayerStorageSy
 	
 	@SubscribeEvent
 	public void playerLogin(PlayerLoggedInEvent event){
-		System.out.println("LOG IN!!!");
 		UUID id = event.player.getGameProfile().getId();
+		System.out.println("LOG IN!!! ");
 		if(!this.players.containsKey(id)){
 			EntityPlayerMP player = (EntityPlayerMP) MinecraftServer.getServer().getEntityWorld().func_152378_a(id);
 			player.inventory.addItemStackToInventory(new ItemStack(ItemRegistry.researchBook));
@@ -146,6 +150,10 @@ public class PlayerStorage implements IDataFile, IMessageHandler<PlayerStorageSy
 	}
 	
 	public void registerLissner(UUID observer, UUID subject) {
+		Side side = FMLCommonHandler.instance().getEffectiveSide();
+		if(side == Side.CLIENT)
+			return;
+		
 		if(!lissensOn.containsKey(observer))
 			lissensOn.put(observer, new ArrayList<UUID>());
 		List<UUID> list = lissensOn.get(observer);
@@ -154,7 +162,7 @@ public class PlayerStorage implements IDataFile, IMessageHandler<PlayerStorageSy
 		list.add(subject);
 		PlayerResearch sub = this.get(subject);
 		EntityPlayerMP player = (EntityPlayerMP) MinecraftServer.getServer().getEntityWorld().func_152378_a(observer);
-		network.sendTo(new PlayerStorageSyncMessage(sub), player);
+		BioCristalsMod.network.sendTo(new PlayerStorageSyncMessage(sub), player);
 	}
 	
 	public void deregisterLissner(UUID observer, UUID subject){
@@ -170,27 +178,6 @@ public class PlayerStorage implements IDataFile, IMessageHandler<PlayerStorageSy
 		lissensOn.remove(id);
 		for(List<UUID> list : lissensOn.values())
 			list.remove(id);
-	}
-	
-	@Override
-	public IMessage onMessage(PlayerStorageSyncMessage message, MessageContext ctx) {
-		PlayerResearch research = message.getResearch();
-		if(research == null)
-			return null;
-		UUID id = research.getOwnerId();
-		this.players.put(id, research);
-		
-		if(Minecraft.getMinecraft().thePlayer.getGameProfile().getId().equals(id)){
-			GuiInventoryOverlay.craftingHelper.clear();
-			for(String code : research.getFaved()){
-				if(ReserchDataNetwork.instance().getResearch(code) == null)
-					continue;
-				ArticleContent content = ReserchDataNetwork.instance().getResearch(code).getContent();
-				GuiInventoryOverlay.craftingHelper.add(content.getFaved());
-			}
-		}
-		
-		return null;
 	}
 	
 	public void printLissensOn(UUID id){

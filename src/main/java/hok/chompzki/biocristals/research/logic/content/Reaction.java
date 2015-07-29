@@ -4,7 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
-import hok.chompzki.biocristals.client.GuiCraftRecipe;
+import hok.chompzki.biocristals.client.GuiCraft;
 import hok.chompzki.biocristals.client.GuiCraftingHelper;
 import hok.chompzki.biocristals.client.GuiInventoryOverlay;
 import hok.chompzki.biocristals.registrys.BlockRegistry;
@@ -27,11 +27,11 @@ public class Reaction extends ArticleContent {
 			s += "sience then been accused to be the creator of both Creepers and Ghasts. ";
 			break;
 		case 1:
-			s += "The most promesing reagent is... \n";
-			s += "        ~ Structure ~\n";
-			s += KnowledgeDescriptions.transformRecipe(new ItemStack(ItemRegistry.bioReagent));
-			s += "        ~ Creation ~\n\n";
-			s += KnowledgeDescriptions.transformOutput(new ItemStack(ItemRegistry.bioReagent));
+			s += KnowledgeDescriptions.getDisplayName(code) + "\n\n";
+			s += "       ~ Structure ~\n";
+			s += KnowledgeDescriptions.getStructure(code);
+			s += "       ~ Creation ~\n\n";
+			s += KnowledgeDescriptions.getResult(code);
 			break;
 		
 		}
@@ -46,6 +46,6 @@ public class Reaction extends ArticleContent {
 
 	@Override
 	public GuiCraftingHelper getFaved() {
-		return new GuiCraftRecipe(Minecraft.getMinecraft(), code, new ItemStack(ItemRegistry.bioReagent));
+		return new GuiCraft(Minecraft.getMinecraft(), code);
 	}
 }
