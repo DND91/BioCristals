@@ -59,13 +59,13 @@ public class CraftingHelper {
         this.buttonAutoPage = new GuiButtonAutoPage(4, 0, 0);
     }
 	
-	public void next(){
+	public void back(){
 		currentGui = (currentGui-1) % guis.size();
 		currentGui = currentGui < 0 ? guis.size() - 1 : currentGui;
 		this.updateButtons();
 	}
 	
-	public void back(){
+	public void next(){
 		currentGui = (currentGui+1) % guis.size();
 		this.updateButtons();
 	}
@@ -129,11 +129,9 @@ public class CraftingHelper {
         		 
         		 player.openGui(BioCristalsMod.instance, 100, world, (int)player.posX, (int)player.posY, (int)player.posZ);
         	}else if(this.buttonAutoPage.mousePressed(mc, mouseX, mouseY)){
-        		System.out.println("TRY!!!!!!!!!!!!!!");
         		if(currentScreen instanceof GuiContainer){
         			if(gui.getInput() == null || gui.getOutput() == null)
         				return;
-        			System.out.println("CLICK!!!!!!!!!!");
         			BioCristalsMod.network.sendToServer(new MessageInsertCrafting(gui.getOutput()));
         		}
         	}

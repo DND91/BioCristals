@@ -27,7 +27,7 @@ public class CraftingEvents {
 				continue;
 			if(con.output.isItemEqual(event.crafting)){
 				UUID id = event.player.getGameProfile().getId();
-				PlayerResearch research = PlayerStorage.instance().get(id);
+				PlayerResearch research = PlayerStorage.instance(false).get(id);
 				if(!research.hasCompleted(con.code)){
 					research.addCompleted(con.code);
 				} 

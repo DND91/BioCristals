@@ -95,7 +95,6 @@ public class ReserchRegistry {
 	public static final String carla_fleur = "carla_fleur";
 	
 	public void preInit(FMLPreInitializationEvent event) {
-		PlayerStorage.instance();
 		ArticleStorage.instance();
 		
 		boolean side = event.getSide() == Side.SERVER;

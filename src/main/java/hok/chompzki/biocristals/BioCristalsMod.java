@@ -42,8 +42,8 @@ public class BioCristalsMod
     
     @EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
+    	proxy.initSaveHandling();
     	proxy.preInit(event);
-    	PlayerStorage.instance();
 	}
 
     @EventHandler

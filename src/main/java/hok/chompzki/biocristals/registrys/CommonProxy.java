@@ -25,11 +25,9 @@ public class CommonProxy { //Server sided
 	public void preInit(FMLPreInitializationEvent event) {
 		ConfigRegistry.preinit(event.getSuggestedConfigurationFile());
 		FMLCommonHandler.instance().bus().register(new ConfigRegistry());
-		//FMLCommonHandler.instance().bus().register(new StorageHandler());
 		MinecraftForge.EVENT_BUS.register(new StorageHandler());
 		FMLCommonHandler.instance().bus().register(new CraftingEvents());
-		FMLCommonHandler.instance().bus().register(PlayerStorage.instance());
-		
+		FMLCommonHandler.instance().bus().register(PlayerStorage.instance(false));
 		ItemRegistry items = new ItemRegistry();
 		items.registerItems();
 		BlockRegistry blocks = new BlockRegistry();
@@ -60,6 +58,11 @@ public class CommonProxy { //Server sided
     
 	public void postInit(FMLPostInitializationEvent event) {
 		TreeStorage.instance();
+	}
+
+
+	public void initSaveHandling() {
+		PlayerStorage.instance(true);
 	}
 	
 	

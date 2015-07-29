@@ -24,31 +24,6 @@ public class RecipeTransformer {
 	 */
 	
 	public static ItemStack dataToItemStack(String data){
-		if(data.contains("dyePowder")){
-			data = data.replace("dyePowder", "dye");
-		}
-		if(data.contains("spiderEye")){
-			data = data.replace("spiderEye", "spider_eye");
-		}
-		if(data.contains("cloth")){
-			data = data.replace("cloth", "wool");
-		}
-		if(data.contains("enderPearl")){
-			data = data.replace("enderPearl", "ender_pearl");
-		}
-		if(data.contains("blockIron")){
-			data = data.replace("blockIron", "iron_block");
-		}
-		if(data.contains("ingotGold")){
-			data = data.replace("ingotGold", "gold_ingot");
-		}
-		if(data.contains("blockGold")){
-			data = data.replace("blockGold", "gold_block");
-		}
-		if(data.contains("ingotIron")){
-			data = data.replace("ingotIron", "iron_ingot");
-		}
-		
 		String name;
 	    String domain = null;
 	    int meta = 0;

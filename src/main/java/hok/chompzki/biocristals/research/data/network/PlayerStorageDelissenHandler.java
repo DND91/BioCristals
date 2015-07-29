@@ -16,7 +16,7 @@ public class PlayerStorageDelissenHandler implements IMessageHandler<PlayerStora
 	@Override
 	public IMessage onMessage(PlayerStorageDelissenMessage message,
 			MessageContext ctx) {
-		PlayerStorage.instance().deregisterLissner(UUID.fromString(message.getContainer().observer), UUID.fromString(message.getContainer().subject));
+		PlayerStorage.instance(false).deregisterLissner(UUID.fromString(message.getContainer().observer), UUID.fromString(message.getContainer().subject));
 		return null;
 	}
 	

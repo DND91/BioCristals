@@ -1,5 +1,8 @@
 package hok.chompzki.biocristals.research.gui;
 
+import java.awt.event.ItemListener;
+
+import cpw.mods.fml.common.registry.GameRegistry;
 import hok.chompzki.biocristals.recipes.PurifierContainer;
 import hok.chompzki.biocristals.recipes.RecipeContainer;
 import hok.chompzki.biocristals.recipes.TransformerContainer;
@@ -15,7 +18,9 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class KnowledgeDescriptions {
 	//s += "\n\t\n<"+log+"|2><"+dirt+"><"+log+"|2>\n";
@@ -56,6 +61,26 @@ public class KnowledgeDescriptions {
 		
 		return s +  (withTT ? "\t" : "");
 	}
+	
+	public static String getName(ItemStack stack){
+		if(stack == null || stack.getItem() == null)
+			return "empty";
+		String s = "Unknown";
+		int[] stacks = OreDictionary.getOreIDs(stack);
+		if(0 < stacks.length){
+			s = OreDictionary.getOreName(stacks[0]);
+		}
+		if(s.equals("Unknown")){
+			Block block = Block.getBlockFromItem(stack.getItem());
+			if(block == Blocks.air){
+				s = GameRegistry.findUniqueIdentifierFor(stack.getItem()).toString();
+			}else{
+				s = GameRegistry.findUniqueIdentifierFor(block).toString();
+			}
+		}
+		return s;
+	}
+	
 	/**
 	 *	tile.sapling.oak
 	 *	item.BioCristals_itemBioReagent
@@ -64,9 +89,9 @@ public class KnowledgeDescriptions {
 	 *	BioCristals:itemBioReagent
 	 */
 	public static String transformName(ItemStack stack){
+		String uname = getName(stack);
 		
-		String uname = stack.getItem() == null ? "empty" : stack.getUnlocalizedName();
-		String domain = "minecraft";
+		/*String domain = "minecraft";
 		String name = "";
 		if(uname.startsWith("item.")){
 			uname = uname.replaceFirst("item\\.", "");
@@ -81,9 +106,9 @@ public class KnowledgeDescriptions {
 			name = uname.split("\\.")[0];
 		}else{
 			name = uname;
-		}
+		}*/
 		
-		return domain + ":" + name;
+		return uname;
 	}
 	
 	private static String transformWeakCristal(ItemStack substance, ItemStack reagent, ItemStack base, ItemStack activator){

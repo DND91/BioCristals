@@ -49,37 +49,34 @@ public class PlayerStorage implements IDataFile{
 	private static PlayerStorage clientStorage = null;
 	private static PlayerStorage serverStorage = null;
 	
-	public static PlayerStorage instance(){
-		Side side = FMLCommonHandler.instance().getEffectiveSide();
-		
-		if(clientStorage == null && side == Side.CLIENT){
-			clientStorage = new PlayerStorage();
+	public static PlayerStorage instance(boolean client){
+		if(clientStorage == null && client){
+			clientStorage = new PlayerStorage("CLIENT", false);
 		}
-		if(serverStorage == null && side == Side.SERVER){
-			serverStorage = new PlayerStorage();
+		if(serverStorage == null && !client){
+			serverStorage = new PlayerStorage("SERVER", true);
 		}
 		
-		return side == Side.SERVER ? serverStorage : clientStorage;
+		return !client ? serverStorage : clientStorage;
 	}
 	
 	protected HashMap<UUID, PlayerResearch> players =  new HashMap<UUID, PlayerResearch>();
 	protected HashMap<UUID, List<UUID>> lissensOn = new HashMap<UUID, List<UUID>>();
+	protected String name = "SOTIS";
 	
-	
-	protected PlayerStorage(){
-		StorageHandler.register(this);
+	protected PlayerStorage(String name, boolean saveHandler){
+		this.name = name;
+		if(saveHandler)
+			StorageHandler.register(this);
 	}
 	
 	public PlayerResearch get(UUID id){
-		if(!players.containsKey(id)){
-			players.put(id, new PlayerResearch(id));
-		}
-		players.get(id).setStorage(this);
 		return players.get(id);
 	}
 	
 	public void put(UUID id, PlayerResearch res){
 		players.put(id, res);
+		res.setStorage(this);
 	}
 	
 	public Collection<PlayerResearch> getAllCurrent(){
@@ -94,14 +91,24 @@ public class PlayerStorage implements IDataFile{
 
 	@Override
 	public Serializable getObject() {
+		System.out.println(name + " -- SAVING PLAYER DATA -- ");
+		for(Entry<UUID, PlayerResearch> entry : players.entrySet()){
+			UUID id = entry.getKey();
+			PlayerResearch res = entry.getValue();
+			res.setStorage(this);
+		}
 		return players;
 	}
 	
 	@Override
 	public void setObject(Serializable obj) {
+		System.out.println(name + " -- LOADING PLAYER DATA -- ");
 		players = (HashMap<UUID, PlayerResearch>) obj;
-		for(PlayerResearch res : players.values())
+		for(Entry<UUID, PlayerResearch> entry : players.entrySet()){
+			UUID id = entry.getKey();
+			PlayerResearch res = entry.getValue();
 			res.setStorage(this);
+		}
 	}
 
 	@Override
@@ -144,7 +151,8 @@ public class PlayerStorage implements IDataFile{
 		if(!this.players.containsKey(id)){
 			EntityPlayerMP player = (EntityPlayerMP) MinecraftServer.getServer().getEntityWorld().func_152378_a(id);
 			player.inventory.addItemStackToInventory(new ItemStack(ItemRegistry.researchBook));
-			this.get(id);
+			this.put(id, new PlayerResearch(id));
+			this.get(id).setUsername(event.player.getCommandSenderName());
 		}
 		registerLissner(id, id);
 	}
@@ -182,12 +190,12 @@ public class PlayerStorage implements IDataFile{
 	
 	public void printLissensOn(UUID id){
 		PlayerResearch res = this.get(id);
-		System.out.println("OBSERVER: " + res.getUsername(null));
+		System.out.println("OBSERVER: " + res.getUsername());
 		List<UUID> subjects = lissensOn.get(id);
 		System.out.print("SUBJECTS: ");
 		for(UUID sid : subjects){
 			PlayerResearch subject = this.get(sid);
-			System.out.print(subject.getUsername(null) + ", ");
+			System.out.print(subject.getUsername() + ", ");
 		}
 		System.out.println();
 	}

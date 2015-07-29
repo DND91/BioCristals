@@ -21,11 +21,14 @@ public class PlayerStorageFaveHandler implements IMessageHandler<PlayerStorageFa
 	public IMessage onMessage(PlayerStorageFaveMessage message,
 			MessageContext ctx) {
 		UUID id = UUID.fromString(message.getContainer().observer);
-		
-		if(PlayerStorage.instance().get(id).hasFaved(message.getContainer().subject)){
-			PlayerStorage.instance().get(id).removeFaved(message.getContainer().subject);
+		if(PlayerStorage.instance(false).get(id) == null){
+			System.err.println("ERROR: PLAYER RESEARCH NOT FOUND IN FAVE HANDELING!");
+			return null;
+		}
+		if(PlayerStorage.instance(false).get(id).hasFaved(message.getContainer().subject)){
+			PlayerStorage.instance(false).get(id).removeFaved(message.getContainer().subject);
 		}else{
-			PlayerStorage.instance().get(id).addFaved(message.getContainer().subject);
+			PlayerStorage.instance(false).get(id).addFaved(message.getContainer().subject);
 		}
 		return null;
 	}

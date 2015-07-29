@@ -166,7 +166,7 @@ public class GuiResearchBook extends GuiScreen {
 			article.setWorldAndResolution(mc, width, height, null);
 			this.initGui();
         }else if(btn == 1 && this.tooltipResearch != null && DataHelper.belongsTo(reader, reader.getCurrentEquippedItem())){
-        	BioCristalsMod.network.sendToServer(new PlayerStorageFaveMessage(reader.getPersistentID().toString(), tooltipResearch.getCode()));
+        	BioCristalsMod.network.sendToServer(new PlayerStorageFaveMessage(reader.getGameProfile().getId().toString(), tooltipResearch.getCode()));
         	//tooltipResearch.getContent().selected(!b);
 			
         }else{
@@ -513,7 +513,12 @@ public class GuiResearchBook extends GuiScreen {
         int l4;
         int i5;
         tooltipResearch = null;
-        for(Research knowledge : ResearchLogicNetwork.instance().getOpenResearches(PlayerStorage.instance().get(player))){
+        PlayerResearch res = PlayerStorage.instance(true).get(player);
+        if(res == null){
+        	this.drawString(fontRendererObj, "Syncing...", k1, l1, 0xFFFFFF);
+        	return;
+        }
+        for(Research knowledge : ResearchLogicNetwork.instance().getOpenResearches(res)){
         	int colum = knowledge.displayColumn * 24 - k;
             int row = knowledge.displayRow * 24 - l;
             if (colum >= -10 && row >= -10 && colum <= 224 && row <= 155)
@@ -521,7 +526,7 @@ public class GuiResearchBook extends GuiScreen {
             	i5 = k1 + colum;
                 l4 = l1 + row;
         		
-                this.drawIcon(knowledge, i5, l4, PlayerStorage.instance().get(player).hasCompleted(knowledge.getCode()), true);
+                this.drawIcon(knowledge, i5, l4, PlayerStorage.instance(true).get(player).hasCompleted(knowledge.getCode()), true);
                 Rectangle rect = new Rectangle(i5 + 3, l4 + 3, 16, 16);
                 if(rect.contains(new Rectangle(par1, par2, 2, 2))){
                 	tooltipResearch = knowledge;
@@ -546,6 +551,8 @@ public class GuiResearchBook extends GuiScreen {
           
           GL11.glColor4f(f3, f3, f3, 1.0F);
           
+          PlayerResearch res = PlayerStorage.instance(true).get(player);
+          
          if (research.getSpecial())
          {
              this.drawTexturedModalRect(x - 2, y - 2, 26, 202, 26, 26);
@@ -556,7 +563,7 @@ public class GuiResearchBook extends GuiScreen {
             	 GL11.glColor4f(f3, f3, f3, 1.0F);
              }
              
-             if(PlayerStorage.instance().get(player).hasFaved(research.getCode())){
+             if(res != null && res.hasFaved(research.getCode())){
             	 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             	 this.drawTexturedModalRect(x - 2, y - 2, 26, 202 + 26, 26, 26);
             	 GL11.glColor4f(f3, f3, f3, 1.0F);
@@ -570,7 +577,7 @@ public class GuiResearchBook extends GuiScreen {
             	 this.drawTexturedModalRect(x - 3, y - 1, 52, 202, 26, 26);
             	 GL11.glColor4f(f3, f3, f3, 1.0F);
              }
-             if(PlayerStorage.instance().get(player).hasFaved(research.getCode())){
+             if(res != null && res.hasFaved(research.getCode())){
             	 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             	 drawTexturedModalRect(x - 2, y - 2, 0, 202 + 26, 26, 26);
             	 GL11.glColor4f(f3, f3, f3, 1.0F);
@@ -617,9 +624,8 @@ public class GuiResearchBook extends GuiScreen {
 		GL11.glPushMatrix();
 		GL11.glColor3f(1.0f, 1.0f, 1.0f);
 		GL11.glEnable(GL11.GL_BLEND);
-		UUID id = UUID.fromString(DataHelper.getOwner(book));
 		
-		this.drawString(fontRendererObj, DataHelper.getOwnerName(id, Minecraft.getMinecraft().theWorld) + "'s book", i1+20, j1+5, 0xFFFFFF);
+		this.drawString(fontRendererObj, DataHelper.getOwnerName(player, Minecraft.getMinecraft().theWorld) + "'s book", i1+20, j1+5, 0xFFFFFF);
 		GL11.glDisable(GL11.GL_BLEND);
 		
 		GL11.glPopMatrix();

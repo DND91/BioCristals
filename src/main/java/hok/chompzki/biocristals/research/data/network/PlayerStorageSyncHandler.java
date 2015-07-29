@@ -25,14 +25,13 @@ public class PlayerStorageSyncHandler implements
 	@Override
 	public IMessage onMessage(PlayerStorageSyncMessage message, MessageContext ctx) {
 		PlayerResearch research = message.getResearch();
-		if(research == null)
+		if(research == null){
 			return null;
-		PlayerStorage storage = PlayerStorage.instance();
+		}
+		PlayerStorage storage = PlayerStorage.instance(true);
 		
 		UUID id = research.getOwnerId();
 		PlayerResearch oldResearch = storage.get(id);
-		
-		
 		
 		storage.put(id, research);
 		

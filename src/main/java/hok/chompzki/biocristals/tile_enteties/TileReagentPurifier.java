@@ -274,7 +274,7 @@ public class TileReagentPurifier extends TileCroot implements IInventory{
 				recipe = null;
 				return;
 			}
-			PlayerResearch research = PlayerStorage.instance().get(owner);
+			PlayerResearch research = PlayerStorage.instance(false).get(owner);
 			if(!research.hasCompleted(recipe.code())){
 				research.addCompleted(recipe.code());
 			}

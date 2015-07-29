@@ -63,7 +63,7 @@ public class WeakCristalTransformation implements ITransformation {
 			
 			if(code != null){
 				UUID id = player.getGameProfile().getId();
-				PlayerResearch research = PlayerStorage.instance().get(id);
+				PlayerResearch research = PlayerStorage.instance(false).get(id);
 				if(!research.hasCompleted(code)){
 					research.addCompleted(code);
 				} 

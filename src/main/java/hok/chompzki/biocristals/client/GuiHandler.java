@@ -2,6 +2,7 @@ package hok.chompzki.biocristals.client;
 
 import java.util.UUID;
 
+import hok.chompzki.biocristals.research.data.DataHelper;
 import hok.chompzki.biocristals.research.data.PlayerStorage;
 import hok.chompzki.biocristals.research.gui.GuiResearchBook;
 import hok.chompzki.biocristals.tile_enteties.TileCrootHollow;
@@ -21,8 +22,8 @@ public class GuiHandler implements IGuiHandler {
 		if(ID == 100){ //ResearchBook
 			EntityPlayer p = world.getPlayerEntityByName(player.getCommandSenderName());
 			UUID observer = p.getGameProfile().getId();
-			UUID subject = UUID.fromString(p.inventory.getCurrentItem().getTagCompound().getString("OWNER"));
-			PlayerStorage.instance().registerLissner(observer, subject);
+			UUID subject = UUID.fromString(DataHelper.getOwner(player.inventory.getCurrentItem()));
+			PlayerStorage.instance(false).registerLissner(observer, subject);
 			return null;
 		}else if(ID == 101){ //CrootHollow
 			TileEntity tileEntity = world.getTileEntity(x, y, z);

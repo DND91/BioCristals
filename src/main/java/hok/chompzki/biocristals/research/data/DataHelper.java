@@ -61,7 +61,9 @@ public class DataHelper {
 	}
 	
 	public static String getOwnerName(UUID id, World world){
-		return PlayerStorage.instance().get(id).getUsername(world);
+		if(PlayerStorage.instance(true).get(id) == null)
+			return "UNKOWN";
+		return PlayerStorage.instance(true).get(id).getUsername();
 	}
 	
 	public static MovingObjectPosition rayTrace(EntityLivingBase entity, double p_70614_1_, float p_70614_3_){

@@ -153,6 +153,8 @@ public abstract class TileCore extends TileEntity implements
 	
 	@Override
 	public void breakTile() {
+		if(treeForm == null)
+			return;
 		treeForm.clean(worldObj);
 		TreeStorage.instance().removeForm(treeForm.coreCoord);
 	}

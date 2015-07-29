@@ -108,7 +108,7 @@ public class GuiArticle extends GuiScreen {
         
         this.buttonCheckboxPage.visible = this.content.getFaved() != null && DataHelper.belongsTo(reader, stack);
         if(this.buttonCheckboxPage.visible){
-        	this.buttonCheckboxPage.selected = PlayerStorage.instance().get(owner).hasFaved(research.getCode());
+        	this.buttonCheckboxPage.selected = PlayerStorage.instance(true).get(owner).hasFaved(research.getCode());
         }
     }
 	
@@ -207,7 +207,7 @@ public class GuiArticle extends GuiScreen {
     {
 		this.buttonCheckboxPage.visible = this.content.getFaved() != null && reader.getGameProfile().getId().equals(owner);
         if(this.buttonCheckboxPage.visible){
-        	this.buttonCheckboxPage.selected = PlayerStorage.instance().get(owner).hasFaved(research.getCode());
+        	this.buttonCheckboxPage.selected = PlayerStorage.instance(true).get(owner).hasFaved(research.getCode());
         }
         
 		int k = last.calculateLeft() + last.getScreenWidth();

@@ -149,7 +149,7 @@ public class BlockCrootSapling extends Block implements IGrowthCristal {
     	Block block = world.getBlock(x, y-1, z);
     	int meta = world.getBlockMetadata(x, y, z);
     	if(block == null || !(block instanceof BlockCrootRoots)){
-    		world.setBlock(x, y-1, z, BlockRegistry.crootRoots, meta, 2);
+    		world.setBlock(x, y-1, z, BlockRegistry.crootRoots, meta, 3);
     		return;
     	}
     	
@@ -161,7 +161,7 @@ public class BlockCrootSapling extends Block implements IGrowthCristal {
     		
     		block = world.getBlock(x + dir.offsetX, y  + dir.offsetY, z + dir.offsetZ);
         	if(block == null || !(block instanceof BlockCrootRoots)){
-        		world.setBlock(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, BlockRegistry.crootRoots, meta, 2);
+        		world.setBlock(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, BlockRegistry.crootRoots, meta, 3);
         		return;
         	}
     	}
@@ -170,11 +170,11 @@ public class BlockCrootSapling extends Block implements IGrowthCristal {
     	
     	CrootHelper.spawnCircle(world, x, y-1, z, 2, BlockRegistry.crootRoots, BlockRegistry.crootRoots);
     	CrootHelper.spawnCircle(world, x, y-2, z, 1, BlockRegistry.crootRoots, BlockRegistry.crootRoots);
-    	world.setBlock(x, y-3, z, BlockRegistry.crootRoots, meta, 2);
+    	world.setBlock(x, y-3, z, BlockRegistry.crootRoots, meta, 3);
     	
-    	world.setBlock(x, y, z, BlockRegistry.crootCore, meta, 2);
+    	world.setBlock(x, y, z, BlockRegistry.crootCore, meta, 3);
     	
-    	world.setBlock(x, y+1, z, BlockRegistry.crootLeaves, meta, 2);
+    	world.setBlock(x, y+1, z, BlockRegistry.crootLeaves, meta, 3);
     	
     	TileCrootCore tile = (TileCrootCore) world.getTileEntity(x, y, z);
     	tile.setBlockCount(100);

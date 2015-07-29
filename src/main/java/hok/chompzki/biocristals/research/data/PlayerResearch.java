@@ -22,7 +22,6 @@ public class PlayerResearch implements Serializable {
 	private String username = null;
 	
 	private ArrayList<String> completed = new ArrayList<String>();
-	private ArrayList<String> headCompleted = new ArrayList<String>();
 	private ArrayList<String> favorised = new ArrayList<String>();
 	
 	
@@ -63,38 +62,18 @@ public class PlayerResearch implements Serializable {
 			currentStorage.activate(this);
 	}
 	
-	public void addHeadCompleted(String code) {
-		this.headCompleted.add(code);
-		this.completed.add(code);
-		if(currentStorage != null)
-			currentStorage.activate(this);
-	}
-	
-	public boolean isHead(String code) {
-		return headCompleted.contains(code);
-	}
-	
 
 	public UUID getOwnerId() {
 		return ownerId;
 	}
-	public String getUsername(World world) {
-		if(username == null)
-			username = "UNKOWN";
-
-		if(world != null && world.func_152378_a(ownerId) != null && !username.equals(world.func_152378_a(ownerId).getGameProfile().getName())){
-			username = world.func_152378_a(ownerId).getGameProfile().getName();
-			if(currentStorage != null)
-				currentStorage.activate(this);
-		}
-		
+	public String getUsername() {
 		return username;
 	}
 	
 	public List<String> getCompleted(){
 		List<String> list = new ArrayList<String>();
-		list.addAll(completed);
-		list.addAll(headCompleted);
+		for(String s : completed)
+			list.add(s);
 		return list;
 	}
 
@@ -114,6 +93,22 @@ public class PlayerResearch implements Serializable {
 		return diff;
 	}
 	
-	
+	public void print(){
+		System.out.println("OWNER: " + getOwnerId());
+		System.out.println("USERNAME: " + getUsername());
+		System.out.print("FAVED: " + getFaved().size() + "; ");
+		for(String s : getFaved())
+			System.out.print(s + ", ");
+		System.out.println();
+		System.out.print("COMPLETED: " + getCompleted().size() + "; ");
+		for(String s : getCompleted())
+			System.out.print(s + ", ");
+		System.out.println();
+		
+	}
+
+	public void setUsername(String name) {
+		this.username = name;
+	}
 	
 }

@@ -26,39 +26,37 @@ public class MessageHandlerInserCrafting implements IMessageHandler<MessageInser
 	
 	@Override
 	public IMessage onMessage(MessageInsertCrafting message, MessageContext ctx) {
-		System.out.println("MESSAGE RECIVED!!!!!!!!!!");
 		EntityPlayer player = ctx.getServerHandler().playerEntity;
+		player = ctx.getServerHandler().playerEntity.worldObj.func_152378_a(player.getGameProfile().getId());
+		
 		Container container = player.openContainer;
 		if(container == null)
 			container = player.inventoryContainer;
 		
 		if(container != null){
-			System.out.println("CONTAINER FOUND!");
 			List<SlotCrafting> craftingSlots = getCraftingSlots(container);
-			if(craftingSlots.size() == 0)
-				System.out.println("NO CRAFTING SLOTS FOUND!");
 			RecipeContainer recipe = RecipeRegistry.getRecipreFor(message.getResult());
 			if(recipe == null)
 				return null;
-			System.out.println("RECIPES FOUND!");
 			for(SlotCrafting slot : craftingSlots){
 				IInventory grid = getCraftMatrix(slot);
 				if(grid == null)
 					continue;
 				Slot[] slots = getSlots(container, grid);
-				
 				if(slots.length == grid.getSizeInventory() && 2*recipe.length <= grid.getSizeInventory()){
 					for(int i = 0; i < grid.getSizeInventory(); i++){
-						inserStack(player, container, recipe.getItemStack(i), slots[i]);
-						container.detectAndSendChanges();
+						insertStack(player, container, recipe.getItemStack(i), slots[i]);
+						
 					}
+					grid.markDirty();
+					container.detectAndSendChanges();
 				}
 			}
 		}
 		return null;
 	}
 	
-	private void inserStack(EntityPlayer player, Container container,
+	private void insertStack(EntityPlayer player, Container container,
 			ItemStack itemStack, Slot slot) {
 		ItemStack sloted = slot.getStack();
 		
@@ -128,10 +126,21 @@ public class MessageHandlerInserCrafting implements IMessageHandler<MessageInser
 	public IInventory getCraftMatrix(SlotCrafting slot){
 		IInventory grid = null;
 		try{
-			Field matrix = SlotCrafting.class.getDeclaredField("craftMatrix");
-			matrix.setAccessible(true);
-			grid = (IInventory) matrix.get(slot);
-		}catch (Exception ex){}
+			for(Field field : SlotCrafting.class.getDeclaredFields()){
+				if(field.getType().isAssignableFrom(IInventory.class)){
+					Field matrix = field;
+					matrix.setAccessible(true);
+					IInventory t = (IInventory) matrix.get(slot);
+					if(grid == null)
+						grid = t;
+					else if(grid.getSizeInventory() < t.getSizeInventory())
+						grid = t;
+				}
+			}
+			
+		}catch (Exception ex){
+			ex.printStackTrace();
+		}
 		return grid;
 	}
 
