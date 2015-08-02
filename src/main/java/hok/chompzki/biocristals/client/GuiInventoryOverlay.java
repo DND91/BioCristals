@@ -150,6 +150,7 @@ public class GuiInventoryOverlay extends Gui{
 				}
 			}
 			this.unlockedGui.updateResearchWindow();
+			mc.renderEngine.bindTexture(Gui.icons);
     }
 	
 	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)

@@ -3,6 +3,7 @@ package hok.chompzki.biocristals.research.gui;
 import java.awt.event.ItemListener;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import hok.chompzki.biocristals.recipes.CrootRecipeContainer;
 import hok.chompzki.biocristals.recipes.PurifierContainer;
 import hok.chompzki.biocristals.recipes.RecipeContainer;
 import hok.chompzki.biocristals.recipes.TransformerContainer;
@@ -23,8 +24,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class KnowledgeDescriptions {
-	//s += "\n\t\n<"+log+"|2><"+dirt+"><"+log+"|2>\n";
-	//s += "\n<"+log+"|4><"+log+"|1><"+log+"|6>\t";
 	public static String transformRecipe(ItemStack output){
 		String s = "\t\n";
 		RecipeContainer con = RecipeRegistry.getRecipreFor(output);
@@ -56,7 +55,9 @@ public class KnowledgeDescriptions {
 			s += "\t\f";
 		s += "<";
 		String name = transformName(stack);
-		s += (stack.stackSize <= 0 ? 1 : stack.stackSize) + "x" + name + "|" + (stack.getItem() == null ? 0 : stack.getItemDamage());
+		String meta = "";
+		meta = ""+(stack.getItem() == null ? 0 : stack.getItemDamage());
+		s += (stack.stackSize <= 0 ? 1 : stack.stackSize) + "x" + name + ":" + meta;
 		s += ">";
 		
 		return s +  (withTT ? "\t" : "");
@@ -210,6 +211,12 @@ public class KnowledgeDescriptions {
 			}
 		}
 		
+		for(CrootRecipeContainer con : RecipeRegistry.crootRecipes){
+			if(con.code.equals(code)){
+				return con.output.getDisplayName() + "\n[Croot Crafting]";
+			}
+		}
+		
 		for(TransformerContainer con : CristalRegistry.transformationContainer){
 			if(con.code.equals(code)){
 				return con.output.getDisplayName() + "\n[Attuner]";
@@ -238,6 +245,12 @@ public class KnowledgeDescriptions {
 		for(RecipeContainer con : RecipeRegistry.recipes){
 			if(con.code.equals(code)){
 				return KnowledgeDescriptions.transformRecipe(con.output);
+			}
+		}
+		
+		for(CrootRecipeContainer con : RecipeRegistry.crootRecipes){
+			if(con.code.equals(code)){
+				return KnowledgeDescriptions.transformCrootRecipe(con.output);
 			}
 		}
 		
@@ -272,11 +285,34 @@ public class KnowledgeDescriptions {
 		return "NONE";
 	}
 	
+	public static String transformCrootRecipe(ItemStack output) {
+		String s = "\t\n";
+		CrootRecipeContainer con = RecipeRegistry.getCrootRecipreFor(output);
+		for(int y = 0; y < con.craftingGrid[0].length; y++){
+			s += "\f";
+			for(int x = 0; x < con.craftingGrid[0].length; x++){
+				
+				ItemStack slot = con.idToItem.get(con.craftingGrid[y][x]);
+				if(slot == null || slot.getItem() == null)
+					slot = new ItemStack(Blocks.air);
+				s += transformItemStack(slot, false);
+			}
+			s += "\n\n";
+		}
+		return s + "\t";
+	}
+
 	public static String getResult(String code){
 		if(code.equals("NONE"))
 			return "NONE";
 		
 		for(RecipeContainer con : RecipeRegistry.recipes){
+			if(con.code.equals(code)){
+				return KnowledgeDescriptions.transformOutput(con.output);
+			}
+		}
+		
+		for(CrootRecipeContainer con : RecipeRegistry.crootRecipes){
 			if(con.code.equals(code)){
 				return KnowledgeDescriptions.transformOutput(con.output);
 			}

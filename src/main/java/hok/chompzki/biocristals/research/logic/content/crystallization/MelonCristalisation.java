@@ -25,7 +25,7 @@ public class MelonCristalisation extends ArticleContent {
 			s += "Some industrialized civilisations couldn't acquire pumkins, so they began, what is known today as the ";
 			s += "\'Mirosa\' hunt. This quest for a replacement of the pumkin have both been seen as inspiring and convulsing as ";
 			s += "the campaign leader commited genocide on villages that wouldn't comply with the mission. ";
-			s += "All cristals need to be placed near croot.";
+			s +=  "§lAll cristals need to be placed near croot.§r";
 			break;
 		case 1:
 			s += KnowledgeDescriptions.getDisplayName(code) + "\n\n";

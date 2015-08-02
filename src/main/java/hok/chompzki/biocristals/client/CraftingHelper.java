@@ -205,6 +205,7 @@ public class CraftingHelper {
 		else
 			currentGui = 0;
 		this.currentGui = Math.max(currentGui, 0);
+		this.updateButtons();
 	}
 	
 }

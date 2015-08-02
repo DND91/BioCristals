@@ -1,7 +1,11 @@
 package hok.chompzki.biocristals.research.gui;
 
 import hok.chompzki.biocristals.BioCristalsMod;
+import hok.chompzki.biocristals.client.GuiCraft;
 import hok.chompzki.biocristals.client.GuiInventoryOverlay;
+import hok.chompzki.biocristals.client.IArticle;
+import hok.chompzki.biocristals.registrys.ReserchRegistry;
+import hok.chompzki.biocristals.research.data.Chapeter;
 import hok.chompzki.biocristals.research.data.DataHelper;
 import hok.chompzki.biocristals.research.data.DataPlayer;
 import hok.chompzki.biocristals.research.data.PlayerResearch;
@@ -45,6 +49,8 @@ import net.minecraft.util.StatCollector;
 public class GuiResearchBook extends GuiScreen {
 	
 	public static final ResourceLocation bioBookBG = new ResourceLocation(BioCristalsMod.MODID + ":textures/client/gui/GuiBioBookBG.png");
+	public static final ResourceLocation bioSidebarBG = new ResourceLocation(BioCristalsMod.MODID + ":textures/client/gui/book_sidebar.png");
+	public static final ResourceLocation sparkleBG = new ResourceLocation(BioCristalsMod.MODID + ":textures/client/gui/icons/sparkle.png");
 	
 	private static final int guiMapTop = -7 * 24 - 112;
 	private static final int guiMapLeft = -7 * 24 - 112;
@@ -78,6 +84,9 @@ public class GuiResearchBook extends GuiScreen {
 	
 	private EntityPlayer reader = null;
 	
+	private Chapeter selectedChapeter = Chapeter.chapeters.get(0);
+	private Chapeter tooltipChapeter = null;
+	
 	public GuiResearchBook(EntityPlayer player) {
 		this.reader = player;
 		this.book = player.inventory.getCurrentItem();
@@ -91,7 +100,7 @@ public class GuiResearchBook extends GuiScreen {
         	article.setLast(this);
         	article.setWorldAndResolution(Minecraft.getMinecraft(), width, height, null);
         }else{
-        	article = new GuiTutorialArticle(player);
+        	article = new GuiArticle(reader, ReserchRegistry.tutorialResearch, this.player);
         	article.setLast(this);
         	article.setWorldAndResolution(Minecraft.getMinecraft(), width, height, null);
         }
@@ -145,7 +154,7 @@ public class GuiResearchBook extends GuiScreen {
         		article.back();
         		return;
         	}else if(par2 == Keyboard.KEY_2 && DataHelper.belongsTo(reader, reader.getCurrentEquippedItem())){
-        		BioCristalsMod.network.sendToServer(new PlayerStorageFaveMessage(reader.getGameProfile().getId().toString(), article.getResearch().getCode()));
+        		BioCristalsMod.network.sendToServer(new PlayerStorageFaveMessage(reader.getGameProfile().getId().toString(), article.getContent().getCode()));
         		return;
         	}else if(par2 == Keyboard.KEY_3){
         		article.next();
@@ -166,10 +175,22 @@ public class GuiResearchBook extends GuiScreen {
 			article.setWorldAndResolution(mc, width, height, null);
 			this.initGui();
         }else if(btn == 1 && this.tooltipResearch != null && DataHelper.belongsTo(reader, reader.getCurrentEquippedItem())){
+        	if(tooltipResearch.getContent().getFaved() == null)
+        		return;
+        	
         	BioCristalsMod.network.sendToServer(new PlayerStorageFaveMessage(reader.getGameProfile().getId().toString(), tooltipResearch.getCode()));
         	//tooltipResearch.getContent().selected(!b);
 			
-        }else{
+        }else if(btn == 1 && this.tooltipChapeter != null){
+        	this.selectedChapeter = this.tooltipChapeter;
+        	article = new GuiArticle(reader, tooltipChapeter, player);
+			article.setLast(this);
+			article.setWorldAndResolution(mc, width, height, null);
+			this.initGui();
+        	
+        }else if(btn == 0 && this.tooltipChapeter != null){
+        	this.selectedChapeter = this.tooltipChapeter;
+        }  else{
         	super.mouseClicked(x, y, btn);
         }
     }
@@ -272,19 +293,25 @@ public class GuiResearchBook extends GuiScreen {
 		
 		GL11.glDisable(GL11.GL_BLEND);
 		
+		
+		this.drawChapeterSidebar(par1, par2, par3);
+		
 		if(article != null){
 			GL11.glColor3f(1.0f, 1.0f, 1.0f);
 			article.drawScreen(par1, par2, par3);
 			GL11.glColor3f(1.0f, 1.0f, 1.0f);
 			article.drawTooltip();
-			Research research = article.getResearch();
+			IArticle research = article.getArticle();
 			int k = this.calculateLeft() + this.getScreenWidth();
 	        int b0 = this.calculateTop();
 	        
 	        GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0F);
-	        this.renderTitle(research, k + 13, b0);
+	        this.renderTitle(research, k + 15, b0);
 	        GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0F);
-	        this.drawIcon(research, k, b0 - 13, true, true);
+	        if(research instanceof Research)
+	        	this.drawIcon((Research) research, k, b0 - 13, true, true);
+	        if(research instanceof Chapeter)
+	        	this.drawIcon((Chapeter) research, k, b0 - 13, true, true);
 		}
 		
 		if(tooltipResearch != null){
@@ -292,9 +319,64 @@ public class GuiResearchBook extends GuiScreen {
 			this.drawTooltip(par1, par2, par3);
 		}
 		
+		if(this.tooltipChapeter != null){
+			GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0F);
+			this.drawChapeterTooltip(par1, par2, par3);
+		}
+		
+		
 		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0F);
     }
 	
+	 public void drawChapeterTooltip(int par1, int par2, float par3){
+		 this.renderChapeterToolTip(this.tooltipChapeter, par1, par2);
+	 }
+	 
+	protected void renderChapeterToolTip(Chapeter hoveringChapeter2, int p_146285_2_, int p_146285_3_)
+    {
+        List list = new ArrayList();
+        list.add(EnumChatFormatting.GOLD + hoveringChapeter2.getTitle());
+        list.add(hoveringChapeter2.getDesc());
+        
+        drawHoveringText(list, p_146285_2_, p_146285_3_, Minecraft.getMinecraft().fontRenderer);
+    }
+	
+
+	private void drawChapeterSidebar(int par1, int par2, float par3) {
+		//TODO: WORK HERE!
+		int i1 = calculateLeft() - 10;
+        int j1 = calculateTop() + 14;
+		
+        int i = 1;
+        
+        PlayerResearch player = PlayerStorage.instance(true).get(this.player);
+        if(player == null)
+        	return;
+        
+        boolean owner = this.player.equals(this.reader.getGameProfile().getId());
+        
+        for(Chapeter chap : Chapeter.chapeters){
+        	if(!ResearchLogicNetwork.instance().hasUnlocked(player, chap))
+        		continue;
+        	
+        	this.mc.renderEngine.bindTexture(chap.getIcon());
+        	this.func_146110_a(i1, j1, this.selectedChapeter == chap ? 26 : 0, 0, 26, 26, 52, 26);
+        	
+        	if(chap != this.selectedChapeter && owner && ResearchLogicNetwork.instance().hasNew(player, chap)){
+        		this.mc.renderEngine.bindTexture(sparkleBG);
+            	this.func_146110_a(i1, j1, 0, 0, 26, 26, 26, 26);
+        	}
+        	Rectangle rect = new Rectangle(i1, j1, 26, 26);
+            if(rect.contains(new Rectangle(par1, par2, 2, 2))){
+            	this.tooltipChapeter = chap;
+            }
+        	
+        	j1 += 26;
+        }
+		
+		this.mc.renderEngine.bindTexture(this.bioBookBG);
+	}
+
 	@Override
 	public void updateScreen()
     {
@@ -513,12 +595,13 @@ public class GuiResearchBook extends GuiScreen {
         int l4;
         int i5;
         tooltipResearch = null;
+        tooltipChapeter = null;
         PlayerResearch res = PlayerStorage.instance(true).get(player);
         if(res == null){
         	this.drawString(fontRendererObj, "Syncing...", k1, l1, 0xFFFFFF);
         	return;
         }
-        for(Research knowledge : ResearchLogicNetwork.instance().getOpenResearches(res)){
+        for(Research knowledge : ResearchLogicNetwork.instance().getOpenResearches(this.selectedChapeter, res)){
         	int colum = knowledge.displayColumn * 24 - k;
             int row = knowledge.displayRow * 24 - l;
             if (colum >= -10 && row >= -10 && colum <= 224 && row <= 155)
@@ -526,6 +609,9 @@ public class GuiResearchBook extends GuiScreen {
             	i5 = k1 + colum;
                 l4 = l1 + row;
         		
+                
+                
+                
                 this.drawIcon(knowledge, i5, l4, PlayerStorage.instance(true).get(player).hasCompleted(knowledge.getCode()), true);
                 Rectangle rect = new Rectangle(i5 + 3, l4 + 3, 16, 16);
                 if(rect.contains(new Rectangle(par1, par2, 2, 2))){
@@ -540,10 +626,11 @@ public class GuiResearchBook extends GuiScreen {
 		 Minecraft mc = Minecraft.getMinecraft();
 		 RenderItem renderitem = new RenderItem();
         RenderHelper.enableGUIStandardItemLighting();
+        GL11.glEnable(GL11.GL_BLEND);
 		 float f2 = 1.0F;
      	GL11.glColor4f(f2, f2, f2, 1.0F);
      	
-     	mc.renderEngine.bindTexture(bioBookBG);
+     	//mc.renderEngine.bindTexture(bioBookBG);
         
          float f3 = 1.0F;
          if(!isCompleted || !notGreyed)
@@ -551,13 +638,19 @@ public class GuiResearchBook extends GuiScreen {
           
           GL11.glColor4f(f3, f3, f3, 1.0F);
           
-          PlayerResearch res = PlayerStorage.instance(true).get(player);
-          
+         PlayerResearch res = PlayerStorage.instance(true).get(player);
+         boolean owner = player.equals(this.reader.getGameProfile().getId());
+         
          if (research.getSpecial())
          {
-             this.drawTexturedModalRect(x - 2, y - 2, 26, 202, 26, 26);
+        	 this.mc.renderEngine.bindTexture(research.getCategory().getIcon()); 
+        	 
+        	 
+             this.func_146110_a(x - 2, y - 2, 26, 0, 26, 26, 52, 26);
              
-             if(PlayerStorageSyncHandler.totallyNew.contains(research.getCode())){
+             mc.renderEngine.bindTexture(bioBookBG);
+             
+             if(owner && PlayerStorageSyncHandler.totallyNew.contains(research.getCode())){
             	 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             	 this.drawTexturedModalRect(x - 3, y - 1, 52, 202 + 26, 26, 26);
             	 GL11.glColor4f(f3, f3, f3, 1.0F);
@@ -568,33 +661,69 @@ public class GuiResearchBook extends GuiScreen {
             	 this.drawTexturedModalRect(x - 2, y - 2, 26, 202 + 26, 26, 26);
             	 GL11.glColor4f(f3, f3, f3, 1.0F);
           	}
+             
+            if(this.article != null && this.article.getArticle().getCode().equals(research.getCode())){
+            	GL11.glColor4f(1.0F, 0.0F, 0.0F, 1.0F);
+            	this.drawTexturedModalRect(x - 2, y - 1, 26, 202 + 26, 26, 26);
+           	 	GL11.glColor4f(f3, f3, f3, 1.0F);
+            }
          }
          else
          {
-             drawTexturedModalRect(x - 2, y - 2, 0, 202, 26, 26);
-             if(PlayerStorageSyncHandler.totallyNew.contains(research.getCode())){
+        	 this.mc.renderEngine.bindTexture(research.getCategory().getIcon()); 
+        	 
+        	 this.func_146110_a(x - 2, y - 2, 0, 0, 26, 26, 52, 25);
+             
+             mc.renderEngine.bindTexture(bioBookBG);
+             if(owner && PlayerStorageSyncHandler.totallyNew.contains(research.getCode())){
             	 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             	 this.drawTexturedModalRect(x - 3, y - 1, 52, 202, 26, 26);
             	 GL11.glColor4f(f3, f3, f3, 1.0F);
              }
              if(res != null && res.hasFaved(research.getCode())){
             	 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            	 drawTexturedModalRect(x - 2, y - 2, 0, 202 + 26, 26, 26);
+            	 drawTexturedModalRect(x - 2, y - 3, 0, 202 + 26, 26, 26);
             	 GL11.glColor4f(f3, f3, f3, 1.0F);
           	}
+             if(this.article != null && this.article.getArticle().getCode().equals(research.getCode())){
+             	GL11.glColor4f(1.0F, 0.0F, 0.0F, 1.0F);
+             	drawTexturedModalRect(x - 2, y - 2, 0, 202 + 26, 26, 26);
+        	 	GL11.glColor4f(f3, f3, f3, 1.0F);
+             }
          }
 
           
-          renderitem.renderWithColor = false;
+          renderitem.renderWithColor = true;
           renderitem.zLevel = -50.0f;
           
-         //GL11.glDisable(GL11.GL_LIGHTING); //Forge: Make sure Lighting is disabled. Fixes MC-33065
-         //GL11.glEnable(GL11.GL_CULL_FACE);
+         GL11.glDisable(GL11.GL_LIGHTING); //Forge: Make sure Lighting is disabled. Fixes MC-33065
+         GL11.glEnable(GL11.GL_CULL_FACE);
          renderitem.renderItemAndEffectIntoGUI(this.mc.fontRenderer, this.mc.renderEngine, research.getIconStack(), x + 3, y + 3);
-         //GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
          GL11.glEnable(GL11.GL_ALPHA_TEST);
          
+         RenderHelper.disableStandardItemLighting();
+         
+         
          GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+	 }
+	 
+	 public void drawIcon(Chapeter chapeter, int x, int y, boolean isCompleted, boolean notGreyed){
+		 Minecraft mc = Minecraft.getMinecraft();
+		 RenderItem renderitem = new RenderItem();
+        RenderHelper.enableGUIStandardItemLighting();
+        GL11.glEnable(GL11.GL_BLEND);
+        
+		 float f2 = 1.0F;
+     	GL11.glColor4f(f2, f2, f2, 1.0F);
+     	
+     	this.mc.renderEngine.bindTexture(chapeter.getIcon());
+    	this.func_146110_a(x, y, 26, 0, 26, 26, 52, 26);
+         
+        RenderHelper.disableStandardItemLighting();
+        GL11.glDisable(GL11.GL_BLEND);
+         
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 	 }
 	 
 	 public void drawOverlay(int par1, int par2, float par3){
@@ -625,7 +754,12 @@ public class GuiResearchBook extends GuiScreen {
 		GL11.glColor3f(1.0f, 1.0f, 1.0f);
 		GL11.glEnable(GL11.GL_BLEND);
 		
-		this.drawString(fontRendererObj, DataHelper.getOwnerName(player, Minecraft.getMinecraft().theWorld) + "'s book", i1+20, j1+5, 0xFFFFFF);
+		//TODO: WORK WORK!
+		
+		this.drawString(fontRendererObj, this.selectedChapeter.getTitle(), i1+20, j1+5, 0xFFFFFF);
+		this.drawString(fontRendererObj, DataHelper.getOwnerName(player, Minecraft.getMinecraft().theWorld) + "'s book", i1 + 20, j1 + this.knowledgePaneHeight - 20, 0xFFFFFF);
+		
+		
 		GL11.glDisable(GL11.GL_BLEND);
 		
 		GL11.glPopMatrix();
@@ -645,7 +779,7 @@ public class GuiResearchBook extends GuiScreen {
         drawHoveringText(list, p_146285_2_, p_146285_3_, Minecraft.getMinecraft().fontRenderer);
     }
 	
-	protected void renderTitle(Research tooltipKnowledge, int p_146285_2_, int p_146285_3_)
+	protected void renderTitle(IArticle tooltipKnowledge, int p_146285_2_, int p_146285_3_)
     {
         List list = new ArrayList();
         list.add(EnumChatFormatting.GOLD + tooltipKnowledge.getTitle());

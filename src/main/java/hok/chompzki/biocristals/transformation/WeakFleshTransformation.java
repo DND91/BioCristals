@@ -16,6 +16,7 @@ import hok.chompzki.biocristals.api.BioHelper;
 import hok.chompzki.biocristals.api.IEntityTransformation;
 import hok.chompzki.biocristals.research.data.PlayerResearch;
 import hok.chompzki.biocristals.research.data.PlayerStorage;
+import hok.chompzki.biocristals.research.logic.ResearchLogicNetwork;
 
 public class WeakFleshTransformation implements IEntityTransformation {
 	
@@ -33,7 +34,10 @@ public class WeakFleshTransformation implements IEntityTransformation {
 	@Override
 	public boolean hasResources(ItemStack stack, EntityPlayer player,
 			Entity taget) {
-		return true;
+		UUID id = player.getGameProfile().getId();
+		PlayerResearch research = PlayerStorage.instance(false).get(id);
+		
+		return code.equals("NONE") || ResearchLogicNetwork.instance().available(research, code);
 	}
 
 	@Override
@@ -60,9 +64,7 @@ public class WeakFleshTransformation implements IEntityTransformation {
 		if(code != null){
 			UUID id = player.getGameProfile().getId();
 			PlayerResearch research = PlayerStorage.instance(false).get(id);
-			if(!research.hasCompleted(code)){
-				research.addCompleted(code);
-			} 
+			ResearchLogicNetwork.instance().compelte(research, code);
 		}
 	}
 

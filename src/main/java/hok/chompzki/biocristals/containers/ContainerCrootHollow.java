@@ -1,4 +1,4 @@
-package hok.chompzki.biocristals.client;
+package hok.chompzki.biocristals.containers;
 
 import hok.chompzki.biocristals.tile_enteties.TileCrootHollow;
 import net.minecraft.entity.player.EntityPlayer;

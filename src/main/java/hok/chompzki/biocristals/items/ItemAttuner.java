@@ -80,12 +80,11 @@ public class ItemAttuner extends Item {
 			
 			Entity entity  = mop.entityHit;
 			
-			if(entity != null && entity instanceof EntityLiving){
+			if(entity != null && entity instanceof EntityLiving){ //ENTITY TRANSFORMATION!
 				entity = world.getEntityByID(entity.getEntityId());
 				EntityLiving target = (EntityLiving)entity;
 				if(!target.isPotionActive(Potion.moveSlowdown)){
-					player.addChatMessage(new ChatComponentText("Target not weakened for any crystaline transformation..."));
-					
+					player.addChatMessage(new ChatComponentText("Target is to active for any crystaline transformation..."));
 					return;
 				}
 				
@@ -108,7 +107,7 @@ public class ItemAttuner extends Item {
 				if(item.getEntityItem().stackSize <= 0)
 					item.setDead();
 				
-			}else if(!world.isAirBlock(x, y, z) && world.getBlock(x, y, z) instanceof IBaseCristal){
+			}else if(!world.isAirBlock(x, y, z) && world.getBlock(x, y, z) instanceof IBaseCristal){ // CRISTAL TRANSFORMATION
 				ITransformation struct = CristalRegistry.get(stack, player, world, x, y, z);
 				if(struct == null){
 					player.addChatMessage(new ChatComponentText("Envoirment not adopted for any crystaline transformation..."));
@@ -129,7 +128,7 @@ public class ItemAttuner extends Item {
 				if(item.getEntityItem().stackSize <= 0)
 					item.setDead();
 				
-			}else if(world.getBlock(x, y, z) instanceof IGrowthCristal){
+			}else if(world.getBlock(x, y, z) instanceof IGrowthCristal){ //GROWTH CRISTAL HARVEST!
 				IGrowthCristal cristal = (IGrowthCristal) world.getBlock(x, y, z);
 				if(cristal.isMature(world, player, stack, x, y, z)){
 					cristal.harvest(world, player, stack, x, y, z);

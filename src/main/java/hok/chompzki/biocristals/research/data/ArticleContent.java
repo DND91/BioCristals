@@ -30,5 +30,9 @@ public abstract class ArticleContent {
 	}
 
 	public abstract GuiCraftingHelper getFaved();
+
+	public String getCode() {
+		return code;
+	}
 	
 }

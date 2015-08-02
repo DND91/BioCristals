@@ -1,5 +1,7 @@
 package hok.chompzki.biocristals.research.data;
 
+import hok.chompzki.biocristals.client.GuiHandler;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -125,6 +127,7 @@ public class StorageHandler {
 	
 	@SubscribeEvent
 	public void unload(WorldEvent.Unload event){
+		GuiHandler.book = null;
 		String dict = event.world.getSaveHandler().getWorldDirectoryName();
 		if(dict.equals("none")){
 			return;

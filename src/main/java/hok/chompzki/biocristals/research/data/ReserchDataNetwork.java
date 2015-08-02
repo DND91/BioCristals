@@ -37,6 +37,8 @@ public class ReserchDataNetwork {
 	public HashMap<String, ArrayList<String>> parents = new HashMap<String, ArrayList<String>>();
 	//A research children
 	public HashMap<String, ArrayList<String>> children = new HashMap<String, ArrayList<String>>();
+	//Chapeter holder
+	public HashMap<String, ArrayList<String>> chapeters = new HashMap<String, ArrayList<String>>();
 	
 	public ReserchDataNetwork(){
 		
@@ -71,6 +73,16 @@ public class ReserchDataNetwork {
 			List<String> parents = this.parents.get(code);
 			if(parents.size() <= 0)
 				masters.add(res);
+			
+			if(!chapeters.containsKey(res.getChapeter().getCode())){
+				chapeters.put(res.getChapeter().getCode(), new ArrayList<String>());
+			}
+			
+			ArrayList<String> chapeter = chapeters.get(res.getChapeter().getCode());
+			
+			if(!chapeter.contains(code)){
+				chapeter.add(code);
+			}
 		}
 	}
 	
@@ -175,5 +187,13 @@ public class ReserchDataNetwork {
 	
 	public Research getResearch(String code){
 		return reserches.get(code);
+	}
+	
+	public boolean contains(String code) {
+		return reserches.containsKey(code);
+	}
+	
+	public final ArrayList<String> getChapeter(String code){
+		return chapeters.get(code);
 	}
 }

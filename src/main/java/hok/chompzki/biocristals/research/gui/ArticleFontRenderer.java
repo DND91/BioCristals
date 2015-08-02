@@ -50,6 +50,7 @@ public class ArticleFontRenderer {
 	
 	protected static HashMap<Class, EntityLivingBase> template = new HashMap<Class, EntityLivingBase>();
 	
+    public static int tick = 0;
 	protected boolean entityMode = false;
 	protected boolean itemMode = false;
 	protected boolean itemDmgMode = false;
@@ -283,7 +284,8 @@ public class ArticleFontRenderer {
             throw new RuntimeException(ioexception);
         }
     }
-
+    
+    
     /**
      * Pick how to render a single character and return the width used.
      */
@@ -361,9 +363,16 @@ public class ArticleFontRenderer {
     		resetScale();
     		return 0.f;
     	}else if(this.itemMode && c == '>' && this.nameID != null){
-            this.itemStack = RecipeTransformer.dataToItemStack(this.nameID);
+    		List<ItemStack> list = RecipeTransformer.dataToItemStack(this.nameID);
+    		int pos = tick;
+    		pos /= 50;
+    		pos %= list.size();
+            this.itemStack = list.get(pos);
+            
+            if(itemStack != null && itemStack.getItem() == null)
+            	itemStack = null;
+            
             if(itemStack != null){
-            	this.itemStack.setItemDamage(this.itemDMG);
 	            GL11.glPushMatrix();
 	            RenderHelper.enableGUIStandardItemLighting();
 	            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -1302,6 +1311,7 @@ public class ArticleFontRenderer {
 	}
 	
 	public void drawMouse(int pageImageWidth, int pageImageHeight){
+		tick++;
 		if(stackBucket != null){
 			this.renderToolTip(stackBucket, mosX, mosY, pageImageWidth, pageImageHeight);
 			stackBucket = null;

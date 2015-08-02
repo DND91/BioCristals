@@ -1,12 +1,13 @@
 package hok.chompzki.biocristals.research.data;
 
+import hok.chompzki.biocristals.client.IArticle;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
-public class Research {
-	
+public class Research implements IArticle{
+
 	public final int displayColumn;
 	public final int displayRow;
 	private boolean isSpecial;
@@ -16,7 +17,10 @@ public class Research {
 	private final String[] parents;
 	private final ArticleContent content;
 	
-	public Research(String code, int column, int row, ItemStack iconStack, ArticleContent content, String... parents){
+	public final Chapeter chapeter;
+	public final Category category;
+	
+	public Research(String code, int column, int row, ItemStack iconStack, ArticleContent content, Chapeter chapeter, Category category, String... parents){
 		this.code = code;
 		this.parents = parents;
 		this.displayColumn = column;
@@ -24,14 +28,16 @@ public class Research {
 		this.iconStack = iconStack;
 		this.content = content;
 		content.setCode(code);
+		this.chapeter = chapeter;
+		this.category = category;
 	}
 	
-	public Research(String code, int column, int row, Item iconStack, ArticleContent content, String... parents) {
-		this(code, column, row, new ItemStack(iconStack), content, parents);
+	public Research(String code, int column, int row, Item iconStack, ArticleContent content, Chapeter chapeter, Category category, String... parents) {
+		this(code, column, row, new ItemStack(iconStack), content, chapeter, category, parents);
 	}
 	
-	public Research(String code, int column, int row, Block iconStack, ArticleContent content, String... parents) {
-		this(code, column, row, new ItemStack(iconStack), content, parents);
+	public Research(String code, int column, int row, Block iconStack, ArticleContent content, Chapeter chapeter, Category category, String... parents) {
+		this(code, column, row, new ItemStack(iconStack), content, chapeter, category, parents);
 	}
 	
 	public String getCode() {
@@ -66,5 +72,13 @@ public class Research {
 	public Research setSpecial(){
 		this.isSpecial = true;
 		return this;
+	}
+	
+	public Chapeter getChapeter() {
+		return chapeter;
+	}
+
+	public Category getCategory() {
+		return category;
 	}
 }

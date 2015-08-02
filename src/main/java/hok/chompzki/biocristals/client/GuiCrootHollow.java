@@ -3,6 +3,7 @@ package hok.chompzki.biocristals.client;
 import org.lwjgl.opengl.GL11;
 
 import hok.chompzki.biocristals.BioCristalsMod;
+import hok.chompzki.biocristals.containers.ContainerCrootHollow;
 import hok.chompzki.biocristals.tile_enteties.TileCrootHollow;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;

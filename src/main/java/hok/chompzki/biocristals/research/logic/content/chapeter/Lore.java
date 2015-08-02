@@ -1,4 +1,4 @@
-package hok.chompzki.biocristals.research.logic.content;
+package hok.chompzki.biocristals.research.logic.content.chapeter;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -14,23 +14,15 @@ import hok.chompzki.biocristals.research.data.ArticleContent;
 import hok.chompzki.biocristals.research.data.ArticleContent.EnumContent;
 import hok.chompzki.biocristals.research.gui.KnowledgeDescriptions;
 
-public class BioBlob extends ArticleContent {
+public class Lore extends ArticleContent {
 	
 	@Override
 	public String textOnPage(EnumContent content, int p){
 		String s = "";
 		switch(p){
 		case 0:
-			s += "Tuft someone a bit... and let the blob eat them! When the blob contains some biomass, go and put it in a Promogentius.";
+			s += "Notes, documents and inscriptions found about the world lore. This is your collection of what you have found about the world.";
 			break;
-		case 1:
-			s += KnowledgeDescriptions.getDisplayName(code) + "\n\n";
-			s += "       ~ Structure ~\n";
-			s += KnowledgeDescriptions.getStructure(code);
-			s += "       ~ Creation ~\n\n";
-			s += KnowledgeDescriptions.getResult(code);
-			break;
-
 		}
 		return s;
 	}
@@ -38,7 +30,7 @@ public class BioBlob extends ArticleContent {
 	
 	@Override
 	public int numberOfPages(EnumContent content){
-		return 2;
+		return 1;
 	}
 
 	@Override

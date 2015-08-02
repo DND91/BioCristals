@@ -1,5 +1,6 @@
 package hok.chompzki.biocristals.client;
 
+import hok.chompzki.biocristals.recipes.CrootRecipeContainer;
 import hok.chompzki.biocristals.recipes.PurifierContainer;
 import hok.chompzki.biocristals.recipes.RecipeContainer;
 import hok.chompzki.biocristals.recipes.TransformerContainer;
@@ -34,6 +35,17 @@ public class GuiCraft extends GuiCraftingHelper {
 			if(con.code.equals(code)){
 				displayName = KnowledgeDescriptions.getDisplayName(code);
 				structure = KnowledgeDescriptions.transformRecipe(con.output);
+				result = KnowledgeDescriptions.transformOutput(con.output);
+				this.input = con;
+				this.output = con.output;
+				return;
+			}
+		}
+		
+		for(CrootRecipeContainer con : RecipeRegistry.crootRecipes){
+			if(con.code.equals(code)){
+				displayName = KnowledgeDescriptions.getDisplayName(code);
+				structure = KnowledgeDescriptions.transformCrootRecipe(con.output);
 				result = KnowledgeDescriptions.transformOutput(con.output);
 				this.input = con;
 				this.output = con.output;

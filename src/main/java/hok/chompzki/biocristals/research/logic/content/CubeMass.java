@@ -24,7 +24,8 @@ public class CubeMass extends ArticleContent {
 		case 0:
 			s += "A few years afer Rabarberpaj's discovery Carla & Fleur sprouted into the field. ";
 			s += "They saw inefficiencies and hankered after something to ease thier laboratory work. ";
-			s += "After many experiments involving rabbits, hawks and cabageheads (all extinct) they found 'Biomass'.";
+			s += "After many experiments involving rabbits, hawks and cabageheads (all extinct) they found 'Biomass'.\n";
+			s += "Biomass is one of the fundamental resources in the research area. ";
 			break;
 		case 1:
 			s += KnowledgeDescriptions.getDisplayName(code) + "\n\n";

@@ -92,8 +92,8 @@ public class CristalRegistry {
 
 	private static void loadTransformer() {
 		for(TransformData data : ConfigRegistry.transformData){
-			ItemStack output = RecipeTransformer.dataToItemStack(data.output);
-			ItemStack input = RecipeTransformer.dataToItemStack(data.input);
+			ItemStack output = RecipeTransformer.dataToItemStack(data.output).get(0);
+			ItemStack input = RecipeTransformer.dataToItemStack(data.input).get(0);
 			
 			System.out.println("---------------- INPUT -----------------");
 			System.out.println("INPUT: " + data.input);

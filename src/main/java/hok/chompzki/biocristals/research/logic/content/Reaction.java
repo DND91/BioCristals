@@ -24,7 +24,8 @@ public class Reaction extends ArticleContent {
 		case 0:
 			s += "To continue earlier work D'berry sought a continues process rather then just applying a trinkle of energy. ";
 			s += "In this she soon discovred the mixing of diffrent substances could create a basic biological reagent. D'berry have ";
-			s += "sience then been accused to be the creator of both Creepers and Ghasts. ";
+			s += "since then been accused to be the creator of both Creepers and Ghasts.\n";
+			s += "Biological Reagent is one of the fundamental resources in the research area. ";
 			break;
 		case 1:
 			s += KnowledgeDescriptions.getDisplayName(code) + "\n\n";

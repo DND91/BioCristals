@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import hok.chompzki.biocristals.BioCristalsMod;
+import hok.chompzki.biocristals.client.IArticle;
 import hok.chompzki.biocristals.research.data.ArticleContent;
 import hok.chompzki.biocristals.research.data.ArticleContent.EnumContent;
 import hok.chompzki.biocristals.research.data.DataHelper;
@@ -40,7 +41,7 @@ public class GuiArticle extends GuiScreen {
     protected ArticleFontRenderer articleFontRenderer;
     
     protected GuiResearchBook last = null;
-    protected Research research = null;
+    protected IArticle article = null;
     protected EntityPlayer reader = null;
 	protected UUID owner = null;
     
@@ -48,10 +49,10 @@ public class GuiArticle extends GuiScreen {
     	
     }
     
-	public GuiArticle(EntityPlayer reader, Research research, UUID owner){
-		content = research.getContent();
+	public GuiArticle(EntityPlayer reader, IArticle article, UUID owner){
+		content = article.getContent();
 		this.reader = reader;
-		this.research = research;
+		this.article = article;
 		this.owner = owner;
 	}
 	
@@ -59,8 +60,8 @@ public class GuiArticle extends GuiScreen {
 		this.last = last;
 	}
 	
-	public Research getResearch(){
-		return research;
+	public IArticle getArticle(){
+		return article;
 	}
 	
 	public void setWorldAndResolution(Minecraft minecraft, int par2, int par3, List list)
@@ -106,9 +107,9 @@ public class GuiArticle extends GuiScreen {
         
         ItemStack stack = reader.inventory.getCurrentItem();
         
-        this.buttonCheckboxPage.visible = this.content.getFaved() != null && DataHelper.belongsTo(reader, stack);
+        this.buttonCheckboxPage.visible = this.article.getContent().getFaved() != null && this.content.getFaved() != null && DataHelper.belongsTo(reader, stack);
         if(this.buttonCheckboxPage.visible){
-        	this.buttonCheckboxPage.selected = PlayerStorage.instance(true).get(owner).hasFaved(research.getCode());
+        	this.buttonCheckboxPage.selected = PlayerStorage.instance(true).get(owner).hasFaved(article.getCode());
         }
     }
 	
@@ -134,7 +135,7 @@ public class GuiArticle extends GuiScreen {
             else if (par1GuiButton.id == 3)
             {
                 this.buttonCheckboxPage.selected = !this.buttonCheckboxPage.selected;
-                BioCristalsMod.network.sendToServer(new PlayerStorageFaveMessage(reader.getGameProfile().getId().toString(), research.getCode()));
+                BioCristalsMod.network.sendToServer(new PlayerStorageFaveMessage(reader.getGameProfile().getId().toString(), content.getCode()));
             }
             this.updateButtons();
         }
@@ -207,7 +208,7 @@ public class GuiArticle extends GuiScreen {
     {
 		this.buttonCheckboxPage.visible = this.content.getFaved() != null && reader.getGameProfile().getId().equals(owner);
         if(this.buttonCheckboxPage.visible){
-        	this.buttonCheckboxPage.selected = PlayerStorage.instance(true).get(owner).hasFaved(research.getCode());
+        	this.buttonCheckboxPage.selected = PlayerStorage.instance(true).get(owner).hasFaved(article.getCode());
         }
         
 		int k = last.calculateLeft() + last.getScreenWidth();

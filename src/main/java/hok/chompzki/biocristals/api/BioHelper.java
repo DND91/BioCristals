@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Callable;
 
+import net.minecraft.block.Block;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.Entity;
@@ -243,7 +244,9 @@ public class BioHelper {
         return -1;
     }
 	
-	
+	public static Block getBlockOnSide(TileEntity tile, ForgeDirection direction){
+		return tile.getWorldObj().getBlock(tile.xCoord+direction.offsetX, tile.yCoord+direction.offsetY, tile.zCoord+direction.offsetZ);
+	}
 	
 	public static TileEntity getTileEntityOnSide(TileEntity tile, ForgeDirection direction){
 		return tile.getWorldObj().getTileEntity(tile.xCoord+direction.offsetX, tile.yCoord+direction.offsetY, tile.zCoord+direction.offsetZ);

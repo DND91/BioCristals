@@ -6,6 +6,7 @@ import hok.chompzki.biocristals.registrys.BlockRegistry;
 import hok.chompzki.biocristals.registrys.ReserchRegistry;
 import hok.chompzki.biocristals.research.data.PlayerResearch;
 import hok.chompzki.biocristals.research.data.PlayerStorage;
+import hok.chompzki.biocristals.research.logic.ResearchLogicNetwork;
 
 import java.util.List;
 import java.util.UUID;
@@ -35,7 +36,10 @@ public class WeakCristalTransformation implements ITransformation {
 
 	@Override
 	public boolean hasResources(ItemStack stack, EntityPlayer player) {
-		return true;
+		UUID id = player.getGameProfile().getId();
+		PlayerResearch research = PlayerStorage.instance(false).get(id);
+		
+		return code.equals("NONE") || ResearchLogicNetwork.instance().available(research, code);
 	}
 
 	@Override
@@ -64,9 +68,7 @@ public class WeakCristalTransformation implements ITransformation {
 			if(code != null){
 				UUID id = player.getGameProfile().getId();
 				PlayerResearch research = PlayerStorage.instance(false).get(id);
-				if(!research.hasCompleted(code)){
-					research.addCompleted(code);
-				} 
+				ResearchLogicNetwork.instance().compelte(research, code);
 			}
 		}
 	}

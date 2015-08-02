@@ -1,4 +1,4 @@
-package hok.chompzki.biocristals.research.logic.content;
+package hok.chompzki.biocristals.research.logic.content.purifing;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -22,7 +22,10 @@ public class BiomassMK1 extends ArticleContent {
 		String s = "";
 		switch(p){
 		case 0:
-			s += "First purifing ever accomplished...";
+			s += "While Carla & Fleur worked on the purifier they aimed to a more effective way to create biomass. ";
+			s += "As they had a big amount of dirt from digging a moat around thier castle the material made a perfect substance for experiments. ";
+			s += "With a few years of experiments they soon found that something in the biomass can spread to dirt and transform it. ";
+			s += "The process has been found to be ineffective thou. ";
 			break;
 		case 1:
 			s += KnowledgeDescriptions.getDisplayName(code) + "\n\n";

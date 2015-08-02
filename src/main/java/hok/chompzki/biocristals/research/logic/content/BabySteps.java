@@ -24,12 +24,14 @@ public class BabySteps extends ArticleContent {
 		case 0:
 			s += "Our journey befall us in a time where resources are scares. Often we find time trinkling away ";
 			s += "on little things rather then the big whole. One of the more time consumping aspects are found in areas of ";
-			s += "agriculture, where farmers have to tilt fields and feed lifestock by hand.";
+			s += "agriculture, where farmers have to tilt fields and feed lifestock by hand.\n";
+			s += "In the beginning, many of them actively fought nature and land to survive. From this the attunment field growed. ";
+			s += "This field of research was first seen as a way to counquer and rule nature.";
 			break;
 		case 1: //Sodium acetate, Cara Rot (Carrot), Elle D'berry (Elderberry), Rabarberpaj... Carla & Fleur (Cauliflower)
-			s += "When we study the properties of reality we soon notice that our senses are not enought to evoke change. ";
+			s += "When we first study the properties of reality we can notice that our senses are not enought to evoke change. ";
 			s += "There is a need to insert energy into or activate systemical change. For this Rabarberpaj, through her experiments, created the attuner and ";
-			s += "have to this day been the most popular tool of trade.";
+			s += "have to this day been the most popular tool of trade inside the attunment field.";
 			break;
 		case 2:
 			s += KnowledgeDescriptions.getDisplayName(code) + "\n\n";

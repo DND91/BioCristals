@@ -1,6 +1,7 @@
 package hok.chompzki.biocristals.registrys;
 
 import hok.chompzki.biocristals.BioCristalsMod;
+import hok.chompzki.biocristals.recipes.CrootRecipeData;
 import hok.chompzki.biocristals.recipes.PurifierData;
 import hok.chompzki.biocristals.recipes.RecipeData;
 import hok.chompzki.biocristals.recipes.TransformData;
@@ -26,6 +27,7 @@ public class ConfigRegistry {
 	public static Configuration config;
 	
 	public static List<RecipeData> recipeData = new ArrayList<RecipeData>();
+	public static List<CrootRecipeData> crootData = new ArrayList<CrootRecipeData>();
 	public static List<TransformData> transformData = new ArrayList<TransformData>();
 	public static List<TransformEntityData> transformEntityData = new ArrayList<TransformEntityData>();
 	public static List<PurifierData> purifierData = new ArrayList<PurifierData>();
@@ -61,7 +63,21 @@ public class ConfigRegistry {
     	}
     	
     	for(ConfigCategory recipe : workbenchRecipes.getChildren()){
-    		recipeData.add(new RecipeData(recipe.get("code").getString(),recipe.get("input").getString(), recipe.get("output").getString(), recipe.get("quantity").getInt()));
+    		recipeData.add(new RecipeData(recipe.get("code").getString(),recipe.get("input").getString(), recipe.get("output").getString()));
+    	}
+    	
+    	//Croot Workbench!
+    	crootData.clear();
+    	ConfigCategory crootRecipes = config.getCategory("Croot Recipes");
+    	crootRecipes.setComment("All croot recipes for the mod...");
+    	crootRecipes.setRequiresMcRestart(true);
+    	
+    	if(crootRecipes.getChildren().size() <= 0){
+    		createCrootRecipeStandard(crootRecipes);
+    	}
+    	
+    	for(ConfigCategory recipe : crootRecipes.getChildren()){
+    		crootData.add(new CrootRecipeData(recipe.get("code").getString(),recipe.get("input").getString(), recipe.get("output").getString()));
     	}
     	
     	//Block Transformation
@@ -110,60 +126,36 @@ public class ConfigRegistry {
     	config.save();
     }
     
-	private static void createRecipeStandard(ConfigCategory recipes){
-    	ConfigCategory collector = new ConfigCategory("Collector", recipes);
+	private static void createCrootRecipeStandard(ConfigCategory recipes) {
+		ConfigCategory collector = new ConfigCategory("Collector", recipes);
     	collector.put("code", new Property("code", "NONE", Property.Type.STRING));
 		collector.put("input", new Property("input", "minecraft:log__empty__minecraft:log__minecraft:log__empty__minecraft:log__minecraft:string__minecraft:sapling__minecraft:string", Property.Type.STRING));
 		collector.put("output", new Property("output", "BioCristals:itemCollector", Property.Type.STRING));
-		collector.put("quantity", new Property("quantity", "1", Property.Type.INTEGER));
-		
-		ConfigCategory attuner = new ConfigCategory("Attuner", recipes);
-		attuner.put("code", new Property("code", ReserchRegistry.babySteps, Property.Type.STRING));
-		attuner.put("input", new Property("input", "minecraft:stick__minecraft:string__minecraft:stick__minecraft:string__empty__minecraft:string__minecraft:stick__minecraft:sapling__minecraft:stick", Property.Type.STRING));
-		attuner.put("output", new Property("output", "BioCristals:itemAttuner", Property.Type.STRING));
-		attuner.put("quantity", new Property("quantity", "1", Property.Type.INTEGER));
 		
 		ConfigCategory bioReagent = new ConfigCategory("Biological Reagent", recipes);
 		bioReagent.put("code", new Property("code", ReserchRegistry.reaction, Property.Type.STRING));
 		bioReagent.put("input", new Property("input", "minecraft:stick__minecraft:sapling__minecraft:stick__minecraft:sapling__minecraft:dirt__minecraft:sapling__minecraft:stick__minecraft:sapling__minecraft:stick", Property.Type.STRING));
 		bioReagent.put("output", new Property("output", "4xBioCristals:itemBioReagent", Property.Type.STRING));
-		bioReagent.put("quantity", new Property("quantity", "4", Property.Type.INTEGER));
 		
 		ConfigCategory biomass = new ConfigCategory("Biomass", recipes);
 		biomass.put("code", new Property("code", ReserchRegistry.cubeMass, Property.Type.STRING));
-		biomass.put("input", new Property("input", "minecraft:apple__minecraft:sapling__minecraft:apple__minecraft:sapling__minecraft:log__minecraft:sapling__minecraft:apple__minecraft:sapling__minecraft:apple", Property.Type.STRING));
+		biomass.put("input", new Property("input", "minecraft:wheat__minecraft:sapling__minecraft:wheat__minecraft:sapling__minecraft:log__minecraft:sapling__minecraft:wheat__minecraft:sapling__minecraft:wheat", Property.Type.STRING));
 		biomass.put("output", new Property("output", "4xBioCristals:blockBiomass", Property.Type.STRING));
-		biomass.put("quantity", new Property("quantity", "4", Property.Type.INTEGER));
 		
 		ConfigCategory catalystInjector = new ConfigCategory("Catalyst Injector", recipes);
 		catalystInjector.put("code", new Property("code", "NONE", Property.Type.STRING));
 		catalystInjector.put("input", new Property("input", "BioCristals:itemBioReagent__minecraft:slime_ball__BioCristals:itemBioReagent__minecraft:slime_ball__minecraft:sapling__minecraft:slime_ball__BioCristals:itemBioReagent__minecraft:slime_ball__BioCristals:itemBioReagent", Property.Type.STRING));
 		catalystInjector.put("output", new Property("output", "BioCristals:itemCatalystInjector", Property.Type.STRING));
-		catalystInjector.put("quantity", new Property("quantity", "1", Property.Type.INTEGER));
 		
 		ConfigCategory sulphurTuft = new ConfigCategory("Sulphur Tuft", recipes);
 		sulphurTuft.put("code", new Property("code", ReserchRegistry.tuft, Property.Type.STRING));
 		sulphurTuft.put("input", new Property("input", "minecraft:spider_eye__minecraft:spider_eye__minecraft:spider_eye__BioCristals:blockBiomass__BioCristals:blockBiomass__BioCristals:blockBiomass__BioCristals:itemBioReagent__BioCristals:itemBioReagent__BioCristals:itemBioReagent", Property.Type.STRING));
 		sulphurTuft.put("output", new Property("output", "BioCristals:blockSulphurTuft", Property.Type.STRING));
-		sulphurTuft.put("quantity", new Property("quantity", "1", Property.Type.INTEGER));
 		
 		ConfigCategory string = new ConfigCategory("String", recipes);
 		string.put("code", new Property("code", "NONE", Property.Type.STRING));
 		string.put("input", new Property("input", "minecraft:wool", Property.Type.STRING));
 		string.put("output", new Property("output", "minecraft:string", Property.Type.STRING));
-		string.put("quantity", new Property("quantity", "8", Property.Type.INTEGER));
-		
-		ConfigCategory crootSapling = new ConfigCategory("Croot Sapling", recipes);
-		crootSapling.put("code", new Property("code", ReserchRegistry.crootSapling, Property.Type.STRING));
-		crootSapling.put("input", new Property("input", "minecraft:dye:1__minecraft:string__minecraft:dye:11__minecraft:string__minecraft:log__minecraft:string__minecraft:dye:11__minecraft:sapling__minecraft:dye:1", Property.Type.STRING));
-		crootSapling.put("output", new Property("output", "BioCristals:crootSapling", Property.Type.STRING));
-		crootSapling.put("quantity", new Property("quantity", "1", Property.Type.INTEGER));
-		
-		ConfigCategory researchBook = new ConfigCategory("Research Book", recipes);
-		researchBook.put("code", new Property("code", "NONE", Property.Type.STRING));
-		researchBook.put("input", new Property("input", "minecraft:sapling__minecraft:book", Property.Type.STRING));
-		researchBook.put("output", new Property("output", "BioCristals:itemResearchBook", Property.Type.STRING));
-		researchBook.put("quantity", new Property("quantity", "1", Property.Type.INTEGER));
 		
 		ConfigCategory crootHollow = new ConfigCategory("Croot Hollow", recipes);
 		crootHollow.put("code", new Property("code", ReserchRegistry.crootHollow, Property.Type.STRING));
@@ -172,7 +164,6 @@ public class ConfigRegistry {
 													   "BioCristals:blockBiomass__BioCristals:itemBioReagent__BioCristals:blockBiomass__"
 				, Property.Type.STRING));
 		crootHollow.put("output", new Property("output", "BioCristals:blockCrootHollow", Property.Type.STRING));
-		crootHollow.put("quantity", new Property("quantity", "1", Property.Type.INTEGER));
 		
 		ConfigCategory crootStreamStem = new ConfigCategory("Croot Stem", recipes);
 		crootStreamStem.put("code", new Property("code", ReserchRegistry.crootStem, Property.Type.STRING));
@@ -181,7 +172,6 @@ public class ConfigRegistry {
 													   "BioCristals:blockBiomass__BioCristals:itemBioReagent__BioCristals:blockBiomass__"
 				, Property.Type.STRING));
 		crootStreamStem.put("output", new Property("output", "BioCristals:crootStreamStem", Property.Type.STRING));
-		crootStreamStem.put("quantity", new Property("quantity", "1", Property.Type.INTEGER));
 		
 		ConfigCategory reagentPurifier = new ConfigCategory("Reagent Purifier", recipes);
 		reagentPurifier.put("code", new Property("code", ReserchRegistry.purifier, Property.Type.STRING));
@@ -190,7 +180,26 @@ public class ConfigRegistry {
 													   "BioCristals:blockBiomass__BioCristals:itemBioReagent__BioCristals:blockBiomass__"
 				, Property.Type.STRING));
 		reagentPurifier.put("output", new Property("output", "BioCristals:blockReagentPurifier", Property.Type.STRING));
-		reagentPurifier.put("quantity", new Property("quantity", "1", Property.Type.INTEGER));
+	}
+
+	private static void createRecipeStandard(ConfigCategory recipes){
+		
+		ConfigCategory attuner = new ConfigCategory("Attuner", recipes);
+		attuner.put("code", new Property("code", ReserchRegistry.babySteps, Property.Type.STRING));
+		attuner.put("input", new Property("input", "minecraft:stick__minecraft:string__minecraft:stick__minecraft:string__empty__minecraft:string__minecraft:stick__minecraft:sapling__minecraft:stick", Property.Type.STRING));
+		attuner.put("output", new Property("output", "BioCristals:itemAttuner", Property.Type.STRING));
+		
+		ConfigCategory crootSapling = new ConfigCategory("Croot Sapling", recipes);
+		crootSapling.put("code", new Property("code", ReserchRegistry.crootSapling, Property.Type.STRING));
+		crootSapling.put("input", new Property("input", "minecraft:dye:32767__minecraft:string__minecraft:dye:32767__minecraft:string__minecraft:log__minecraft:string__minecraft:dye:32767__minecraft:sapling__minecraft:dye:32767", Property.Type.STRING));
+		crootSapling.put("output", new Property("output", "BioCristals:crootSapling", Property.Type.STRING));
+		
+		ConfigCategory researchBook = new ConfigCategory("Research Book", recipes);
+		researchBook.put("code", new Property("code", "NONE", Property.Type.STRING));
+		researchBook.put("input", new Property("input", "minecraft:sapling__minecraft:book", Property.Type.STRING));
+		researchBook.put("output", new Property("output", "BioCristals:itemResearchBook", Property.Type.STRING));
+		
+		
     }
     
 	//CristalRegistry.register(new WeakCristalTransformation((new ItemStack(Blocks.pumpkin)).getItem(), BlockRegistry.wheatCristal, ReserchRegistry.pumpkinCristalisation));
@@ -293,7 +302,7 @@ public class ConfigRegistry {
     	ConfigCategory biomassMK1 = new ConfigCategory("Biomass MK1", recipes);
     	biomassMK1.put("code", new Property("code", ReserchRegistry.biomassmk1, Property.Type.STRING));
     	biomassMK1.put("filter", new Property("filter", "BioCristals:blockBiomass", Property.Type.STRING));
-    	biomassMK1.put("input", new Property("input", "64xminecraft:dirt", Property.Type.STRING));
+    	biomassMK1.put("input", new Property("input", "8xminecraft:dirt", Property.Type.STRING));
     	biomassMK1.put("output", new Property("output", "BioCristals:blockBiomass", Property.Type.STRING));
     	biomassMK1.put("time", new Property("time", "200", Property.Type.INTEGER));
 		
@@ -310,5 +319,12 @@ public class ConfigRegistry {
     	promogenitus.put("input", new Property("input", "4xminecraft:iron_block__8xBioCristals:crootSapling__64xminecraft:dirt", Property.Type.STRING));
     	promogenitus.put("output", new Property("output", "BioCristals:blockPromogenitus", Property.Type.STRING));
     	promogenitus.put("time", new Property("time", "1000", Property.Type.INTEGER));
+    	
+    	ConfigCategory extractor = new ConfigCategory("Extractor", recipes);
+    	extractor.put("code", new Property("code", ReserchRegistry.extractor, Property.Type.STRING));
+    	extractor.put("filter", new Property("filter", "BioCristals:blockBiomass", Property.Type.STRING));
+    	extractor.put("input", new Property("input", "1xBioCristals:blockReagentPurifier__4xBioCristals:blockCrootHollow__10xBioCristals:blockBiomass", Property.Type.STRING));
+    	extractor.put("output", new Property("output", "BioCristals:blockExtractor", Property.Type.STRING));
+    	extractor.put("time", new Property("time", "200", Property.Type.INTEGER));
 	}
 }

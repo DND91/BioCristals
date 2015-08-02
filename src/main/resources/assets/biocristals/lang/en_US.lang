@@ -21,7 +21,7 @@ tile.BioCristals_crootLeaves.name=Croot Leaves
 tile.BioCristals_crootCore.name=Croot Core
 tile.BioCristals_crootStreamStem.name=Croot Stem
 tile.BioCristals_blockCrootHollow.name=Croot Hollow
-
+tile.BioCristals_blockExtractor.name=Extractor
 
 itemGroup.Bio Cristal=Bio Cristal
 
@@ -93,11 +93,24 @@ research.purifier.text=Author: Carla & Fleur
 
 research.biomassmk1.title=Biomass MK1
 research.biomassmk1.text=Author: Carla & Fleur
-research.bioBlob.title=Biomass MK1
+research.bioBlob.title=Bio Blob
 research.bioBlob.text=Author: Carla & Fleur
 research.promogenitus.title=Promogenitus
 research.promogenitus.text=Author: Carla & Fleur
+research.extractor.title=Extraction
+research.extractor.text=Author: Carla & Fleur
+
+research.tutorial.title=Tutorial
+research.tutorial.text=Navigation and so on...
 
 Research.get=RESEARCH UNLOCKED
 
 container.croot.hollow=Croot Hollow
+container.croot.core=Croot Core
+
+chapeter.firstEra.title=The Sprouting
+chapeter.firstEra.text=Era of the big three
+chapeter.loreChapeter.title=Collected Lore
+chapeter.loreChapeter.text=World background...
+chapeter.ageOfConflict.title=Age Of Conflict
+chapeter.ageOfConflict.text=Death Vs. Life

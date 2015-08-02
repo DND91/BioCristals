@@ -23,9 +23,9 @@ public class WheatCristalisation extends ArticleContent {
 		switch(p){
 		case 0:
 			s += "Rot was never intressted in spreading many of his findings to others and it was shortly before his death ";
-			s += "that many of his notes came into the hands of the field. One of the most notibale notes was the one on ";
-			s += "wheat crystallization. On the other side you can find the Ccrystallization activation. All cristals need to be placed ";
-			s += "near croot.";
+			s += "that many of his notes came into the hands of the field. One of the most notable documents was the one on ";
+			s += "wheat crystallization. On the other side you can find the Crystallization activation. §lAll cristals need to be placed ";
+			s += "near croot.§r";
 			break;
 		case 1:
 			s += KnowledgeDescriptions.getDisplayName(code) + "\n\n";

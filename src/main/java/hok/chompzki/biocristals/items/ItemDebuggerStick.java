@@ -39,7 +39,11 @@ public class ItemDebuggerStick extends Item {
 		if(!world.isRemote)
 			return stack;
 		
+		PlayerResearch rplay = PlayerStorage.instance(false).get(player.getGameProfile().getId());
 		
+		for(Research res : ReserchDataNetwork.instance().reserches.values()){
+			ResearchLogicNetwork.instance().compelte(rplay, res.getCode());
+		}
 		
 		
         return stack;

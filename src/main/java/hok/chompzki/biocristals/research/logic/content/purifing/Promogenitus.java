@@ -1,4 +1,4 @@
-package hok.chompzki.biocristals.research.logic.content;
+package hok.chompzki.biocristals.research.logic.content.purifing;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -22,7 +22,9 @@ public class Promogenitus extends ArticleContent {
 		String s = "";
 		switch(p){
 		case 0:
-			s += "Eats alot of life energy... but when loaded will produce resources from the biomass contained.";
+			s += "[WIP] Some dark force continued on the works of Carla & Fleur purifing process and created the promongentius. ";
+			s += "It allocates alot of life force but will over time produce resources from the flesh of a living creature. ";
+			s += "Insert a weakened catched mob in the bio blob, put a inventory on top and just wait for resources to be created. ";
 			break;
 		case 1:
 			s += KnowledgeDescriptions.getDisplayName(code) + "\n\n";

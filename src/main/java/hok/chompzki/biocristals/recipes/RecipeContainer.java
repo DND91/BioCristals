@@ -28,6 +28,10 @@ public class RecipeContainer{
 		}
 	}
 	
+	public RecipeContainer() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public ItemStack getItemStack(int slot){
 		int y = slot / length;
 		int x = slot % length;

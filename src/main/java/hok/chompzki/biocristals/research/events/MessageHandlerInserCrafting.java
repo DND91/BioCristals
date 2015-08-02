@@ -35,7 +35,9 @@ public class MessageHandlerInserCrafting implements IMessageHandler<MessageInser
 		
 		if(container != null){
 			List<SlotCrafting> craftingSlots = getCraftingSlots(container);
-			RecipeContainer recipe = RecipeRegistry.getRecipreFor(message.getResult());
+			RecipeContainer recipe = RecipeRegistry.getCrootRecipreFor(message.getResult());
+			if(recipe == null)
+				recipe = RecipeRegistry.getRecipreFor(message.getResult());
 			if(recipe == null)
 				return null;
 			for(SlotCrafting slot : craftingSlots){

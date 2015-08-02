@@ -5,6 +5,7 @@ import hok.chompzki.biocristals.tile_enteties.TileCrootCore;
 import hok.chompzki.biocristals.tile_enteties.TileCrootHollow;
 import hok.chompzki.biocristals.tile_enteties.TileCrootOneConsumer;
 import hok.chompzki.biocristals.tile_enteties.TileCrootOneMember;
+import hok.chompzki.biocristals.tile_enteties.TileExtractor;
 import hok.chompzki.biocristals.tile_enteties.TilePrimogenitus;
 import hok.chompzki.biocristals.tile_enteties.TileReagentPurifier;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -19,6 +20,7 @@ public class TileEntityRegistry {
 		GameRegistry.registerTileEntity(TileCrootOneConsumer.class, "biocristals_tile_croot_one_consumer");
 		
 		GameRegistry.registerTileEntity(TileCrootHollow.class, "biocristals_tile_croot_hollow");
+		GameRegistry.registerTileEntity(TileExtractor.class, "biocristals_tile_exctractor");
 	}
 	
 }

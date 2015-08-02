@@ -1,5 +1,7 @@
 package hok.chompzki.biocristals.research.data;
 
+import hok.chompzki.biocristals.registrys.ReserchRegistry;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -29,7 +31,7 @@ public class PlayerResearch implements Serializable {
 	
 	public PlayerResearch(UUID id) {
 		ownerId = id;
-		
+		completed.add(ReserchRegistry.tutorial);
 	}
 	
 	public void setStorage(PlayerStorage stor){

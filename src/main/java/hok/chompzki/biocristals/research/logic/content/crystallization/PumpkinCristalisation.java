@@ -25,9 +25,9 @@ public class PumpkinCristalisation extends ArticleContent {
 		case 0:
 			s += "The origins of this research is unkown and it is speculated that it has come form the works of Rot. ";
 			s += "When the civilization passed the croot alignment the attunment industry went from mixed to pumpkin produced biomass. ";
-			s += "It is proposed that the pumpkin pie was to complex and not nourishing enought for the labour force and was there for ";
+			s += "It is proposed that the pumpkin pie was to complex and not nourishing enought for the labour force and was therefor ";
 			s += "rather used in industry. ";
-			s += "All cristals need to be placed near croot.";
+			s +=  "§lAll cristals need to be placed near croot.§r";
 			break;
 		case 1:
 			s += KnowledgeDescriptions.getDisplayName(code) + "\n\n";

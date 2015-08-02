@@ -35,6 +35,8 @@ public class DataHelper {
 	}
 	
 	public static boolean belongsTo(EntityPlayer player, ItemStack stack){
+		if(stack == null)
+			return false;
 		UUID userId = EntityPlayer.func_146094_a(player.getGameProfile());
 		if(!stack.hasTagCompound())
 			stack.setTagCompound(new NBTTagCompound());

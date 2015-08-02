@@ -23,9 +23,9 @@ public class CarrotCristalisation extends ArticleContent {
 		switch(p){
 		case 0:
 			s += "As Rot's experiments keept on, more and more biomatter experienced his attunment process. ";
-			s += "The carrot cristal was first found near a race called elves, no where to be found, and worked ";
+			s += "The carrot cristal was first found near a race called elves, gone today, and worked ";
 			s += "as one of thier primary food sources. When researcher toutched the cristals relations become hostile. ";
-			s += "All cristals need to be placed near croot.";
+			s +=  "§lAll cristals need to be placed near croot.§r";
 			break;
 		case 1:
 			s += KnowledgeDescriptions.getDisplayName(code) + "\n\n";

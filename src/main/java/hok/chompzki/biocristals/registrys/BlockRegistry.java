@@ -9,6 +9,7 @@ import hok.chompzki.biocristals.blocks.BlockCrootRoots;
 import hok.chompzki.biocristals.blocks.BlockCrootSapling;
 import hok.chompzki.biocristals.blocks.BlockCrootStreamStem;
 import hok.chompzki.biocristals.blocks.BlockCrootTrunk;
+import hok.chompzki.biocristals.blocks.BlockExtractor;
 import hok.chompzki.biocristals.blocks.BlockPrimogenitus;
 import hok.chompzki.biocristals.blocks.BlockReagentPurifier;
 import hok.chompzki.biocristals.blocks.BlockSulphurTuft;
@@ -40,6 +41,7 @@ public class BlockRegistry {
 	public static Block crootTrunk = null;
 	public static Block crootStem = null;
 	public static Block crootHollow = null;
+	public static Block extractor = null;
 	
 	public void registerBlocks(){
 		biomass = new BlockBiomass();
@@ -60,6 +62,7 @@ public class BlockRegistry {
 		crootTrunk = new BlockCrootTrunk();
 		crootStem = new BlockCrootStreamStem();
 		crootHollow = new BlockCrootHollow();
+		extractor = new BlockExtractor();
 		
 		GameRegistry.registerBlock(biomass, BlockBiomass.NAME);
 		GameRegistry.registerBlock(wheatCristal, "blockWheatCristal");
@@ -78,6 +81,7 @@ public class BlockRegistry {
 		GameRegistry.registerBlock(crootTrunk, BlockCrootTrunk.NAME);
 		GameRegistry.registerBlock(crootStem, BlockCrootStreamStem.NAME);
 		GameRegistry.registerBlock(crootHollow, BlockCrootHollow.NAME);
+		GameRegistry.registerBlock(extractor, BlockExtractor.NAME);
 	}
 	
 	

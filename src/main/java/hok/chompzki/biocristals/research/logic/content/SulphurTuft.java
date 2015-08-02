@@ -24,9 +24,9 @@ public class SulphurTuft extends ArticleContent {
 		case 0:
 			s += "To say that D'berry was cruel sadist would in accuality be a lie. ";
 			s += "When D'berry researched she often found her subjects running away or/and in deep pain. ";
-			s += "To solve this she created what is known as the 'Sulphur Tuft' it will paralyze any non-steve who ";
-			s += "walks uppon it. Only after this would she reveale results and conclussions to society. ";
-			s += "Needs to be placed close to croot. ";
+			s += "To solve this she created what is known as the 'Sulphur Tuft', it will paralyze any non-steve who ";
+			s += "walks uppon it. Only after this would she reveal results and conclussions to society. ";
+			s +=  "§lNeeds to be placed near croot.§r";
 			break;
 		case 1:
 			s += KnowledgeDescriptions.getDisplayName(code) + "\n\n";

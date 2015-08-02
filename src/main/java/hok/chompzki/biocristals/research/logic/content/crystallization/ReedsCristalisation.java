@@ -26,7 +26,7 @@ public class ReedsCristalisation extends ArticleContent {
 			s += "It's said that this form of crystallization was invented by Rot with a baker's helping hands. ";
 			s += "The more reasonable path would follow it was invented to saturate the researches need for paper. ";
 			s += "Today we can find the crystal often in closeness to temples, but the research behind is unkown. ";
-			s += "All cristals need to be placed near croot.";
+			s +=  "§lAll cristals need to be placed near croot.§r";
 			break;
 		case 1:
 			s += KnowledgeDescriptions.getDisplayName(code) + "\n\n";
