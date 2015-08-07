@@ -2,8 +2,10 @@ package hok.chompzki.biocristals.client;
 
 import java.util.UUID;
 
+import hok.chompzki.biocristals.client.gui.GuiHivebag;
 import hok.chompzki.biocristals.containers.ContainerCrootHollow;
 import hok.chompzki.biocristals.containers.ContainerCrootCore;
+import hok.chompzki.biocristals.containers.ContainerHivebag;
 import hok.chompzki.biocristals.research.data.DataHelper;
 import hok.chompzki.biocristals.research.data.PlayerStorage;
 import hok.chompzki.biocristals.research.gui.GuiResearchBook;
@@ -17,6 +19,8 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.network.IGuiHandler;
 
 public class GuiHandler implements IGuiHandler {
+	
+	public static final int hivebagId = 103;
 	
 	public static GuiResearchBook book = null;
 
@@ -36,6 +40,8 @@ public class GuiHandler implements IGuiHandler {
 		}else if(ID == 102){
 			TileEntity tileEntity = world.getTileEntity(x, y, z);
 			return new ContainerCrootCore(player.inventory, (TileCrootCore) tileEntity, false);
+		}else if(ID == this.hivebagId){
+			return new ContainerHivebag(player, player.inventory.currentItem);
 		}
 		
 		return null;
@@ -57,6 +63,8 @@ public class GuiHandler implements IGuiHandler {
 		}else if(ID == 102){
 			TileEntity tileEntity = world.getTileEntity(x, y, z);
 			return new GuiCrootCore(player.inventory, (TileCrootCore) tileEntity);
+		}else if(ID == this.hivebagId){
+			return new GuiHivebag(player, player.inventory.currentItem);
 		}
 		
 		return null;

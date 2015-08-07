@@ -101,6 +101,7 @@ public class BlockWeakCristal extends BlockCroot implements IGrowthCristal{
 	    {
 	        return color;
 	    }
+	    
 		
 		public void updateTick(World world, int x, int y, int z, Random rand)
 	    {

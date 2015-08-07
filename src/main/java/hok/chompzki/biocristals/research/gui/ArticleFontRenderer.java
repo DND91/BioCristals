@@ -363,7 +363,7 @@ public class ArticleFontRenderer {
     		resetScale();
     		return 0.f;
     	}else if(this.itemMode && c == '>' && this.nameID != null){
-    		List<ItemStack> list = RecipeTransformer.dataToItemStack(this.nameID);
+    		List<ItemStack> list = RecipeTransformer.dataToItemStack(this.nameID, false);
     		int pos = tick;
     		pos /= 50;
     		pos %= list.size();
@@ -377,10 +377,23 @@ public class ArticleFontRenderer {
 	            RenderHelper.enableGUIStandardItemLighting();
 	            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 	            GL11.glDisable(GL11.GL_LIGHTING);
-	            
-	    		this.itemRender.renderItemAndEffectIntoGUI(this.theGame.fontRenderer, this.theGame.renderEngine, this.itemStack, (int)this.posX + 0, (int)this.posY - 8);
-	    		this.itemRender.renderItemOverlayIntoGUI(this.theGame.fontRenderer, this.theGame.renderEngine, this.itemStack, (int)this.posX + 0, (int)this.posY - 8);
-	    		
+	            try{
+	            	this.itemRender.renderWithColor = true;
+		    		this.itemRender.renderItemAndEffectIntoGUI(this.theGame.fontRenderer, this.theGame.renderEngine, this.itemStack, (int)this.posX + 0, (int)this.posY - 8);
+		    		this.itemRender.renderItemOverlayIntoGUI(this.theGame.fontRenderer, this.theGame.renderEngine, this.itemStack, (int)this.posX + 0, (int)this.posY - 8);
+	            } catch (Exception ex) {
+	            	ex.printStackTrace();
+	            	Tessellator tessellator = Tessellator.instance;
+	            	try { tessellator.draw(); } catch (Exception ex3) {}
+	            	/*
+	            	itemStack.setItemDamage(0);
+	            	try{
+			    		this.itemRender.renderItemAndEffectIntoGUI(this.theGame.fontRenderer, this.theGame.renderEngine, this.itemStack, (int)this.posX + 0, (int)this.posY - 8);
+			    		this.itemRender.renderItemOverlayIntoGUI(this.theGame.fontRenderer, this.theGame.renderEngine, this.itemStack, (int)this.posX + 0, (int)this.posY - 8);
+		            } catch (Exception ex2) {
+		            	try { tessellator.draw(); } catch (Exception ex3) {}
+		            }*/
+	            }
 	    		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 	    		GL11.glEnable(GL11.GL_BLEND);
 	            GL11.glPopMatrix();
@@ -974,7 +987,9 @@ public class ArticleFontRenderer {
 
             if (acci && !this.unicodeFlag)
             {
-                return this.charWidth[((char)par1) + 32];
+            	int i = ((char)par1) + 32;
+            	i = i <= this.charWidth.length ? i : par1;
+                return this.charWidth[i];
             }
             else if (this.glyphWidth[par1] != 0)
             {

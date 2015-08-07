@@ -4,6 +4,8 @@ item.BioCristals_itemCollector.name=Collector
 item.BioCristals_itemCatalystInjector.name=Catalyst Inducer
 item.BioCristals_itemResearchBook.name=Research Book
 item.BioCristals_itemBioBlob.name=Bio Blob
+item.BioCristals_itemHivebag.name=[WIP]Hivebag
+
 tile.BioCristals_blockBiomass.name=Biomass
 tile.BioCristals_blockWheatCristal.name=Wheat Cristal
 tile.BioCristals_blockCarrotCristal.name=Carrot Cristal
@@ -22,6 +24,7 @@ tile.BioCristals_crootCore.name=Croot Core
 tile.BioCristals_crootStreamStem.name=Croot Stem
 tile.BioCristals_blockCrootHollow.name=Croot Hollow
 tile.BioCristals_blockExtractor.name=Extractor
+tile.BioCristals_blockAttunedEarth.name=[WIP]Attuned Earyh (not working)
 
 itemGroup.Bio Cristal=Bio Cristal
 
@@ -93,6 +96,8 @@ research.purifier.text=Author: Carla & Fleur
 
 research.biomassmk1.title=Biomass MK1
 research.biomassmk1.text=Author: Carla & Fleur
+research.biomassmk2.title=Biomass MK2
+research.biomassmk2.text=Author: Carla & Fleur
 research.bioBlob.title=Bio Blob
 research.bioBlob.text=Author: Carla & Fleur
 research.promogenitus.title=Promogenitus
@@ -113,4 +118,4 @@ chapeter.firstEra.text=Era of the big three
 chapeter.loreChapeter.title=Collected Lore
 chapeter.loreChapeter.text=World background...
 chapeter.ageOfConflict.title=Age Of Conflict
-chapeter.ageOfConflict.text=Death Vs. Life
+chapeter.ageOfConflict.text=Death And Life

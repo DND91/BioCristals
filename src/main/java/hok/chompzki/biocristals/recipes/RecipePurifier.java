@@ -1,7 +1,12 @@
 package hok.chompzki.biocristals.recipes;
 
+import java.util.List;
+
+import net.minecraft.block.Block;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class RecipePurifier {
 	
@@ -9,10 +14,10 @@ public class RecipePurifier {
 	public ItemStack filter;
 	public String code;
 	public ItemStack[] result;
-	public ItemStack[] cost;
+	public Object[] cost;
 	public Integer time;
 	
-	public RecipePurifier(String name, ItemStack filter, String code, ItemStack[] input, ItemStack[] output, Integer time){
+	public RecipePurifier(String name, ItemStack filter, String code, Object[] input, ItemStack[] output, Integer time){
 		this.name = name;
 		this.filter = filter;
 		this.result = output;
@@ -22,18 +27,27 @@ public class RecipePurifier {
 	}
 	
 	public boolean affordsItemStack(ItemStack stack, IInventory inv){
+		
 		for(int i = 0; i < inv.getSizeInventory(); i++){
 			ItemStack slot = inv.getStackInSlot(i);
-			if(slot != null && areItemStacksEqual(stack, slot) && stack.stackSize <= slot.stackSize)
+			if(slot == null)
+				continue;
+			
+			if(slot != null && OreDictionary.itemMatches(stack, slot, false) && stack.stackSize <= slot.stackSize){
 				return true;
+			}
 		}
 		return false;
 	}
 	
 	public void payItemStack(ItemStack stack, IInventory inv){
+		
 		for(int i = 0; i < inv.getSizeInventory(); i++){
 			ItemStack slot = inv.getStackInSlot(i);
-			if(slot != null && areItemStacksEqual(stack, slot) && stack.stackSize <= slot.stackSize){
+			if(slot == null)
+				continue;
+			
+			if(slot != null && OreDictionary.itemMatches(stack, slot, false) && stack.stackSize <= slot.stackSize){
 				inv.decrStackSize(i, stack.stackSize);
 				return;
 			}
@@ -41,31 +55,151 @@ public class RecipePurifier {
 	}
 	
 	public boolean affords(IInventory[] inputs){
-		for(ItemStack need : cost){
+		for(Object need : cost){
 			boolean hasPrice = false;
-			for(IInventory inventory : inputs){
-				if(affordsItemStack(need, inventory)){
-					hasPrice = true;
-					break;
+			
+			if(need instanceof String){
+			}else if(need instanceof ItemStack){
+				ItemStack stack = (ItemStack)need;
+				
+				for(IInventory inventory : inputs){
+					if(affordsItemStack(stack, inventory)){
+						hasPrice = true;
+						break;
+					}
+				}
+			}else if(need instanceof Item){
+				Item item = (Item)need;
+				
+				for(IInventory inventory : inputs){
+					if(affordsItemStack(item, inventory)){
+						hasPrice = true;
+						break;
+					}
+				}
+			}else if(need instanceof Block){
+				Block block = (Block)need;
+				for(IInventory inventory : inputs){
+					if(affordsItemStack(Item.getItemFromBlock(block), inventory)){
+						hasPrice = true;
+						break;
+					}
+				}
+			}else if(need instanceof OreDictContainer){
+				OreDictContainer oreDict = (OreDictContainer)need;
+				for(IInventory inventory : inputs){
+					if(affordsItemStack(oreDict, inventory)){
+						hasPrice = true;
+						break;
+					}
 				}
 			}
+			
 			if(!hasPrice)
 				return false;
 		}
 		return true;
 	}
 	
+	private boolean affordsItemStack(OreDictContainer oreDict,
+			IInventory inv) {
+		List<ItemStack> stacks = OreDictionary.getOres(oreDict.oreName);
+		for(int i = 0; i < inv.getSizeInventory(); i++){
+			ItemStack slot = inv.getStackInSlot(i);
+			if(slot == null)
+				continue;
+			
+			for(ItemStack stack : stacks){
+				if(OreDictionary.itemMatches(stack, slot, false) && oreDict.quantity <= slot.stackSize){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	private boolean affordsItemStack(Item item, IInventory inv) {
+		
+		for(int i = 0; i < inv.getSizeInventory(); i++){
+			ItemStack slot = inv.getStackInSlot(i);
+			if(slot == null)
+				continue;
+			
+			if(slot != null && slot.getItem() == item && 1 <= slot.stackSize){
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public void pay(IInventory[] inputs){
-		for(ItemStack need : cost){
-			for(IInventory inventory : inputs){
-				if(affordsItemStack(need, inventory)){
-					payItemStack(need, inventory);
-					break;
+		for(Object need : cost){
+			if(need instanceof String){
+			}else if(need instanceof ItemStack){
+				ItemStack stack = (ItemStack)need;
+				
+				for(IInventory inventory : inputs){
+					if(affordsItemStack(stack, inventory)){
+						payItemStack(stack, inventory);
+						break;
+					}
+				}
+			}else if(need instanceof Item){
+				Item item = (Item)need;
+				
+				for(IInventory inventory : inputs){
+					if(affordsItemStack(item, inventory)){
+						payItemStack(item, inventory);
+						break;
+					}
+				}
+			}else if(need instanceof Block){
+				Block block = (Block)need;
+				for(IInventory inventory : inputs){
+					if(affordsItemStack(Item.getItemFromBlock(block), inventory)){
+						payItemStack(Item.getItemFromBlock(block), inventory);
+						break;
+					}
+				}
+			}else if(need instanceof OreDictContainer){
+				OreDictContainer oreDict = (OreDictContainer)need;
+				for(IInventory inventory : inputs){
+					if(affordsItemStack(oreDict, inventory)){
+						payItemStack(oreDict, inventory);
+						break;
+					}
 				}
 			}
 		}
 	}
 	
+	private void payItemStack(OreDictContainer oreDict, IInventory inv) {
+		List<ItemStack> stacks = OreDictionary.getOres(oreDict.oreName);
+		for(int i = 0; i < inv.getSizeInventory(); i++){
+			ItemStack slot = inv.getStackInSlot(i);
+			if(slot == null)
+				continue;
+			for(ItemStack stack : stacks)
+				if(OreDictionary.itemMatches(stack, slot, false) && oreDict.quantity <= slot.stackSize){
+					inv.decrStackSize(i, oreDict.quantity);
+					return;
+				}
+		}
+	}
+
+	private void payItemStack(Item item, IInventory inv) {
+		for(int i = 0; i < inv.getSizeInventory(); i++){
+			ItemStack slot = inv.getStackInSlot(i);
+			if(slot == null)
+				continue;
+			
+			if(slot != null && slot.getItem() == item && 1 <= slot.stackSize){
+				inv.decrStackSize(i, 1);
+				return;
+			}
+		}
+	}
+
 	public ItemStack[] result(){
 		return result;
 	}

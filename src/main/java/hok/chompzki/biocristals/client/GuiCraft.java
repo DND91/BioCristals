@@ -34,8 +34,8 @@ public class GuiCraft extends GuiCraftingHelper {
 		for(RecipeContainer con : RecipeRegistry.recipes){
 			if(con.code.equals(code)){
 				displayName = KnowledgeDescriptions.getDisplayName(code);
-				structure = KnowledgeDescriptions.transformRecipe(con.output);
-				result = KnowledgeDescriptions.transformOutput(con.output);
+				structure = KnowledgeDescriptions.getStructure(code);
+				result = KnowledgeDescriptions.getResult(code);
 				this.input = con;
 				this.output = con.output;
 				return;
@@ -45,8 +45,8 @@ public class GuiCraft extends GuiCraftingHelper {
 		for(CrootRecipeContainer con : RecipeRegistry.crootRecipes){
 			if(con.code.equals(code)){
 				displayName = KnowledgeDescriptions.getDisplayName(code);
-				structure = KnowledgeDescriptions.transformCrootRecipe(con.output);
-				result = KnowledgeDescriptions.transformOutput(con.output);
+				structure = KnowledgeDescriptions.getStructure(code);
+				result = KnowledgeDescriptions.getResult(code);
 				this.input = con;
 				this.output = con.output;
 				return;
@@ -56,8 +56,8 @@ public class GuiCraft extends GuiCraftingHelper {
 		for(TransformerContainer con : CristalRegistry.transformationContainer){
 			if(con.code.equals(code)){
 				displayName = KnowledgeDescriptions.getDisplayName(code);
-				structure = KnowledgeDescriptions.transformWeakCristal(Block.getBlockFromItem(con.output.getItem()));
-				result = KnowledgeDescriptions.transformOutput(con.output);
+				structure = KnowledgeDescriptions.getStructure(code);
+				result = KnowledgeDescriptions.getResult(code);
 				return;
 			}
 		}
@@ -65,8 +65,8 @@ public class GuiCraft extends GuiCraftingHelper {
 		for(TransformerEntityContainer con : CristalRegistry.transformationEntityContainer){
 			if(con.code.equals(code)){
 				displayName = KnowledgeDescriptions.getDisplayName(code);
-				structure = KnowledgeDescriptions.transformWeakFlesh(con.input);
-				result = KnowledgeDescriptions.transformOutput(con.input);
+				structure = KnowledgeDescriptions.getStructure(code);
+				result = KnowledgeDescriptions.getResult(code);
 				return;
 			}
 		}

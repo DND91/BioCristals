@@ -75,13 +75,16 @@ public class RecipeRegistry {
 		for(RecipeData data : ConfigRegistry.recipeData){
 			
 			
-			ItemStack output = RecipeTransformer.dataToItemStack(data.output).get(0);
+			ItemStack output = RecipeTransformer.dataToItemStack(data.output, true).get(0);
 			
-			ItemStack[] inputs = RecipeTransformer.dataToItemStacks(data.input.split("__"));
+			Object[] inputs = RecipeTransformer.dataToObjects(data.input);
 			Object[] trueInput = RecipeTransformer.stacksToRecipe(inputs);
 			
 			System.out.println("---------------- INPUT -----------------");
-			System.out.println("INPUT: " + data.input);
+			System.out.println("INPUT: ");
+			for(Object in : data.input)
+				System.out.println(in.toString());
+			System.out.println("---");
 			for(int i = 0; i < inputs.length; i++)
 				System.out.println(inputs[i] == null ? "null" : inputs[i].toString());
 			System.out.println("---------------- OUTPUT -----------------");
@@ -101,9 +104,9 @@ public class RecipeRegistry {
 	
 	public static void loadCroot(){
 		for(CrootRecipeData data : ConfigRegistry.crootData){
-			ItemStack output = RecipeTransformer.dataToItemStack(data.output).get(0);
+			ItemStack output = RecipeTransformer.dataToItemStack(data.output, true).get(0);
 			
-			ItemStack[] inputs = RecipeTransformer.dataToItemStacks(data.input.split("__"));
+			Object[] inputs = RecipeTransformer.dataToObjects(data.input);
 			Object[] trueInput = RecipeTransformer.stacksToRecipe(inputs);
 			
 			System.out.println("---------------- INPUT -----------------");
@@ -115,7 +118,7 @@ public class RecipeRegistry {
 			
 			System.out.println("---------------- TRUE INPUT -----------------");
 			for(int i = 0; i < trueInput.length; i++)
-				System.out.println(trueInput[i]);
+				System.out.println(trueInput[i] == null || (trueInput[i] instanceof ItemStack && ((ItemStack) trueInput[i]).getItem() == null) ? "null" : trueInput[i]);
 			
 			crootRecipes.add(new CrootRecipeContainer(data.code ,output, trueInput));
 		}
@@ -137,9 +140,9 @@ public class RecipeRegistry {
 	public static void loadPurifing(){
 		for(PurifierData data : ConfigRegistry.purifierData){
 			
-			ItemStack filter = RecipeTransformer.dataToItemStack(data.filter).get(0);
-			ItemStack[] outputs = RecipeTransformer.dataToItemStacks(data.output.split("__"));
-			ItemStack[] inputs = RecipeTransformer.dataToItemStacks(data.input.split("__"));
+			ItemStack filter = RecipeTransformer.dataToItemStack(data.filter, true).get(0);
+			ItemStack[] outputs = RecipeTransformer.dataToItemStacks(data.output.split(" "));
+			Object[] inputs = RecipeTransformer.dataToObjects(data.input.split(" "));
 			
 			System.out.println("---------------- INPUT -----------------");
 			System.out.println("CODE: " + data.code);

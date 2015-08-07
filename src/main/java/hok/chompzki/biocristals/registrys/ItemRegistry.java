@@ -1,15 +1,25 @@
 package hok.chompzki.biocristals.registrys;
 
+import java.util.List;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import hok.chompzki.biocristals.BioCristalsMod;
+import hok.chompzki.biocristals.containers.Hivebag;
 import hok.chompzki.biocristals.items.ItemAttuner;
 import hok.chompzki.biocristals.items.ItemBioBlob;
 import hok.chompzki.biocristals.items.ItemBioReagent;
 import hok.chompzki.biocristals.items.ItemCatalystInjector;
 import hok.chompzki.biocristals.items.ItemCollector;
 import hok.chompzki.biocristals.items.ItemDebuggerStick;
+import hok.chompzki.biocristals.items.ItemHivebag;
+import hok.chompzki.biocristals.recipes.RecipeTransformer;
+import hok.chompzki.biocristals.research.gui.KnowledgeDescriptions;
 import hok.chompzki.biocristals.research.logic.ItemResearchBook;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 
 /**
@@ -24,6 +34,8 @@ import net.minecraft.item.Item;
 
 public class ItemRegistry {
 	
+	public static final String oreBiomaterial = "bioMaterial";
+	
 	public static Item attuner = null;
 	public static Item bioReagent = null;
 	public static Item collector = null;
@@ -31,6 +43,7 @@ public class ItemRegistry {
 	public static Item researchBook = null;
 	public static Item bioBlob = null;
 	public static Item debuggingStick = null;
+	public static Item hivebag = null;
 	
 	public void registerItems(){
 		attuner = new ItemAttuner();
@@ -40,6 +53,7 @@ public class ItemRegistry {
 		researchBook = new ItemResearchBook();
 		bioBlob = new ItemBioBlob();
 		debuggingStick = new ItemDebuggerStick();
+		hivebag = new ItemHivebag();
 		
 		GameRegistry.registerItem(attuner, ItemAttuner.NAME, BioCristalsMod.MODID);
 		GameRegistry.registerItem(bioReagent, ItemBioReagent.NAME, BioCristalsMod.MODID);
@@ -49,6 +63,19 @@ public class ItemRegistry {
 		GameRegistry.registerItem(bioBlob, ItemBioBlob.NAME, BioCristalsMod.MODID);
 		
 		GameRegistry.registerItem(debuggingStick, ItemDebuggerStick.NAME, BioCristalsMod.MODID);
+		GameRegistry.registerItem(hivebag, ItemHivebag.NAME, BioCristalsMod.MODID);
+		
+		for(String ore : ConfigRegistry.oreDictBioMaterial){
+			List<ItemStack> list = OreDictionary.getOres(ore);
+			for(ItemStack stack : list){
+				OreDictionary.registerOre(oreBiomaterial, stack);
+			}
+			
+			ItemStack stack = RecipeTransformer.dataToItemStack(ore, true).get(0);
+			System.out.println("ORE DICT: " + ore + ", " + (stack == null || stack.getItem() == null ? "NULL" : stack));
+			OreDictionary.registerOre(oreBiomaterial, stack);
+		}
+		
 	}
 	
 }

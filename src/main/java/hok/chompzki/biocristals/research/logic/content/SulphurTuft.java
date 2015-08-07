@@ -26,7 +26,7 @@ public class SulphurTuft extends ArticleContent {
 			s += "When D'berry researched she often found her subjects running away or/and in deep pain. ";
 			s += "To solve this she created what is known as the 'Sulphur Tuft', it will paralyze any non-steve who ";
 			s += "walks uppon it. Only after this would she reveal results and conclussions to society. ";
-			s +=  "§lNeeds to be placed near croot.§r";
+			s +=  "" + ((char)167) + "lNeeds to be placed near croot." + ((char)167) + "r";
 			break;
 		case 1:
 			s += KnowledgeDescriptions.getDisplayName(code) + "\n\n";

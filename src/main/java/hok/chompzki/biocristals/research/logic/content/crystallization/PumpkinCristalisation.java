@@ -27,7 +27,7 @@ public class PumpkinCristalisation extends ArticleContent {
 			s += "When the civilization passed the croot alignment the attunment industry went from mixed to pumpkin produced biomass. ";
 			s += "It is proposed that the pumpkin pie was to complex and not nourishing enought for the labour force and was therefor ";
 			s += "rather used in industry. ";
-			s +=  "§lAll cristals need to be placed near croot.§r";
+			s +=  "" + ((char)167) + "lAll cristals need to be placed near croot." + ((char)167) + "r";
 			break;
 		case 1:
 			s += KnowledgeDescriptions.getDisplayName(code) + "\n\n";

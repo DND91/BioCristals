@@ -92,8 +92,8 @@ public class CristalRegistry {
 
 	private static void loadTransformer() {
 		for(TransformData data : ConfigRegistry.transformData){
-			ItemStack output = RecipeTransformer.dataToItemStack(data.output).get(0);
-			ItemStack input = RecipeTransformer.dataToItemStack(data.input).get(0);
+			ItemStack output = RecipeTransformer.dataToItemStack(data.output, true).get(0);
+			Object input = RecipeTransformer.dataToObject(data.input);
 			
 			System.out.println("---------------- INPUT -----------------");
 			System.out.println("INPUT: " + data.input);
@@ -105,14 +105,14 @@ public class CristalRegistry {
 		}
 		
 		for(TransformerContainer con : transformationContainer){
-			CristalRegistry.register(new WeakCristalTransformation(con.input.getItem(), Block.getBlockFromItem(con.output.getItem()), con.code));
+			CristalRegistry.register(new WeakCristalTransformation(con));
 		}
 	}
 	
 	private static void loadEntityTransformer() {
 		for(TransformEntityData data : ConfigRegistry.transformEntityData){
 			Class input = (Class) EntityList.stringToClassMapping.get(data.input);
-			ItemStack[] output = RecipeTransformer.dataToItemStacks(data.output.split("__"));
+			ItemStack[] output = RecipeTransformer.dataToItemStacks(data.output.split(" "));
 			
 			System.out.println("---------------- INPUT -----------------");
 			System.out.println("INPUT: " + data.input + " -> " + (input == null ? "NULL" : input.toString()));

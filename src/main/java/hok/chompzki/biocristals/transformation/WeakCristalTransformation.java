@@ -2,12 +2,14 @@ package hok.chompzki.biocristals.transformation;
 
 import hok.chompzki.biocristals.api.BioHelper;
 import hok.chompzki.biocristals.api.ITransformation;
+import hok.chompzki.biocristals.recipes.TransformerContainer;
 import hok.chompzki.biocristals.registrys.BlockRegistry;
 import hok.chompzki.biocristals.registrys.ReserchRegistry;
 import hok.chompzki.biocristals.research.data.PlayerResearch;
 import hok.chompzki.biocristals.research.data.PlayerStorage;
 import hok.chompzki.biocristals.research.logic.ResearchLogicNetwork;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,14 +26,10 @@ import net.minecraft.world.World;
 
 public class WeakCristalTransformation implements ITransformation {
 	
-	private Item input;
-	private Block output;
-	private String code;
-	
-	public WeakCristalTransformation(Item input, Block output, String code){
-		this.input = input;
-		this.output = output;
-		this.code = code;
+	private TransformerContainer container = null;
+
+	public WeakCristalTransformation(TransformerContainer con) {
+		container = con;
 	}
 
 	@Override
@@ -39,14 +37,17 @@ public class WeakCristalTransformation implements ITransformation {
 		UUID id = player.getGameProfile().getId();
 		PlayerResearch research = PlayerStorage.instance(false).get(id);
 		
-		return code.equals("NONE") || ResearchLogicNetwork.instance().available(research, code);
+		return container.code.equals("NONE") || ResearchLogicNetwork.instance().available(research, container.code);
 	}
 
 	@Override
 	public boolean canPlaceAt(ItemStack stack, EntityPlayer player,
 			World world, int x, int y, int z) {// AxisAlignedBB
+		for(ItemStack input : container.getTrueInput())
+			if(BioHelper.getFirstEntityItemWithinAABB(world, player, input.getItem(), 10, 10, 10) != null)
+				return true;
 		
-		return BioHelper.getFirstEntityItemWithinAABB(world, player, input, 10, 10, 10) != null;
+		return false;
 	}
 	
 	@Override
@@ -57,18 +58,25 @@ public class WeakCristalTransformation implements ITransformation {
 	@Override
 	public void construct(ItemStack stack, EntityPlayer player, World world,
 			int x, int y, int z) {
-		EntityItem item = BioHelper.getFirstEntityItemWithinAABB(world, player, input, 10, 10, 10);
-		if(item != null && item.getEntityItem().getItem() == input){
-			world.setBlock(x, y, z, output);
+		EntityItem item = null;
+		
+		for(ItemStack input : container.getTrueInput()){
+			item = BioHelper.getFirstEntityItemWithinAABB(world, player, input.getItem(), 10, 10, 10);
+			if(item != null)
+				break;
+		}
+		
+		if(item != null){
+			world.setBlock(x, y, z, Block.getBlockFromItem(container.output.getItem()));
 			
 			item.getEntityItem().stackSize--;
 			if(item.getEntityItem().stackSize <= 0)
 				item.setDead();
 			
-			if(code != null){
+			if(container.code != null && !container.code.equals("NONE")){
 				UUID id = player.getGameProfile().getId();
 				PlayerResearch research = PlayerStorage.instance(false).get(id);
-				ResearchLogicNetwork.instance().compelte(research, code);
+				ResearchLogicNetwork.instance().compelte(research, container.code);
 			}
 		}
 	}

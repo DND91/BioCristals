@@ -1,9 +1,12 @@
 package hok.chompzki.biocristals.research.gui;
 
 import java.awt.event.ItemListener;
+import java.util.List;
 
+import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.GameRegistry;
 import hok.chompzki.biocristals.recipes.CrootRecipeContainer;
+import hok.chompzki.biocristals.recipes.OreDictContainer;
 import hok.chompzki.biocristals.recipes.PurifierContainer;
 import hok.chompzki.biocristals.recipes.RecipeContainer;
 import hok.chompzki.biocristals.recipes.TransformerContainer;
@@ -24,17 +27,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class KnowledgeDescriptions {
-	public static String transformRecipe(ItemStack output){
+	public static String transformRecipe(RecipeContainer container){
 		String s = "\t\n";
-		RecipeContainer con = RecipeRegistry.getRecipreFor(output);
-		for(int y = 0; y < con.craftingGrid[0].length; y++){
+		for(int y = 0; y < container.craftingGrid[0].length; y++){
 			s += "\f";
-			for(int x = 0; x < con.craftingGrid[0].length; x++){
-				
-				ItemStack slot = con.idToItem.get(con.craftingGrid[y][x]);
-				if(slot == null || slot.getItem() == null)
-					slot = new ItemStack(Blocks.air);
-				s += transformItemStack(slot, false);
+			for(int x = 0; x < container.craftingGrid[0].length; x++){
+				s += "<";
+				s += container.getString(y*container.craftingGrid[0].length + x);
+				s += ">";
 			}
 			s += "\n\n";
 		}
@@ -58,6 +58,29 @@ public class KnowledgeDescriptions {
 		String meta = "";
 		meta = ""+(stack.getItem() == null ? 0 : stack.getItemDamage());
 		s += (stack.stackSize <= 0 ? 1 : stack.stackSize) + "x" + name + ":" + meta;
+		s += ">";
+		
+		return s +  (withTT ? "\t" : "");
+	}
+	
+	public static String transformStrictItemStack(ItemStack stack, boolean withTT){
+		String s = "";
+		if(withTT)
+			s += "\t\f";
+		s += "<";
+		s += stack.stackSize + "x" + GameData.getItemRegistry().getNameForObject(stack.getItem()) + ":" + stack.getItemDamage();
+		s += ">";
+		
+		return s +  (withTT ? "\t" : "");
+	}
+	
+	public static String transformOreCon(OreDictContainer con, boolean withTT){
+		String s = "";
+		if(withTT)
+			s += "\t\f";
+		s += "<";
+		String name = con.oreName;
+		s += (con.quantity <= 0 ? 1 : con.quantity) + "x" + name;
 		s += ">";
 		
 		return s +  (withTT ? "\t" : "");
@@ -112,14 +135,6 @@ public class KnowledgeDescriptions {
 		return uname;
 	}
 	
-	private static String transformWeakCristal(ItemStack substance, ItemStack reagent, ItemStack base, ItemStack activator){
-		ItemStack air = new ItemStack(Blocks.air);
-		String s = "\t\n\f";
-		s += transformItemStack(air, false) + transformItemStack(substance, false) + transformItemStack(air, false) + "\n\n";
-		s += "\f" + transformItemStack(reagent, false) + transformItemStack(base, false) + transformItemStack(activator, false) + "\n\n";
-		return s + "\t";
-	}
-	
 	public static String transformWeakCristal(Block block){
 		if(block == null)
 			return transformItemStack(new ItemStack(Blocks.command_block) , true);
@@ -133,9 +148,20 @@ public class KnowledgeDescriptions {
 		if(found == null)
 			return transformItemStack(new ItemStack(Blocks.command_block) , true);
 		
-		return transformWeakCristal(found.input, new ItemStack(ItemRegistry.bioReagent), new ItemStack(BlockRegistry.biomass), new ItemStack(ItemRegistry.attuner));
+		return transformWeakCristal(found);
 	}
 	
+	private static String transformWeakCristal(TransformerContainer found) {
+		ItemStack air = new ItemStack(Blocks.air);
+		ItemStack reagent = new ItemStack(ItemRegistry.bioReagent);
+		ItemStack activator = new ItemStack(ItemRegistry.attuner);
+		ItemStack base = new ItemStack(BlockRegistry.biomass);
+		String s = "\t\n\f";
+		s += transformItemStack(air, false) + "<" + found.getInputString() + ">" + transformItemStack(air, false) + "\n\n";
+		s += "\f" + transformItemStack(reagent, false) + transformItemStack(base, false) + transformItemStack(activator, false) + "\n\n";
+		return s + "\t";
+	}
+
 	public static String transformWeakFlesh(EntityLivingBase base){
 		String reagent = transformItemStack(new ItemStack(ItemRegistry.bioReagent), false);
 		String act = transformItemStack(new ItemStack(ItemRegistry.attuner), false);
@@ -196,7 +222,7 @@ public class KnowledgeDescriptions {
 		
 		String s = "\t\f";
 		for(ItemStack stack : found.output){
-			s += transformItemStack(stack, false);
+			s += transformStrictItemStack(stack, false);
 		}
 		return s + "\t";
 	}
@@ -244,13 +270,13 @@ public class KnowledgeDescriptions {
 		
 		for(RecipeContainer con : RecipeRegistry.recipes){
 			if(con.code.equals(code)){
-				return KnowledgeDescriptions.transformRecipe(con.output);
+				return KnowledgeDescriptions.transformRecipe(con);
 			}
 		}
 		
 		for(CrootRecipeContainer con : RecipeRegistry.crootRecipes){
 			if(con.code.equals(code)){
-				return KnowledgeDescriptions.transformCrootRecipe(con.output);
+				return KnowledgeDescriptions.transformRecipe(con);
 			}
 		}
 		
@@ -272,8 +298,15 @@ public class KnowledgeDescriptions {
 				String structure = "\n\nFilter: \t" + KnowledgeDescriptions.transformItemStack(con.filter, false) + "\t\n\n";
 				structure += "Input: \t";
 				int y = 0;
-				for(ItemStack stack : con.input){
-					structure += KnowledgeDescriptions.transformItemStack(stack, false);
+				for(Object obj : con.input){
+					if (obj instanceof String){
+						structure += KnowledgeDescriptions.transformItemStack(new ItemStack(Blocks.air), false);
+					} else if (obj instanceof ItemStack){
+						structure += KnowledgeDescriptions.transformItemStack((ItemStack)obj, false);
+					} else if(obj instanceof OreDictContainer){
+						structure += transformOreCon((OreDictContainer)obj, false);
+					}
+					
 					y++;
 					if(y % 5 == 0)
 						structure += "\n\n\f";
@@ -283,23 +316,6 @@ public class KnowledgeDescriptions {
 			}
 		}
 		return "NONE";
-	}
-	
-	public static String transformCrootRecipe(ItemStack output) {
-		String s = "\t\n";
-		CrootRecipeContainer con = RecipeRegistry.getCrootRecipreFor(output);
-		for(int y = 0; y < con.craftingGrid[0].length; y++){
-			s += "\f";
-			for(int x = 0; x < con.craftingGrid[0].length; x++){
-				
-				ItemStack slot = con.idToItem.get(con.craftingGrid[y][x]);
-				if(slot == null || slot.getItem() == null)
-					slot = new ItemStack(Blocks.air);
-				s += transformItemStack(slot, false);
-			}
-			s += "\n\n";
-		}
-		return s + "\t";
 	}
 
 	public static String getResult(String code){

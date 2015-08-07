@@ -19,7 +19,7 @@ import hok.chompzki.biocristals.research.logic.content.Purifier;
 import hok.chompzki.biocristals.research.logic.content.Reaction;
 import hok.chompzki.biocristals.research.logic.content.ServerContent;
 import hok.chompzki.biocristals.research.logic.content.SulphurTuft;
-import hok.chompzki.biocristals.research.logic.content.TheWorldAroundUs;
+import hok.chompzki.biocristals.research.logic.content.chapeter.AgeOfConflict;
 import hok.chompzki.biocristals.research.logic.content.chapeter.FirstEra;
 import hok.chompzki.biocristals.research.logic.content.chapeter.Lore;
 import hok.chompzki.biocristals.research.logic.content.crystallization.CarrotCristalisation;
@@ -45,6 +45,7 @@ import hok.chompzki.biocristals.research.logic.content.lore.Dberry;
 import hok.chompzki.biocristals.research.logic.content.lore.Rabarberpaj;
 import hok.chompzki.biocristals.research.logic.content.purifing.BioBlob;
 import hok.chompzki.biocristals.research.logic.content.purifing.BiomassMK1;
+import hok.chompzki.biocristals.research.logic.content.purifing.BiomassMK2;
 import hok.chompzki.biocristals.research.logic.content.purifing.Promogenitus;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -63,7 +64,7 @@ public class ReserchRegistry {
 	//Chapeters
 	public static final Chapeter loreChapeter = new Chapeter("loreChapeter", "loreChapeter", isServer ? new ServerContent() : new Lore());
 	public static final Chapeter firstEra = new Chapeter("firstEra", "firstEra", isServer ? new ServerContent() : new FirstEra());
-	public static final Chapeter ageOfConflict = new Chapeter("ageOfConflict", "ageOfConflict", new ServerContent());
+	public static final Chapeter ageOfConflict = new Chapeter("ageOfConflict", "ageOfConflict", isServer ? new ServerContent() : new AgeOfConflict());
 	
 	
 	
@@ -89,6 +90,7 @@ public class ReserchRegistry {
 	public static final String purifier = "purifier";
 	
 	public static final String biomassmk1 = "biomassmk1";
+	public static final String biomassmk2 = "biomassmk2";
 	public static final String promogenitus = "promogenitus";
 	public static final String bioBlob = "bioBlob";
 	public static final String extractor = "extractor";
@@ -148,6 +150,7 @@ public class ReserchRegistry {
 		ReserchDataNetwork.register(new Research(purifier, 0, -1, BlockRegistry.reagentPurifier,  side ? new ServerContent() : new Purifier(), firstEra, structure, cubeMass, reaction).setSpecial());
 		
 		ReserchDataNetwork.register(new Research(biomassmk1, 0, -2, BlockRegistry.biomass,  side ? new ServerContent() : new BiomassMK1(), firstEra, purifing, purifier));
+		ReserchDataNetwork.register(new Research(biomassmk2, 0, -3, BlockRegistry.biomass,  side ? new ServerContent() : new BiomassMK2(), firstEra, purifing, biomassmk1));
 		ReserchDataNetwork.register(new Research(promogenitus, -1, -2, BlockRegistry.primogenitus,  side ? new ServerContent() : new Promogenitus(), firstEra, purifing, purifier));
 		ReserchDataNetwork.register(new Research(bioBlob, -1, -3, ItemRegistry.bioBlob,  side ? new ServerContent() : new BioBlob(), firstEra, purifing, purifier));
 		ReserchDataNetwork.register(new Research(extractor, 1, -2, BlockRegistry.extractor,  side ? new ServerContent() : new BioBlob(), firstEra, purifing, purifier));
@@ -172,13 +175,13 @@ public class ReserchRegistry {
 		ReserchDataNetwork.register(new Research(darkWarp, 5, -1, Items.ender_pearl, side ? new ServerContent() : new DarkWarp(), firstEra, flesh, fleshRapture));
 		ReserchDataNetwork.register(new Research(payingTaxes, 5, 1, Items.gold_nugget, side ? new ServerContent() : new PayingTaxes(), firstEra, flesh, leatherBeast));
 		
-		ReserchDataNetwork.register(new Research(wheatCristalisation, 0, 1, BlockRegistry.wheatCristal, side ? new ServerContent() : new WheatCristalisation(), firstEra, crystallization, cubeMass, reaction).setSpecial());
+		ReserchDataNetwork.register(new Research(wheatCristalisation, 0, 1, BlockRegistry.wheatCristal, side ? new ServerContent() : new WheatCristalisation(), ageOfConflict, crystallization, cubeMass, reaction).setSpecial());
 		
-		ReserchDataNetwork.register(new Research(carrotCristalisation, -1, 2, BlockRegistry.carrotCristal, side ? new ServerContent() : new CarrotCristalisation(), firstEra, crystallization, wheatCristalisation));
-		ReserchDataNetwork.register(new Research(reedsCristalisation, 0, 2, BlockRegistry.reedsCristal, side ? new ServerContent() : new ReedsCristalisation(), firstEra, crystallization, wheatCristalisation));
-		ReserchDataNetwork.register(new Research(potatoCristalisation, 1, 2, BlockRegistry.potatoCristal, side ? new ServerContent() : new PotatoCristalisation(), firstEra, crystallization, wheatCristalisation));
-		ReserchDataNetwork.register(new Research(melonCristalisation, -1, 3, BlockRegistry.melonCristal, side ? new ServerContent() : new MelonCristalisation(), firstEra, crystallization, wheatCristalisation));
-		ReserchDataNetwork.register(new Research(pumpkinCristalisation, 0, 3, BlockRegistry.pumpkinCristal, side ? new ServerContent() : new PumpkinCristalisation(), firstEra, crystallization, wheatCristalisation));
+		ReserchDataNetwork.register(new Research(carrotCristalisation, -1, 2, BlockRegistry.carrotCristal, side ? new ServerContent() : new CarrotCristalisation(), ageOfConflict, crystallization, wheatCristalisation));
+		ReserchDataNetwork.register(new Research(reedsCristalisation, 0, 2, BlockRegistry.reedsCristal, side ? new ServerContent() : new ReedsCristalisation(), ageOfConflict, crystallization, wheatCristalisation));
+		ReserchDataNetwork.register(new Research(potatoCristalisation, 1, 2, BlockRegistry.potatoCristal, side ? new ServerContent() : new PotatoCristalisation(), ageOfConflict, crystallization, wheatCristalisation));
+		ReserchDataNetwork.register(new Research(melonCristalisation, -1, 3, BlockRegistry.melonCristal, side ? new ServerContent() : new MelonCristalisation(), ageOfConflict, crystallization, wheatCristalisation));
+		ReserchDataNetwork.register(new Research(pumpkinCristalisation, 0, 3, BlockRegistry.pumpkinCristal, side ? new ServerContent() : new PumpkinCristalisation(), ageOfConflict, crystallization, wheatCristalisation));
 		
 		
 		tutorialResearch = new Research(tutorial, 0, 1, Items.book, tutorialContent, loreChapeter, tutorialCat);

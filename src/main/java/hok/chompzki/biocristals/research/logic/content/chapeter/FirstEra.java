@@ -25,8 +25,7 @@ public class FirstEra extends ArticleContent {
 			s += "Rabarberpaj, the mother of the field, and her three apprintances Carla & Fleur, founder of structure and purifing, and D-berry, ";
 			s += "founder of 'Flesh Transformation'. ";
 			break;
-		case 1: //Sodium acetate, Cara Rot (Carrot), Elle D'berry (Elderberry), Rabarberpaj... Carla & Fleur (Cauliflower)
-			s += "When we study the properties of reality we soon notice that our senses are not enought to evoke change. ";
+		case 1: 
 			
 			break;
 		case 2:
@@ -43,8 +42,10 @@ public class FirstEra extends ArticleContent {
 		return 3;
 	}
 
+
 	@Override
 	public GuiCraftingHelper getFaved() {
-		return new GuiCraft(Minecraft.getMinecraft(), code);
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -8,10 +8,10 @@ public class PurifierContainer {
 	public ItemStack filter;
 	public String code;
 	public ItemStack[] output;
-	public ItemStack[] input;
+	public Object[] input;
 	public Integer time;
 	
-	public PurifierContainer(String name, ItemStack filter, String code, ItemStack[] input, ItemStack[] output, Integer time){
+	public PurifierContainer(String name, ItemStack filter, String code, Object[] input, ItemStack[] output, Integer time){
 		this.name = name;
 		this.filter = filter;
 		this.code = code;

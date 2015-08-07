@@ -1,9 +1,8 @@
-package hok.chompzki.biocristals.research.logic.content.crystallization;
+package hok.chompzki.biocristals.research.logic.content.purifing;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import hok.chompzki.biocristals.client.GuiCraft;
 import hok.chompzki.biocristals.client.GuiCraftingHelper;
@@ -15,17 +14,17 @@ import hok.chompzki.biocristals.research.data.ArticleContent;
 import hok.chompzki.biocristals.research.data.ArticleContent.EnumContent;
 import hok.chompzki.biocristals.research.gui.KnowledgeDescriptions;
 
-public class CarrotCristalisation extends ArticleContent {
-
+public class BiomassMK2 extends ArticleContent {
+	
 	@Override
 	public String textOnPage(EnumContent content, int p){
+		//Basic stuff Attuner, Biological Reagent & Biomass TUTORIAL RESEARCH!
 		String s = "";
 		switch(p){
 		case 0:
-			s += "As Rot's experiments keept on, more and more biomatter experienced his attunment process. ";
-			s += "The carrot cristal was first found near a race called elves, gone today, and worked ";
-			s += "as one of thier primary food sources. When researcher toutched the cristals relations become hostile. ";
-			s +=  "" + ((char)167) + "lAll cristals need to be placed near croot." + ((char)167) + "r";
+			s += "While Carla & Fleur worked on the purifier they aimed to a more effective way to create biomass. ";
+			s += "After purifing all dirt they got desperate and raided the pantry... and soon found that medium amounts of ";
+			s += "some biomass material could be purifide to pure biomass. ";
 			break;
 		case 1:
 			s += KnowledgeDescriptions.getDisplayName(code) + "\n\n";
@@ -33,12 +32,8 @@ public class CarrotCristalisation extends ArticleContent {
 			s += KnowledgeDescriptions.getStructure(code);
 			s += "       ~ Creation ~\n\n";
 			s += KnowledgeDescriptions.getResult(code);
-			s += "\n";
-			s += "1. Place biomass\n";
-			s += "2. Throw biological reagent\n";
-			s += "3. Throw carrot\n";
-			s += "4. Hold and release attuner on biomass\n";
 			break;
+
 		}
 		return s;
 	}

@@ -24,12 +24,14 @@ public class ContainerCrootCore extends Container {
 	private TileCrootCore core = null;
 	public IInventory craftResult = new InventoryCraftResult();
 	private boolean isClient = false;
+	private BioInvCrafting fakeInv = null;
 
 	public ContainerCrootCore(InventoryPlayer inventory,
 			TileCrootCore tileEntity, boolean isClient) {
 		core = tileEntity;
 		player = inventory.player;
 		this.isClient = isClient;
+		this.fakeInv = new BioInvCrafting(tileEntity, this);
 		
 		core.openContainer(player, this);
 		
@@ -65,8 +67,14 @@ public class ContainerCrootCore extends Container {
 	public void onCraftMatrixChanged(IInventory p_75130_1_)
     {
 		PlayerResearch research = PlayerStorage.instance(isClient).get(player.getGameProfile().getId());
-        this.craftResult.setInventorySlotContents(0, CrootManager.instance().findMatchingRecipe(this.core.getWorldObj(), research, this.core));
+		ItemStack stack = CrootManager.instance().findMatchingRecipe(this.core.getWorldObj(), research, this.core);
+		if(stack == null)
+			stack = CraftingManager.getInstance().findMatchingRecipe(fakeInv, this.core.getWorldObj());
+        this.craftResult.setInventorySlotContents(0, stack);
     }
+	
+	
+	//this.craftResult.setInventorySlotContents(0, CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, this.worldObj));
 	
 	@Override
 	public void addCraftingToCrafters(ICrafting par1ICrafting)

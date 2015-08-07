@@ -1,13 +1,11 @@
 package hok.chompzki.biocristals.research.gui;
 
 import hok.chompzki.biocristals.BioCristalsMod;
-import hok.chompzki.biocristals.client.GuiCraft;
 import hok.chompzki.biocristals.client.GuiInventoryOverlay;
 import hok.chompzki.biocristals.client.IArticle;
 import hok.chompzki.biocristals.registrys.ReserchRegistry;
 import hok.chompzki.biocristals.research.data.Chapeter;
 import hok.chompzki.biocristals.research.data.DataHelper;
-import hok.chompzki.biocristals.research.data.DataPlayer;
 import hok.chompzki.biocristals.research.data.PlayerResearch;
 import hok.chompzki.biocristals.research.data.PlayerStorage;
 import hok.chompzki.biocristals.research.data.Research;
@@ -23,12 +21,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
-import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -39,12 +31,15 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 public class GuiResearchBook extends GuiScreen {
 	
@@ -52,11 +47,13 @@ public class GuiResearchBook extends GuiScreen {
 	public static final ResourceLocation bioSidebarBG = new ResourceLocation(BioCristalsMod.MODID + ":textures/client/gui/book_sidebar.png");
 	public static final ResourceLocation sparkleBG = new ResourceLocation(BioCristalsMod.MODID + ":textures/client/gui/icons/sparkle.png");
 	
-	private static final int guiMapTop = -7 * 24 - 112;
-	private static final int guiMapLeft = -7 * 24 - 112;
+	private static final int cellSize = 28;
 	
-	private static final int guiMapBottom = 16 * 24 - 77;
-	private static final int guiMapRight = 16 * 24 - 77;
+	private static final int guiMapTop = -7 * cellSize - 112;
+	private static final int guiMapLeft = -7 * cellSize - 112;
+	
+	private static final int guiMapBottom = 16 * cellSize - 77;
+	private static final int guiMapRight = 16 * cellSize - 77;
 	
 	protected int knowledgePaneWidth = 256;
 	protected int knowledgePaneHeight = 202;
@@ -67,7 +64,7 @@ public class GuiResearchBook extends GuiScreen {
 	protected double guiMapX;
 	protected double guiMapY;
 	
-	protected int mouseX = 0;
+	protected int mouseX = 0;	
 	protected int mouseY = 0;
 	private int isMouseButtonDown = 0;
 	private int lastMouseButtonDown = 0;
@@ -93,8 +90,8 @@ public class GuiResearchBook extends GuiScreen {
 		this.player = UUID.fromString(DataHelper.getOwner(book));
 		short short1 = 141;
         short short2 = 141;
-		this.field_74117_m = this.guiMapX = (double)(0 * 24 - short1 / 2 - 12);
-        this.field_74115_n = this.guiMapY = (double)(0 * 24 - short2 / 2);
+		this.field_74117_m = this.guiMapX = (double)(0 * cellSize - short1 / 2 - 12);
+        this.field_74115_n = this.guiMapY = (double)(0 * cellSize - short2 / 2);
         this.article = GuiInventoryOverlay.craftingHelper.getBooked();
         if(article != null){
         	article.setLast(this);
@@ -602,23 +599,62 @@ public class GuiResearchBook extends GuiScreen {
         	return;
         }
         for(Research knowledge : ResearchLogicNetwork.instance().getOpenResearches(this.selectedChapeter, res)){
-        	int colum = knowledge.displayColumn * 24 - k;
-            int row = knowledge.displayRow * 24 - l;
+        	int colum = knowledge.displayColumn * cellSize - k;
+            int row = knowledge.displayRow * cellSize - l;
             if (colum >= -10 && row >= -10 && colum <= 224 && row <= 155)
             {
             	i5 = k1 + colum;
                 l4 = l1 + row;
-        		
-                
-                
                 
                 this.drawIcon(knowledge, i5, l4, PlayerStorage.instance(true).get(player).hasCompleted(knowledge.getCode()), true);
-                Rectangle rect = new Rectangle(i5 + 3, l4 + 3, 16, 16);
+                Rectangle rect = new Rectangle(i5, l4, 26, 26);
                 if(rect.contains(new Rectangle(par1, par2, 2, 2))){
                 	tooltipResearch = knowledge;
                 }
             }
             
+        }
+        if(this.article != null && this.article.getArticle() instanceof Research){
+        	Research knowledge = (Research)this.article.article;
+        	
+        	if(!knowledge.getChapeter().getCode().equals(this.selectedChapeter.getCode()))
+        		return;
+        	
+        	int colum = knowledge.displayColumn * cellSize - k;
+            int row = knowledge.displayRow * cellSize - l;
+            i5 = k1 + colum;
+            l4 = l1 + row;
+            
+            if (!(colum >= -10 && row >= -10 && colum <= 224 && row <= 155))
+            	return;
+            
+            Minecraft mc = Minecraft.getMinecraft();
+   		 	RenderHelper.enableGUIStandardItemLighting();
+           	GL11.glEnable(GL11.GL_BLEND);
+   		 	float f2 = 1.0F;
+        	GL11.glColor4f(f2, f2, f2, 1.0F);
+        	
+        	
+        	if (knowledge.getSpecial())
+            {
+                mc.renderEngine.bindTexture(bioBookBG);
+            	GL11.glColor4f(1.0F, 0.0F, 0.0F, 1.0F);
+            	this.drawTexturedModalRect(i5 - 3, l4 - 3, 52, 202 + 26, 28, 28);
+            	GL11.glColor4f(f2, f2, f2, 1.0F); 
+            }
+            else
+            {
+            	mc.renderEngine.bindTexture(bioBookBG);
+             	GL11.glColor4f(1.0F, 0.0F, 0.0F, 1.0F);
+             	this.drawTexturedModalRect(i5 - 3, l4 - 2, 52, 202, 26, 26);
+             	GL11.glColor4f(f2, f2, f2, 1.0F); 
+            }
+        	
+           
+           	RenderHelper.disableStandardItemLighting();
+           	
+           	
+           	GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         }
 	 }
 	 
@@ -651,8 +687,8 @@ public class GuiResearchBook extends GuiScreen {
              mc.renderEngine.bindTexture(bioBookBG);
              
              if(owner && PlayerStorageSyncHandler.totallyNew.contains(research.getCode())){
-            	 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            	 this.drawTexturedModalRect(x - 3, y - 1, 52, 202 + 26, 26, 26);
+            	 GL11.glColor4f(0.0F, 0.0F, 1.0F, 1.0F);
+            	 this.drawTexturedModalRect(x - 3, y - 2, 52, 202 + 26, 28, 28);
             	 GL11.glColor4f(f3, f3, f3, 1.0F);
              }
              
@@ -661,12 +697,6 @@ public class GuiResearchBook extends GuiScreen {
             	 this.drawTexturedModalRect(x - 2, y - 2, 26, 202 + 26, 26, 26);
             	 GL11.glColor4f(f3, f3, f3, 1.0F);
           	}
-             
-            if(this.article != null && this.article.getArticle().getCode().equals(research.getCode())){
-            	GL11.glColor4f(1.0F, 0.0F, 0.0F, 1.0F);
-            	this.drawTexturedModalRect(x - 2, y - 1, 26, 202 + 26, 26, 26);
-           	 	GL11.glColor4f(f3, f3, f3, 1.0F);
-            }
          }
          else
          {
@@ -676,20 +706,18 @@ public class GuiResearchBook extends GuiScreen {
              
              mc.renderEngine.bindTexture(bioBookBG);
              if(owner && PlayerStorageSyncHandler.totallyNew.contains(research.getCode())){
-            	 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            	 this.drawTexturedModalRect(x - 3, y - 1, 52, 202, 26, 26);
+            	 GL11.glColor4f(0.0F, 0.0F, 1.0F, 1.0F);
+            	 this.drawTexturedModalRect(x - 3, y - 2, 52, 202, 26, 26);
             	 GL11.glColor4f(f3, f3, f3, 1.0F);
              }
+             
+             
              if(res != null && res.hasFaved(research.getCode())){
             	 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             	 drawTexturedModalRect(x - 2, y - 3, 0, 202 + 26, 26, 26);
             	 GL11.glColor4f(f3, f3, f3, 1.0F);
           	}
-             if(this.article != null && this.article.getArticle().getCode().equals(research.getCode())){
-             	GL11.glColor4f(1.0F, 0.0F, 0.0F, 1.0F);
-             	drawTexturedModalRect(x - 2, y - 2, 0, 202 + 26, 26, 26);
-        	 	GL11.glColor4f(f3, f3, f3, 1.0F);
-             }
+             
          }
 
           

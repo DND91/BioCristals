@@ -25,7 +25,7 @@ public class PotatoCristalisation extends ArticleContent {
 			s += "As the civilised industry grow, so did the population and food consumption. With the help of Rot many ";
 			s += "civilisation is said to have evoided stavation with help of the potato cristal. ";
 			s += "If this is true, we still have to ask us, why did Rot help them? ";
-			s +=  "§lAll cristals need to be placed near croot.§r";
+			s +=  "" + ((char)167) + "lAll cristals need to be placed near croot." + ((char)167) + "r";
 			break;
 		case 1:
 			s += KnowledgeDescriptions.getDisplayName(code) + "\n\n";

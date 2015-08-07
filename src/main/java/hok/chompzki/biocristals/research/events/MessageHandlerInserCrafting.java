@@ -10,12 +10,14 @@ import java.util.List;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
@@ -47,7 +49,8 @@ public class MessageHandlerInserCrafting implements IMessageHandler<MessageInser
 				Slot[] slots = getSlots(container, grid);
 				if(slots.length == grid.getSizeInventory() && 2*recipe.length <= grid.getSizeInventory()){
 					for(int i = 0; i < grid.getSizeInventory(); i++){
-						insertStack(player, container, recipe.getItemStack(i), slots[i]);
+						List<ItemStack> stack = recipe.getItemStack(i);
+						insertStack(player, container, stack == null ? null : stack.get(0), slots[i]);
 						
 					}
 					grid.markDirty();
@@ -78,11 +81,50 @@ public class MessageHandlerInserCrafting implements IMessageHandler<MessageInser
 		if(itemStack == null)
 			return;
 		
-		if(itemStack != null && (player.inventory.hasItem(itemStack.getItem()) || player.capabilities.isCreativeMode)){
+		int[] targetIds = OreDictionary.getOreIDs(itemStack);
+		
+		if(0 < targetIds.length && hasItem(player.inventory, targetIds) && !player.capabilities.isCreativeMode){
+			
+		} else if(itemStack != null && (player.inventory.hasItem(itemStack.getItem()) || player.capabilities.isCreativeMode)){
 			container.putStackInSlot(slot.slotNumber, getOneOf(player, itemStack));
 		}
 	}
 	
+	
+	
+	private boolean hasItem(InventoryPlayer inventory, int[] targetIds) {
+		for(ItemStack stack : inventory.mainInventory){
+			int[] subjectIds = OreDictionary.getOreIDs(stack);
+			for(int tid : targetIds)
+			for(int sid : subjectIds)
+				if(tid == sid)
+					return true;
+		}
+		return false;
+	}
+	
+	private ItemStack getOneOre(EntityPlayer player, int[] targetIds){
+		
+		for(int i = 0; i < player.inventory.mainInventory.length; i++){
+			ItemStack current = player.inventory.mainInventory[i];
+			if(current != null){
+				int[] subjectIds = OreDictionary.getOreIDs(current);
+				for(int tid : targetIds)
+				for(int sid : subjectIds)
+					if(tid == sid){
+						ItemStack copy = current.copy();
+						copy.stackSize = 1;
+						current.stackSize--;
+						if(current.stackSize <= 0){
+							player.inventory.mainInventory[i] = null;
+						}
+						return copy;
+					}
+			}
+		}
+		return null;
+	}
+
 	private ItemStack getOneOf(EntityPlayer player, ItemStack stack){
 		if(player.capabilities.isCreativeMode){
 			ItemStack copy = stack.copy();

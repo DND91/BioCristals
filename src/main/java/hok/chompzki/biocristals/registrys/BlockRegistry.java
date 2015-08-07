@@ -1,6 +1,7 @@
 package hok.chompzki.biocristals.registrys;
 
 import hok.chompzki.biocristals.BioCristalsMod;
+import hok.chompzki.biocristals.blocks.BlockAttunedEarth;
 import hok.chompzki.biocristals.blocks.BlockBiomass;
 import hok.chompzki.biocristals.blocks.BlockCrootCore;
 import hok.chompzki.biocristals.blocks.BlockCrootHollow;
@@ -42,6 +43,8 @@ public class BlockRegistry {
 	public static Block crootStem = null;
 	public static Block crootHollow = null;
 	public static Block extractor = null;
+	public static Block attunedEarth = null;
+	public static Block holderPlant = null;
 	
 	public void registerBlocks(){
 		biomass = new BlockBiomass();
@@ -63,6 +66,8 @@ public class BlockRegistry {
 		crootStem = new BlockCrootStreamStem();
 		crootHollow = new BlockCrootHollow();
 		extractor = new BlockExtractor();
+		attunedEarth = new BlockAttunedEarth();
+		holderPlant = new BlockHolderPlant();
 		
 		GameRegistry.registerBlock(biomass, BlockBiomass.NAME);
 		GameRegistry.registerBlock(wheatCristal, "blockWheatCristal");
@@ -82,6 +87,8 @@ public class BlockRegistry {
 		GameRegistry.registerBlock(crootStem, BlockCrootStreamStem.NAME);
 		GameRegistry.registerBlock(crootHollow, BlockCrootHollow.NAME);
 		GameRegistry.registerBlock(extractor, BlockExtractor.NAME);
+		GameRegistry.registerBlock(attunedEarth, BlockAttunedEarth.NAME);
+		GameRegistry.registerBlock(holderPlant, BlockHolderPlant.NAME);
 	}
 	
 	
