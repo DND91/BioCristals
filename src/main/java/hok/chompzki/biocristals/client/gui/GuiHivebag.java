@@ -32,7 +32,7 @@ public class GuiHivebag extends GuiContainer {
     {
         String s = I18n.format(this.stack.getDisplayName(), new Object[0]);
         this.fontRendererObj.drawString(s, this.xSize / 2 - this.fontRendererObj.getStringWidth(s) / 2, 6, 4210752);
-        this.fontRendererObj.drawString(I18n.format("container.inventory", new Object[0]), 8, this.ySize - 96 + 2, 4210752);
+        this.fontRendererObj.drawString(I18n.format("container.inventory", new Object[0]), 8, this.ySize - 96 + 2 - 18, 4210752);
     }
 
 	@Override
@@ -43,6 +43,7 @@ public class GuiHivebag extends GuiContainer {
         int k = (this.width - this.xSize) / 2;
         int l = (this.height - this.ySize) / 2;
         this.drawRect(k, l,k+this.xSize, l+this.ySize, Color.GRAY.getRGB());
+		l -= 18;
 		
 		int i = 0;
 		for (i = 0; i < 9; ++i)

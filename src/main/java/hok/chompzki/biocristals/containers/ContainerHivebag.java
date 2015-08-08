@@ -34,10 +34,10 @@ public class ContainerHivebag extends Container {
 		
 		for (int j = 0; j < hivebag.getSizeInventory(); ++j)
         {
-            this.addSlotToContainer(new SlotAntiHivebag(hivebag.inventory[j].cookTime, hivebag, j, 8 + j * 18, 103 - 20));
+            this.addSlotToContainer(new SlotAntiHivebag(hivebag.inventory[j].cookTime, hivebag, j, 8 + j * 18, 103 - 20 - 18));
         }
 		
-		int i = 0;
+		int i = -18;
 		int j = 0;
 		int k = 0;
 		for (j = 0; j < 3; ++j)

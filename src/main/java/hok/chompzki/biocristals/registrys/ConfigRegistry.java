@@ -24,6 +24,11 @@ public class ConfigRegistry {
 	public static int maxBlocksCatalystInjector = 81;
 	public static int weakCristalGrowthChance = 10;
 	
+	public static int hivebagCookTime = 500;
+	public static int hungerDistance = 500;
+	public static int hungerDuration = 600;
+	public static int hungerAmplifier = 1;
+	
 	public static String configNumber = "0.3";
 	public static Configuration config;
 	
@@ -60,6 +65,12 @@ public class ConfigRegistry {
     	maxBlocksCollector = config.getInt("Max Block Search (Collector)", "Track ranges", 81, 10, 500, "");
     	maxBlocksCatalystInjector = config.getInt("Max Block Search (Catalyst Injector)", "Track ranges", 81, 10, 500, "");
     	weakCristalGrowthChance = config.getInt("Weakcristal", "Growth chances", 10, 5, 1000, "");
+    	
+    	hivebagCookTime = config.getInt("Cook Time", "Hivebag", 500, 100, Integer.MAX_VALUE, "");
+    	hungerDistance = config.getInt("Hunger Distance", "Hivebag", 500, 1, Integer.MAX_VALUE, "");
+    	hungerDuration = config.getInt("Hunger Duration", "Hivebag", 600, 1, 20000, "");
+    	hungerAmplifier = config.getInt("Hunger Amplifier", "Hivebag", 1, 0, 10, "");
+    	
     	oreDictBioMaterial = config.get("Bio Material OreDict", "OreDict", oreDictBioMaterialDefault).getStringList();
     	
     	//Workbench!

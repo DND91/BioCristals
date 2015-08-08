@@ -1,10 +1,9 @@
 package hok.chompzki.biocristals.items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import hok.chompzki.biocristals.BioCristalsMod;
 import hok.chompzki.biocristals.client.GuiHandler;
 import hok.chompzki.biocristals.containers.Hivebag;
+import hok.chompzki.biocristals.registrys.ConfigRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
@@ -18,14 +17,18 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemHivebag extends Item {
 	
 	public static final String NAME = "itemHivebag";
+	@SideOnly(Side.CLIENT)
+	private IIcon[] icons = new IIcon[2];
 
 	public ItemHivebag(){
 		this.setMaxStackSize(1);
-		this.setMaxDamage(500);
+		this.setMaxDamage(ConfigRegistry.hungerDistance);
 		this.setNoRepair();
 		setUnlocalizedName(BioCristalsMod.MODID + "_" + NAME);
 		setCreativeTab(BioCristalsMod.creativeTab);
@@ -53,25 +56,27 @@ public class ItemHivebag extends Item {
 	}
 	
 	@SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister)
+    public void registerIcons(IIconRegister iconReg)
     {
-        this.itemIcon = Items.leather.getIconFromDamage(0);
+		this.itemIcon = iconReg.registerIcon(this.getIconString());
+		this.icons[0] = iconReg.registerIcon(this.getIconString() + "_closed");
+		this.icons[1] = iconReg.registerIcon(this.getIconString() + "_open");
     }
 	
 	public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining)
     {
 		boolean isOpen = stack.stackTagCompound.getBoolean("OPEN");
         if(isOpen)
-        	return Items.carrot.getIcon(stack, renderPass);
-		return getIcon(stack, renderPass);
+        	return this.icons[1];
+		return this.icons[0];
     }
 	
 	public IIcon getIcon(ItemStack stack, int pass)
     {
 		boolean isOpen = stack.stackTagCompound.getBoolean("OPEN");
-        if(isOpen)
-        	return Items.carrot.getIcon(stack, pass);
-        return getIconFromDamageForRenderPass(stack.getItemDamage(), pass);
+		if(isOpen)
+        	return this.icons[1];
+		return this.icons[0];
     }
 	
 	@SideOnly(Side.CLIENT)
@@ -80,9 +85,9 @@ public class ItemHivebag extends Item {
 		if(stack.stackTagCompound == null)
 			this.onCreated(stack, Minecraft.getMinecraft().theWorld, Minecraft.getMinecraft().thePlayer);
 		boolean isOpen = stack.stackTagCompound.getBoolean("OPEN");
-        if(isOpen)
-        	return Items.carrot.getIcon(stack, 0);
-        return this.getIconFromDamage(stack.getItemDamage());
+		if(isOpen)
+        	return this.icons[1];
+		return this.icons[0];
     }
 	
 	@Override
@@ -136,7 +141,7 @@ public class ItemHivebag extends Item {
 			if(stack.getMaxDamage() <= distance){
 				distance = 0;
 				if(!world.isRemote && stack.hasTagCompound()){
-					player.addPotionEffect(new PotionEffect(Potion.hunger.id, 600, 1));
+					player.addPotionEffect(new PotionEffect(Potion.hunger.id, ConfigRegistry.hungerDuration, ConfigRegistry.hungerAmplifier));
 				}
 			}
 			

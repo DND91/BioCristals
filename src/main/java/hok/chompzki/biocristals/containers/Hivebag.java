@@ -1,6 +1,7 @@
 package hok.chompzki.biocristals.containers;
 
 import hok.chompzki.biocristals.items.ItemHivebag;
+import hok.chompzki.biocristals.registrys.ConfigRegistry;
 
 import java.awt.Color;
 import java.util.Random;
@@ -17,6 +18,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants.NBT;
 
 public class Hivebag implements IInventory {
+	
 	public final int maxCookTime = 50;
 	
 	public class HivebagBase{
@@ -226,7 +228,7 @@ public class Hivebag implements IInventory {
 		for(int i = 0; i < this.getSizeInventory(); i++){
 			if(this.canSmelt(i) && this.inventory[i].cookTime == 0){
 				this.inventory[i].startSize = this.inventory[i].slot.stackSize;
-				this.inventory[i].cookTime = 100; //this.inventory[i].slot.stackSize * AcidRecipes.smelting().getCookTime(this.inventory[i].slot);
+				this.inventory[i].cookTime = ConfigRegistry.hivebagCookTime; //this.inventory[i].slot.stackSize * AcidRecipes.smelting().getCookTime(this.inventory[i].slot);
 				this.inventory[i].startCookTime = this.inventory[i].cookTime;
 			}else if(0 < this.inventory[i].cookTime){
 				this.inventory[i].cookTime--;
@@ -273,6 +275,9 @@ public class Hivebag implements IInventory {
 	@SideOnly(Side.CLIENT)
     public Color getCookProgressColorScale(int slot, Color start, Color end)
     {
+		if(!this.canSmelt(slot))
+			return Color.BLACK;
+		
 		double scale = (double)this.inventory[slot].colorValue / 10000.0;
 		int r = end.getRed() - start.getRed();
 		int g = end.getGreen() - start.getGreen();
