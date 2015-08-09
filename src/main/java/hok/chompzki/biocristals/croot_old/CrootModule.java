@@ -1,6 +1,7 @@
 package hok.chompzki.biocristals.croot_old;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -22,7 +23,9 @@ public class CrootModule {
 			else
 				i++;
 		}
-		blocks.sort(new CrootComparator());
+		
+		//blocks.sort(new CrootComparator());
+		Collections.sort(blocks, new CrootComparator());
 	}
 	
 	public boolean contains(int x, int y, int z){
