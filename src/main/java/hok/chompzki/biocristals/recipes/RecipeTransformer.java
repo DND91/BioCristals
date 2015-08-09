@@ -248,7 +248,6 @@ public class RecipeTransformer {
 	}
 	
 	//domain:name:meta
-	//Om det finns i ore diconary måste det användas...
 	//
 	//
 	//
