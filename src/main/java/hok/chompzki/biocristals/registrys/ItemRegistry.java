@@ -10,6 +10,7 @@ import hok.chompzki.biocristals.items.ItemBioBlob;
 import hok.chompzki.biocristals.items.ItemBioReagent;
 import hok.chompzki.biocristals.items.ItemCatalystInjector;
 import hok.chompzki.biocristals.items.ItemCollector;
+import hok.chompzki.biocristals.items.ItemCrootBeetle;
 import hok.chompzki.biocristals.items.ItemDebuggerStick;
 import hok.chompzki.biocristals.items.ItemHivebag;
 import hok.chompzki.biocristals.recipes.RecipeTransformer;
@@ -34,8 +35,6 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public class ItemRegistry {
 	
-	public static final String oreBiomaterial = "bioMaterial";
-	
 	public static Item attuner = null;
 	public static Item bioReagent = null;
 	public static Item collector = null;
@@ -44,6 +43,7 @@ public class ItemRegistry {
 	public static Item bioBlob = null;
 	public static Item debuggingStick = null;
 	public static Item hivebag = null;
+	public static Item crootBeetle = null;
 	
 	public void registerItems(){
 		attuner = new ItemAttuner();
@@ -54,6 +54,7 @@ public class ItemRegistry {
 		bioBlob = new ItemBioBlob();
 		debuggingStick = new ItemDebuggerStick();
 		hivebag = new ItemHivebag();
+		crootBeetle = new ItemCrootBeetle();
 		
 		GameRegistry.registerItem(attuner, ItemAttuner.NAME, BioCristalsMod.MODID);
 		GameRegistry.registerItem(bioReagent, ItemBioReagent.NAME, BioCristalsMod.MODID);
@@ -64,17 +65,7 @@ public class ItemRegistry {
 		
 		GameRegistry.registerItem(debuggingStick, ItemDebuggerStick.NAME, BioCristalsMod.MODID);
 		GameRegistry.registerItem(hivebag, ItemHivebag.NAME, BioCristalsMod.MODID);
-		
-		for(String ore : ConfigRegistry.oreDictBioMaterial){
-			List<ItemStack> list = OreDictionary.getOres(ore);
-			for(ItemStack stack : list){
-				OreDictionary.registerOre(oreBiomaterial, stack);
-			}
-			
-			ItemStack stack = RecipeTransformer.dataToItemStack(ore, true).get(0);
-			System.out.println("ORE DICT: " + ore + ", " + (stack == null || stack.getItem() == null ? "NULL" : stack));
-			OreDictionary.registerOre(oreBiomaterial, stack);
-		}
+		GameRegistry.registerItem(crootBeetle, ItemCrootBeetle.NAME, BioCristalsMod.MODID);
 		
 	}
 	

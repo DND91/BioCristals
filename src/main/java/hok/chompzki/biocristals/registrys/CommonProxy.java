@@ -1,12 +1,17 @@
 package hok.chompzki.biocristals.registrys;
 
+import java.util.List;
+
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.oredict.OreDictionary;
 import hok.chompzki.biocristals.BioCristalChunkloadCallback;
 import hok.chompzki.biocristals.BioCristalsMod;
 import hok.chompzki.biocristals.client.GuiHandler;
 import hok.chompzki.biocristals.croot.TreeStorage;
 import hok.chompzki.biocristals.croot_old.CrootRegistry;
+import hok.chompzki.biocristals.recipes.RecipeTransformer;
 import hok.chompzki.biocristals.research.data.PlayerStorage;
 import hok.chompzki.biocristals.research.data.StorageHandler;
 import hok.chompzki.biocristals.research.events.CraftingEvents;
@@ -21,6 +26,8 @@ import cpw.mods.fml.relauncher.Side;
 
 
 public class CommonProxy { //Server sided
+	
+	public static final String oreBiomaterial = "bioMaterial";
 
 	public void preInit(FMLPreInitializationEvent event) {
 		ConfigRegistry.preinit(event.getSuggestedConfigurationFile());
@@ -38,6 +45,8 @@ public class CommonProxy { //Server sided
 		
 		ReserchRegistry research = new ReserchRegistry();
 		research.preInit(event);
+		
+		MinecraftForge.addGrassSeed(new ItemStack(ItemRegistry.crootBeetle), 10);
 	}
 	
 	
@@ -53,6 +62,17 @@ public class CommonProxy { //Server sided
     	bank.init(event);
     	CrootRegistry croot = new CrootRegistry();
     	croot.register();
+    	
+    	for(String ore : ConfigRegistry.oreDictBioMaterial){
+			List<ItemStack> list = OreDictionary.getOres(ore);
+			for(ItemStack stack : list){
+				OreDictionary.registerOre(oreBiomaterial, stack);
+			}
+			
+			ItemStack stack = RecipeTransformer.dataToItemStack(ore, true).get(0);
+			System.out.println("ORE DICT: " + ore + ", " + (stack == null || stack.getItem() == null ? "NULL" : stack));
+			OreDictionary.registerOre(oreBiomaterial, stack);
+		}
 	}
 
     

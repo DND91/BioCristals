@@ -142,6 +142,9 @@ public class GuiInventoryOverlay extends Gui{
 					
 					list.add((block.getLocalizedName()));
 					list.add(tile.getTimeLeft() <= 0 ? "Not working..." : "Working on " + tile.getWork());
+					if(0 < tile.getTimeLeft())
+						list.add("Time Left: " + tile.getTimeLeftGui());
+					
 					list.add(tile.getStored() == null ? "Not choking" : "Choking on " + tile.getStored().getDisplayName());
 					
 					drawHoveringText(list, x, y, mc.fontRenderer);

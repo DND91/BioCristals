@@ -24,7 +24,7 @@ public class CrootSapling extends ArticleContent {
 		case 0:
 			s += "While Rabarberpaj was trying to find a way to drive her research. She, ";
 			s += "by accident and pure fury, found that some saplings with the help of dye ";
-			s += "particels could be agitated into a more driving state. The new plant showed new promising features, ";
+			s += "particels could be agitated into a more driving state with the help of a croot bettle. The new plant showed new promising features, ";
 			s += "such as self reparing and slow growing rather then the normal spurt growths found in many of nature plants. ";
 			s += "With the help of strings she found a way to make the tree grow into a psudo house. ";
 			break;

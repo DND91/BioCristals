@@ -45,7 +45,7 @@ public class KnowledgeDescriptions {
 		String s = "";
 		s += "\t\f";
 		s += transformItemStack(new ItemStack(Blocks.air), false);
-		s += transformItemStack(stack, false);
+		s += transformStrictItemStack(stack, false);
 		return s + "\t";
 	}
 	

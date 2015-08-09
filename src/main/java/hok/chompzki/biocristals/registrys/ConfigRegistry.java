@@ -1,6 +1,7 @@
 package hok.chompzki.biocristals.registrys;
 
 import hok.chompzki.biocristals.BioCristalsMod;
+
 import hok.chompzki.biocristals.recipes.CrootRecipeData;
 import hok.chompzki.biocristals.recipes.PurifierData;
 import hok.chompzki.biocristals.recipes.RecipeData;
@@ -18,6 +19,17 @@ import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 
+
+/**
+ * 
+ * THINGS TO FIX: 
+ * 
+ * Croot Hollow MK2 each slot inside represents a specific side, symbols bind sides... slot to side with symbols!
+ * 
+ * @author Jonathan
+ *
+ */
+
 public class ConfigRegistry {
 	
 	public static int maxBlocksCollector = 81;
@@ -29,7 +41,7 @@ public class ConfigRegistry {
 	public static int hungerDuration = 600;
 	public static int hungerAmplifier = 1;
 	
-	public static String configNumber = "0.3";
+	public static String configNumber = "0.5";
 	public static Configuration config;
 	
 	public static List<RecipeData> recipeData = new ArrayList<RecipeData>();
@@ -40,7 +52,7 @@ public class ConfigRegistry {
 	
 	public static final String RECIPE_CATEGORY="Input: ";
 	
-	public static String[] oreDictBioMaterialDefault={"minecraft:carrot","minecraft:wheat","minecraft:melon","minecraft:pumpkin", "minecraft:potato", "minecraft:reeds","minecraft:vine","treeLeaves"};
+	public static String[] oreDictBioMaterialDefault={"minecraft:brown_mushroom", "minecraft:red_mushroom", "minecraft:pumpkin_seeds", "minecraft:melon_seeds", "minecraft:wheat_seeds", "minecraft:egg", "minecraft:hay_block", "BioCristals:crootSapling", "minecraft:waterlily", "minecraft:cactus", "minecraft:melon_block", "minecraft:carrot","minecraft:wheat","minecraft:melon","minecraft:pumpkin", "minecraft:potato", "minecraft:reeds","minecraft:vine","treeLeaves"};
     public static String[] oreDictBioMaterial;
 	
 	public static void preinit(File configFile) {
@@ -62,6 +74,7 @@ public class ConfigRegistry {
     	
     	boolean newVersion = config.getLoadedConfigVersion() == null || !config.getLoadedConfigVersion().equals(configNumber);
     	
+    	
     	maxBlocksCollector = config.getInt("Max Block Search (Collector)", "Track ranges", 81, 10, 500, "");
     	maxBlocksCatalystInjector = config.getInt("Max Block Search (Catalyst Injector)", "Track ranges", 81, 10, 500, "");
     	weakCristalGrowthChance = config.getInt("Weakcristal", "Growth chances", 10, 5, 1000, "");
@@ -82,7 +95,7 @@ public class ConfigRegistry {
     		}
     		workbenchRecipes.clear();
     	}
-    	workbenchRecipes.setComment("All recipes for the mod...");
+    	workbenchRecipes.setComment("All recipes for the mod... if you want a slot to be empty in a recipe just write 'empty' and it shall work :) Look at the attunment recipe in croot recipes for an example. ");
     	workbenchRecipes.setRequiresMcRestart(true);
     	
     	if(workbenchRecipes.getChildren().size() <= 0){
@@ -181,23 +194,23 @@ public class ConfigRegistry {
 		
 		ConfigCategory attuner = new ConfigCategory("Attuner", recipes);
 		attuner.put("code", new Property("code", ReserchRegistry.babySteps, Property.Type.STRING));
-		attuner.put("input", new Property("input", new String[] { "minecraft:stick minecraft:string minecraft:stick", 
-																  "minecraft:string empty minecraft:string", 
+		attuner.put("input", new Property("input", new String[] { "minecraft:stick BioCristals:itemCrootBeetle minecraft:stick", 
+																  "BioCristals:itemCrootBeetle empty BioCristals:itemCrootBeetle", 
 																  "minecraft:stick treeSapling minecraft:stick"},
 																  Property.Type.STRING));
 		attuner.put("output", new Property("output", "BioCristals:itemAttuner", Property.Type.STRING));
 		
 		ConfigCategory crootSapling = new ConfigCategory("Croot Sapling", recipes);
 		crootSapling.put("code", new Property("code", ReserchRegistry.crootSapling, Property.Type.STRING));
-		crootSapling.put("input", new Property("input", new String[] { "dye minecraft:string dye", 
-																	   "minecraft:string treeSapling minecraft:string",
-																	   "dye minecraft:string dye" },
+		crootSapling.put("input", new Property("input", new String[] { "dye BioCristals:itemCrootBeetle dye", 
+																	   "BioCristals:itemCrootBeetle treeSapling BioCristals:itemCrootBeetle",
+																	   "dye BioCristals:itemCrootBeetle dye" },
 																	   Property.Type.STRING));
 		crootSapling.put("output", new Property("output", "BioCristals:crootSapling", Property.Type.STRING));
 		
 		ConfigCategory researchBook = new ConfigCategory("Research Book", recipes);
 		researchBook.put("code", new Property("code", "NONE", Property.Type.STRING));
-		researchBook.put("input", new Property("input", new String[] {"treeSapling minecraft:book"}, Property.Type.STRING));
+		researchBook.put("input", new Property("input", new String[] {"logWood minecraft:book"}, Property.Type.STRING));
 		researchBook.put("output", new Property("output", "BioCristals:itemResearchBook", Property.Type.STRING));
 		
 		

@@ -23,6 +23,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -47,6 +48,7 @@ public class BlockCrootCore extends BlockCore {
         setBlockName(BioCristalsMod.MODID + "_" + NAME);
 		setCreativeTab(BioCristalsMod.creativeTab);
 		setBlockTextureName(BioCristalsMod.MODID + ":" + NAME);
+		this.setHardness(0.8f);
 	}
 
 	@Override
@@ -68,10 +70,6 @@ public class BlockCrootCore extends BlockCore {
     		list.add(new ItemStack(item, 1, i));
     }
     
-    public int damageDropped(int meta)
-    {
-        return MathHelper.clamp_int(meta & 7, 0, 5);
-    }
     
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister p_149651_1_)
@@ -144,5 +142,15 @@ public class BlockCrootCore extends BlockCore {
         }
 
         super.breakBlock(p_149749_1_, p_149749_2_, p_149749_3_, p_149749_4_, p_149749_5_, p_149749_6_);
+    }
+    
+    public Item getItemDropped(int p_149650_1_, Random p_149650_2_, int p_149650_3_)
+    {
+        return Items.stick;
+    }
+	
+	public int quantityDropped(Random p_149745_1_)
+    {
+        return 4;
     }
 }

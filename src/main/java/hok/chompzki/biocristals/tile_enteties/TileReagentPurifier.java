@@ -25,6 +25,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileReagentPurifier extends TileCroot implements IInventory{
+	
+	private static final int timeLeftID = 1;
+	private static final int startTimeID = 2;
 
     private ForgeDirection outputSide = ForgeDirection.UP;
     private ForgeDirection[] inputSides = {ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.EAST};
@@ -36,6 +39,7 @@ public class TileReagentPurifier extends TileCroot implements IInventory{
 	private UUID owner = null;
 	private RecipePurifier recipe = null;
 	private int timeLeft = 0;
+	private int startTime = 0;
 	
 	public TileReagentPurifier(){
 		super(-5);
@@ -44,6 +48,19 @@ public class TileReagentPurifier extends TileCroot implements IInventory{
 	
 	public int getTimeLeft(){
 		return timeLeft;
+	}
+	
+	public String getTimeLeftGui(){
+		int partTime = this.startTime / 10;
+		StringBuilder s = new StringBuilder("            ");
+		
+		if(partTime == 0)
+			partTime = -1;
+		
+		for(int i = 0; i <= this.timeLeft / partTime; i++){
+			s.setCharAt(i, '\u2622');
+		}
+		return s.toString();
 	}
 	
 	public ItemStack getStored(){
@@ -147,6 +164,7 @@ public class TileReagentPurifier extends TileCroot implements IInventory{
        }
        
        this.timeLeft = nbt.getInteger("TIME_LEFT");
+       this.startTime = nbt.getInteger("TIME_START");
     }
 	
     public void writeToNBT(NBTTagCompound nbt)
@@ -173,6 +191,7 @@ public class TileReagentPurifier extends TileCroot implements IInventory{
         }
         
         nbt.setInteger("TIME_LEFT", this.timeLeft);
+        nbt.setInteger("TIME_START", this.startTime);
     }
     
     @Override
@@ -260,10 +279,13 @@ public class TileReagentPurifier extends TileCroot implements IInventory{
 			
 			recipe.pay(inputs);
 			timeLeft = recipe.time();
+			startTime = timeLeft;
+			worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), startTimeID, startTime);
 			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 			markDirty(); 
 		}else if(stored_result == null && recipe != null){
 			this.timeLeft--;
+			worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), timeLeftID, timeLeft);
 			if(0 < timeLeft)
 				return;
 			IInventory output = (IInventory) BioHelper.getTileEntityOnSide(this, outputSide);
@@ -332,4 +354,16 @@ public class TileReagentPurifier extends TileCroot implements IInventory{
 	public String getWork() {
 		return this.recipe.name();
 	}
+	
+	public boolean receiveClientEvent(int action, int parmeter)
+    {
+		if(action == timeLeftID){
+			this.timeLeft = parmeter;
+			return true;
+		}else if(action == startTimeID){
+			this.startTime = parmeter;
+		}
+		
+        return false;
+    }
 }

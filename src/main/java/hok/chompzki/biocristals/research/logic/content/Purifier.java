@@ -15,9 +15,9 @@ public class Purifier extends ArticleContent {
 		switch(p){
 		case 0:
 			s += "Carla & Fleur built on Raberberpaj's notes of 'Croot Stem' and 'Croot Hollow'. They created what is known as a purifier. ";
-			s += "The output side was painted yellow, while the filter side was painted purple and input red. ";
+			s += "The output side was painted yellow (whole line), while the filter side (doted-line) was painted purple and input red (boxes on corners). ";
 			s += "The purifier is used for complex attunment processes and can be rotated with a hard twist. ";
-			s += "\nNOTE: Right-click + sneak it to mark owner! Most do this to get research from it. ";
+			s += "\nNOTE: Right-click + sneak it to mark owner! Must do this to get research from it. ";
 			
 			break;
 		case 1:

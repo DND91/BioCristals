@@ -101,7 +101,8 @@ public class ItemAttuner extends Item {
 				}
 				
 				trans.pay(stack, player, target);
-				trans.transform(stack, player, world, target);
+				if(!target.isDead)
+					trans.transform(stack, player, world, target);
 				
 				item.getEntityItem().stackSize--;
 				if(item.getEntityItem().stackSize <= 0)

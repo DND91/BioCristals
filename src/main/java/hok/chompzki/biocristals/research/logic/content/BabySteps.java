@@ -39,6 +39,7 @@ public class BabySteps extends ArticleContent {
 			s += KnowledgeDescriptions.getStructure(code);
 			s += "       ~ Creation ~\n\n";
 			s += KnowledgeDescriptions.getResult(code);
+			s += "\nNOTE: Croot Beetles can be cuaght in grass.";
 			break;
 
 		}

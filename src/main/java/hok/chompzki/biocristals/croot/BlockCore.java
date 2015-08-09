@@ -5,6 +5,7 @@ import java.util.Random;
 
 import hok.chompzki.biocristals.api.IGrowthCristal;
 import hok.chompzki.biocristals.blocks.BlockCrootSapling;
+import hok.chompzki.biocristals.registrys.BlockRegistry;
 import hok.chompzki.biocristals.tile_enteties.TileCrootCore;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -26,7 +27,7 @@ public abstract class BlockCore extends BlockContainer implements IGrowthCristal
     	if(world.isAirBlock(x, y-1, z))
     		return false;
     	Block block = world.getBlock(x, y-1, z);
-    	if(!CrootHelper.startsOn(block))
+    	if(block != BlockRegistry.crootRoots)
     		return false;
     	TileEntity tile = world.getTileEntity(x, y, z);
     	if(CrootHelper.hasZoneOwner((TileCore) tile, world, x, y, z, 16))
@@ -62,7 +63,7 @@ public abstract class BlockCore extends BlockContainer implements IGrowthCristal
         if (!world.isRemote)
         {
         	
-        	this.checkAndDropBlock(world, x, y, z);
+        	//this.checkAndDropBlock(world, x, y, z);
         	
             if (world.getBlockLightValue(x, y + 1, z) >= 9 && rand.nextInt(2) == 0)
             {

@@ -37,6 +37,7 @@ public class BlockCrootRoots extends BlockCroot {
 		setCreativeTab(BioCristalsMod.creativeTab);
 		setBlockTextureName(BioCristalsMod.MODID + ":" + NAME);
         this.setCreativeTab(BioCristalsMod.creativeTab);
+        this.setHardness(0.8f);
     }
     
     @SideOnly(Side.CLIENT)
@@ -71,10 +72,10 @@ public class BlockCrootRoots extends BlockCroot {
     {
         return Items.stick;
     }
-    
-    public int quantityDropped(Random rand)
+	
+	public int quantityDropped(Random p_149745_1_)
     {
-        return rand.nextInt(3) + 1;
+        return 4;
     }
     
 	@Override
