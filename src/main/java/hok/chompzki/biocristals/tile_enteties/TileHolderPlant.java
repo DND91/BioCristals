@@ -52,6 +52,10 @@ public class TileHolderPlant extends TileEntity {
         String modId = nbt.getString("PLANT_MOD");
         
         plant = GameRegistry.findBlock(modId, name);
+       	
+        if(worldObj != null && worldObj.isRemote){
+        	worldObj.markBlockRangeForRenderUpdate(xCoord-1, yCoord-1, zCoord-1, xCoord+1, yCoord+1, zCoord+1);
+        }
     }
 	
     public void writeToNBT(NBTTagCompound nbt)

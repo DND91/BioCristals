@@ -1,6 +1,9 @@
 package hok.chompzki.biocristals.blocks;
 
+import java.util.Random;
+
 import net.minecraft.block.Block;
+import net.minecraft.block.IGrowable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -23,12 +26,27 @@ public class BlockAttunedEarth extends BlockCroot {
 		setCreativeTab(BioCristalsMod.creativeTab);
 		setBlockTextureName(BioCristalsMod.MODID + ":" + NAME);
         this.setCreativeTab(BioCristalsMod.creativeTab);
+        this.setHardness(0.6F);
     }
 	
 	@Override
 	public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
 		return new TileCrootOneMember(0);
 	}
+	
+	@Override
+	public void updateTick(World world, int x, int y, int z, Random rand) {
+    	if(!world.isAirBlock(x, y+1, z) && world.getBlock(x, y+1, z) == BlockRegistry.holderPlant){
+    		if(this.stable(world, x, y, z)){
+    			for(int i = 0; i < 3; i++){
+    				BlockRegistry.holderPlant.updateTick(world, x, y+1, z, rand);
+    			}
+    		}else{
+    			BlockRegistry.holderPlant.updateTick(world, x, y+1, z, rand);
+    		}
+    	}
+    }
+	
 	
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float p_149727_7_, float p_149727_8_, float p_149727_9_)
