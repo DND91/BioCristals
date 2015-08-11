@@ -302,7 +302,7 @@ public class KnowledgeDescriptions {
 					if (obj instanceof String){
 						structure += KnowledgeDescriptions.transformItemStack(new ItemStack(Blocks.air), false);
 					} else if (obj instanceof ItemStack){
-						structure += KnowledgeDescriptions.transformItemStack((ItemStack)obj, false);
+						structure += KnowledgeDescriptions.transformStrictItemStack((ItemStack)obj, false);
 					} else if(obj instanceof OreDictContainer){
 						structure += transformOreCon((OreDictContainer)obj, false);
 					}

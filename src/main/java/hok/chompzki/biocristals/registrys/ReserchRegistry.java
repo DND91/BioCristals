@@ -138,54 +138,55 @@ public class ReserchRegistry {
 		
 		//LORE
 		ReserchDataNetwork.register(new Research(rabarberpaj, 0, 0, Items.book, new Rabarberpaj(), loreChapeter, lore, babySteps, crootSapling));
-		ReserchDataNetwork.register(new Research(cara_rot, 0, 2, Items.book, new CaraRot(), loreChapeter, lore, wheatCristalisation));
-		ReserchDataNetwork.register(new Research(berry, -1, 1, Items.book, new Dberry(), loreChapeter, lore, reaction));
-		ReserchDataNetwork.register(new Research(carla_fleur, 1, 1, Items.book, new CarlaFleur(), loreChapeter, lore, cubeMass));
+		ReserchDataNetwork.register(new Research(cara_rot, 0, 0, Items.book, new CaraRot(), loreChapeter, lore, wheatCristalisation));
+		ReserchDataNetwork.register(new Research(berry, 0, 0, Items.book, new Dberry(), loreChapeter, lore, reaction));
+		ReserchDataNetwork.register(new Research(carla_fleur, 0, 0, Items.book, new CarlaFleur(), loreChapeter, lore, cubeMass));
 		
 		//RESEARCH
-		ReserchDataNetwork.register(new Research(babySteps, 0, 0, ItemRegistry.researchBook, side ? new ServerContent() : new BabySteps(), firstEra, fundamental).setSpecial());
-		ReserchDataNetwork.register(new Research(crootSapling, -1, 0, BlockRegistry.crootSapling,  side ? new ServerContent() : new CrootSapling(), firstEra, fundamental));
+		ReserchDataNetwork.register(new Research(babySteps, -1, 0, ItemRegistry.researchBook, side ? new ServerContent() : new BabySteps(), firstEra, fundamental).setSpecial());
+		ReserchDataNetwork.register(new Research(crootSapling, 1, 0, BlockRegistry.crootSapling,  side ? new ServerContent() : new CrootSapling(), firstEra, fundamental).setSpecial());
 		
-		ReserchDataNetwork.register(new Research(crootStem, -1, -1, BlockRegistry.crootStem,  side ? new ServerContent() : new CrootStem(), firstEra, structure, cubeMass, reaction));
-		ReserchDataNetwork.register(new Research(crootHollow, 1, -1, BlockRegistry.crootHollow,  side ? new ServerContent() : new CrootHollow(), firstEra, structure, cubeMass, reaction));
-		ReserchDataNetwork.register(new Research(purifier, 0, -1, BlockRegistry.reagentPurifier,  side ? new ServerContent() : new Purifier(), firstEra, structure, cubeMass, reaction).setSpecial());
+		ReserchDataNetwork.register(new Research(cubeMass, 1, 1, BlockRegistry.biomass,  side ? new ServerContent() : new CubeMass(), firstEra, fundamental, babySteps, crootSapling));
+		ReserchDataNetwork.register(new Research(reaction, 1, -1, ItemRegistry.bioReagent,  side ? new ServerContent() : new Reaction(), firstEra, fundamental, babySteps, crootSapling));
 		
-		ReserchDataNetwork.register(new Research(biomassmk1, 0, -2, BlockRegistry.biomass,  side ? new ServerContent() : new BiomassMK1(), firstEra, purifing, purifier));
-		ReserchDataNetwork.register(new Research(biomassmk2, 0, -3, BlockRegistry.biomass,  side ? new ServerContent() : new BiomassMK2(), firstEra, purifing, biomassmk1));
-		ReserchDataNetwork.register(new Research(promogenitus, -1, -2, BlockRegistry.primogenitus,  side ? new ServerContent() : new Promogenitus(), firstEra, purifing, purifier));
-		ReserchDataNetwork.register(new Research(bioBlob, -1, -3, ItemRegistry.bioBlob,  side ? new ServerContent() : new BioBlob(), firstEra, purifing, purifier));
-		ReserchDataNetwork.register(new Research(extractor, 1, -2, BlockRegistry.extractor,  side ? new ServerContent() : new BioBlob(), firstEra, purifing, purifier));
+		ReserchDataNetwork.register(new Research(crootStem, 0, 0, BlockRegistry.crootStem,  side ? new ServerContent() : new CrootStem(), firstEra, structure, crootSapling, cubeMass, reaction));
+		ReserchDataNetwork.register(new Research(crootHollow, 0, 0, BlockRegistry.crootHollow,  side ? new ServerContent() : new CrootHollow(), firstEra, structure, crootSapling, cubeMass, reaction));
+		ReserchDataNetwork.register(new Research(purifier, 2, 0, BlockRegistry.reagentPurifier,  side ? new ServerContent() : new Purifier(), firstEra, structure, crootSapling, cubeMass, reaction).setSpecial());
 		
-		ReserchDataNetwork.register(new Research(cubeMass, -1, 1, BlockRegistry.biomass,  side ? new ServerContent() : new CubeMass(), firstEra, fundamental, babySteps, crootSapling));
-		ReserchDataNetwork.register(new Research(reaction, 1, 1, ItemRegistry.bioReagent,  side ? new ServerContent() : new Reaction(), firstEra, fundamental, babySteps, crootSapling));
-		
-		ReserchDataNetwork.register(new Research(tuft, 1, 0, BlockRegistry.sulphurTuft,  side ? new ServerContent() : new SulphurTuft(), firstEra, fundamental, reaction));
-		
-		ReserchDataNetwork.register(new Research(sheepSkin, 2, 0, Blocks.wool,  side ? new ServerContent() : new SheepSkin(), firstEra, flesh, tuft).setSpecial());
-		
-		ReserchDataNetwork.register(new Research(featherFriend, 2, -1, Items.feather,  side ? new ServerContent() : new FeatherFriend(), firstEra, flesh, sheepSkin));
-		ReserchDataNetwork.register(new Research(widowMaker, 2, 1, Items.spider_eye,  side ? new ServerContent() : new WidowMaker(), firstEra, flesh, sheepSkin));
-		ReserchDataNetwork.register(new Research(pinkBlouse, 3, -1, Items.carrot,  side ? new ServerContent() : new PinkBlouse(), firstEra, flesh, sheepSkin));
-		ReserchDataNetwork.register(new Research(puddingSplit, 3, 1, Items.slime_ball,  side ? new ServerContent() : new PuddingSplit(), firstEra, flesh, sheepSkin));
-		
-		ReserchDataNetwork.register(new Research(fleshRapture, 3, 0, Items.rotten_flesh,  side ? new ServerContent() : new FleshRapture(), firstEra, flesh, puddingSplit));
-		ReserchDataNetwork.register(new Research(boneWreck, 4, -1, Items.bone,  side ? new ServerContent() : new BoneWreck(), firstEra, flesh, puddingSplit));
-		ReserchDataNetwork.register(new Research(leatherBeast, 4, 1, Items.saddle, side ? new ServerContent() : new LeatherBeast(), firstEra, flesh, puddingSplit));
-		ReserchDataNetwork.register(new Research(leatherHound, 4, 0, Items.leather, side ? new ServerContent() : new LeatherHound(), firstEra, flesh, puddingSplit));
-		
-		ReserchDataNetwork.register(new Research(darkWarp, 5, -1, Items.ender_pearl, side ? new ServerContent() : new DarkWarp(), firstEra, flesh, fleshRapture));
-		ReserchDataNetwork.register(new Research(payingTaxes, 5, 1, Items.gold_nugget, side ? new ServerContent() : new PayingTaxes(), firstEra, flesh, leatherBeast));
-		
-		ReserchDataNetwork.register(new Research(wheatCristalisation, 0, 1, BlockRegistry.wheatCristal, side ? new ServerContent() : new WheatCristalisation(), ageOfConflict, crystallization, cubeMass, reaction).setSpecial());
-		
-		ReserchDataNetwork.register(new Research(carrotCristalisation, -1, 2, BlockRegistry.carrotCristal, side ? new ServerContent() : new CarrotCristalisation(), ageOfConflict, crystallization, wheatCristalisation));
-		ReserchDataNetwork.register(new Research(reedsCristalisation, 0, 2, BlockRegistry.reedsCristal, side ? new ServerContent() : new ReedsCristalisation(), ageOfConflict, crystallization, wheatCristalisation));
-		ReserchDataNetwork.register(new Research(potatoCristalisation, 1, 2, BlockRegistry.potatoCristal, side ? new ServerContent() : new PotatoCristalisation(), ageOfConflict, crystallization, wheatCristalisation));
-		ReserchDataNetwork.register(new Research(melonCristalisation, -1, 3, BlockRegistry.melonCristal, side ? new ServerContent() : new MelonCristalisation(), ageOfConflict, crystallization, wheatCristalisation));
-		ReserchDataNetwork.register(new Research(pumpkinCristalisation, 0, 3, BlockRegistry.pumpkinCristal, side ? new ServerContent() : new PumpkinCristalisation(), ageOfConflict, crystallization, wheatCristalisation));
+		ReserchDataNetwork.register(new Research(biomassmk1, 0, 0, BlockRegistry.biomass,  side ? new ServerContent() : new BiomassMK1(), firstEra, purifing, purifier));
+		ReserchDataNetwork.register(new Research(biomassmk2, 0, -1, BlockRegistry.biomass,  side ? new ServerContent() : new BiomassMK2(), firstEra, purifing, biomassmk1));
+		ReserchDataNetwork.register(new Research(promogenitus, 0, 0, BlockRegistry.primogenitus,  side ? new ServerContent() : new Promogenitus(), firstEra, purifing, purifier));
+		ReserchDataNetwork.register(new Research(bioBlob, 0, 0, ItemRegistry.bioBlob,  side ? new ServerContent() : new BioBlob(), firstEra, purifing, purifier));
+		ReserchDataNetwork.register(new Research(extractor, 0, 0, BlockRegistry.extractor,  side ? new ServerContent() : new BioBlob(), firstEra, purifing, purifier));
 		
 		
-		tutorialResearch = new Research(tutorial, 0, 1, Items.book, tutorialContent, loreChapeter, tutorialCat);
+		ReserchDataNetwork.register(new Research(tuft, 0, -1, BlockRegistry.sulphurTuft,  side ? new ServerContent() : new SulphurTuft(), firstEra, fundamental, reaction));
+		
+		ReserchDataNetwork.register(new Research(sheepSkin, 0, -1, Blocks.wool,  side ? new ServerContent() : new SheepSkin(), firstEra, flesh, tuft).setSpecial());
+		
+		ReserchDataNetwork.register(new Research(featherFriend, 0, 0, Items.feather,  side ? new ServerContent() : new FeatherFriend(), firstEra, flesh, sheepSkin));
+		ReserchDataNetwork.register(new Research(widowMaker, 0, 0, Items.spider_eye,  side ? new ServerContent() : new WidowMaker(), firstEra, flesh, sheepSkin));
+		ReserchDataNetwork.register(new Research(pinkBlouse, 0, 0, Items.carrot,  side ? new ServerContent() : new PinkBlouse(), firstEra, flesh, sheepSkin));
+		ReserchDataNetwork.register(new Research(puddingSplit, 0, 0, Items.slime_ball,  side ? new ServerContent() : new PuddingSplit(), firstEra, flesh, sheepSkin));
+		
+		ReserchDataNetwork.register(new Research(fleshRapture, 0, 0, Items.rotten_flesh,  side ? new ServerContent() : new FleshRapture(), firstEra, flesh, puddingSplit));
+		ReserchDataNetwork.register(new Research(boneWreck, 0, 0, Items.bone,  side ? new ServerContent() : new BoneWreck(), firstEra, flesh, puddingSplit));
+		ReserchDataNetwork.register(new Research(leatherBeast, 0, 0, Items.saddle, side ? new ServerContent() : new LeatherBeast(), firstEra, flesh, puddingSplit));
+		ReserchDataNetwork.register(new Research(leatherHound, 0, 0, Items.leather, side ? new ServerContent() : new LeatherHound(), firstEra, flesh, puddingSplit));
+		
+		ReserchDataNetwork.register(new Research(darkWarp, 0, 0, Items.ender_pearl, side ? new ServerContent() : new DarkWarp(), firstEra, flesh, fleshRapture));
+		ReserchDataNetwork.register(new Research(payingTaxes, 0, 0, Items.gold_nugget, side ? new ServerContent() : new PayingTaxes(), firstEra, flesh, leatherBeast));
+		
+		ReserchDataNetwork.register(new Research(wheatCristalisation, 0, 0, BlockRegistry.wheatCristal, side ? new ServerContent() : new WheatCristalisation(), ageOfConflict, crystallization, cubeMass, reaction).setSpecial());
+		
+		ReserchDataNetwork.register(new Research(carrotCristalisation, 0, 0, BlockRegistry.carrotCristal, side ? new ServerContent() : new CarrotCristalisation(), ageOfConflict, crystallization, wheatCristalisation));
+		ReserchDataNetwork.register(new Research(reedsCristalisation, 0, 0, BlockRegistry.reedsCristal, side ? new ServerContent() : new ReedsCristalisation(), ageOfConflict, crystallization, wheatCristalisation));
+		ReserchDataNetwork.register(new Research(potatoCristalisation, 0, 0, BlockRegistry.potatoCristal, side ? new ServerContent() : new PotatoCristalisation(), ageOfConflict, crystallization, wheatCristalisation));
+		ReserchDataNetwork.register(new Research(melonCristalisation, 0, 0, BlockRegistry.melonCristal, side ? new ServerContent() : new MelonCristalisation(), ageOfConflict, crystallization, wheatCristalisation));
+		ReserchDataNetwork.register(new Research(pumpkinCristalisation, 0, 0, BlockRegistry.pumpkinCristal, side ? new ServerContent() : new PumpkinCristalisation(), ageOfConflict, crystallization, wheatCristalisation));
+		
+		
+		tutorialResearch = new Research(tutorial, 0, 0, Items.book, tutorialContent, loreChapeter, tutorialCat);
 		ReserchDataNetwork.register(tutorialResearch);
 	}
 

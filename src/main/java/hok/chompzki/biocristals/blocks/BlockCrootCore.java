@@ -35,8 +35,7 @@ import net.minecraft.world.World;
 
 public class BlockCrootCore extends BlockCore {
 	
-	public static final String[] subtypes = new String[] {"normal"};
-    private static final IIcon[] icons = new IIcon[subtypes.length];
+    private static IIcon[] icons = null;
     public static final String NAME = "crootCore";
 	private Random random = new Random();
     
@@ -60,13 +59,13 @@ public class BlockCrootCore extends BlockCore {
     public IIcon getIcon(int side, int meta)
     {
     	meta &= 7;
-        return icons[MathHelper.clamp_int(meta, 0, subtypes.length)];
+        return icons[MathHelper.clamp_int(meta, 0, BlockCrootSapling.subtypes.length)];
     }
 
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item item, CreativeTabs tab, List list)
     {
-    	for(int i = 0; i < subtypes.length; i++)
+    	for(int i = 0; i < BlockCrootSapling.subtypes.length; i++)
     		list.add(new ItemStack(item, 1, i));
     }
     
@@ -74,9 +73,10 @@ public class BlockCrootCore extends BlockCore {
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister p_149651_1_)
     {
+    	icons = new IIcon[BlockCrootSapling.subtypes.length];
         for (int i = 0; i < icons.length; ++i)
         {
-        	icons[i] = p_149651_1_.registerIcon(this.getTextureName() + "_" + subtypes[i]);
+        	icons[i] = p_149651_1_.registerIcon(this.getTextureName() + "_" + BlockCrootSapling.subtypes[i]);
         }
     }
 	

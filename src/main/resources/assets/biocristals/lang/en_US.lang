@@ -5,6 +5,7 @@ item.BioCristals_itemCatalystInjector.name=Catalyst Inducer
 item.BioCristals_itemResearchBook.name=Research Book
 item.BioCristals_itemBioBlob.name=Bio Blob
 item.BioCristals_itemHivebag.name=[WIP]Hivebag
+item.BioCristals_itemCrootBeetle.name=Croot Beetle
 
 tile.BioCristals_blockBiomass.name=Biomass
 tile.BioCristals_blockWheatCristal.name=Wheat Cristal

@@ -29,8 +29,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockCrootSapling extends Block implements IGrowthCristal {
 	
-	public static final String[] subtypes = new String[] {"normal"};
-    private static final IIcon[] icons = new IIcon[subtypes.length];
+	public static String[] subtypes = new String[] {"normal"};
+    private static IIcon[] icons = null;
     public static final String NAME = "crootSapling";
     
     public BlockCrootSapling()
@@ -72,10 +72,9 @@ public class BlockCrootSapling extends Block implements IGrowthCristal {
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta)
     {
-    	meta &= 7;
         return icons[MathHelper.clamp_int(meta, 0, subtypes.length)];
     }
-
+    
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item item, CreativeTabs tab, List list)
     {
@@ -91,6 +90,7 @@ public class BlockCrootSapling extends Block implements IGrowthCristal {
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister p_149651_1_)
     {
+    	icons = new IIcon[subtypes.length];
         for (int i = 0; i < icons.length; ++i)
         {
         	icons[i] = p_149651_1_.registerIcon(this.getTextureName() + "_" + subtypes[i]);

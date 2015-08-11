@@ -1,9 +1,12 @@
 package hok.chompzki.biocristals.research.data;
 
+import hok.chompzki.biocristals.croot.WorldCoord;
+
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import joptsimple.internal.Strings;
@@ -84,6 +87,33 @@ public class ReserchDataNetwork {
 				chapeter.add(code);
 			}
 		}
+		
+		ArrayList<String> banList = new ArrayList<String>();
+		ArrayDeque<String> workQue = new ArrayDeque<String>();
+		HashSet<GuiCoord> guiCoords = new HashSet<GuiCoord>();
+		
+		for(Research res : masters){
+			workQue.add(res.getCode());
+		}
+		
+		while(!workQue.isEmpty()){
+			String code = workQue.pop();
+			if(banList.contains(code))
+				continue;
+			banList.add(code);
+			Research res = this.getResearch(code);
+			List<String> p = this.parents.get(code);
+			List<String> c = this.children.get(code);
+			
+			res.updateCoords(p, c, guiCoords);
+			
+			for(String chi : c){
+				if(banList.contains(chi))
+					continue;
+				workQue.add(chi);
+			}
+		}
+		
 	}
 	
 	public void printNetworkInfo(){

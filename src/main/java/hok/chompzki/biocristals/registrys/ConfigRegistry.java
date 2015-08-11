@@ -26,6 +26,31 @@ import net.minecraftforge.common.config.Property;
  * 
  * Croot Hollow MK2 each slot inside represents a specific side, symbols bind sides... slot to side with symbols!
  * 
+ * Lore to explain the croot power system!!!!!
+ * Need a better and more explaining tutorial that shows the player things! :)
+ * Need to look into som text bugs for the NEI overlay... text gets a bit compact....
+ * Need to add lore for the Croot Beetle!
+ * Add multitextures for Croot System! Make it dynamic with config! Make a recipe so that you can transform croot saplings to diffrent croot saplings! :)
+ * 
+ * Slimes scoots of a working tuft when they are effected by it...
+ * Bio Blob checks for weakness potion effect, need to change that so it checks for somethign unique, that can only be applyied by the tuft... like the negativ jump boost.
+ * Bio Blob dosn't work on wither as potion effects dosn't work on it... as it should :)
+ * Bio Blob should be one time use!
+ * Need to add progressbar to the progmenitus!!! Like with the purifier!
+ * The progmenitus has the same bug as the insert into crafting grid has... the methods have diffrent names between debug mode and IRL...
+ * 
+ * At the moment there only exist "normal".. but i'm going to add so you can say "sandstone", then ad textures for that and then you take a croot sapling plus a piece of sandstone and then that kind of tree will grow... :3
+ * On top of that i will add so that you can decide how each of the trees should grow and what they will drop.... but that will have to come later ^^
+ * 
+ * - URGENTS!
+ * 
+ * 
+ * 
+ * ~ LORE PROBLEMS ~
+ * Carla & Fleur invented the extractor for cristals.. so they could automaticly get Resources form it... But Rot invented the cristals like 50 years after thier deaths xD
+ * 
+ * 
+ * 
  * @author Jonathan
  *
  */

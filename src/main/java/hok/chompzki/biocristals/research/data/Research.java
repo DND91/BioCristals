@@ -1,5 +1,8 @@
 package hok.chompzki.biocristals.research.data;
 
+import java.util.HashSet;
+import java.util.List;
+
 import hok.chompzki.biocristals.client.IArticle;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -8,8 +11,8 @@ import net.minecraft.util.StatCollector;
 
 public class Research implements IArticle{
 
-	public final int displayColumn;
-	public final int displayRow;
+	public int displayColumn;
+	public int displayRow;
 	private boolean isSpecial;
 	private final ItemStack iconStack;
 	
@@ -81,4 +84,89 @@ public class Research implements IArticle{
 	public Category getCategory() {
 		return category;
 	}
+
+	public void updateCoords(List<String> parents, List<String> children, HashSet<GuiCoord> coords) {
+		if(parents.size() <= 0){
+			int curCol = displayColumn;
+			int curRow = displayRow;
+			
+			GuiCoord coord = new GuiCoord(curCol, curRow, chapeter.getCode());
+			
+			if(coords.contains(coord)){
+				int radius = 1;
+				int dx = curCol < 0 ? -1 : 1;
+				int dy = curRow < 0 ? 1 : -1;
+				do{
+					for(int x = curCol - dx * radius; x != curCol + dx * (radius+1); x += dx){
+						for(int y = curRow - dy * radius; y != curRow + dy * (radius+1); y += dy){
+							GuiCoord tc = new GuiCoord(x, y, chapeter.getCode());
+							if(!coords.contains(tc)){
+								coord = tc;
+								break;
+							}
+						}
+						if(!coords.contains(coord)){
+							break;
+						}
+					}
+					radius++;
+				}while(coords.contains(coord));
+			}
+			
+			
+			coords.add(coord);
+			
+			displayColumn = coord.x;
+			displayRow = coord.y;
+		}else{
+			String masterParent = parents.get(0);
+			Research master = ReserchDataNetwork.instance().getResearch(masterParent);
+			int mcol = master.displayColumn;
+			int mrow = master.displayRow;
+			
+			int curCol = mcol + displayColumn;
+			int curRow = mrow + displayRow;
+			if(!master.getChapeter().equals(chapeter)){
+				curCol = displayColumn;
+				curRow = displayRow;
+			}
+			
+			GuiCoord coord = new GuiCoord(curCol, curRow, chapeter.getCode());
+			
+			if(coords.contains(coord)){
+				int radius = 1;
+				int dx = curCol < 0 ? -1 : 1;
+				int dy = curRow < 0 ? 1 : -1;
+				do{
+					for(int x = curCol - dx * radius; x != curCol + dx * (radius+1); x += dx){
+						for(int y = curRow - dy * radius; y != curRow + dy * (radius+1); y += dy){
+							GuiCoord tc = new GuiCoord(x, y, chapeter.getCode());
+							if(!coords.contains(tc)){
+								coord = tc;
+								break;
+							}
+						}
+						if(!coords.contains(coord)){
+							break;
+						}
+					}
+					radius++;
+				}while(coords.contains(coord));
+			}
+			
+			
+			coords.add(coord);
+			
+			displayColumn = coord.x;
+			displayRow = coord.y;
+		}
+	}
 }
+
+
+
+
+
+
+
+

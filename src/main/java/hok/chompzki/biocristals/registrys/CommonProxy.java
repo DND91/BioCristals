@@ -35,14 +35,26 @@ public class CommonProxy { //Server sided
 		MinecraftForge.EVENT_BUS.register(new StorageHandler());
 		FMLCommonHandler.instance().bus().register(new CraftingEvents());
 		FMLCommonHandler.instance().bus().register(PlayerStorage.instance(false));
+		
 		ItemRegistry items = new ItemRegistry();
 		items.registerItems();
 		BlockRegistry blocks = new BlockRegistry();
 		blocks.registerBlocks();
+		
+		for(String ore : ConfigRegistry.oreDictBioMaterial){
+			List<ItemStack> list = OreDictionary.getOres(ore);
+			for(ItemStack stack : list){
+				OreDictionary.registerOre(oreBiomaterial, stack);
+			}
+			
+			ItemStack stack = RecipeTransformer.dataToItemStack(ore, true).get(0);
+			System.out.println("ORE DICT: " + ore + ", " + (stack == null || stack.getItem() == null ? "NULL" : stack));
+			OreDictionary.registerOre(oreBiomaterial, stack);
+		}
+		
 		TileEntityRegistry tileEntity = new TileEntityRegistry();
 		tileEntity.registerTileEntities();
 		CristalRegistry.registerAll();
-		
 		ReserchRegistry research = new ReserchRegistry();
 		research.preInit(event);
 		
@@ -62,17 +74,6 @@ public class CommonProxy { //Server sided
     	bank.init(event);
     	CrootRegistry croot = new CrootRegistry();
     	croot.register();
-    	
-    	for(String ore : ConfigRegistry.oreDictBioMaterial){
-			List<ItemStack> list = OreDictionary.getOres(ore);
-			for(ItemStack stack : list){
-				OreDictionary.registerOre(oreBiomaterial, stack);
-			}
-			
-			ItemStack stack = RecipeTransformer.dataToItemStack(ore, true).get(0);
-			System.out.println("ORE DICT: " + ore + ", " + (stack == null || stack.getItem() == null ? "NULL" : stack));
-			OreDictionary.registerOre(oreBiomaterial, stack);
-		}
 	}
 
     
