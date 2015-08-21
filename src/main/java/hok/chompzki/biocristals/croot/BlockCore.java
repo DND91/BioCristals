@@ -27,7 +27,7 @@ public abstract class BlockCore extends BlockContainer implements IGrowthCristal
     	if(world.isAirBlock(x, y-1, z))
     		return false;
     	Block block = world.getBlock(x, y-1, z);
-    	if(block != BlockRegistry.crootRoots)
+    	if(block != BlockRegistry.crootTrunk)
     		return false;
     	TileEntity tile = world.getTileEntity(x, y, z);
     	if(CrootHelper.hasZoneOwner((TileCore) tile, world, x, y, z, 16))

@@ -1,7 +1,8 @@
 package hok.chompzki.biocristals.registrys;
 
 import hok.chompzki.biocristals.BioCristalsMod;
-
+import hok.chompzki.biocristals.blocks.BlockCrootSapling;
+import hok.chompzki.biocristals.croot.CrootTreeData;
 import hok.chompzki.biocristals.recipes.CrootRecipeData;
 import hok.chompzki.biocristals.recipes.PurifierData;
 import hok.chompzki.biocristals.recipes.RecipeData;
@@ -74,11 +75,16 @@ public class ConfigRegistry {
 	public static List<TransformData> transformData = new ArrayList<TransformData>();
 	public static List<TransformEntityData> transformEntityData = new ArrayList<TransformEntityData>();
 	public static List<PurifierData> purifierData = new ArrayList<PurifierData>();
+	public static List<CrootTreeData> treeData = new ArrayList<CrootTreeData>();
+	
 	
 	public static final String RECIPE_CATEGORY="Input: ";
 	
 	public static String[] oreDictBioMaterialDefault={"minecraft:brown_mushroom", "minecraft:red_mushroom", "minecraft:pumpkin_seeds", "minecraft:melon_seeds", "minecraft:wheat_seeds", "minecraft:egg", "minecraft:hay_block", "BioCristals:crootSapling", "minecraft:waterlily", "minecraft:cactus", "minecraft:melon_block", "minecraft:carrot","minecraft:wheat","minecraft:melon","minecraft:pumpkin", "minecraft:potato", "minecraft:reeds","minecraft:vine","treeLeaves"};
     public static String[] oreDictBioMaterial;
+    
+    public static String[] crootTypesDefault = {"normal minecraft:sapling"};
+    public static String[] crootTypes;
 	
 	public static void preinit(File configFile) {
         if (config == null) {
@@ -99,7 +105,6 @@ public class ConfigRegistry {
     	
     	boolean newVersion = config.getLoadedConfigVersion() == null || !config.getLoadedConfigVersion().equals(configNumber);
     	
-    	
     	maxBlocksCollector = config.getInt("Max Block Search (Collector)", "Track ranges", 81, 10, 500, "");
     	maxBlocksCatalystInjector = config.getInt("Max Block Search (Catalyst Injector)", "Track ranges", 81, 10, 500, "");
     	weakCristalGrowthChance = config.getInt("Weakcristal", "Growth chances", 10, 5, 1000, "");
@@ -109,7 +114,42 @@ public class ConfigRegistry {
     	hungerDuration = config.getInt("Hunger Duration", "Hivebag", 600, 1, 20000, "");
     	hungerAmplifier = config.getInt("Hunger Amplifier", "Hivebag", 1, 0, 10, "");
     	
-    	oreDictBioMaterial = config.get("Bio Material OreDict", "OreDict", oreDictBioMaterialDefault).getStringList();
+    	oreDictBioMaterial = config.get("Bio Material OreDict", "OreDict", oreDictBioMaterialDefault, "first texture/croot name then block needed to make it!").getStringList();
+    	
+    	//CROOTS!!!
+    	crootTypes = config.get("Bio cultural types", "Croot Types", crootTypesDefault).getStringList();
+    	
+    	//Croot types fix!
+    	ArrayList<String> types = new ArrayList<String>();
+    	for(int i = 0; i < crootTypes.length; i++){
+    		String[] split = crootTypes[i].split(" ");
+    		types.add(split[0]);
+    	}
+    	
+    	BlockCrootSapling.subtypes = types.toArray(new String[types.size()]);
+    	
+    	//Croot structures
+    	
+    	treeData.clear();
+    	ConfigCategory treeStructures = config.getCategory("Croot Trees");
+    	if(newVersion){
+    		for(ConfigCategory child : treeStructures.getChildren()){
+    			treeStructures.removeChild(child);
+    		}
+    		treeStructures.clear();
+    	}
+    	
+    	treeStructures.setComment("Tree structures! ");
+    	treeStructures.setRequiresMcRestart(true);
+    	
+    	if(treeStructures.getChildren().size() <= 0){
+    		createTreeStructuresStandard(treeStructures);
+    	}
+    	
+    	for(ConfigCategory recipe : treeStructures.getChildren()){
+    		treeData.add(new CrootTreeData(recipe.get("name").getString(),recipe.get("sapling").getStringList(), recipe.get("spurt").getStringList(), recipe.get("tree").getStringList()));
+    	}
+    	
     	
     	//Workbench!
     	recipeData.clear();
@@ -214,6 +254,59 @@ public class ConfigRegistry {
     	//Save
     	config.save();
     }
+
+	private static void createTreeStructuresStandard(
+			ConfigCategory treeStructures) {
+		
+		ConfigCategory normal = new ConfigCategory("Normal", treeStructures);
+		normal.put("name", new Property("name", "normal", Property.Type.STRING));
+		normal.put("sapling", new Property("sapling", new String[] { 
+				"block 0 -1 0 BioCristals:crootRoots",
+				"full_circle 0 -1 0 2 BioCristals:crootRoots",
+				"block 0 -2 0 BioCristals:crootRoots"
+				},
+				  Property.Type.STRING));
+		
+		normal.put("spurt", new Property("spurt", new String[] { 
+				"block 0 -1 0 BioCristals:crootRoots",
+				"full_circle 0 -1 0 2 BioCristals:crootRoots",
+				"block 0 -2 0 BioCristals:crootRoots",
+				"block 0 0 0 BioCristals:crootTrunk",
+				"block 0 1 0 BioCristals:crootCore",
+				"block 0 2 0 BioCristals:crootLeaves"
+				},
+				  Property.Type.STRING));
+		
+		normal.put("tree", new Property("tree", new String[] { 
+				"block 0 -1 0 BioCristals:crootTrunk",
+				"block 0 0 0 BioCristals:crootCore",
+				"block 0 -2 0 BioCristals:crootRoots",
+				
+				"full_circle 0 -2 0 6 BioCristals:crootRoots",
+				"full_circle 0 -3 0 4 BioCristals:crootRoots",
+				"full_circle 0 -4 0 2 BioCristals:crootRoots",
+				"block 0 -5 0 BioCristals:crootRoots",
+				
+				"line 0 1 0 3 BioCristals:crootTrunk",
+				
+				"line 4 -1 4 5 BioCristals:crootTrunk",
+				"line -4 -1 4 5 BioCristals:crootTrunk",
+				"line 4 -1 -4 5 BioCristals:crootTrunk",
+				"line -4 -1 -4 5 BioCristals:crootTrunk",
+				
+				"line 6 -1 0 5 BioCristals:crootTrunk",
+				"line -6 -1 0 5 BioCristals:crootTrunk",
+				"line 0 -1 -6 5 BioCristals:crootTrunk",
+				"line 0 -1 6 5 BioCristals:crootTrunk",
+				
+				"full_circle 0 4 0 8 BioCristals:crootLeaves",
+				"full_circle 0 5 0 7 BioCristals:crootLeaves",
+				"full_circle 0 6 0 6 BioCristals:crootLeaves",
+				"full_circle 0 7 0 5 BioCristals:crootLeaves"
+				},
+				  Property.Type.STRING));
+		
+	}
 
 	private static void createRecipeStandard(ConfigCategory recipes){
 		

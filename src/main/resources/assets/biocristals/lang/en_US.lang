@@ -16,12 +16,14 @@ tile.BioCristals_blockMelonCristal.name=Melon Cristal
 tile.BioCristals_blockPumpkinCristal.name=Pumpkin Cristal
 tile.BioCristals_blockSulphurTuft.name=Sulphur Tuft
 tile.BioCristals_blockReagentPurifier.name=Reagent Purifier
-tile.BioCristals_crootSapling.name=Croot Sapling
 tile.BioCristals_blockPromogenitus.name=Promogenitus
-tile.BioCristals_crootTrunk.name=Croot Trunk
-tile.BioCristals_crootRoots.name=Croot Roots
-tile.BioCristals_crootLeaves.name=Croot Leaves
-tile.BioCristals_crootCore.name=Croot Core
+
+tile.BioCristals_crootSapling.normal.name=Croot Sapling
+tile.BioCristals_crootTrunk.normal.name=Croot Trunk
+tile.BioCristals_crootRoots.normal.name=Croot Roots
+tile.BioCristals_crootLeaves.normal.name=Croot Leaves
+tile.BioCristals_crootCore.normal.name=Croot Core
+
 tile.BioCristals_crootStreamStem.name=Croot Stem
 tile.BioCristals_blockCrootHollow.name=Croot Hollow
 tile.BioCristals_blockExtractor.name=Extractor

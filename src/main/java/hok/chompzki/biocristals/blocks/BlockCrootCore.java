@@ -48,6 +48,7 @@ public class BlockCrootCore extends BlockCore {
 		setCreativeTab(BioCristalsMod.creativeTab);
 		setBlockTextureName(BioCristalsMod.MODID + ":" + NAME);
 		this.setHardness(0.8f);
+		this.setLightLevel(1.0F);
 	}
 
 	@Override
@@ -58,8 +59,12 @@ public class BlockCrootCore extends BlockCore {
 	@SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta)
     {
-    	meta &= 7;
         return icons[MathHelper.clamp_int(meta, 0, BlockCrootSapling.subtypes.length)];
+    }
+	
+	public int damageDropped(int meta)
+    {
+    	return MathHelper.clamp_int(meta, 0, BlockCrootSapling.subtypes.length);
     }
 
     @SideOnly(Side.CLIENT)

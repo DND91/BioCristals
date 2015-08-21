@@ -8,6 +8,7 @@ import java.util.List;
 import javax.vecmath.Vector3d;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -57,10 +58,10 @@ public class CrootModule {
 	
 	public void add(CrootBlock b){
 		if(this.contains(b.x, b.y, b.z)){
-			CrootBlock a = this.get(this.getPos(b.x, b.y, b.z));
+			/*CrootBlock a = this.get(this.getPos(b.x, b.y, b.z));
 			a.priority = b.priority;
 			a.block = b.block;
-			a.meta = b.meta;
+			a.meta = b.meta;*/
 		}else{
 			blocks.add(b);
 		}
@@ -107,6 +108,12 @@ public class CrootModule {
 			
 			Block b = world.getBlock(x, y, z);
 			int meta = world.getBlockMetadata(x, y, z);
+			
+			if(b == Blocks.bedrock)
+				continue;
+			
+			
+			
 			
 			if(block.block != b)
 				return block;

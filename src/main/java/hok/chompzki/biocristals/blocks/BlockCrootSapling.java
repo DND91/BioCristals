@@ -9,6 +9,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 import hok.chompzki.biocristals.BioCristalsMod;
 import hok.chompzki.biocristals.api.IGrowthCristal;
 import hok.chompzki.biocristals.croot.CrootHelper;
+import hok.chompzki.biocristals.croot_old.CrootBlock;
+import hok.chompzki.biocristals.croot_old.CrootModule;
+import hok.chompzki.biocristals.croot_old.CrootRegistry;
+import hok.chompzki.biocristals.croot_old.CrootRegistry.CrootTreeContainer;
 import hok.chompzki.biocristals.registrys.BlockRegistry;
 import hok.chompzki.biocristals.tile_enteties.TileCrootCore;
 import net.minecraft.block.Block;
@@ -43,6 +47,7 @@ public class BlockCrootSapling extends Block implements IGrowthCristal {
         setBlockName(BioCristalsMod.MODID + "_" + NAME);
 		setCreativeTab(BioCristalsMod.creativeTab);
 		setBlockTextureName(BioCristalsMod.MODID + ":" + NAME);
+		
     }
     
     @Override
@@ -84,7 +89,7 @@ public class BlockCrootSapling extends Block implements IGrowthCristal {
     
     public int damageDropped(int meta)
     {
-        return MathHelper.clamp_int(meta & 7, 0, 5);
+    	return MathHelper.clamp_int(meta, 0, subtypes.length);
     }
     
     @SideOnly(Side.CLIENT)
@@ -146,38 +151,25 @@ public class BlockCrootSapling extends Block implements IGrowthCristal {
     
     @Override
     public void grow(World world, int x, int y, int z){
-    	Block block = world.getBlock(x, y-1, z);
     	int meta = world.getBlockMetadata(x, y, z);
-    	if(block == null || !(block instanceof BlockCrootRoots)){
-    		world.setBlock(x, y-1, z, BlockRegistry.crootRoots, meta, 3);
-    		return;
-    	}
+    	String name = this.subtypes[meta];
     	
-    	y -= 1;
-    	
-    	for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS){
-    		if(dir == ForgeDirection.UP)
-    			continue;
-    		
-    		block = world.getBlock(x + dir.offsetX, y  + dir.offsetY, z + dir.offsetZ);
-        	if(block == null || !(block instanceof BlockCrootRoots)){
-        		world.setBlock(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, BlockRegistry.crootRoots, meta, 3);
-        		return;
-        	}
-    	}
-    	
-    	y += 1;
-    	
-    	CrootHelper.spawnCircle(world, x, y-1, z, 2, BlockRegistry.crootRoots, BlockRegistry.crootRoots);
-    	CrootHelper.spawnCircle(world, x, y-2, z, 1, BlockRegistry.crootRoots, BlockRegistry.crootRoots);
-    	world.setBlock(x, y-3, z, BlockRegistry.crootRoots, meta, 3);
-    	
-    	world.setBlock(x, y, z, BlockRegistry.crootCore, meta, 3);
-    	
-    	world.setBlock(x, y+1, z, BlockRegistry.crootLeaves, meta, 3);
-    	
-    	TileCrootCore tile = (TileCrootCore) world.getTileEntity(x, y, z);
-    	tile.setBlockCount(100);
+    	CrootTreeContainer treeContainer = CrootRegistry.treeContainer.get(name);
+    	CrootModule module = treeContainer.sapling;
+		
+		if(!module.controll(world, x, y, z)){
+			CrootBlock block = module.getNext(world, x, y, z);
+			block.meta = meta;
+			CrootHelper.spawnBlock(world, block, x, y, z);
+			
+		}else{
+			module = treeContainer.spurt;
+			while(!module.controll(world, x, y, z)){
+				CrootBlock block = module.getNext(world, x, y, z);
+				block.meta = meta;
+				CrootHelper.spawnBlock(world, block, x, y, z);
+			}
+		}
     	
     }
 
