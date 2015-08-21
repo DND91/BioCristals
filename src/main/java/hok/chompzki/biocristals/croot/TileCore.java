@@ -1,10 +1,12 @@
 package hok.chompzki.biocristals.croot;
 
 import hok.chompzki.biocristals.BioCristalsMod;
+import hok.chompzki.biocristals.blocks.BlockCrootSapling;
 import hok.chompzki.biocristals.croot_old.CrootBlock;
 import hok.chompzki.biocristals.croot_old.CrootModule;
 import hok.chompzki.biocristals.croot_old.CrootRegistry;
 import hok.chompzki.biocristals.croot_old.RegisteredCoord;
+import hok.chompzki.biocristals.croot_old.CrootRegistry.CrootTreeContainer;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -87,20 +89,16 @@ public abstract class TileCore extends TileEntity implements
     }
 
 	public void grow() {
-		CrootModule module = CrootRegistry.get("core_1");
-		int y = yCoord;
-		/*if(module.controll(worldObj, xCoord, y, zCoord)){
-			module = CrootRegistry.get("trunk_1");
-			y += 6;
-		}
-		/*if(module.controll(worldObj, xCoord, y, zCoord)){
-			module = CrootRegistry.get("crown_1");
-			y += 7;
-		}*/
+		int meta = worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
+    	String name = BlockCrootSapling.subtypes[meta];
+    	
+    	CrootTreeContainer treeContainer = CrootRegistry.treeContainer.get(name);
+    	CrootModule module = treeContainer.tree;
 		
-		if(!module.controll(worldObj, xCoord, y, zCoord)){
-			CrootBlock block = module.getNext(worldObj, xCoord, y, zCoord);
-			CrootHelper.spawnBlock(worldObj, block, xCoord, y, zCoord);
+		if(!module.controll(worldObj, xCoord, yCoord, zCoord)){
+			CrootBlock block = module.getNext(worldObj, xCoord, yCoord, zCoord);
+			block.meta = meta;
+			CrootHelper.spawnBlock(worldObj, block, xCoord, yCoord, zCoord);
 			
 		}
 	}
@@ -161,7 +159,8 @@ public abstract class TileCore extends TileEntity implements
 	
 	@Override
 	public void onNeighborChange(){
-		treeForm.updateOnNeighbor(worldObj);
+		if(treeForm != null)
+			treeForm.updateOnNeighbor(worldObj);
 	}
 	
 	@Override

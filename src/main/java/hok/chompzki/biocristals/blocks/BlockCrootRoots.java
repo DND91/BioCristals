@@ -42,7 +42,6 @@ public class BlockCrootRoots extends BlockCroot {
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta)
     {
-    	meta &= 7;
         return icons[MathHelper.clamp_int(meta, 0, BlockCrootSapling.subtypes.length)];
     }
 
@@ -55,7 +54,7 @@ public class BlockCrootRoots extends BlockCroot {
     
     public int damageDropped(int meta)
     {
-        return MathHelper.clamp_int(meta & 7, 0, 5);
+    	return MathHelper.clamp_int(meta, 0, BlockCrootSapling.subtypes.length);
     }
     
     @SideOnly(Side.CLIENT)

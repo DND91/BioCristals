@@ -158,7 +158,7 @@ public class CrootHelper {
             {
             	int distance = ((i * i) + (j * j));
             	
-        		if(radiusInsideSquared <= distance && distance <= radiusOutsideSquared){
+        		if(outer != Blocks.air && radiusInsideSquared <= distance && distance <= radiusOutsideSquared){
         			CrootBlock b = new CrootBlock();
         			b.priority = prio_outer;
         			b.x = x + i;
@@ -167,7 +167,7 @@ public class CrootHelper {
         			b.block = outer;
         			b.meta = meta_outer;
         			module.add(b);
-        		}else if(distance <= radiusInsideSquared)
+        		}else if(inner != Blocks.air && distance <= radiusInsideSquared)
                 {
         			CrootBlock b = new CrootBlock();
         			b.priority = prio_inner;

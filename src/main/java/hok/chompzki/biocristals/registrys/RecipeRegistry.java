@@ -3,6 +3,7 @@ package hok.chompzki.biocristals.registrys;
 import hok.chompzki.biocristals.recipes.CrootManager;
 import hok.chompzki.biocristals.recipes.CrootRecipeContainer;
 import hok.chompzki.biocristals.recipes.CrootRecipeData;
+import hok.chompzki.biocristals.recipes.OreDictContainer;
 import hok.chompzki.biocristals.recipes.PurifierContainer;
 import hok.chompzki.biocristals.recipes.PurifierData;
 import hok.chompzki.biocristals.recipes.RecipeContainer;
@@ -26,7 +27,9 @@ import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class RecipeRegistry {
@@ -69,6 +72,16 @@ public class RecipeRegistry {
 		load();
 		loadCroot();
 		loadPurifing();
+		
+    	for(int i = 0; i < ConfigRegistry.crootTypes.length; i++){
+    		String[] split = ConfigRegistry.crootTypes[i].split(" ");
+    		Object input = RecipeTransformer.dataToObject(split[1]);
+    		
+    		if(input instanceof OreDictContainer)
+    			input = split[1];
+    		
+    		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(BlockRegistry.crootSapling, 1, i), new ItemStack(BlockRegistry.crootSapling, 1, OreDictionary.WILDCARD_VALUE), input));
+    	}
 	}
 	
 	public static void load(){

@@ -16,12 +16,14 @@ import hok.chompzki.biocristals.blocks.BlockReagentPurifier;
 import hok.chompzki.biocristals.blocks.BlockSulphurTuft;
 import hok.chompzki.biocristals.blocks.BlockWeakCristal;
 import hok.chompzki.biocristals.items.ItemAttuner;
+import hok.chompzki.biocristals.items.ItemCrootWithMetadata;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class BlockRegistry {
 	
@@ -79,16 +81,18 @@ public class BlockRegistry {
 		GameRegistry.registerBlock(sulphurTuft, BlockSulphurTuft.NAME);
 		GameRegistry.registerBlock(reagentPurifier, BlockReagentPurifier.NAME);
 		GameRegistry.registerBlock(primogenitus, BlockPrimogenitus.NAME);
-		GameRegistry.registerBlock(crootSapling, BlockCrootSapling.NAME);
-		GameRegistry.registerBlock(crootRoots, BlockCrootRoots.NAME);
-		GameRegistry.registerBlock(crootCore, BlockCrootCore.NAME);
-		GameRegistry.registerBlock(crootLeaves, BlockCrootLeaves.NAME);
-		GameRegistry.registerBlock(crootTrunk, BlockCrootTrunk.NAME);
+		GameRegistry.registerBlock(crootSapling, ItemCrootWithMetadata.class, BlockCrootSapling.NAME);
+		GameRegistry.registerBlock(crootRoots, ItemCrootWithMetadata.class, BlockCrootRoots.NAME);
+		GameRegistry.registerBlock(crootCore, ItemCrootWithMetadata.class, BlockCrootCore.NAME);
+		GameRegistry.registerBlock(crootLeaves, ItemCrootWithMetadata.class, BlockCrootLeaves.NAME);
+		GameRegistry.registerBlock(crootTrunk, ItemCrootWithMetadata.class, BlockCrootTrunk.NAME);
 		GameRegistry.registerBlock(crootStem, BlockCrootStreamStem.NAME);
 		GameRegistry.registerBlock(crootHollow, BlockCrootHollow.NAME);
 		GameRegistry.registerBlock(extractor, BlockExtractor.NAME);
 		GameRegistry.registerBlock(attunedEarth, BlockAttunedEarth.NAME);
 		GameRegistry.registerBlock(holderPlant, BlockHolderPlant.NAME);
+		
+		
 	}
 	
 	
