@@ -10,6 +10,7 @@ import hok.chompzki.biocristals.blocks.BlockCrootRoots;
 import hok.chompzki.biocristals.blocks.BlockCrootSapling;
 import hok.chompzki.biocristals.blocks.BlockCrootStreamStem;
 import hok.chompzki.biocristals.blocks.BlockCrootTrunk;
+import hok.chompzki.biocristals.blocks.BlockExperiment;
 import hok.chompzki.biocristals.blocks.BlockExtractor;
 import hok.chompzki.biocristals.blocks.BlockPrimogenitus;
 import hok.chompzki.biocristals.blocks.BlockReagentPurifier;
@@ -48,6 +49,8 @@ public class BlockRegistry {
 	public static Block attunedEarth = null;
 	public static Block holderPlant = null;
 	
+	public static Block experiment = null;
+	
 	public void registerBlocks(){
 		biomass = new BlockBiomass();
 		int maxMeta = 3;
@@ -70,6 +73,7 @@ public class BlockRegistry {
 		extractor = new BlockExtractor();
 		attunedEarth = new BlockAttunedEarth();
 		holderPlant = new BlockHolderPlant();
+		experiment = new BlockExperiment();
 		
 		GameRegistry.registerBlock(biomass, BlockBiomass.NAME);
 		GameRegistry.registerBlock(wheatCristal, "blockWheatCristal");
@@ -92,7 +96,7 @@ public class BlockRegistry {
 		GameRegistry.registerBlock(attunedEarth, BlockAttunedEarth.NAME);
 		GameRegistry.registerBlock(holderPlant, BlockHolderPlant.NAME);
 		
-		
+		GameRegistry.registerBlock(experiment, BlockExperiment.NAME);
 	}
 	
 	

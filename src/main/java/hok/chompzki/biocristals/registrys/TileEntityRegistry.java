@@ -5,6 +5,7 @@ import hok.chompzki.biocristals.tile_enteties.TileCrootCore;
 import hok.chompzki.biocristals.tile_enteties.TileCrootHollow;
 import hok.chompzki.biocristals.tile_enteties.TileCrootOneConsumer;
 import hok.chompzki.biocristals.tile_enteties.TileCrootOneMember;
+import hok.chompzki.biocristals.tile_enteties.TileExperiment;
 import hok.chompzki.biocristals.tile_enteties.TileExtractor;
 import hok.chompzki.biocristals.tile_enteties.TileHolderPlant;
 import hok.chompzki.biocristals.tile_enteties.TilePrimogenitus;
@@ -23,6 +24,8 @@ public class TileEntityRegistry {
 		GameRegistry.registerTileEntity(TileCrootHollow.class, "biocristals_tile_croot_hollow");
 		GameRegistry.registerTileEntity(TileExtractor.class, "biocristals_tile_exctractor");
 		GameRegistry.registerTileEntity(TileHolderPlant.class, "biocristals_tile_place_holder");
+		
+		GameRegistry.registerTileEntity(TileExperiment.class, "biocristals_tile_experiment");
 	}
 	
 }
