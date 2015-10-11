@@ -1,5 +1,7 @@
 package hok.chompzki.biocristals.tile_enteties;
 
+import java.util.Random;
+
 import hok.chompzki.biocristals.croot.dna.GrowthSystem;
 import hok.chompzki.biocristals.croot.dna.data.DNACoord;
 import hok.chompzki.biocristals.croot.dna.data.TreeMemory;
@@ -9,8 +11,25 @@ import net.minecraft.world.World;
 
 public class TileExperiment extends TileEntity {
 	
+	public static Random rand = new Random();
+	
+	private String generateDNAString(int codons){
+        String dna="";
+        String alphabet = "ACGT";
+        
+        for (int i=1;i<=codons;i++){
+        	dna += alphabet.charAt(rand.nextInt(alphabet.length()));
+        	dna += alphabet.charAt(rand.nextInt(alphabet.length()));
+        	dna += alphabet.charAt(rand.nextInt(alphabet.length()));
+           	dna += " ";
+        }
+        System.out.println("HERE:__"+dna);
+        return dna;
+ 
+    }
+	
 	private TreeMemory memory = new TreeMemory();
-	private GrowthSystem growth = new GrowthSystem("TCA CCT TTC AGG CTG");
+	private GrowthSystem growth = new GrowthSystem(generateDNAString(8));
 	
 	private int tick = 0;
 	

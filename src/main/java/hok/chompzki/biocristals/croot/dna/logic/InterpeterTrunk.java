@@ -20,8 +20,8 @@ public class InterpeterTrunk extends Interpeter {
 		super(dna, start);
 		height = Math.max(5, dna.next().getInteger());
 		
-		radius = 5; //dna.next().getInteger();
-		weight = 63;//dna.next().getInteger();
+		radius = dna.next().getInteger();
+		weight = dna.next().getInteger();
 	}
 	
 	private boolean fits(World world, int x, int y, int z, TreeMemory memory, int radius){

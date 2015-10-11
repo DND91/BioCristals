@@ -36,12 +36,9 @@ public class InterpeterBranches extends Interpeter {
 		ccb = ((double)dna.next().getInteger()) / 64.0D;
 		gcb = ((double)dna.next().getInteger()) / 64.0D;
 		
-		length = dna.next().getInteger();
-		length = 30;
+		length = dna.next().getInteger() + trunk.getRadius();
 		strength = dna.next().getInteger();
-		strength = 20;
 		weight = dna.next().getInteger();
-		weight = 40;
 		
 	}
 	
@@ -74,7 +71,7 @@ public class InterpeterBranches extends Interpeter {
 		//Generate next branching
 		int tc = getTopCoord(memory, world, x, y, z);
 		if(currentHeight < y)
-			currentHeight = y + 5;
+			currentHeight = y + 3;
 		
 		if(this.currentHeight < tc){
 			for(;this.currentHeight <= tc; this.currentHeight++){
