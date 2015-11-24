@@ -9,7 +9,6 @@ import hok.chompzki.biocristals.research.data.Chapeter;
 import hok.chompzki.biocristals.research.data.PlayerStorage;
 import hok.chompzki.biocristals.research.data.Research;
 import hok.chompzki.biocristals.research.data.ReserchDataNetwork;
-import hok.chompzki.biocristals.research.logic.content.BabySteps;
 import hok.chompzki.biocristals.research.logic.content.BookTutorial;
 import hok.chompzki.biocristals.research.logic.content.CrootHollow;
 import hok.chompzki.biocristals.research.logic.content.CrootSapling;
@@ -47,6 +46,13 @@ import hok.chompzki.biocristals.research.logic.content.purifing.BioBlob;
 import hok.chompzki.biocristals.research.logic.content.purifing.BiomassMK1;
 import hok.chompzki.biocristals.research.logic.content.purifing.BiomassMK2;
 import hok.chompzki.biocristals.research.logic.content.purifing.Promogenitus;
+import hok.chompzki.biocristals.research.logic.first_era.BabySteps;
+import hok.chompzki.biocristals.research.logic.first_era.CrootClaw;
+import hok.chompzki.biocristals.research.logic.first_era.CrootStick;
+import hok.chompzki.biocristals.research.logic.first_era.Hivebag;
+import hok.chompzki.biocristals.research.logic.first_era.KraKen;
+import hok.chompzki.biocristals.research.logic.first_era.NomadsSack;
+import hok.chompzki.biocristals.research.logic.first_era.WSB;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -82,7 +88,15 @@ public class ReserchRegistry {
 	//Reseaches
 	public static final String tutorial = "tutorial";
 	
-	public static final String babySteps = "babySteps"; //Attuner
+	public static final String babySteps = "babySteps";
+	public static final String crootStick = "crootStick";
+	
+	public static final String kraken = "kraken";
+	public static final String wsb = "wsb";
+	public static final String crootClaw = "crootClaw";
+	public static final String hivebag = "hivebag";
+	public static final String nomadsSack = "nomadsSack";
+	
 	public static final String crootSapling = "crootSapling";
 	
 	
@@ -142,7 +156,22 @@ public class ReserchRegistry {
 		ReserchDataNetwork.register(new Research(berry, 0, 0, Items.book, new Dberry(), loreChapeter, lore, reaction));
 		ReserchDataNetwork.register(new Research(carla_fleur, 0, 0, Items.book, new CarlaFleur(), loreChapeter, lore, cubeMass));
 		
+		/** FIRST AGE **/
+		ReserchDataNetwork.register(new Research(babySteps, 0, 0, ItemRegistry.crootBeetle, side ? new ServerContent() : new BabySteps(), firstEra, fundamental).setSpecial());
+		ReserchDataNetwork.register(new Research(crootStick, 0, 1, ItemRegistry.crootStick, side ? new ServerContent() : new CrootStick(), firstEra, fundamental, babySteps));
+		
+		ReserchDataNetwork.register(new Research(kraken, -1, 0, ItemRegistry.kraKenBug, side ? new ServerContent() : new KraKen(), firstEra, fundamental, crootStick));
+		ReserchDataNetwork.register(new Research(wsb, 1, 0, ItemRegistry.wsb, side ? new ServerContent() : new WSB(), firstEra, fundamental, crootStick));
+		
+		ReserchDataNetwork.register(new Research(crootClaw, -1, 1, ItemRegistry.crootClaw, side ? new ServerContent() : new CrootClaw(), firstEra, fundamental, crootStick));
+		ReserchDataNetwork.register(new Research(hivebag, 1, 1, ItemRegistry.hivebag, side ? new ServerContent() : new Hivebag(), firstEra, fundamental, crootStick));
+		
+		ReserchDataNetwork.register(new Research(nomadsSack, 0, -1, ItemRegistry.nomadSack, side ? new ServerContent() : new NomadsSack(), firstEra, fundamental, babySteps));
+		
+		
 		//RESEARCH
+		
+		/*
 		ReserchDataNetwork.register(new Research(babySteps, -1, 0, ItemRegistry.researchBook, side ? new ServerContent() : new BabySteps(), firstEra, fundamental).setSpecial());
 		ReserchDataNetwork.register(new Research(crootSapling, 1, 0, BlockRegistry.crootSapling,  side ? new ServerContent() : new CrootSapling(), firstEra, fundamental).setSpecial());
 		
@@ -176,7 +205,7 @@ public class ReserchRegistry {
 		
 		ReserchDataNetwork.register(new Research(darkWarp, 0, 0, Items.ender_pearl, side ? new ServerContent() : new DarkWarp(), firstEra, flesh, fleshRapture));
 		ReserchDataNetwork.register(new Research(payingTaxes, 0, 0, Items.gold_nugget, side ? new ServerContent() : new PayingTaxes(), firstEra, flesh, leatherBeast));
-		
+		*/
 		ReserchDataNetwork.register(new Research(wheatCristalisation, 0, 0, BlockRegistry.wheatCristal, side ? new ServerContent() : new WheatCristalisation(), ageOfConflict, crystallization, cubeMass, reaction).setSpecial());
 		
 		ReserchDataNetwork.register(new Research(carrotCristalisation, 0, 0, BlockRegistry.carrotCristal, side ? new ServerContent() : new CarrotCristalisation(), ageOfConflict, crystallization, wheatCristalisation));

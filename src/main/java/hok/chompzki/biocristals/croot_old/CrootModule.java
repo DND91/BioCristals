@@ -14,7 +14,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class CrootModule {
 	
-	List<CrootBlock> blocks = new ArrayList<CrootBlock>();
+	public List<CrootBlock> blocks = new ArrayList<CrootBlock>();
 	ForgeDirection[] sides = {};
 	
 	public void sort(){

@@ -21,9 +21,11 @@ public class FirstEra extends ArticleContent {
 		String s = "";
 		switch(p){
 		case 0:
-			s += "The first era of attunment is also refered to as 'The Sprouting' and is based on research from three parties. ";
-			s += "Rabarberpaj, the mother of the field, and her three apprintances Carla & Fleur, founder of structure and purifing, and D-berry, ";
-			s += "founder of 'Flesh Transformation'. ";
+			s += "The 'First Era' befall in a time when resources are scares. Often we find time trinkling away "
+			  +  "on the little actions for survival and a constant hunt for food. The 'First Era' is only known "
+			  +  "to have ended when the nomads setteled. Looking back we see a clear connection between "
+			  +  "humans and nature, as they started to travel, nature started bend after their creativity "
+			  + "and skill.";
 			break;
 		case 1: 
 			
@@ -39,10 +41,10 @@ public class FirstEra extends ArticleContent {
 	
 	@Override
 	public int numberOfPages(EnumContent content){
-		return 3;
+		return 1;
 	}
 
-
+	
 	@Override
 	public GuiCraftingHelper getFaved() {
 		// TODO Auto-generated method stub

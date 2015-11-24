@@ -141,7 +141,11 @@ public class ItemHivebag extends Item {
 			if(stack.getMaxDamage() <= distance){
 				distance = 0;
 				if(!world.isRemote && stack.hasTagCompound()){
-					player.addPotionEffect(new PotionEffect(Potion.hunger.id, ConfigRegistry.hungerDuration, ConfigRegistry.hungerAmplifier));
+					PotionEffect pot = player.getActivePotionEffect(Potion.hunger);
+					if(pot == null)
+						player.addPotionEffect(new PotionEffect(Potion.hunger.id, ConfigRegistry.hungerDuration, ConfigRegistry.hungerAmplifier));
+					else
+						player.addPotionEffect(new PotionEffect(Potion.hunger.id, ConfigRegistry.hungerDuration + pot.getDuration(), pot.getAmplifier()+1));
 				}
 			}
 			

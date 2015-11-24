@@ -15,7 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-public abstract class BlockCore extends BlockContainer implements IGrowthCristal {
+public abstract class BlockCore extends BlockContainer {
 	
 	protected BlockCore(Material p_i45386_1_) {
 		super(p_i45386_1_);
@@ -27,7 +27,7 @@ public abstract class BlockCore extends BlockContainer implements IGrowthCristal
     	if(world.isAirBlock(x, y-1, z))
     		return false;
     	Block block = world.getBlock(x, y-1, z);
-    	if(block != BlockRegistry.crootTrunk)
+    	if(!(block instanceof BlockCroot))
     		return false;
     	TileEntity tile = world.getTileEntity(x, y, z);
     	if(CrootHelper.hasZoneOwner((TileCore) tile, world, x, y, z, 16))
@@ -63,37 +63,8 @@ public abstract class BlockCore extends BlockContainer implements IGrowthCristal
         if (!world.isRemote)
         {
         	
-        	//this.checkAndDropBlock(world, x, y, z);
-        	
-            if (world.getBlockLightValue(x, y + 1, z) >= 9 && rand.nextInt(2) == 0)
-            {
-                this.grow(world, x, y, z);
-            }
         }
     }
-
-	@Override
-	public boolean isMature(World world, EntityPlayer player, ItemStack stack,
-			int x, int y, int z) {
-		return false;
-	}
-
-	@Override
-	public void harvest(World world, EntityPlayer player, ItemStack stack,
-			int x, int y, int z) {
-	}
-
-	@Override
-	public void harvest(World world, EntityPlayer player, ItemStack stack,
-			int x, int y, int z, List<ItemStack> list) {
-	}
-	
-	@Override
-	public void grow(World world, int x, int y, int z) {
-		TileCore tile = (TileCore) world.getTileEntity(x, y, z);
-		int meta = world.getBlockMetadata(x, y, z);
-		tile.grow();
-	}
 	
 	@Override
 	public void breakBlock(World world, int x, int y, int z, Block block, int meta)

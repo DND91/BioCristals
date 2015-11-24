@@ -52,6 +52,7 @@ public class BlockWeakCristal extends BlockCroot implements IGrowthCristal{
 			this.setTickRandomly(true);
 			this.setStepSound(soundTypeGrass);
 			this.drops = drops;
+			this.setHardness(0.8F);
 		}
 		
 		@SideOnly(Side.CLIENT)

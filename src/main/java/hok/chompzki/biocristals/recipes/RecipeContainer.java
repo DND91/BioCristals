@@ -23,7 +23,7 @@ public class RecipeContainer{
 		this.code = code;
 		this.output = out;
 		this.input = in;
-		length = ((String)in[0]).length();
+		length = ((String)in[0]).length(); //TODO: ERROR IN LENGTH CALCULATION LEADS TO CRASH!
 		for(int i = length; i < in.length-1; i += 2){
 			System.out.println("RESOURCE: " + in[i] + "; " + in[i+1]);
 			if(in[i+1] instanceof ItemStack){
@@ -114,6 +114,8 @@ public class RecipeContainer{
 	public List<ItemStack> getItemStack(int slot) {
 		int y = slot / length;
 		int x = slot % length;
+		if(length <= y)
+			return null;
 		return idToItem.get(craftingGrid[y][x]);
 	}
 }

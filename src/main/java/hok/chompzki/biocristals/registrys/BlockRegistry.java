@@ -16,17 +16,33 @@ import hok.chompzki.biocristals.blocks.BlockPrimogenitus;
 import hok.chompzki.biocristals.blocks.BlockReagentPurifier;
 import hok.chompzki.biocristals.blocks.BlockSulphurTuft;
 import hok.chompzki.biocristals.blocks.BlockWeakCristal;
+import hok.chompzki.biocristals.croot.CrootHelper;
+import hok.chompzki.biocristals.croot.cristal.BlockCorePlasma;
+import hok.chompzki.biocristals.croot.cristal.BlockCrootNest;
+import hok.chompzki.biocristals.croot.cristal.BlockGhost;
+import hok.chompzki.biocristals.croot.cristal.BlockMembrane;
+import hok.chompzki.biocristals.croot.cristal.BlockPlatformer;
+import hok.chompzki.biocristals.croot.cristal.BlockShell;
+import hok.chompzki.biocristals.croot.cristal.BlockStructer;
+import hok.chompzki.biocristals.croot.cristal.FluidBlood;
+import hok.chompzki.biocristals.croot_old.CrootModule;
+import hok.chompzki.biocristals.croot_old.CrootRegistry;
 import hok.chompzki.biocristals.items.ItemAttuner;
 import hok.chompzki.biocristals.items.ItemCrootWithMetadata;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class BlockRegistry {
+	
+	public static Fluid fluidBlood = new Fluid("blood");
 	
 	public static Block biomass = null;
 	public static Block wheatCristal = null;
@@ -48,10 +64,32 @@ public class BlockRegistry {
 	public static Block extractor = null;
 	public static Block attunedEarth = null;
 	public static Block holderPlant = null;
+	public static Block ghost = null;
+	
+	public static Block structer = null;
+	
+	
+	public static Block platformer = null;
+	public static Block bioplatform = null;
+	
+	
+	public static Block corePlasma = null;
+	public static Block membrane = null;
+	public static Block shell = null;
+	public static Block blood = null;
+	public static Block crootNest = null;
 	
 	public static Block experiment = null;
 	
 	public void registerBlocks(){
+		
+		FluidRegistry.registerFluid(fluidBlood);
+		fluidBlood.setLuminosity(5);
+		fluidBlood.setDensity(8000);
+		fluidBlood.setTemperature(600);
+		fluidBlood.setViscosity(8000);
+		
+		
 		biomass = new BlockBiomass();
 		int maxMeta = 3;
 		wheatCristal = new BlockWeakCristal("blockWheatCristal", maxMeta, 0xF0E68C, new ItemStack(Items.wheat, 2));
@@ -74,6 +112,57 @@ public class BlockRegistry {
 		attunedEarth = new BlockAttunedEarth();
 		holderPlant = new BlockHolderPlant();
 		experiment = new BlockExperiment();
+		ghost = new BlockGhost();
+		corePlasma = new BlockCorePlasma();
+		membrane = new BlockMembrane();
+		shell = new BlockShell();
+		blood = new FluidBlood(fluidBlood, Material.water);
+		crootNest = new BlockCrootNest();
+		
+		
+		CrootModule module = new CrootModule();
+		
+		CrootHelper.addLine(module, 3, 1000, 0, 0, 0, BlockRegistry.corePlasma, 0);
+		
+		CrootHelper.addLine(module, 3, 1000, -1, 0, -1, BlockRegistry.membrane, 0);
+		CrootHelper.addLine(module, 3, 1000, -1, 0,  0, BlockRegistry.membrane, 0);
+		CrootHelper.addLine(module, 3, 1000, -1, 0,  1, BlockRegistry.membrane, 0);
+		CrootHelper.addLine(module, 3, 1000,  0, 0, -1, BlockRegistry.membrane, 0);
+		CrootHelper.addLine(module, 3, 1000,  0, 0,  0, BlockRegistry.membrane, 0);
+		CrootHelper.addLine(module, 3, 1000,  0, 0,  1, BlockRegistry.membrane, 0);
+		CrootHelper.addLine(module, 3, 1000,  1, 0, -1, BlockRegistry.membrane, 0);
+		CrootHelper.addLine(module, 3, 1000,  1, 0,  0, BlockRegistry.membrane, 0);
+		CrootHelper.addLine(module, 3, 1000,  1, 0,  1, BlockRegistry.membrane, 0);
+		
+		CrootHelper.addLine(module, 3, 1000,  -2, 0, -1, BlockRegistry.shell, 0);
+		CrootHelper.addLine(module, 3, 1000,  -2, 0,  0, BlockRegistry.shell, 0);
+		CrootHelper.addLine(module, 3, 1000,  -2, 0,  1, BlockRegistry.shell, 0);
+		CrootHelper.addLine(module, 3, 1000,   2, 0, -1, BlockRegistry.shell, 0);
+		CrootHelper.addLine(module, 3, 1000,   2, 0,  0, BlockRegistry.shell, 0);
+		CrootHelper.addLine(module, 3, 1000,   2, 0,  1, BlockRegistry.shell, 0);
+		CrootHelper.addLine(module, 3, 1000,  -1, 0, -2, BlockRegistry.shell, 0);
+		CrootHelper.addLine(module, 3, 1000,   0, 0, -2, BlockRegistry.shell, 0);
+		CrootHelper.addLine(module, 3, 1000,   1, 0, -2, BlockRegistry.shell, 0);
+		CrootHelper.addLine(module, 3, 1000,  -1, 0,  2, BlockRegistry.shell, 0);
+		CrootHelper.addLine(module, 3, 1000,   0, 0,  2, BlockRegistry.shell, 0);
+		CrootHelper.addLine(module, 3, 1000,   1, 0,  2, BlockRegistry.shell, 0);
+		
+		CrootHelper.addCircle(module, 0, 3, 0, 1, BlockRegistry.membrane, 0, 1000, BlockRegistry.membrane, 0, 1000);
+		CrootHelper.addCircle(module, 0, 3, 0, 2, BlockRegistry.shell, 0, 1000, BlockRegistry.shell, 0, 1000);
+		
+		CrootHelper.addCircle(module, 0, 4, 0, 1, BlockRegistry.shell, 0, 1000, BlockRegistry.shell, 0, 1000);
+		
+		structer = new BlockStructer(module);
+		
+		module = new CrootModule();
+		CrootHelper.addCircle(module, 0, 0, 0, 4, BlockRegistry.shell, 0, 1000, BlockRegistry.shell, 0, 1000);
+		
+		platformer = new BlockPlatformer("", module, 4, 1, 4);
+		
+		module = new CrootModule();
+		CrootHelper.addCircle(module, 0, 0, 0, 4, BlockRegistry.shell, 0, 1000, BlockRegistry.biomass, 0, 1000);
+		
+		bioplatform = new BlockPlatformer("_bio", module, 4, 1, 4);
 		
 		GameRegistry.registerBlock(biomass, BlockBiomass.NAME);
 		GameRegistry.registerBlock(wheatCristal, "blockWheatCristal");
@@ -97,6 +186,15 @@ public class BlockRegistry {
 		GameRegistry.registerBlock(holderPlant, BlockHolderPlant.NAME);
 		
 		GameRegistry.registerBlock(experiment, BlockExperiment.NAME);
+		GameRegistry.registerBlock(ghost, BlockGhost.NAME);
+		GameRegistry.registerBlock(structer, BlockStructer.NAME);
+		GameRegistry.registerBlock(corePlasma, BlockCorePlasma.NAME);
+		GameRegistry.registerBlock(membrane, BlockMembrane.NAME);
+		GameRegistry.registerBlock(shell, BlockShell.NAME);
+		GameRegistry.registerBlock(blood, FluidBlood.NAME);
+		GameRegistry.registerBlock(platformer, BlockPlatformer.NAME);
+		GameRegistry.registerBlock(bioplatform, BlockPlatformer.NAME + "_bio");
+		GameRegistry.registerBlock(crootNest, BlockCrootNest.NAME);
 	}
 	
 	

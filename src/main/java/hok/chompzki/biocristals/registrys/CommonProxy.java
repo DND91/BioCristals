@@ -34,6 +34,7 @@ public class CommonProxy { //Server sided
 		FMLCommonHandler.instance().bus().register(new ConfigRegistry());
 		MinecraftForge.EVENT_BUS.register(new StorageHandler());
 		FMLCommonHandler.instance().bus().register(new CraftingEvents());
+		MinecraftForge.EVENT_BUS.register(new CraftingEvents());
 		FMLCommonHandler.instance().bus().register(PlayerStorage.instance(false));
 		
 		ItemRegistry items = new ItemRegistry();
@@ -59,6 +60,9 @@ public class CommonProxy { //Server sided
 		research.preInit(event);
 		
 		MinecraftForge.addGrassSeed(new ItemStack(ItemRegistry.crootBeetle), 10);
+		
+		BioEntityRegistry er = new BioEntityRegistry();
+		er.preInit(event);
 	}
 	
 	

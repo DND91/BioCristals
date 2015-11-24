@@ -50,7 +50,7 @@ public class BlockCrootCore extends BlockCore {
 		this.setHardness(0.8f);
 		this.setLightLevel(1.0F);
 	}
-
+	
 	@Override
 	public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
 		return new TileCrootCore();
@@ -139,6 +139,7 @@ public class BlockCrootCore extends BlockCore {
                         {
                             entityitem.getEntityItem().setTagCompound((NBTTagCompound)itemstack.getTagCompound().copy());
                         }
+                        p_149749_1_.spawnEntityInWorld(entityitem);
                     }
                 }
             }
@@ -147,15 +148,5 @@ public class BlockCrootCore extends BlockCore {
         }
 
         super.breakBlock(p_149749_1_, p_149749_2_, p_149749_3_, p_149749_4_, p_149749_5_, p_149749_6_);
-    }
-    
-    public Item getItemDropped(int p_149650_1_, Random p_149650_2_, int p_149650_3_)
-    {
-        return Items.stick;
-    }
-	
-	public int quantityDropped(Random p_149745_1_)
-    {
-        return 4;
     }
 }

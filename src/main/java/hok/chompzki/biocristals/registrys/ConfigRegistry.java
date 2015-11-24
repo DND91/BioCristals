@@ -22,6 +22,8 @@ import net.minecraftforge.common.config.Property;
 
 
 /**
+ * IDEAS
+ * 
  * 
  * THINGS TO FIX: 
  * 
@@ -67,7 +69,7 @@ public class ConfigRegistry {
 	public static int hungerDuration = 600;
 	public static int hungerAmplifier = 1;
 	
-	public static String configNumber = "0.5";
+	public static String configNumber = "0.66";
 	public static Configuration config;
 	
 	public static List<RecipeData> recipeData = new ArrayList<RecipeData>();
@@ -261,19 +263,14 @@ public class ConfigRegistry {
 		ConfigCategory normal = new ConfigCategory("Normal", treeStructures);
 		normal.put("name", new Property("name", "normal", Property.Type.STRING));
 		normal.put("sapling", new Property("sapling", new String[] { 
-				"block 0 -1 0 BioCristals:crootRoots",
-				"full_circle 0 -1 0 2 BioCristals:crootRoots",
-				"block 0 -2 0 BioCristals:crootRoots"
+				"block 0 -1 0 BioCristals:crootRoots"
 				},
 				  Property.Type.STRING));
 		
 		normal.put("spurt", new Property("spurt", new String[] { 
 				"block 0 -1 0 BioCristals:crootRoots",
-				"full_circle 0 -1 0 2 BioCristals:crootRoots",
-				"block 0 -2 0 BioCristals:crootRoots",
 				"block 0 0 0 BioCristals:crootTrunk",
-				"block 0 1 0 BioCristals:crootCore",
-				"block 0 2 0 BioCristals:crootLeaves"
+				"block 0 1 0 BioCristals:blockCrootNest"
 				},
 				  Property.Type.STRING));
 		
@@ -311,7 +308,7 @@ public class ConfigRegistry {
 	private static void createRecipeStandard(ConfigCategory recipes){
 		
 		ConfigCategory attuner = new ConfigCategory("Attuner", recipes);
-		attuner.put("code", new Property("code", ReserchRegistry.babySteps, Property.Type.STRING));
+		attuner.put("code", new Property("code", "NONE", Property.Type.STRING)); //TODO : FIX ATTUNER!
 		attuner.put("input", new Property("input", new String[] { "minecraft:stick BioCristals:itemCrootBeetle minecraft:stick", 
 																  "BioCristals:itemCrootBeetle empty BioCristals:itemCrootBeetle", 
 																  "minecraft:stick treeSapling minecraft:stick"},
@@ -331,7 +328,19 @@ public class ConfigRegistry {
 		researchBook.put("input", new Property("input", new String[] {"logWood minecraft:book"}, Property.Type.STRING));
 		researchBook.put("output", new Property("output", "BioCristals:itemResearchBook", Property.Type.STRING));
 		
+		ConfigCategory crootStick = new ConfigCategory("Croot Stick", recipes);
+		crootStick.put("code", new Property("code", ReserchRegistry.crootStick, Property.Type.STRING));
+		crootStick.put("input", new Property("input", new String[] { "treeSapling BioCristals:itemCrootBeetle", 
+																	   "minecraft:stick treeSapling"},
+																	   Property.Type.STRING));
+		crootStick.put("output", new Property("output", "BioCristals:itemCrootStick", Property.Type.STRING));
 		
+		ConfigCategory nomadsSack = new ConfigCategory("Nomads Sack", recipes);
+		nomadsSack.put("code", new Property("code", ReserchRegistry.nomadsSack, Property.Type.STRING));
+		nomadsSack.put("input", new Property("input", new String[] { "treeSapling BioCristals:itemCrootBeetle", 
+																	   "BioCristals:itemCrootBeetle treeSapling"},
+																	   Property.Type.STRING));
+		nomadsSack.put("output", new Property("output", "BioCristals:itemNomandsSack", Property.Type.STRING));
     }
 	
 	//https://github.com/Piron1991/Builder_tools/blob/master/src/main/java/com/piron1991/builder_tools/handler/ConfigHandler.java#L82
@@ -399,6 +408,14 @@ public class ConfigRegistry {
 														   					  Property.Type.STRING));
 			reagentPurifier.put("output", new Property("output", "BioCristals:blockReagentPurifier", Property.Type.STRING));
 			
+			
+			ConfigCategory crootRoots = new ConfigCategory("Croot Roots", recipes);
+			crootRoots.put("code", new Property("code", "NONE", Property.Type.STRING));
+			crootRoots.put("input", new Property("input", new String[] { "logWood BioCristals:itemCrootBeetle logWood", 
+																		   "BioCristals:itemCrootBeetle treeSapling BioCristals:itemCrootBeetle",
+																		   "logWood BioCristals:itemCrootBeetle logWood" },
+																		   Property.Type.STRING));
+			crootRoots.put("output", new Property("output", "4xBioCristals:crootRoots", Property.Type.STRING));
 			/*
 			
 			

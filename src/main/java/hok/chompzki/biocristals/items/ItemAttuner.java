@@ -40,6 +40,7 @@ import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import net.minecraftforge.event.entity.player.ArrowNockEvent;
 
 public class ItemAttuner extends Item {
+	
 	public static final String[] bowPullIconNameArray = new String[] {"stage_0", "stage_1", "stage_2"};
 	@SideOnly(Side.CLIENT)
     private IIcon[] iconArray;

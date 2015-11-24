@@ -15,6 +15,11 @@ public abstract class BlockCroot extends BlockContainer {
 		this.setTickRandomly(true);
 	}
 	
+	protected BlockCroot(Material material) {
+		super(material);
+		this.setTickRandomly(true);
+	}
+	
 	@Override
 	public void onPostBlockPlaced(World world, int x, int y, int z, int meta) {
 		if(world.isRemote)

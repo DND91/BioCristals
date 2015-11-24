@@ -46,12 +46,18 @@ public class MessageHandlerInserCrafting implements IMessageHandler<MessageInser
 				IInventory grid = getCraftMatrix(slot);
 				if(grid == null)
 					continue;
-				Slot[] slots = getSlots(container, grid);
-				if(slots.length == grid.getSizeInventory() && 2*recipe.length <= grid.getSizeInventory()){
-					for(int i = 0; i < grid.getSizeInventory(); i++){
-						List<ItemStack> stack = recipe.getItemStack(i);
-						insertStack(player, container, stack == null ? null : stack.get(0), slots[i]);
+				Slot[] slots = getSlots(container, grid); //TODO: ERROR IN CALCULATION! TO SMALL CRAFTING TALBLE GETS FILLED WRONGLY!
+				
+				int gridLength = (int) Math.sqrt(grid.getSizeInventory());
+				int diff = gridLength - (recipe.length);
+				
+				if(slots.length == grid.getSizeInventory() && recipe.length*recipe.length <= grid.getSizeInventory()){
+					for(int x = 0; x < recipe.length; x++)
+					for(int y = 0; y < recipe.length; y++){
 						
+						List<ItemStack> stack = recipe.getItemStack(x+y*recipe.length);
+						
+						insertStack(player, container, stack == null ? null : stack.get(0), slots[x+y*gridLength]);
 					}
 					grid.markDirty();
 					container.detectAndSendChanges();

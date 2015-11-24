@@ -11,8 +11,13 @@ import hok.chompzki.biocristals.items.ItemBioReagent;
 import hok.chompzki.biocristals.items.ItemCatalystInjector;
 import hok.chompzki.biocristals.items.ItemCollector;
 import hok.chompzki.biocristals.items.ItemCrootBeetle;
+import hok.chompzki.biocristals.items.ItemCrootClaw;
 import hok.chompzki.biocristals.items.ItemDebuggerStick;
 import hok.chompzki.biocristals.items.ItemHivebag;
+import hok.chompzki.biocristals.items.ItemKraKenBug;
+import hok.chompzki.biocristals.items.ItemCrootStick;
+import hok.chompzki.biocristals.items.ItemNomadSack;
+import hok.chompzki.biocristals.items.ItemWSB;
 import hok.chompzki.biocristals.recipes.RecipeTransformer;
 import hok.chompzki.biocristals.research.gui.KnowledgeDescriptions;
 import hok.chompzki.biocristals.research.logic.ItemResearchBook;
@@ -44,6 +49,11 @@ public class ItemRegistry {
 	public static Item debuggingStick = null;
 	public static Item hivebag = null;
 	public static Item crootBeetle = null;
+	public static Item crootClaw = null;
+	public static Item kraKenBug = null;
+	public static Item crootStick = null;
+	public static Item wsb = null;
+	public static Item nomadSack = null;
 	
 	public void registerItems(){
 		attuner = new ItemAttuner();
@@ -55,6 +65,11 @@ public class ItemRegistry {
 		debuggingStick = new ItemDebuggerStick();
 		hivebag = new ItemHivebag();
 		crootBeetle = new ItemCrootBeetle();
+		crootClaw = new ItemCrootClaw();
+		kraKenBug = new ItemKraKenBug();
+		crootStick = new ItemCrootStick();
+		wsb = new ItemWSB();
+		nomadSack = new ItemNomadSack();
 		
 		GameRegistry.registerItem(attuner, ItemAttuner.NAME, BioCristalsMod.MODID);
 		GameRegistry.registerItem(bioReagent, ItemBioReagent.NAME, BioCristalsMod.MODID);
@@ -66,7 +81,11 @@ public class ItemRegistry {
 		GameRegistry.registerItem(debuggingStick, ItemDebuggerStick.NAME, BioCristalsMod.MODID);
 		GameRegistry.registerItem(hivebag, ItemHivebag.NAME, BioCristalsMod.MODID);
 		GameRegistry.registerItem(crootBeetle, ItemCrootBeetle.NAME, BioCristalsMod.MODID);
-		
+		GameRegistry.registerItem(crootClaw, ItemCrootClaw.NAME, BioCristalsMod.MODID);
+		GameRegistry.registerItem(kraKenBug, ItemKraKenBug.NAME, BioCristalsMod.MODID);
+		GameRegistry.registerItem(crootStick, ItemCrootStick.NAME, BioCristalsMod.MODID);
+		GameRegistry.registerItem(wsb, ItemWSB.NAME, BioCristalsMod.MODID);
+		GameRegistry.registerItem(nomadSack, ItemNomadSack.NAME, BioCristalsMod.MODID);
 	}
 	
 }

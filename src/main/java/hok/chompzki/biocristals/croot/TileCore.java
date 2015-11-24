@@ -89,6 +89,7 @@ public abstract class TileCore extends TileEntity implements
     }
 
 	public void grow() {
+		/*
 		int meta = worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
     	String name = BlockCrootSapling.subtypes[meta];
     	
@@ -101,6 +102,7 @@ public abstract class TileCore extends TileEntity implements
 			CrootHelper.spawnBlock(worldObj, block, xCoord, yCoord, zCoord);
 			
 		}
+		*/
 	}
 	
 	public TreeForm getForm(){
