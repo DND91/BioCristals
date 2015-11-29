@@ -1,34 +1,30 @@
 package hok.chompzki.biocristals.registrys;
 
 import hok.chompzki.biocristals.BioCristalsMod;
-import hok.chompzki.biocristals.blocks.BlockAttunedEarth;
+import hok.chompzki.biocristals.CrootHelper;
 import hok.chompzki.biocristals.blocks.BlockBiomass;
+import hok.chompzki.biocristals.blocks.BlockCorePlasma;
 import hok.chompzki.biocristals.blocks.BlockCrootCore;
 import hok.chompzki.biocristals.blocks.BlockCrootHollow;
 import hok.chompzki.biocristals.blocks.BlockCrootLeaves;
+import hok.chompzki.biocristals.blocks.BlockCrootNest;
 import hok.chompzki.biocristals.blocks.BlockCrootRoots;
 import hok.chompzki.biocristals.blocks.BlockCrootSapling;
 import hok.chompzki.biocristals.blocks.BlockCrootStreamStem;
 import hok.chompzki.biocristals.blocks.BlockCrootTrunk;
-import hok.chompzki.biocristals.blocks.BlockExperiment;
 import hok.chompzki.biocristals.blocks.BlockExtractor;
+import hok.chompzki.biocristals.blocks.BlockGhost;
+import hok.chompzki.biocristals.blocks.BlockMembrane;
+import hok.chompzki.biocristals.blocks.BlockPlatformer;
 import hok.chompzki.biocristals.blocks.BlockPrimogenitus;
 import hok.chompzki.biocristals.blocks.BlockReagentPurifier;
+import hok.chompzki.biocristals.blocks.BlockShell;
+import hok.chompzki.biocristals.blocks.BlockStructer;
 import hok.chompzki.biocristals.blocks.BlockSulphurTuft;
 import hok.chompzki.biocristals.blocks.BlockWeakCristal;
-import hok.chompzki.biocristals.croot.CrootHelper;
-import hok.chompzki.biocristals.croot.cristal.BlockCorePlasma;
-import hok.chompzki.biocristals.croot.cristal.BlockCrootNest;
-import hok.chompzki.biocristals.croot.cristal.BlockGhost;
-import hok.chompzki.biocristals.croot.cristal.BlockMembrane;
-import hok.chompzki.biocristals.croot.cristal.BlockPlatformer;
-import hok.chompzki.biocristals.croot.cristal.BlockShell;
-import hok.chompzki.biocristals.croot.cristal.BlockStructer;
-import hok.chompzki.biocristals.croot.cristal.FluidBlood;
-import hok.chompzki.biocristals.croot_old.CrootModule;
-import hok.chompzki.biocristals.croot_old.CrootRegistry;
+import hok.chompzki.biocristals.croot.building.CrootModule;
+import hok.chompzki.biocristals.fluids.FluidBlood;
 import hok.chompzki.biocristals.items.ItemAttuner;
-import hok.chompzki.biocristals.items.ItemCrootWithMetadata;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
@@ -62,8 +58,6 @@ public class BlockRegistry {
 	public static Block crootStem = null;
 	public static Block crootHollow = null;
 	public static Block extractor = null;
-	public static Block attunedEarth = null;
-	public static Block holderPlant = null;
 	public static Block ghost = null;
 	
 	public static Block structer = null;
@@ -78,8 +72,6 @@ public class BlockRegistry {
 	public static Block shell = null;
 	public static Block blood = null;
 	public static Block crootNest = null;
-	
-	public static Block experiment = null;
 	
 	public void registerBlocks(){
 		
@@ -109,9 +101,6 @@ public class BlockRegistry {
 		crootStem = new BlockCrootStreamStem();
 		crootHollow = new BlockCrootHollow();
 		extractor = new BlockExtractor();
-		attunedEarth = new BlockAttunedEarth();
-		holderPlant = new BlockHolderPlant();
-		experiment = new BlockExperiment();
 		ghost = new BlockGhost();
 		corePlasma = new BlockCorePlasma();
 		membrane = new BlockMembrane();
@@ -174,18 +163,15 @@ public class BlockRegistry {
 		GameRegistry.registerBlock(sulphurTuft, BlockSulphurTuft.NAME);
 		GameRegistry.registerBlock(reagentPurifier, BlockReagentPurifier.NAME);
 		GameRegistry.registerBlock(primogenitus, BlockPrimogenitus.NAME);
-		GameRegistry.registerBlock(crootSapling, ItemCrootWithMetadata.class, BlockCrootSapling.NAME);
-		GameRegistry.registerBlock(crootRoots, ItemCrootWithMetadata.class, BlockCrootRoots.NAME);
-		GameRegistry.registerBlock(crootCore, ItemCrootWithMetadata.class, BlockCrootCore.NAME);
-		GameRegistry.registerBlock(crootLeaves, ItemCrootWithMetadata.class, BlockCrootLeaves.NAME);
-		GameRegistry.registerBlock(crootTrunk, ItemCrootWithMetadata.class, BlockCrootTrunk.NAME);
+		GameRegistry.registerBlock(crootSapling, BlockCrootSapling.NAME);
+		GameRegistry.registerBlock(crootRoots, BlockCrootRoots.NAME);
+		GameRegistry.registerBlock(crootCore, BlockCrootCore.NAME);
+		GameRegistry.registerBlock(crootLeaves, BlockCrootLeaves.NAME);
+		GameRegistry.registerBlock(crootTrunk, BlockCrootTrunk.NAME);
 		GameRegistry.registerBlock(crootStem, BlockCrootStreamStem.NAME);
 		GameRegistry.registerBlock(crootHollow, BlockCrootHollow.NAME);
 		GameRegistry.registerBlock(extractor, BlockExtractor.NAME);
-		GameRegistry.registerBlock(attunedEarth, BlockAttunedEarth.NAME);
-		GameRegistry.registerBlock(holderPlant, BlockHolderPlant.NAME);
 		
-		GameRegistry.registerBlock(experiment, BlockExperiment.NAME);
 		GameRegistry.registerBlock(ghost, BlockGhost.NAME);
 		GameRegistry.registerBlock(structer, BlockStructer.NAME);
 		GameRegistry.registerBlock(corePlasma, BlockCorePlasma.NAME);

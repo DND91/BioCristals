@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.UUID;
 
 import hok.chompzki.biocristals.BioCristalsMod;
-import hok.chompzki.biocristals.croot.CrootHelper;
-import hok.chompzki.biocristals.croot.ICroot;
-import hok.chompzki.biocristals.croot.ICrootCore;
+import hok.chompzki.biocristals.CrootHelper;
+import hok.chompzki.biocristals.api.ICroot;
+import hok.chompzki.biocristals.api.ICrootCore;
 import hok.chompzki.biocristals.registrys.BlockRegistry;
 import hok.chompzki.biocristals.research.data.PlayerResearch;
 import hok.chompzki.biocristals.research.data.PlayerStorage;

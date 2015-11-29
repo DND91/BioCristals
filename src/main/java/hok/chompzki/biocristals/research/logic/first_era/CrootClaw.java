@@ -1,11 +1,11 @@
 package hok.chompzki.biocristals.research.logic.first_era;
 
 import net.minecraft.item.ItemStack;
-import hok.chompzki.biocristals.client.GuiCraftingHelper;
+import hok.chompzki.biocristals.api.ArticleContent;
+import hok.chompzki.biocristals.api.ArticleContent.EnumContent;
+import hok.chompzki.biocristals.client.gui.GuiCraftingHelper;
+import hok.chompzki.biocristals.client.gui.KnowledgeDescriptions;
 import hok.chompzki.biocristals.registrys.ItemRegistry;
-import hok.chompzki.biocristals.research.data.ArticleContent;
-import hok.chompzki.biocristals.research.data.ArticleContent.EnumContent;
-import hok.chompzki.biocristals.research.gui.KnowledgeDescriptions;
 
 public class CrootClaw extends ArticleContent {
 

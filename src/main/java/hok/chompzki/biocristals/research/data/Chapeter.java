@@ -3,7 +3,8 @@ package hok.chompzki.biocristals.research.data;
 import java.util.ArrayList;
 
 import hok.chompzki.biocristals.BioCristalsMod;
-import hok.chompzki.biocristals.client.IArticle;
+import hok.chompzki.biocristals.api.ArticleContent;
+import hok.chompzki.biocristals.api.IArticle;
 import hok.chompzki.biocristals.research.logic.content.ServerContent;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;

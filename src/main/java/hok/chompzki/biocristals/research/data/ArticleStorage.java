@@ -1,5 +1,8 @@
 package hok.chompzki.biocristals.research.data;
 
+import hok.chompzki.biocristals.StorageHandler;
+import hok.chompzki.biocristals.api.IDataFile;
+
 import java.io.Serializable;
 import java.util.HashMap;
 

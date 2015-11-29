@@ -1,8 +1,7 @@
 package hok.chompzki.biocristals.blocks;
 
 import hok.chompzki.biocristals.BioCristalsMod;
-import hok.chompzki.biocristals.croot.BlockCroot;
-import hok.chompzki.biocristals.croot.ICroot;
+import hok.chompzki.biocristals.api.ICroot;
 import hok.chompzki.biocristals.tile_enteties.TileCrootOneConsumer;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

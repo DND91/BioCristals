@@ -3,7 +3,7 @@ package hok.chompzki.biocristals.items;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import hok.chompzki.biocristals.BioCristalsMod;
-import hok.chompzki.biocristals.api.BioHelper;
+import hok.chompzki.biocristals.BioHelper;
 import hok.chompzki.biocristals.api.IBaseCristal;
 import hok.chompzki.biocristals.api.IGrowthCristal;
 import hok.chompzki.biocristals.api.IEntityTransformation;

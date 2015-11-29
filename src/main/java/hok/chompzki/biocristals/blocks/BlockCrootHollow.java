@@ -13,7 +13,6 @@ import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import hok.chompzki.biocristals.BioCristalsMod;
-import hok.chompzki.biocristals.croot.BlockCroot;
 import hok.chompzki.biocristals.tile_enteties.TileCrootHollow;
 
 public class BlockCrootHollow extends BlockCroot {

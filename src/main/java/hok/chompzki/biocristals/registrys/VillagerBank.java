@@ -2,7 +2,6 @@ package hok.chompzki.biocristals.registrys;
 
 import net.minecraft.util.ResourceLocation;
 import hok.chompzki.biocristals.BioCristalsMod;
-import hok.chompzki.biocristals.client.GuiHandler;
 import hok.chompzki.biocristals.villagers.BasicResercher;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;

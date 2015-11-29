@@ -5,10 +5,9 @@ import java.util.List;
 import java.util.Random;
 
 import hok.chompzki.biocristals.BioCristalsMod;
-import hok.chompzki.biocristals.api.BioHelper;
+import hok.chompzki.biocristals.BioHelper;
+import hok.chompzki.biocristals.api.ICroot;
 import hok.chompzki.biocristals.api.IGrowthCristal;
-import hok.chompzki.biocristals.croot.BlockCroot;
-import hok.chompzki.biocristals.croot.ICroot;
 import hok.chompzki.biocristals.registrys.ConfigRegistry;
 import hok.chompzki.biocristals.tile_enteties.TileCrootOneConsumer;
 import cpw.mods.fml.relauncher.Side;

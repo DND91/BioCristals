@@ -1,6 +1,6 @@
 package hok.chompzki.biocristals.transformation;
 
-import hok.chompzki.biocristals.api.BioHelper;
+import hok.chompzki.biocristals.BioHelper;
 import hok.chompzki.biocristals.api.ITransformation;
 import hok.chompzki.biocristals.recipes.TransformerContainer;
 import hok.chompzki.biocristals.registrys.BlockRegistry;

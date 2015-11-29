@@ -12,7 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-import hok.chompzki.biocristals.api.BioHelper;
+import hok.chompzki.biocristals.BioHelper;
 import hok.chompzki.biocristals.api.IEntityTransformation;
 import hok.chompzki.biocristals.research.data.PlayerResearch;
 import hok.chompzki.biocristals.research.data.PlayerStorage;

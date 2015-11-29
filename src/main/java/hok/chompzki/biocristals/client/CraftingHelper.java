@@ -1,18 +1,19 @@
 package hok.chompzki.biocristals.client;
 
 import hok.chompzki.biocristals.BioCristalsMod;
+import hok.chompzki.biocristals.api.ArticleContent.EnumContent;
+import hok.chompzki.biocristals.client.gui.GuiArticle;
+import hok.chompzki.biocristals.client.gui.GuiButtonAutoPage;
+import hok.chompzki.biocristals.client.gui.GuiButtonHomePage;
+import hok.chompzki.biocristals.client.gui.GuiButtonNextPage;
+import hok.chompzki.biocristals.client.gui.GuiCraftingHelper;
+import hok.chompzki.biocristals.client.gui.GuiCrossButtonPage;
 import hok.chompzki.biocristals.recipes.RecipeContainer;
 import hok.chompzki.biocristals.research.data.DataHelper;
 import hok.chompzki.biocristals.research.data.PlayerStorage;
-import hok.chompzki.biocristals.research.data.ArticleContent.EnumContent;
+import hok.chompzki.biocristals.research.data.network.MessageInsertCrafting;
 import hok.chompzki.biocristals.research.data.network.PlayerStorageFaveMessage;
 import hok.chompzki.biocristals.research.data.network.PlayerStorageSyncMessage;
-import hok.chompzki.biocristals.research.events.MessageInsertCrafting;
-import hok.chompzki.biocristals.research.gui.GuiArticle;
-import hok.chompzki.biocristals.research.gui.GuiButtonAutoPage;
-import hok.chompzki.biocristals.research.gui.GuiButtonHomePage;
-import hok.chompzki.biocristals.research.gui.GuiButtonNextPage;
-import hok.chompzki.biocristals.research.gui.GuiCrossButtonPage;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

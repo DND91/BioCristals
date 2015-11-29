@@ -15,7 +15,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import hok.chompzki.biocristals.BioCristalsMod;
-import hok.chompzki.biocristals.croot.BlockCroot;
 import hok.chompzki.biocristals.tile_enteties.TileCrootOneMember;
 
 public class BlockCrootStreamStem extends BlockCroot {

@@ -4,6 +4,7 @@ import java.util.List;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import hok.chompzki.biocristals.BioCristalsMod;
+import hok.chompzki.biocristals.client.gui.KnowledgeDescriptions;
 import hok.chompzki.biocristals.containers.Hivebag;
 import hok.chompzki.biocristals.items.ItemAttuner;
 import hok.chompzki.biocristals.items.ItemBioBlob;
@@ -17,10 +18,10 @@ import hok.chompzki.biocristals.items.ItemHivebag;
 import hok.chompzki.biocristals.items.ItemKraKenBug;
 import hok.chompzki.biocristals.items.ItemCrootStick;
 import hok.chompzki.biocristals.items.ItemNomadSack;
+import hok.chompzki.biocristals.items.ItemResearchBook;
 import hok.chompzki.biocristals.items.ItemWSB;
+import hok.chompzki.biocristals.recipes.RecipeData;
 import hok.chompzki.biocristals.recipes.RecipeTransformer;
-import hok.chompzki.biocristals.research.gui.KnowledgeDescriptions;
-import hok.chompzki.biocristals.research.logic.ItemResearchBook;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -53,7 +54,7 @@ public class ItemRegistry {
 	public static Item kraKenBug = null;
 	public static Item crootStick = null;
 	public static Item wsb = null;
-	public static Item nomadSack = null;
+	public static ItemNomadSack nomadSack = null;
 	
 	public void registerItems(){
 		attuner = new ItemAttuner();
@@ -86,6 +87,59 @@ public class ItemRegistry {
 		GameRegistry.registerItem(crootStick, ItemCrootStick.NAME, BioCristalsMod.MODID);
 		GameRegistry.registerItem(wsb, ItemWSB.NAME, BioCristalsMod.MODID);
 		GameRegistry.registerItem(nomadSack, ItemNomadSack.NAME, BioCristalsMod.MODID);
+	}
+
+	public void setupFilters() {
+		
+		for(String data : ConfigRegistry.sackWhiteList){
+			RecipeTransformer.dataToItemStack(data, false);
+			nomadSack.whitelist.addAll(RecipeTransformer.dataToItemStack(data, false));
+		}
+		
+		for(String data : ConfigRegistry.sackBlackList){
+			RecipeTransformer.dataToItemStack(data, false);
+			nomadSack.blacklist.addAll(RecipeTransformer.dataToItemStack(data, false));
+		}
+		
+		/*
+		nomadSack.whitelist.add(Blocks.wool);
+		nomadSack.whitelist.add(Blocks.lever);
+		nomadSack.whitelist.add(Blocks.melon_block);
+		nomadSack.whitelist.add(Blocks.pumpkin);
+		nomadSack.whitelist.add(Blocks.rail);
+		nomadSack.whitelist.add(Blocks.brown_mushroom);
+		nomadSack.whitelist.add(Blocks.red_mushroom);
+		nomadSack.whitelist.add(Blocks.brewing_stand);
+		nomadSack.whitelist.add(Blocks.sapling);
+		nomadSack.whitelist.add(Blocks.red_flower);
+		nomadSack.whitelist.add(Blocks.redstone_torch);
+		nomadSack.whitelist.add(Blocks.waterlily);
+		nomadSack.whitelist.add(Blocks.grass);
+		nomadSack.whitelist.add(Blocks.leaves);
+		nomadSack.whitelist.add(Blocks.yellow_flower);
+		nomadSack.whitelist.add(Blocks.vine);
+		*/
+		/*
+		nomadSack.blacklist.add(Items.stick);
+		nomadSack.blacklist.add(Items.coal);
+		nomadSack.blacklist.add(Items.bed);
+		nomadSack.blacklist.add(Items.map);
+		nomadSack.blacklist.add(Items.compass);
+		nomadSack.blacklist.add(Items.cauldron);
+		nomadSack.blacklist.add(Items.boat);
+		nomadSack.blacklist.add(Items.minecart);
+		nomadSack.blacklist.add(Items.chest_minecart);
+		nomadSack.blacklist.add(Items.furnace_minecart);
+		nomadSack.blacklist.add(Items.arrow);
+		nomadSack.blacklist.add(Items.redstone);
+		nomadSack.blacklist.add(Items.glowstone_dust);
+		nomadSack.blacklist.add(Items.clock);
+		nomadSack.blacklist.add(Items.hopper_minecart);
+		nomadSack.blacklist.add(Items.tnt_minecart);
+		nomadSack.blacklist.add(Items.filled_map);
+		nomadSack.blacklist.add(ItemRegistry.crootStick);
+		nomadSack.blacklist.add(ItemRegistry.researchBook);
+		*/
 	}
 	
 }

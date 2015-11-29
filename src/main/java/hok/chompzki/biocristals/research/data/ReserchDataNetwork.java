@@ -1,6 +1,6 @@
 package hok.chompzki.biocristals.research.data;
 
-import hok.chompzki.biocristals.croot.WorldCoord;
+import hok.chompzki.biocristals.croot.power.WorldCoord;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;

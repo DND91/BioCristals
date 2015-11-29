@@ -2,7 +2,7 @@ package hok.chompzki.biocristals.registrys;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import hok.chompzki.biocristals.research.data.ArticleContent;
+import hok.chompzki.biocristals.api.ArticleContent;
 import hok.chompzki.biocristals.research.data.ArticleStorage;
 import hok.chompzki.biocristals.research.data.Category;
 import hok.chompzki.biocristals.research.data.Chapeter;
@@ -10,42 +10,14 @@ import hok.chompzki.biocristals.research.data.PlayerStorage;
 import hok.chompzki.biocristals.research.data.Research;
 import hok.chompzki.biocristals.research.data.ReserchDataNetwork;
 import hok.chompzki.biocristals.research.logic.content.BookTutorial;
-import hok.chompzki.biocristals.research.logic.content.CrootHollow;
-import hok.chompzki.biocristals.research.logic.content.CrootSapling;
-import hok.chompzki.biocristals.research.logic.content.CrootStem;
-import hok.chompzki.biocristals.research.logic.content.CubeMass;
-import hok.chompzki.biocristals.research.logic.content.Purifier;
-import hok.chompzki.biocristals.research.logic.content.Reaction;
 import hok.chompzki.biocristals.research.logic.content.ServerContent;
-import hok.chompzki.biocristals.research.logic.content.SulphurTuft;
 import hok.chompzki.biocristals.research.logic.content.chapeter.AgeOfConflict;
 import hok.chompzki.biocristals.research.logic.content.chapeter.FirstEra;
 import hok.chompzki.biocristals.research.logic.content.chapeter.Lore;
-import hok.chompzki.biocristals.research.logic.content.crystallization.CarrotCristalisation;
-import hok.chompzki.biocristals.research.logic.content.crystallization.MelonCristalisation;
-import hok.chompzki.biocristals.research.logic.content.crystallization.PotatoCristalisation;
-import hok.chompzki.biocristals.research.logic.content.crystallization.PumpkinCristalisation;
-import hok.chompzki.biocristals.research.logic.content.crystallization.ReedsCristalisation;
-import hok.chompzki.biocristals.research.logic.content.crystallization.WheatCristalisation;
-import hok.chompzki.biocristals.research.logic.content.flesh.BoneWreck;
-import hok.chompzki.biocristals.research.logic.content.flesh.DarkWarp;
-import hok.chompzki.biocristals.research.logic.content.flesh.FeatherFriend;
-import hok.chompzki.biocristals.research.logic.content.flesh.FleshRapture;
-import hok.chompzki.biocristals.research.logic.content.flesh.LeatherBeast;
-import hok.chompzki.biocristals.research.logic.content.flesh.LeatherHound;
-import hok.chompzki.biocristals.research.logic.content.flesh.PayingTaxes;
-import hok.chompzki.biocristals.research.logic.content.flesh.PinkBlouse;
-import hok.chompzki.biocristals.research.logic.content.flesh.PuddingSplit;
-import hok.chompzki.biocristals.research.logic.content.flesh.SheepSkin;
-import hok.chompzki.biocristals.research.logic.content.flesh.WidowMaker;
 import hok.chompzki.biocristals.research.logic.content.lore.CaraRot;
 import hok.chompzki.biocristals.research.logic.content.lore.CarlaFleur;
 import hok.chompzki.biocristals.research.logic.content.lore.Dberry;
 import hok.chompzki.biocristals.research.logic.content.lore.Rabarberpaj;
-import hok.chompzki.biocristals.research.logic.content.purifing.BioBlob;
-import hok.chompzki.biocristals.research.logic.content.purifing.BiomassMK1;
-import hok.chompzki.biocristals.research.logic.content.purifing.BiomassMK2;
-import hok.chompzki.biocristals.research.logic.content.purifing.Promogenitus;
 import hok.chompzki.biocristals.research.logic.first_era.BabySteps;
 import hok.chompzki.biocristals.research.logic.first_era.CrootClaw;
 import hok.chompzki.biocristals.research.logic.first_era.CrootStick;
@@ -100,46 +72,6 @@ public class ReserchRegistry {
 	public static final String crootSapling = "crootSapling";
 	
 	
-	public static final String crootStem = "crootStem";
-	public static final String crootHollow = "crootHollow";
-	public static final String purifier = "purifier";
-	
-	public static final String biomassmk1 = "biomassmk1";
-	public static final String biomassmk2 = "biomassmk2";
-	public static final String promogenitus = "promogenitus";
-	public static final String bioBlob = "bioBlob";
-	public static final String extractor = "extractor";
-	
-	public static final String cubeMass = "cubeMass"; //Biomass
-	public static final String reaction = "reaction"; //BioReagent
-	
-	public static final String tuft = "tuft";
-	
-	public static final String wheatCristalisation = "wheatCristalisation"; //Weak Wheat Cristal
-	public static final String carrotCristalisation = "carrotCristalisation";
-	public static final String reedsCristalisation = "reedsCristalisation";
-	public static final String potatoCristalisation = "potatoCristalisation";
-	public static final String melonCristalisation = "melonCristalisation";
-	public static final String pumpkinCristalisation = "pumpkinCristalisation";
-	
-	public static final String grungisCroots = "grubgisCroots"; //Grubgi's Croots
-	
-	public static final String theWorldAroundUs = "theWorldAroundUs";
-	
-	public static final String sheepSkin = "sheepSkin";
-	
-	public static final String boneWreck = "boneWreck";
-	public static final String darkWarp = "darkWarp";
-	public static final String featherFriend = "featherFriend";
-	public static final String fleshRapture = "fleshRapture";
-	public static final String leatherBeast = "leatherBeast";
-	public static final String leatherHound = "leatherHound";
-	public static final String payingTaxes = "payingTaxes";
-	public static final String pinkBlouse = "pinkBlouse";
-	public static final String puddingSplit = "puddingSplit";
-	public static final String widowMaker = "widowMaker";
-	
-	
 	public static final String rabarberpaj = "rabarberpaj";
 	public static final String cara_rot = "cara_rot";
 	public static final String berry = "dberry";
@@ -151,10 +83,10 @@ public class ReserchRegistry {
 		boolean side = event.getSide() == Side.SERVER;
 		
 		//LORE
-		ReserchDataNetwork.register(new Research(rabarberpaj, 0, 0, Items.book, new Rabarberpaj(), loreChapeter, lore, babySteps, crootSapling));
-		ReserchDataNetwork.register(new Research(cara_rot, 0, 0, Items.book, new CaraRot(), loreChapeter, lore, wheatCristalisation));
-		ReserchDataNetwork.register(new Research(berry, 0, 0, Items.book, new Dberry(), loreChapeter, lore, reaction));
-		ReserchDataNetwork.register(new Research(carla_fleur, 0, 0, Items.book, new CarlaFleur(), loreChapeter, lore, cubeMass));
+		//ReserchDataNetwork.register(new Research(rabarberpaj, 0, 0, Items.book, new Rabarberpaj(), loreChapeter, lore, babySteps, crootSapling));
+		//ReserchDataNetwork.register(new Research(cara_rot, 0, 0, Items.book, new CaraRot(), loreChapeter, lore, wheatCristalisation));
+		//ReserchDataNetwork.register(new Research(berry, 0, 0, Items.book, new Dberry(), loreChapeter, lore, reaction));
+		//ReserchDataNetwork.register(new Research(carla_fleur, 0, 0, Items.book, new CarlaFleur(), loreChapeter, lore, cubeMass));
 		
 		/** FIRST AGE **/
 		ReserchDataNetwork.register(new Research(babySteps, 0, 0, ItemRegistry.crootBeetle, side ? new ServerContent() : new BabySteps(), firstEra, fundamental).setSpecial());
@@ -205,7 +137,7 @@ public class ReserchRegistry {
 		
 		ReserchDataNetwork.register(new Research(darkWarp, 0, 0, Items.ender_pearl, side ? new ServerContent() : new DarkWarp(), firstEra, flesh, fleshRapture));
 		ReserchDataNetwork.register(new Research(payingTaxes, 0, 0, Items.gold_nugget, side ? new ServerContent() : new PayingTaxes(), firstEra, flesh, leatherBeast));
-		*/
+		
 		ReserchDataNetwork.register(new Research(wheatCristalisation, 0, 0, BlockRegistry.wheatCristal, side ? new ServerContent() : new WheatCristalisation(), ageOfConflict, crystallization, cubeMass, reaction).setSpecial());
 		
 		ReserchDataNetwork.register(new Research(carrotCristalisation, 0, 0, BlockRegistry.carrotCristal, side ? new ServerContent() : new CarrotCristalisation(), ageOfConflict, crystallization, wheatCristalisation));
@@ -213,7 +145,7 @@ public class ReserchRegistry {
 		ReserchDataNetwork.register(new Research(potatoCristalisation, 0, 0, BlockRegistry.potatoCristal, side ? new ServerContent() : new PotatoCristalisation(), ageOfConflict, crystallization, wheatCristalisation));
 		ReserchDataNetwork.register(new Research(melonCristalisation, 0, 0, BlockRegistry.melonCristal, side ? new ServerContent() : new MelonCristalisation(), ageOfConflict, crystallization, wheatCristalisation));
 		ReserchDataNetwork.register(new Research(pumpkinCristalisation, 0, 0, BlockRegistry.pumpkinCristal, side ? new ServerContent() : new PumpkinCristalisation(), ageOfConflict, crystallization, wheatCristalisation));
-		
+		*/
 		
 		tutorialResearch = new Research(tutorial, 0, 0, Items.book, tutorialContent, loreChapeter, tutorialCat);
 		ReserchDataNetwork.register(tutorialResearch);

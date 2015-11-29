@@ -1,5 +1,6 @@
 package hok.chompzki.biocristals.recipes;
 
+import hok.chompzki.biocristals.api.ICrootRecipe;
 import hok.chompzki.biocristals.research.data.PlayerResearch;
 import hok.chompzki.biocristals.tile_enteties.TileCrootCore;
 

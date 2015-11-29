@@ -3,7 +3,8 @@ package hok.chompzki.biocristals.research.data;
 import java.util.HashSet;
 import java.util.List;
 
-import hok.chompzki.biocristals.client.IArticle;
+import hok.chompzki.biocristals.api.ArticleContent;
+import hok.chompzki.biocristals.api.IArticle;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

@@ -1,8 +1,7 @@
 package hok.chompzki.biocristals.blocks;
 
 import hok.chompzki.biocristals.BioCristalsMod;
-import hok.chompzki.biocristals.croot.BlockCroot;
-import hok.chompzki.biocristals.croot.TileCroot;
+import hok.chompzki.biocristals.tile_enteties.TileCroot;
 import hok.chompzki.biocristals.tile_enteties.TileCrootOneMember;
 
 import java.util.List;

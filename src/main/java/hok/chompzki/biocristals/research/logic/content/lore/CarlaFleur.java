@@ -1,8 +1,8 @@
 package hok.chompzki.biocristals.research.logic.content.lore;
 
-import hok.chompzki.biocristals.client.GuiCraftingHelper;
-import hok.chompzki.biocristals.research.data.ArticleContent;
-import hok.chompzki.biocristals.research.data.ArticleContent.EnumContent;
+import hok.chompzki.biocristals.api.ArticleContent;
+import hok.chompzki.biocristals.api.ArticleContent.EnumContent;
+import hok.chompzki.biocristals.client.gui.GuiCraftingHelper;
 
 public class CarlaFleur extends ArticleContent {
 	

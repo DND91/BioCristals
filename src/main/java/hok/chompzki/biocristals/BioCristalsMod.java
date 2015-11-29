@@ -1,15 +1,14 @@
 package hok.chompzki.biocristals;
 
-import hok.chompzki.biocristals.registrys.CommonProxy;
 import hok.chompzki.biocristals.research.data.PlayerStorage;
+import hok.chompzki.biocristals.research.data.network.MessageHandlerInserCrafting;
+import hok.chompzki.biocristals.research.data.network.MessageInsertCrafting;
 import hok.chompzki.biocristals.research.data.network.PlayerStorageDelissenHandler;
 import hok.chompzki.biocristals.research.data.network.PlayerStorageDelissenMessage;
 import hok.chompzki.biocristals.research.data.network.PlayerStorageFaveHandler;
 import hok.chompzki.biocristals.research.data.network.PlayerStorageFaveMessage;
 import hok.chompzki.biocristals.research.data.network.PlayerStorageSyncHandler;
 import hok.chompzki.biocristals.research.data.network.PlayerStorageSyncMessage;
-import hok.chompzki.biocristals.research.events.MessageHandlerInserCrafting;
-import hok.chompzki.biocristals.research.events.MessageInsertCrafting;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import cpw.mods.fml.common.Mod;
@@ -34,7 +33,7 @@ public class BioCristalsMod
     
     public static SimpleNetworkWrapper network;
     
-    @SidedProxy(clientSide = "hok.chompzki.biocristals.registrys.ClientProxy", serverSide = "hok.chompzki.biocristals.registrys.CommonProxy")
+    @SidedProxy(clientSide = "hok.chompzki.biocristals.ClientProxy", serverSide = "hok.chompzki.biocristals.CommonProxy")
     public static CommonProxy proxy;
     
     @Instance(MODID)

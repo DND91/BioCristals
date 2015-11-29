@@ -73,15 +73,7 @@ public class RecipeRegistry {
 		loadCroot();
 		loadPurifing();
 		
-    	for(int i = 0; i < ConfigRegistry.crootTypes.length; i++){
-    		String[] split = ConfigRegistry.crootTypes[i].split(" ");
-    		Object input = RecipeTransformer.dataToObject(split[1]);
-    		
-    		if(input instanceof OreDictContainer)
-    			input = split[1];
-    		
-    		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(BlockRegistry.crootSapling, 1, i), new ItemStack(BlockRegistry.crootSapling, 1, OreDictionary.WILDCARD_VALUE), input));
-    	}
+		
 	}
 	
 	public static void load(){

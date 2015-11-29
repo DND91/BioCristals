@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import hok.chompzki.biocristals.BioCristalsMod;
-import hok.chompzki.biocristals.api.BioHelper;
+import hok.chompzki.biocristals.BioHelper;
 import hok.chompzki.biocristals.registrys.ConfigRegistry;
 import hok.chompzki.biocristals.registrys.ItemRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -34,6 +34,8 @@ public class ItemNomadSack extends Item {
 	
 	@SideOnly(Side.CLIENT)
     private IIcon[] iconArray;
+	public static ArrayList<ItemStack> whitelist = new ArrayList<ItemStack>();
+	public static ArrayList<ItemStack> blacklist = new ArrayList<ItemStack>();
 	
 	
 	public final static String NAME = "itemNomandsSack";
@@ -47,21 +49,38 @@ public class ItemNomadSack extends Item {
 		this.setMaxDamage(maxSize);
 		this.setNoRepair();
 	}
+	
+	private boolean isWhitelisted(ItemStack block){
+		for(ItemStack b : whitelist){
+			if(b.getItem() == block.getItem())
+				return true;
+		}
+		return false;
+	}
+	
+	private boolean isBlacklisted(ItemStack item){
+		for(ItemStack i : blacklist){
+			if(i.getItem() == item.getItem())
+				return true;
+		}
+		return false;
+	}
 	//IPlantable
+	//Blocks banned, therefor whitelist for blocks; wool, pumpkin, melons, seeds, flowers
+	//Items are okey, therefor blacklist for Items; coal, redstone, glowstone, stick, researchBook, crootStick, arrows, bed, compass, couldron, 
+	//Wont accept any ItemTool or ItemFood
 	public boolean canEat(ItemStack sack, ItemStack stack){
 		if(stack.getItem() instanceof ItemBlock){
-			Block b = Block.getBlockFromItem(stack.getItem());
-			if(!(b instanceof IPlantable) && !(b == Blocks.wool))
+			if(!isWhitelisted(stack))
+				return false;
+		} else {
+			if(stack.getItem().isItemTool(stack))
+				return false;
+			if(stack.getItem() instanceof ItemFood)
+				return false;
+			if(isBlacklisted(stack))
 				return false;
 		}
-		if(stack.getItem().isItemTool(stack))
-			return false;
-		if(stack.getItem() instanceof ItemFood)
-			return false;
-		if(stack.getItem() == Items.stick || stack.getItem() == Items.coal
-				|| stack.getItem() == ItemRegistry.researchBook)
-			return false;
-		
 		return true;
 	}
 	
@@ -124,8 +143,10 @@ public class ItemNomadSack extends Item {
 		
 		if(size < this.maxSize){
 			if((size+stack.stackSize) <= this.maxSize){
-				list.add(stack);
-				size += stack.stackSize;
+				ItemStack c = stack.copy();
+				list.add(c);
+				size += c.stackSize;
+				stack.stackSize = 0;
 				inv.setInventorySlotContents(slot, null);
 			}else{
 				int s = maxSize - size;
@@ -141,8 +162,33 @@ public class ItemNomadSack extends Item {
 		setInventory(sack, list);
 	}
 	
+	public void eat(ItemStack sack, ItemStack stack){
+		nbt(sack);
+		int size = getSize(sack);
+		ArrayList<ItemStack> list = getInventory(sack);
+		
+		if(size < this.maxSize){
+			if((size+stack.stackSize) <= this.maxSize){
+				ItemStack c = stack.copy();
+				list.add(c);
+				size += c.stackSize;
+				stack.stackSize = 0;
+			}else{
+				int s = maxSize - size;
+				ItemStack c = stack.copy();
+				c.stackSize = s;
+				stack.stackSize -= s;
+				list.add(c);
+				size += s;
+			}
+		}
+		
+		setSize(sack, size);
+		setInventory(sack, list);
+	}
+	
 	public void onUpdate(ItemStack stack, World world, Entity entity, int slot, boolean currentItem) {
-		if(!world.isRemote && entity instanceof EntityPlayer && currentItem){
+		if(entity instanceof EntityPlayer && currentItem){
 			EntityPlayer player = (EntityPlayer)entity;
 			InventoryPlayer inv = player.inventory;
 			

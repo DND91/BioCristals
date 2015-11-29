@@ -5,7 +5,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import hok.chompzki.biocristals.croot.TileCroot;
 
 public class TileCrootHollow extends TileCroot  implements IInventory{
 	

@@ -1,9 +1,9 @@
 package hok.chompzki.biocristals.items;
 
 import hok.chompzki.biocristals.BioCristalsMod;
-import hok.chompzki.biocristals.client.GuiHandler;
 import hok.chompzki.biocristals.containers.Hivebag;
 import hok.chompzki.biocristals.registrys.ConfigRegistry;
+import hok.chompzki.biocristals.registrys.GuiHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;

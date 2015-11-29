@@ -2,8 +2,8 @@ package hok.chompzki.biocristals.containers;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import hok.chompzki.biocristals.client.gui.SlotAntiHivebag;
-import hok.chompzki.biocristals.client.gui.SlotVisual;
+import hok.chompzki.biocristals.client.slots.SlotAntiHivebag;
+import hok.chompzki.biocristals.client.slots.SlotVisual;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;

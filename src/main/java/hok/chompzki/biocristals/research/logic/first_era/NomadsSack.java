@@ -2,12 +2,12 @@ package hok.chompzki.biocristals.research.logic.first_era;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
-import hok.chompzki.biocristals.client.GuiCraft;
-import hok.chompzki.biocristals.client.GuiCraftingHelper;
+import hok.chompzki.biocristals.api.ArticleContent;
+import hok.chompzki.biocristals.api.ArticleContent.EnumContent;
+import hok.chompzki.biocristals.client.gui.GuiCraft;
+import hok.chompzki.biocristals.client.gui.GuiCraftingHelper;
+import hok.chompzki.biocristals.client.gui.KnowledgeDescriptions;
 import hok.chompzki.biocristals.registrys.ItemRegistry;
-import hok.chompzki.biocristals.research.data.ArticleContent;
-import hok.chompzki.biocristals.research.data.ArticleContent.EnumContent;
-import hok.chompzki.biocristals.research.gui.KnowledgeDescriptions;
 
 public class NomadsSack extends ArticleContent {
 
@@ -41,12 +41,12 @@ public class NomadsSack extends ArticleContent {
 			break;
 		case 2:
 			s += "   ~ USE ~\n"
-			   + "To fill, just hold it in hand.\n"
+			   + "To fill, hold it in hand.\n"
 			   + "To empty, shift + right click on container.\n"
 			   + "   ~ RULES ~\n"
 			   + "It will not accept blocks, exception plantables and wool.\n"
 			   + "It will not accept tools, food, sticks, coal and research book.\n"
-			   + "Anything else goes in.";
+			   + "Anything else goes in. Hotbar not included.";
 			break;
 		}
 		return s;

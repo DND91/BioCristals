@@ -1,7 +1,7 @@
 package hok.chompzki.biocristals.items;
 
 import hok.chompzki.biocristals.BioCristalsMod;
-import hok.chompzki.biocristals.api.BioHelper;
+import hok.chompzki.biocristals.BioHelper;
 import hok.chompzki.biocristals.api.IGrowthCristal;
 import hok.chompzki.biocristals.registrys.ConfigRegistry;
 import hok.chompzki.biocristals.research.data.DataHelper;

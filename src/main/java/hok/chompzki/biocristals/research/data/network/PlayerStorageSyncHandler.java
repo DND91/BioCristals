@@ -1,7 +1,7 @@
 package hok.chompzki.biocristals.research.data.network;
 
-import hok.chompzki.biocristals.client.GuiInventoryOverlay;
-import hok.chompzki.biocristals.research.data.ArticleContent;
+import hok.chompzki.biocristals.api.ArticleContent;
+import hok.chompzki.biocristals.client.gui.GuiInventoryOverlay;
 import hok.chompzki.biocristals.research.data.PlayerResearch;
 import hok.chompzki.biocristals.research.data.PlayerStorage;
 import hok.chompzki.biocristals.research.data.Research;

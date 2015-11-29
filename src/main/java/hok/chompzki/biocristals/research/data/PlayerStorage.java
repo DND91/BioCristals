@@ -1,16 +1,18 @@
 package hok.chompzki.biocristals.research.data;
 
 import hok.chompzki.biocristals.BioCristalsMod;
-import hok.chompzki.biocristals.client.GuiInventoryOverlay;
+import hok.chompzki.biocristals.StorageHandler;
+import hok.chompzki.biocristals.api.IDataFile;
+import hok.chompzki.biocristals.client.gui.GuiInventoryOverlay;
 import hok.chompzki.biocristals.registrys.ItemRegistry;
+import hok.chompzki.biocristals.research.data.network.MessageHandlerInserCrafting;
+import hok.chompzki.biocristals.research.data.network.MessageInsertCrafting;
 import hok.chompzki.biocristals.research.data.network.PlayerStorageDelissenHandler;
 import hok.chompzki.biocristals.research.data.network.PlayerStorageDelissenMessage;
 import hok.chompzki.biocristals.research.data.network.PlayerStorageFaveHandler;
 import hok.chompzki.biocristals.research.data.network.PlayerStorageFaveMessage;
 import hok.chompzki.biocristals.research.data.network.PlayerStorageSyncHandler;
 import hok.chompzki.biocristals.research.data.network.PlayerStorageSyncMessage;
-import hok.chompzki.biocristals.research.events.MessageHandlerInserCrafting;
-import hok.chompzki.biocristals.research.events.MessageInsertCrafting;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.serialization.ObjectEncoder;
 

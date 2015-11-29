@@ -6,7 +6,6 @@ import java.util.Random;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import hok.chompzki.biocristals.BioCristalsMod;
-import hok.chompzki.biocristals.croot.BlockCroot;
 import hok.chompzki.biocristals.tile_enteties.TileReagentPurifier;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;

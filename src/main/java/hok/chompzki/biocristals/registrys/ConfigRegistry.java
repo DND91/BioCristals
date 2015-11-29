@@ -2,7 +2,6 @@ package hok.chompzki.biocristals.registrys;
 
 import hok.chompzki.biocristals.BioCristalsMod;
 import hok.chompzki.biocristals.blocks.BlockCrootSapling;
-import hok.chompzki.biocristals.croot.CrootTreeData;
 import hok.chompzki.biocristals.recipes.CrootRecipeData;
 import hok.chompzki.biocristals.recipes.PurifierData;
 import hok.chompzki.biocristals.recipes.RecipeData;
@@ -69,7 +68,7 @@ public class ConfigRegistry {
 	public static int hungerDuration = 600;
 	public static int hungerAmplifier = 1;
 	
-	public static String configNumber = "0.66";
+	public static String configNumber = "0.664";
 	public static Configuration config;
 	
 	public static List<RecipeData> recipeData = new ArrayList<RecipeData>();
@@ -77,16 +76,14 @@ public class ConfigRegistry {
 	public static List<TransformData> transformData = new ArrayList<TransformData>();
 	public static List<TransformEntityData> transformEntityData = new ArrayList<TransformEntityData>();
 	public static List<PurifierData> purifierData = new ArrayList<PurifierData>();
-	public static List<CrootTreeData> treeData = new ArrayList<CrootTreeData>();
 	
+	public static List<String> sackWhiteList = new ArrayList<String>();
+	public static List<String> sackBlackList = new ArrayList<String>();
 	
 	public static final String RECIPE_CATEGORY="Input: ";
 	
 	public static String[] oreDictBioMaterialDefault={"minecraft:brown_mushroom", "minecraft:red_mushroom", "minecraft:pumpkin_seeds", "minecraft:melon_seeds", "minecraft:wheat_seeds", "minecraft:egg", "minecraft:hay_block", "BioCristals:crootSapling", "minecraft:waterlily", "minecraft:cactus", "minecraft:melon_block", "minecraft:carrot","minecraft:wheat","minecraft:melon","minecraft:pumpkin", "minecraft:potato", "minecraft:reeds","minecraft:vine","treeLeaves"};
     public static String[] oreDictBioMaterial;
-    
-    public static String[] crootTypesDefault = {"normal minecraft:sapling"};
-    public static String[] crootTypes;
 	
 	public static void preinit(File configFile) {
         if (config == null) {
@@ -117,41 +114,6 @@ public class ConfigRegistry {
     	hungerAmplifier = config.getInt("Hunger Amplifier", "Hivebag", 1, 0, 10, "");
     	
     	oreDictBioMaterial = config.get("Bio Material OreDict", "OreDict", oreDictBioMaterialDefault, "first texture/croot name then block needed to make it!").getStringList();
-    	
-    	//CROOTS!!!
-    	crootTypes = config.get("Bio cultural types", "Croot Types", crootTypesDefault).getStringList();
-    	
-    	//Croot types fix!
-    	ArrayList<String> types = new ArrayList<String>();
-    	for(int i = 0; i < crootTypes.length; i++){
-    		String[] split = crootTypes[i].split(" ");
-    		types.add(split[0]);
-    	}
-    	
-    	BlockCrootSapling.subtypes = types.toArray(new String[types.size()]);
-    	
-    	//Croot structures
-    	
-    	treeData.clear();
-    	ConfigCategory treeStructures = config.getCategory("Croot Trees");
-    	if(newVersion){
-    		for(ConfigCategory child : treeStructures.getChildren()){
-    			treeStructures.removeChild(child);
-    		}
-    		treeStructures.clear();
-    	}
-    	
-    	treeStructures.setComment("Tree structures! ");
-    	treeStructures.setRequiresMcRestart(true);
-    	
-    	if(treeStructures.getChildren().size() <= 0){
-    		createTreeStructuresStandard(treeStructures);
-    	}
-    	
-    	for(ConfigCategory recipe : treeStructures.getChildren()){
-    		treeData.add(new CrootTreeData(recipe.get("name").getString(),recipe.get("sapling").getStringList(), recipe.get("spurt").getStringList(), recipe.get("tree").getStringList()));
-    	}
-    	
     	
     	//Workbench!
     	recipeData.clear();
@@ -253,62 +215,104 @@ public class ConfigRegistry {
     		purifierData.add(new PurifierData(recipe.getName() ,recipe.get("filter").getString(), recipe.get("code").getString(), recipe.get("input").getString(), recipe.get("output").getString(), recipe.get("time").getInt()));
     	}
     	
+    	//Whitelist Sack Data
+    	sackWhiteList.clear();
+    	ConfigCategory whitelist = config.getCategory("Nomads Sack Whitelist");
+    	if(newVersion){
+    		for(ConfigCategory child : whitelist.getChildren()){
+    			whitelist.removeChild(child);
+    		}
+    		whitelist.clear();
+    	}
+    	whitelist.setComment("The whitelist of blocks for the nomads sack.");
+    	whitelist.setRequiresMcRestart(true);
+    	
+    	if(whitelist.getChildren().size() <= 0){
+    		createNomadsSackWhitelistStandard(whitelist);
+    	}
+    	
+    	for(ConfigCategory block : whitelist.getChildren()){
+    		sackWhiteList.add(block.get("BLOCK").getString());
+    	}
+    	
+    	//Blacklist Sack Data
+    	sackBlackList.clear();
+    	ConfigCategory blacklist = config.getCategory("Nomads Sack Blacklist");
+    	if(newVersion){
+    		for(ConfigCategory child : blacklist.getChildren()){
+    			blacklist.removeChild(child);
+    		}
+    		blacklist.clear();
+    	}
+    	blacklist.setComment("The Blacklist of items for the nomads sack.");
+    	blacklist.setRequiresMcRestart(true);
+    	
+    	if(blacklist.getChildren().size() <= 0){
+    		createNomadsSackBlacklistStandard(blacklist);
+    	}
+    	
+    	for(ConfigCategory item : blacklist.getChildren()){
+    		sackBlackList.add(item.get("ITEM").getString());
+    	}
+    	
     	//Save
     	config.save();
     }
 
-	private static void createTreeStructuresStandard(
-			ConfigCategory treeStructures) {
+	private static void createNomadsSackBlacklistStandard(
+			ConfigCategory blacklist) {
 		
-		ConfigCategory normal = new ConfigCategory("Normal", treeStructures);
-		normal.put("name", new Property("name", "normal", Property.Type.STRING));
-		normal.put("sapling", new Property("sapling", new String[] { 
-				"block 0 -1 0 BioCristals:crootRoots"
-				},
-				  Property.Type.STRING));
-		
-		normal.put("spurt", new Property("spurt", new String[] { 
-				"block 0 -1 0 BioCristals:crootRoots",
-				"block 0 0 0 BioCristals:crootTrunk",
-				"block 0 1 0 BioCristals:blockCrootNest"
-				},
-				  Property.Type.STRING));
-		
-		normal.put("tree", new Property("tree", new String[] { 
-				"block 0 -1 0 BioCristals:crootTrunk",
-				"block 0 0 0 BioCristals:crootCore",
-				"block 0 -2 0 BioCristals:crootRoots",
-				
-				"full_circle 0 -2 0 6 BioCristals:crootRoots",
-				"full_circle 0 -3 0 4 BioCristals:crootRoots",
-				"full_circle 0 -4 0 2 BioCristals:crootRoots",
-				"block 0 -5 0 BioCristals:crootRoots",
-				
-				"line 0 1 0 3 BioCristals:crootTrunk",
-				
-				"line 4 -1 4 5 BioCristals:crootTrunk",
-				"line -4 -1 4 5 BioCristals:crootTrunk",
-				"line 4 -1 -4 5 BioCristals:crootTrunk",
-				"line -4 -1 -4 5 BioCristals:crootTrunk",
-				
-				"line 6 -1 0 5 BioCristals:crootTrunk",
-				"line -6 -1 0 5 BioCristals:crootTrunk",
-				"line 0 -1 -6 5 BioCristals:crootTrunk",
-				"line 0 -1 6 5 BioCristals:crootTrunk",
-				
-				"full_circle 0 4 0 8 BioCristals:crootLeaves",
-				"full_circle 0 5 0 7 BioCristals:crootLeaves",
-				"full_circle 0 6 0 6 BioCristals:crootLeaves",
-				"full_circle 0 7 0 5 BioCristals:crootLeaves"
-				},
-				  Property.Type.STRING));
+		registerSingle(blacklist, "Stick", "ITEM", "minecraft:stick");
+		registerSingle(blacklist, "Coal", "ITEM", "minecraft:coal");
+		registerSingle(blacklist, "Bed", "ITEM", "minecraft:bed");
+		registerSingle(blacklist, "Map", "ITEM", "minecraft:map");
+		registerSingle(blacklist, "Compass", "ITEM", "minecraft:compass");
+		registerSingle(blacklist, "Cauldron", "ITEM", "minecraft:cauldron");
+		registerSingle(blacklist, "Boat", "ITEM", "minecraft:boat");
+		registerSingle(blacklist, "Minecart", "ITEM", "minecraft:minecart");
+		registerSingle(blacklist, "Chest Minecart", "ITEM", "minecraft:chest_minecart");
+		registerSingle(blacklist, "Furnace Minecart", "ITEM", "minecraft:furnace_minecart");
+		registerSingle(blacklist, "Arrow", "ITEM", "minecraft:arrow");
+		registerSingle(blacklist, "Redstone", "ITEM", "minecraft:redstone");
+		registerSingle(blacklist, "Glowstone Dust", "ITEM", "minecraft:glowstone_dust");
+		registerSingle(blacklist, "Clock", "ITEM", "minecraft:clock");
+		registerSingle(blacklist, "Hopper Minecart", "ITEM", "minecraft:hopper_minecrat");
+		registerSingle(blacklist, "TNT Minecart", "ITEM", "minecraft:tnt_minecrat");
+		registerSingle(blacklist, "Filled Map", "ITEM", "minecraft:filled_map");
+		registerSingle(blacklist, "Croot Stick", "ITEM", "BioCristals:itemCrootStick");
+		registerSingle(blacklist, "Research Book", "ITEM", "BioCristals:itemResearchBook");
 		
 	}
+	
+	private static void registerSingle(ConfigCategory c, String name, String code, String value){
+		ConfigCategory stuff = new ConfigCategory(name, c);
+		stuff.put(code, new Property(code, value, Property.Type.STRING));
+	}
 
+	private static void createNomadsSackWhitelistStandard(
+			ConfigCategory whitelist) {
+		registerSingle(whitelist, "Wool", "BLOCK", "minecraft:wool");
+		registerSingle(whitelist, "Lever", "BLOCK", "minecraft:lever");
+		registerSingle(whitelist, "Melon Block", "BLOCK", "minecraft:melon_block");
+		registerSingle(whitelist, "Pumpkin", "BLOCK", "minecraft:pumpkin");
+		registerSingle(whitelist, "Rail", "BLOCK", "minecraft:rail");
+		registerSingle(whitelist, "Brown Mushroom", "BLOCK", "minecraft:brown_mushroom");
+		registerSingle(whitelist, "Red Mushroom", "BLOCK", "minecraft:red_mushroom");
+		registerSingle(whitelist, "Brewing Stand", "BLOCK", "minecraft:brewing_stand");
+		registerSingle(whitelist, "Sapling", "BLOCK", "minecraft:sapling");
+		registerSingle(whitelist, "Red Flower", "BLOCK", "minecraft:red_flower");
+		registerSingle(whitelist, "Redstone Torch", "BLOCK", "minecraft:redstone_torch");
+		registerSingle(whitelist, "Waterlily", "BLOCK", "minecraft:waterlily");
+		registerSingle(whitelist, "Grass", "BLOCK", "minecraft:grass");
+		registerSingle(whitelist, "Leaves", "BLOCK", "minecraft:leaves");
+		registerSingle(whitelist, "Yellow Flower", "BLOCK", "minecraft:yellow_flower");
+		registerSingle(whitelist, "Vine", "BLOCK", "minecraft:vine");
+	}
+	
 	private static void createRecipeStandard(ConfigCategory recipes){
 		
 		ConfigCategory attuner = new ConfigCategory("Attuner", recipes);
-		attuner.put("code", new Property("code", "NONE", Property.Type.STRING)); //TODO : FIX ATTUNER!
+		attuner.put("code", new Property("code", "NONE", Property.Type.STRING));
 		attuner.put("input", new Property("input", new String[] { "minecraft:stick BioCristals:itemCrootBeetle minecraft:stick", 
 																  "BioCristals:itemCrootBeetle empty BioCristals:itemCrootBeetle", 
 																  "minecraft:stick treeSapling minecraft:stick"},
@@ -354,7 +358,7 @@ public class ConfigRegistry {
 			collector.put("input", new Property("input", "minecraft:log empty minecraft:log minecraft:log empty minecraft:log minecraft:string minecraft:sapling minecraft:string", Property.Type.STRING));
 			collector.put("output", new Property("output", "BioCristals:itemCollector", Property.Type.STRING));
 			*/
-			
+			/*
 			ConfigCategory bioReagent = new ConfigCategory("Biological Reagent", recipes);
 			bioReagent.put("code", new Property("code", ReserchRegistry.reaction, Property.Type.STRING));
 			bioReagent.put("input", new Property("input", new String[] { "stickWood treeSapling stickWood",
@@ -432,6 +436,7 @@ public class ConfigRegistry {
 	
     
     private static void createTransformerStandard(ConfigCategory recipes){
+    	/*
     	ConfigCategory wheatCrystal = new ConfigCategory("wheatCrystal", recipes);
     	wheatCrystal.put("input", new Property("input", "minecraft:wheat", Property.Type.STRING));
 		wheatCrystal.put("output", new Property("output", "BioCristals:blockWheatCristal", Property.Type.STRING));
@@ -461,11 +466,13 @@ public class ConfigRegistry {
 		pumpkinCrystal.put("input", new Property("input", "minecraft:pumpkin", Property.Type.STRING));
 		pumpkinCrystal.put("output", new Property("output", "BioCristals:blockPumpkinCristal", Property.Type.STRING));
 		pumpkinCrystal.put("code", new Property("code", ReserchRegistry.pumpkinCristalisation, Property.Type.STRING));
+		*/
     }
     
     //(String) (EntityList.classToStringMapping.get(entity.getClass())));
     //CristalRegistry.register(new WeakFleshTransformation(EntitySheep.class, ReserchRegistry.sheepSkin, new ItemStack(Blocks.wool)));
     private static void createEntityTransformerStandard(ConfigCategory recipes){
+    	/*
     	ConfigCategory sheep = new ConfigCategory("Sheep", recipes);
     	sheep.put("entity", new Property("entity", "Sheep", Property.Type.STRING));
     	sheep.put("output", new Property("output", "minecraft:wool", Property.Type.STRING));
@@ -520,11 +527,12 @@ public class ConfigRegistry {
     	enderman.put("entity", new Property("entity", "Enderman", Property.Type.STRING));
     	enderman.put("output", new Property("output", "minecraft:ender_pearl", Property.Type.STRING));
     	enderman.put("code", new Property("code", ReserchRegistry.darkWarp, Property.Type.STRING));
+    	*/
     }
     
     private static void createPurifierStandard(
 			ConfigCategory recipes) {
-		
+		/*
     	ConfigCategory biomassMK1 = new ConfigCategory("Biomass MK1", recipes);
     	biomassMK1.put("code", new Property("code", ReserchRegistry.biomassmk1, Property.Type.STRING));
     	biomassMK1.put("filter", new Property("filter", "BioCristals:blockBiomass", Property.Type.STRING));
@@ -559,5 +567,6 @@ public class ConfigRegistry {
     	extractor.put("input", new Property("input", "1xBioCristals:blockReagentPurifier 4xBioCristals:blockCrootHollow 10xBioCristals:blockBiomass", Property.Type.STRING));
     	extractor.put("output", new Property("output", "BioCristals:blockExtractor", Property.Type.STRING));
     	extractor.put("time", new Property("time", "200", Property.Type.INTEGER));
+    	*/
 	}
 }

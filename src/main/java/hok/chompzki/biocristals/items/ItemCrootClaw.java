@@ -29,12 +29,12 @@ public class ItemCrootClaw extends Item {
 		
 		Block block = world.getBlock(x, y, z);
 		
-		if(!(block.isBlockNormalCube() && block.isBlockSolid(world, x, y, z, side)))
+		if(block.getCollisionBoundingBoxFromPool(world, x, y, z) == null)
 				return false;
 		
 		if(world.isAirBlock(x, y+1, z) && world.isAirBlock(x, y+2, z)){
 			if(!world.isRemote){
-				player.setPositionAndUpdate(x+0.5D, y+1, z+0.5D);
+				player.setPositionAndUpdate(x+0.5D, y+1.5D, z+0.5D);
 				PotionEffect pot = player.getActivePotionEffect(Potion.hunger);
 				if(pot == null)
 					player.addPotionEffect(new PotionEffect(Potion.hunger.id, 100, 0));

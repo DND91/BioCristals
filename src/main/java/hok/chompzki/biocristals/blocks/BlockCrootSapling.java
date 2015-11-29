@@ -7,12 +7,10 @@ import java.util.Random;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import hok.chompzki.biocristals.BioCristalsMod;
+import hok.chompzki.biocristals.CrootHelper;
 import hok.chompzki.biocristals.api.IGrowthCristal;
-import hok.chompzki.biocristals.croot.CrootHelper;
-import hok.chompzki.biocristals.croot_old.CrootBlock;
-import hok.chompzki.biocristals.croot_old.CrootModule;
-import hok.chompzki.biocristals.croot_old.CrootRegistry;
-import hok.chompzki.biocristals.croot_old.CrootRegistry.CrootTreeContainer;
+import hok.chompzki.biocristals.croot.building.CrootBlock;
+import hok.chompzki.biocristals.croot.building.CrootModule;
 import hok.chompzki.biocristals.registrys.BlockRegistry;
 import hok.chompzki.biocristals.tile_enteties.TileCrootCore;
 import net.minecraft.block.Block;
@@ -153,9 +151,8 @@ public class BlockCrootSapling extends Block implements IGrowthCristal {
     public void grow(World world, int x, int y, int z){
     	int meta = world.getBlockMetadata(x, y, z);
     	String name = this.subtypes[meta];
-    	
-    	CrootTreeContainer treeContainer = CrootRegistry.treeContainer.get(name);
-    	CrootModule module = treeContainer.sapling;
+    	/*
+    	CrootModule module = null;
 		
 		if(!module.controll(world, x, y, z)){
 			CrootBlock block = module.getNext(world, x, y, z);
@@ -170,7 +167,7 @@ public class BlockCrootSapling extends Block implements IGrowthCristal {
 				CrootHelper.spawnBlock(world, block, x, y, z);
 			}
 		}
-    	
+    	*/
     }
 
 	@Override

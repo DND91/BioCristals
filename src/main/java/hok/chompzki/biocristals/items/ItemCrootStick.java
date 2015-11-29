@@ -9,7 +9,9 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -41,7 +43,14 @@ public class ItemCrootStick extends Item {
 	
 	public boolean onBlockDestroyed(ItemStack stack, World world, Block block, int x, int y, int z, EntityLivingBase living)
     {
-		if(!world.isRemote && block.getMaterial() == Material.leaves){
+		
+		if(!(living instanceof EntityPlayer))
+			return false;
+		
+		EntityPlayer player = (EntityPlayer)living;
+		InventoryPlayer inv = player.inventory;
+		
+		if(!world.isRemote && block.getMaterial() == Material.leaves && random.nextInt(6) % 6 == 0){ //Add chance kraken bug
 			float f = this.random.nextFloat() * 0.8F + 0.1F;
             float f1 = this.random.nextFloat() * 0.8F + 0.1F;
             float f2 = this.random.nextFloat() * 0.8F + 0.1F;
@@ -53,7 +62,7 @@ public class ItemCrootStick extends Item {
             entityitem.motionZ = (double)((float)this.random.nextGaussian() * f3);
 			world.spawnEntityInWorld(entityitem);
 			return true;
-		}else if(!world.isRemote && block.getMaterial() == Material.vine){
+		}else if(!world.isRemote && block.getMaterial() == Material.vine && random.nextInt(6) % 6 == 0){ //Add chance WSB
 			float f = this.random.nextFloat() * 0.8F + 0.1F;
             float f1 = this.random.nextFloat() * 0.8F + 0.1F;
             float f2 = this.random.nextFloat() * 0.8F + 0.1F;
@@ -65,7 +74,7 @@ public class ItemCrootStick extends Item {
             entityitem.motionZ = (double)((float)this.random.nextGaussian() * f3);
 			world.spawnEntityInWorld(entityitem);
 			return true;
-		}else if(!world.isRemote && block == Blocks.reeds){
+		}else if(!world.isRemote && block == Blocks.reeds  && random.nextInt(4) % 4 == 0 && !inv.hasItem(ItemRegistry.hivebag)){ //Add chance and can only pick up one
 			float f = this.random.nextFloat() * 0.8F + 0.1F;
             float f1 = this.random.nextFloat() * 0.8F + 0.1F;
             float f2 = this.random.nextFloat() * 0.8F + 0.1F;
@@ -77,7 +86,7 @@ public class ItemCrootStick extends Item {
             entityitem.motionZ = (double)((float)this.random.nextGaussian() * f3);
 			world.spawnEntityInWorld(entityitem);
 			return true;
-		}else if(!world.isRemote && block == Blocks.cactus){
+		}else if(!world.isRemote && block == Blocks.cactus && !inv.hasItem(ItemRegistry.crootClaw)){ //Add chance and can only pick up one
 			float f = this.random.nextFloat() * 0.8F + 0.1F;
             float f1 = this.random.nextFloat() * 0.8F + 0.1F;
             float f2 = this.random.nextFloat() * 0.8F + 0.1F;

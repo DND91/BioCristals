@@ -1,6 +1,7 @@
 package hok.chompzki.biocristals.research.data;
 
 import hok.chompzki.biocristals.BioCristalsMod;
+import hok.chompzki.biocristals.api.ArticleContent;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 

@@ -3,8 +3,7 @@ package hok.chompzki.biocristals.tile_enteties;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import hok.chompzki.biocristals.api.BioHelper;
-import hok.chompzki.biocristals.croot.TileCroot;
+import hok.chompzki.biocristals.BioHelper;
 import hok.chompzki.biocristals.recipes.RecipePurifier;
 import hok.chompzki.biocristals.registrys.RecipeRegistry;
 import hok.chompzki.biocristals.research.data.PlayerResearch;
