@@ -1,5 +1,6 @@
 package hok.chompzki.biocristals.entity;
 
+import hok.chompzki.biocristals.registrys.ConfigRegistry;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityBlaze;
 import net.minecraft.entity.projectile.EntityThrowable;
@@ -31,7 +32,7 @@ public class EntityWSB extends EntityThrowable {
 	    {
 	        if (p_70184_1_.entityHit != null)
 	        {
-	            byte b0 = 2;
+	            int b0 = ConfigRegistry.wsbDamage;
 	            
 	            p_70184_1_.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), (float)b0);
 	        }

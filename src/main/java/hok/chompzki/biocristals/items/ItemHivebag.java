@@ -38,11 +38,11 @@ public class ItemHivebag extends Item {
 	@Override
 	public ItemStack onItemRightClick(ItemStack stack, World par2World, EntityPlayer player)
     {
-		if(par2World.isRemote || !player.isSneaking())
+		if(par2World.isRemote)
 			return stack;
 		if(stack.getTagCompound() == null)
 			this.onCreated(stack, par2World, player);
-		System.out.println("OPENS GUI!");
+		
 		player.openGui(BioCristalsMod.instance, GuiHandler.hivebagId, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
         return stack;
     }

@@ -68,7 +68,14 @@ public class ConfigRegistry {
 	public static int hungerDuration = 600;
 	public static int hungerAmplifier = 1;
 	
-	public static String configNumber = "0.664";
+	public static int hungerDurationTP = 100;
+	public static int hungerAmplifierTP = 0;
+	
+	public static int crootBeetleChance = 10;
+	
+	public static int wsbDamage = 2;
+	
+	public static String configNumber = "0.666";
 	public static Configuration config;
 	
 	public static List<RecipeData> recipeData = new ArrayList<RecipeData>();
@@ -84,6 +91,11 @@ public class ConfigRegistry {
 	
 	public static String[] oreDictBioMaterialDefault={"minecraft:brown_mushroom", "minecraft:red_mushroom", "minecraft:pumpkin_seeds", "minecraft:melon_seeds", "minecraft:wheat_seeds", "minecraft:egg", "minecraft:hay_block", "BioCristals:crootSapling", "minecraft:waterlily", "minecraft:cactus", "minecraft:melon_block", "minecraft:carrot","minecraft:wheat","minecraft:melon","minecraft:pumpkin", "minecraft:potato", "minecraft:reeds","minecraft:vine","treeLeaves"};
     public static String[] oreDictBioMaterial;
+	public static int krakenChance = 6;
+	public static int wsbChance = 6;
+	public static int hivebagChance = 6;
+	public static int crootClawChance = 6;
+	public static int nomadsSackSize = 2500;
 	
 	public static void preinit(File configFile) {
         if (config == null) {
@@ -104,14 +116,28 @@ public class ConfigRegistry {
     	
     	boolean newVersion = config.getLoadedConfigVersion() == null || !config.getLoadedConfigVersion().equals(configNumber);
     	
-    	maxBlocksCollector = config.getInt("Max Block Search (Collector)", "Track ranges", 81, 10, 500, "");
-    	maxBlocksCatalystInjector = config.getInt("Max Block Search (Catalyst Injector)", "Track ranges", 81, 10, 500, "");
-    	weakCristalGrowthChance = config.getInt("Weakcristal", "Growth chances", 10, 5, 1000, "");
+    	maxBlocksCollector = 81; //config.getInt("Max Block Search (Collector)", "Track ranges", 81, 10, 500, "");
+    	maxBlocksCatalystInjector = 81; // config.getInt("Max Block Search (Catalyst Injector)", "Track ranges", 81, 10, 500, "");
+    	weakCristalGrowthChance = 5; //config.getInt("Weakcristal", "Growth chances", 10, 5, 1000, "");
     	
     	hivebagCookTime = config.getInt("Cook Time", "Hivebag", 500, 100, Integer.MAX_VALUE, "");
     	hungerDistance = config.getInt("Hunger Distance", "Hivebag", 500, 1, Integer.MAX_VALUE, "");
     	hungerDuration = config.getInt("Hunger Duration", "Hivebag", 600, 1, 20000, "");
     	hungerAmplifier = config.getInt("Hunger Amplifier", "Hivebag", 1, 0, 10, "");
+    	
+    	crootBeetleChance = config.getInt("Croot Beetle", "Chance In Grass", 10, 1, 100, "");
+    	nomadsSackSize = config.getInt("Max Size", "Nomads Sack", 2500, 1, Integer.MAX_VALUE, "");
+    	
+    	hungerDurationTP = config.getInt("Hunger Duration", "Croot Claw", 100, 1, 20000, "");
+    	hungerAmplifierTP = config.getInt("Hunger Amplifier", "Croot Claw", 0, 0, 10, "");
+    	
+    	krakenChance = config.getInt("Kraken Bug (Food)", "Chance for bug (1 in X chance)", 6, 1, 20000, "");
+    	wsbChance  = config.getInt("Water Shielded Bug (Range Attack)", "Chance for bug (1 in X chance)", 6, 1, 20000, "");
+    	hivebagChance   = config.getInt("Hivebag (Pocket Smelting)", "Chance for bug (1 in X chance)", 6, 1, 20000, "");
+    	crootClawChance    = config.getInt("Croot Claw (Climbing Tool)", "Chance for bug (1 in X chance)", 6, 1, 20000, "");
+    	
+    	wsbDamage = config.getInt("Damage", "Water Shielded Bug (Range Attack)", 2, 1, 100, "");
+    	
     	
     	oreDictBioMaterial = config.get("Bio Material OreDict", "OreDict", oreDictBioMaterialDefault, "first texture/croot name then block needed to make it!").getStringList();
     	
@@ -352,221 +378,21 @@ public class ConfigRegistry {
     
 		private static void createCrootRecipeStandard(ConfigCategory recipes) {
 			
-			/*
-			ConfigCategory collector = new ConfigCategory("Collector", recipes);
-	    	collector.put("code", new Property("code", "NONE", Property.Type.STRING));
-			collector.put("input", new Property("input", "minecraft:log empty minecraft:log minecraft:log empty minecraft:log minecraft:string minecraft:sapling minecraft:string", Property.Type.STRING));
-			collector.put("output", new Property("output", "BioCristals:itemCollector", Property.Type.STRING));
-			*/
-			/*
-			ConfigCategory bioReagent = new ConfigCategory("Biological Reagent", recipes);
-			bioReagent.put("code", new Property("code", ReserchRegistry.reaction, Property.Type.STRING));
-			bioReagent.put("input", new Property("input", new String[] { "stickWood treeSapling stickWood",
-																		"treeSapling minecraft:dirt treeSapling",
-																		"stickWood treeSapling stickWood" },
-																		Property.Type.STRING));
-			bioReagent.put("output", new Property("output", "4xBioCristals:itemBioReagent", Property.Type.STRING));
 			
-			ConfigCategory biomass = new ConfigCategory("Biomass", recipes);
-			biomass.put("code", new Property("code", ReserchRegistry.cubeMass, Property.Type.STRING));
-			biomass.put("input", new Property("input", new String[] {"bioMaterial treeSapling bioMaterial",
-																	 "treeSapling logWood treeSapling", 
-																	 "bioMaterial treeSapling bioMaterial"},
-																	 Property.Type.STRING));
-			biomass.put("output", new Property("output", "4xBioCristals:blockBiomass", Property.Type.STRING));
-			
-			ConfigCategory sulphurTuft = new ConfigCategory("Sulphur Tuft", recipes);
-			sulphurTuft.put("code", new Property("code", ReserchRegistry.tuft, Property.Type.STRING));
-			sulphurTuft.put("input", new Property("input", new String[] { "minecraft:spider_eye minecraft:spider_eye minecraft:spider_eye", 
-																		  "BioCristals:blockBiomass BioCristals:blockBiomass BioCristals:blockBiomass", 
-																		  "BioCristals:itemBioReagent BioCristals:itemBioReagent BioCristals:itemBioReagent" },
-																		  Property.Type.STRING));
-			sulphurTuft.put("output", new Property("output", "BioCristals:blockSulphurTuft", Property.Type.STRING));
-			
-			ConfigCategory string = new ConfigCategory("String", recipes);
-			string.put("code", new Property("code", "NONE", Property.Type.STRING));
-			string.put("input", new Property("input", new String[] { "minecraft:wool" }, Property.Type.STRING));
-			string.put("output", new Property("output", "4xminecraft:string", Property.Type.STRING));
-			
-			ConfigCategory crootHollow = new ConfigCategory("Croot Hollow", recipes);
-			crootHollow.put("code", new Property("code", ReserchRegistry.crootHollow, Property.Type.STRING));
-			crootHollow.put("input", new Property("input", new String[] { "BioCristals:blockBiomass BioCristals:itemBioReagent BioCristals:blockBiomass",
-														   				  "BioCristals:itemBioReagent minecraft:chest BioCristals:itemBioReagent",
-														   				  "BioCristals:blockBiomass BioCristals:itemBioReagent BioCristals:blockBiomass" },
-														   				  Property.Type.STRING));
-			crootHollow.put("output", new Property("output", "BioCristals:blockCrootHollow", Property.Type.STRING));
-			
-			ConfigCategory crootStreamStem = new ConfigCategory("Croot Stem", recipes);
-			crootStreamStem.put("code", new Property("code", ReserchRegistry.crootStem, Property.Type.STRING));
-			crootStreamStem.put("input", new Property("input", new String[] { "BioCristals:blockBiomass BioCristals:itemBioReagent BioCristals:blockBiomass", 
-														   					  "BioCristals:itemBioReagent logWood BioCristals:itemBioReagent",
-														   					  "BioCristals:blockBiomass BioCristals:itemBioReagent BioCristals:blockBiomass" }, 
-														   					  Property.Type.STRING));
-			crootStreamStem.put("output", new Property("output", "BioCristals:crootStreamStem", Property.Type.STRING));
-			
-			ConfigCategory reagentPurifier = new ConfigCategory("Reagent Purifier", recipes);
-			reagentPurifier.put("code", new Property("code", ReserchRegistry.purifier, Property.Type.STRING));
-			reagentPurifier.put("input", new Property("input", new String[] { "BioCristals:blockBiomass BioCristals:itemBioReagent BioCristals:blockBiomass",
-														   					  "BioCristals:itemBioReagent minecraft:furnace BioCristals:itemBioReagent",
-														   					  "BioCristals:blockBiomass BioCristals:itemBioReagent BioCristals:blockBiomass" },
-														   					  Property.Type.STRING));
-			reagentPurifier.put("output", new Property("output", "BioCristals:blockReagentPurifier", Property.Type.STRING));
-			
-			
-			ConfigCategory crootRoots = new ConfigCategory("Croot Roots", recipes);
-			crootRoots.put("code", new Property("code", "NONE", Property.Type.STRING));
-			crootRoots.put("input", new Property("input", new String[] { "logWood BioCristals:itemCrootBeetle logWood", 
-																		   "BioCristals:itemCrootBeetle treeSapling BioCristals:itemCrootBeetle",
-																		   "logWood BioCristals:itemCrootBeetle logWood" },
-																		   Property.Type.STRING));
-			crootRoots.put("output", new Property("output", "4xBioCristals:crootRoots", Property.Type.STRING));
-			/*
-			
-			
-			ConfigCategory catalystInjector = new ConfigCategory("Catalyst Injector", recipes);
-			catalystInjector.put("code", new Property("code", "NONE", Property.Type.STRING));
-			catalystInjector.put("input", new Property("input", "BioCristals:itemBioReagent minecraft:slime_ball BioCristals:itemBioReagent minecraft:slime_ball minecraft:sapling minecraft:slime_ball BioCristals:itemBioReagent minecraft:slime_ball BioCristals:itemBioReagent", Property.Type.STRING));
-			catalystInjector.put("output", new Property("output", "BioCristals:itemCatalystInjector", Property.Type.STRING));
-			
-			
-			*/
 		}
     
-	//CristalRegistry.register(new WeakCristalTransformation((new ItemStack(Blocks.pumpkin)).getItem(), BlockRegistry.wheatCristal, ReserchRegistry.pumpkinCristalisation));
-	
-    
     private static void createTransformerStandard(ConfigCategory recipes){
-    	/*
-    	ConfigCategory wheatCrystal = new ConfigCategory("wheatCrystal", recipes);
-    	wheatCrystal.put("input", new Property("input", "minecraft:wheat", Property.Type.STRING));
-		wheatCrystal.put("output", new Property("output", "BioCristals:blockWheatCristal", Property.Type.STRING));
-		wheatCrystal.put("code", new Property("code", ReserchRegistry.wheatCristalisation, Property.Type.STRING));
-		
-		ConfigCategory carrotCrystal = new ConfigCategory("carrotCrystal", recipes);
-		carrotCrystal.put("input", new Property("input", "minecraft:carrot", Property.Type.STRING));
-		carrotCrystal.put("output", new Property("output", "BioCristals:blockCarrotCristal", Property.Type.STRING));
-		carrotCrystal.put("code", new Property("code", ReserchRegistry.carrotCristalisation, Property.Type.STRING));
-		
-		ConfigCategory reedsCrystal = new ConfigCategory("reedsCrystal", recipes);
-		reedsCrystal.put("input", new Property("input", "minecraft:reeds", Property.Type.STRING));
-		reedsCrystal.put("output", new Property("output", "BioCristals:blockSugerCaneCristal", Property.Type.STRING));
-		reedsCrystal.put("code", new Property("code", ReserchRegistry.reedsCristalisation, Property.Type.STRING));
-		
-		ConfigCategory potatoCrystal = new ConfigCategory("potatoCrystal", recipes);
-		potatoCrystal.put("input", new Property("input", "minecraft:potato", Property.Type.STRING));
-		potatoCrystal.put("output", new Property("output", "BioCristals:blockPotatoCristal", Property.Type.STRING));
-		potatoCrystal.put("code", new Property("code", ReserchRegistry.potatoCristalisation, Property.Type.STRING));
-		
-		ConfigCategory melonCrystal = new ConfigCategory("melonCrystal", recipes);
-		melonCrystal.put("input", new Property("input", "minecraft:melon", Property.Type.STRING));
-		melonCrystal.put("output", new Property("output", "BioCristals:blockMelonCristal", Property.Type.STRING));
-		melonCrystal.put("code", new Property("code", ReserchRegistry.melonCristalisation, Property.Type.STRING));
-		
-		ConfigCategory pumpkinCrystal = new ConfigCategory("pumpkinCrystal", recipes);
-		pumpkinCrystal.put("input", new Property("input", "minecraft:pumpkin", Property.Type.STRING));
-		pumpkinCrystal.put("output", new Property("output", "BioCristals:blockPumpkinCristal", Property.Type.STRING));
-		pumpkinCrystal.put("code", new Property("code", ReserchRegistry.pumpkinCristalisation, Property.Type.STRING));
-		*/
+    	
     }
     
     //(String) (EntityList.classToStringMapping.get(entity.getClass())));
     //CristalRegistry.register(new WeakFleshTransformation(EntitySheep.class, ReserchRegistry.sheepSkin, new ItemStack(Blocks.wool)));
     private static void createEntityTransformerStandard(ConfigCategory recipes){
-    	/*
-    	ConfigCategory sheep = new ConfigCategory("Sheep", recipes);
-    	sheep.put("entity", new Property("entity", "Sheep", Property.Type.STRING));
-    	sheep.put("output", new Property("output", "minecraft:wool", Property.Type.STRING));
-    	sheep.put("code", new Property("code", ReserchRegistry.sheepSkin, Property.Type.STRING));
     	
-    	ConfigCategory cow = new ConfigCategory("Cow", recipes);
-    	cow.put("entity", new Property("entity", "Cow", Property.Type.STRING));
-    	cow.put("output", new Property("output", "minecraft:leather", Property.Type.STRING));
-    	cow.put("code", new Property("code", ReserchRegistry.leatherHound, Property.Type.STRING));
-    	
-    	ConfigCategory pig = new ConfigCategory("Pig", recipes);
-    	pig.put("entity", new Property("entity", "Pig", Property.Type.STRING));
-    	pig.put("output", new Property("output", "minecraft:carrot", Property.Type.STRING));
-    	pig.put("code", new Property("code", ReserchRegistry.pinkBlouse, Property.Type.STRING));
-    	
-    	ConfigCategory chicken = new ConfigCategory("Chicken", recipes);
-    	chicken.put("entity", new Property("entity", "Chicken", Property.Type.STRING));
-    	chicken.put("output", new Property("output", "minecraft:feather minecraft:egg", Property.Type.STRING));
-    	chicken.put("code", new Property("code", ReserchRegistry.featherFriend, Property.Type.STRING));
-    	
-    	ConfigCategory horse = new ConfigCategory("Horse", recipes);
-    	horse.put("entity", new Property("entity", "EntityHorse", Property.Type.STRING));
-    	horse.put("output", new Property("output", "minecraft:leather", Property.Type.STRING));
-    	horse.put("code", new Property("code", ReserchRegistry.leatherBeast, Property.Type.STRING));
-    	
-    	ConfigCategory villager = new ConfigCategory("Villager", recipes);
-    	villager.put("entity", new Property("entity", "Villager", Property.Type.STRING));
-    	villager.put("output", new Property("output", "minecraft:gold_nugget", Property.Type.STRING));
-    	villager.put("code", new Property("code", ReserchRegistry.payingTaxes, Property.Type.STRING));
-    	
-    	ConfigCategory zombie = new ConfigCategory("Zombie", recipes);
-    	zombie.put("entity", new Property("entity", "Zombie", Property.Type.STRING));
-    	zombie.put("output", new Property("output", "minecraft:rotten_flesh", Property.Type.STRING));
-    	zombie.put("code", new Property("code", ReserchRegistry.fleshRapture, Property.Type.STRING));
-    	
-    	ConfigCategory skeleton = new ConfigCategory("Skeleton", recipes);
-    	skeleton.put("entity", new Property("entity", "Skeleton", Property.Type.STRING));
-    	skeleton.put("output", new Property("output", "minecraft:bone", Property.Type.STRING));
-    	skeleton.put("code", new Property("code", ReserchRegistry.boneWreck, Property.Type.STRING));
-    	
-    	ConfigCategory spider = new ConfigCategory("Spider", recipes);
-    	spider.put("entity", new Property("entity", "Spider", Property.Type.STRING));
-    	spider.put("output", new Property("output", "minecraft:string minecraft:spider_eye", Property.Type.STRING));
-    	spider.put("code", new Property("code", ReserchRegistry.widowMaker, Property.Type.STRING));
-    	
-    	ConfigCategory slime = new ConfigCategory("Slime", recipes);
-    	slime.put("entity", new Property("entity", "Slime", Property.Type.STRING));
-    	slime.put("output", new Property("output", "minecraft:slime_ball", Property.Type.STRING));
-    	slime.put("code", new Property("code", ReserchRegistry.puddingSplit, Property.Type.STRING));
-    	
-    	ConfigCategory enderman = new ConfigCategory("Enderman", recipes);
-    	enderman.put("entity", new Property("entity", "Enderman", Property.Type.STRING));
-    	enderman.put("output", new Property("output", "minecraft:ender_pearl", Property.Type.STRING));
-    	enderman.put("code", new Property("code", ReserchRegistry.darkWarp, Property.Type.STRING));
-    	*/
     }
     
     private static void createPurifierStandard(
 			ConfigCategory recipes) {
-		/*
-    	ConfigCategory biomassMK1 = new ConfigCategory("Biomass MK1", recipes);
-    	biomassMK1.put("code", new Property("code", ReserchRegistry.biomassmk1, Property.Type.STRING));
-    	biomassMK1.put("filter", new Property("filter", "BioCristals:blockBiomass", Property.Type.STRING));
-    	biomassMK1.put("input", new Property("input", "8xminecraft:dirt", Property.Type.STRING));
-    	biomassMK1.put("output", new Property("output", "BioCristals:blockBiomass", Property.Type.STRING));
-    	biomassMK1.put("time", new Property("time", "200", Property.Type.INTEGER));
-    	
-    	ConfigCategory biomassMK2 = new ConfigCategory("Biomass MK2", recipes);
-    	biomassMK2.put("code", new Property("code", ReserchRegistry.biomassmk2, Property.Type.STRING));
-    	biomassMK2.put("filter", new Property("filter", "BioCristals:blockBiomass", Property.Type.STRING));
-    	biomassMK2.put("input", new Property("input", "9xbioMaterial", Property.Type.STRING));
-    	biomassMK2.put("output", new Property("output", "BioCristals:blockBiomass", Property.Type.STRING));
-    	biomassMK2.put("time", new Property("time", "400", Property.Type.INTEGER));
 		
-    	ConfigCategory bioBlob = new ConfigCategory("Bio Blob", recipes);
-    	bioBlob.put("code", new Property("code", ReserchRegistry.bioBlob, Property.Type.STRING));
-    	bioBlob.put("filter", new Property("filter", "BioCristals:itemBioReagent", Property.Type.STRING));
-    	bioBlob.put("input", new Property("input", "2xminecraft:gold_ingot 2xBioCristals:crootSapling 10xBioCristals:blockBiomass", Property.Type.STRING));
-    	bioBlob.put("output", new Property("output", "BioCristals:itemBioBlob", Property.Type.STRING));
-    	bioBlob.put("time", new Property("time", "400", Property.Type.INTEGER));
-    	
-    	ConfigCategory promogenitus = new ConfigCategory("Promogenitus", recipes);
-    	promogenitus.put("code", new Property("code", ReserchRegistry.promogenitus, Property.Type.STRING));
-    	promogenitus.put("filter", new Property("filter", "BioCristals:itemBioReagent", Property.Type.STRING));
-    	promogenitus.put("input", new Property("input", "4xminecraft:iron_block 8xBioCristals:crootSapling 64xminecraft:dirt", Property.Type.STRING));
-    	promogenitus.put("output", new Property("output", "BioCristals:blockPromogenitus", Property.Type.STRING));
-    	promogenitus.put("time", new Property("time", "1000", Property.Type.INTEGER));
-    	
-    	ConfigCategory extractor = new ConfigCategory("Extractor", recipes);
-    	extractor.put("code", new Property("code", ReserchRegistry.extractor, Property.Type.STRING));
-    	extractor.put("filter", new Property("filter", "BioCristals:blockBiomass", Property.Type.STRING));
-    	extractor.put("input", new Property("input", "1xBioCristals:blockReagentPurifier 4xBioCristals:blockCrootHollow 10xBioCristals:blockBiomass", Property.Type.STRING));
-    	extractor.put("output", new Property("output", "BioCristals:blockExtractor", Property.Type.STRING));
-    	extractor.put("time", new Property("time", "200", Property.Type.INTEGER));
-    	*/
 	}
 }

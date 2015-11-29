@@ -29,6 +29,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.Constants.NBT;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class ItemNomadSack extends Item {
 	
@@ -39,20 +40,19 @@ public class ItemNomadSack extends Item {
 	
 	
 	public final static String NAME = "itemNomandsSack";
-	public final static int maxSize = 2500;
 	
 	public ItemNomadSack(){
 		setUnlocalizedName(BioCristalsMod.MODID + "_" + NAME);
 		setCreativeTab(BioCristalsMod.creativeTab);
 		setTextureName(BioCristalsMod.MODID + ":" + NAME);
 		this.setMaxStackSize(1);
-		this.setMaxDamage(maxSize);
+		this.setMaxDamage(ConfigRegistry.nomadsSackSize);
 		this.setNoRepair();
 	}
 	
 	private boolean isWhitelisted(ItemStack block){
 		for(ItemStack b : whitelist){
-			if(b.getItem() == block.getItem())
+			if(b.getItem() == block.getItem() && (b.getItemDamage() == OreDictionary.WILDCARD_VALUE || b.getItemDamage() == block.getItemDamage()))
 				return true;
 		}
 		return false;
@@ -60,7 +60,7 @@ public class ItemNomadSack extends Item {
 	
 	private boolean isBlacklisted(ItemStack item){
 		for(ItemStack i : blacklist){
-			if(i.getItem() == item.getItem())
+			if(i.getItem() == item.getItem() && (i.getItemDamage() == OreDictionary.WILDCARD_VALUE || i.getItemDamage() == item.getItemDamage()))
 				return true;
 		}
 		return false;
@@ -141,15 +141,15 @@ public class ItemNomadSack extends Item {
 		ArrayList<ItemStack> list = getInventory(sack);
 		ItemStack stack = inv.getStackInSlot(slot);
 		
-		if(size < this.maxSize){
-			if((size+stack.stackSize) <= this.maxSize){
+		if(size < ConfigRegistry.nomadsSackSize){
+			if((size+stack.stackSize) <= ConfigRegistry.nomadsSackSize){
 				ItemStack c = stack.copy();
 				list.add(c);
 				size += c.stackSize;
 				stack.stackSize = 0;
 				inv.setInventorySlotContents(slot, null);
 			}else{
-				int s = maxSize - size;
+				int s = ConfigRegistry.nomadsSackSize - size;
 				ItemStack c = stack.copy();
 				c.stackSize = s;
 				stack.stackSize -= s;
@@ -167,14 +167,14 @@ public class ItemNomadSack extends Item {
 		int size = getSize(sack);
 		ArrayList<ItemStack> list = getInventory(sack);
 		
-		if(size < this.maxSize){
-			if((size+stack.stackSize) <= this.maxSize){
+		if(size < ConfigRegistry.nomadsSackSize){
+			if((size+stack.stackSize) <= ConfigRegistry.nomadsSackSize){
 				ItemStack c = stack.copy();
 				list.add(c);
 				size += c.stackSize;
 				stack.stackSize = 0;
 			}else{
-				int s = maxSize - size;
+				int s = ConfigRegistry.nomadsSackSize - size;
 				ItemStack c = stack.copy();
 				c.stackSize = s;
 				stack.stackSize -= s;
@@ -206,7 +206,7 @@ public class ItemNomadSack extends Item {
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean p_77624_4_) {
 		nbt(stack);
 		int size = getSize(stack);
-		list.add("Content " + size + "/" + this.maxSize);
+		list.add("Content " + size + "/" + ConfigRegistry.nomadsSackSize);
 		
 	}
 	
@@ -246,7 +246,7 @@ public class ItemNomadSack extends Item {
     {
 		nbt(sack);
 		int size = getSize(sack);
-        return 1.0d - ((double)size / (double)maxSize);
+        return 1.0d - ((double)size / (double)ConfigRegistry.nomadsSackSize);
     }
 	
 	@Override

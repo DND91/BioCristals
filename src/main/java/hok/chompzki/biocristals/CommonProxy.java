@@ -64,7 +64,7 @@ public class CommonProxy {
 		ReserchRegistry research = new ReserchRegistry();
 		research.preInit(event);
 		
-		MinecraftForge.addGrassSeed(new ItemStack(ItemRegistry.crootBeetle), 10);
+		MinecraftForge.addGrassSeed(new ItemStack(ItemRegistry.crootBeetle), ConfigRegistry.crootBeetleChance);
 		
 		BioEntityRegistry er = new BioEntityRegistry();
 		er.preInit(event);

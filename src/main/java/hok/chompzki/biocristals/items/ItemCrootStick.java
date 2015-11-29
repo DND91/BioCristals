@@ -3,6 +3,7 @@ package hok.chompzki.biocristals.items;
 import java.util.Random;
 
 import hok.chompzki.biocristals.BioCristalsMod;
+import hok.chompzki.biocristals.registrys.ConfigRegistry;
 import hok.chompzki.biocristals.registrys.ItemRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -50,7 +51,7 @@ public class ItemCrootStick extends Item {
 		EntityPlayer player = (EntityPlayer)living;
 		InventoryPlayer inv = player.inventory;
 		
-		if(!world.isRemote && block.getMaterial() == Material.leaves && random.nextInt(6) % 6 == 0){ //Add chance kraken bug
+		if(!world.isRemote && block.getMaterial() == Material.leaves && random.nextInt(ConfigRegistry.krakenChance) % ConfigRegistry.krakenChance == 0){ //Add chance kraken bug
 			float f = this.random.nextFloat() * 0.8F + 0.1F;
             float f1 = this.random.nextFloat() * 0.8F + 0.1F;
             float f2 = this.random.nextFloat() * 0.8F + 0.1F;
@@ -62,7 +63,7 @@ public class ItemCrootStick extends Item {
             entityitem.motionZ = (double)((float)this.random.nextGaussian() * f3);
 			world.spawnEntityInWorld(entityitem);
 			return true;
-		}else if(!world.isRemote && block.getMaterial() == Material.vine && random.nextInt(6) % 6 == 0){ //Add chance WSB
+		}else if(!world.isRemote && block.getMaterial() == Material.vine && random.nextInt(ConfigRegistry.krakenChance) % ConfigRegistry.krakenChance == 0){ //Add chance WSB
 			float f = this.random.nextFloat() * 0.8F + 0.1F;
             float f1 = this.random.nextFloat() * 0.8F + 0.1F;
             float f2 = this.random.nextFloat() * 0.8F + 0.1F;
@@ -74,7 +75,7 @@ public class ItemCrootStick extends Item {
             entityitem.motionZ = (double)((float)this.random.nextGaussian() * f3);
 			world.spawnEntityInWorld(entityitem);
 			return true;
-		}else if(!world.isRemote && block == Blocks.reeds  && random.nextInt(4) % 4 == 0 && !inv.hasItem(ItemRegistry.hivebag)){ //Add chance and can only pick up one
+		}else if(!world.isRemote && block == Blocks.reeds  && random.nextInt(ConfigRegistry.hivebagChance) % ConfigRegistry.hivebagChance == 0 && !inv.hasItem(ItemRegistry.hivebag)){ //Add chance and can only pick up one
 			float f = this.random.nextFloat() * 0.8F + 0.1F;
             float f1 = this.random.nextFloat() * 0.8F + 0.1F;
             float f2 = this.random.nextFloat() * 0.8F + 0.1F;
@@ -86,7 +87,7 @@ public class ItemCrootStick extends Item {
             entityitem.motionZ = (double)((float)this.random.nextGaussian() * f3);
 			world.spawnEntityInWorld(entityitem);
 			return true;
-		}else if(!world.isRemote && block == Blocks.cactus && !inv.hasItem(ItemRegistry.crootClaw)){ //Add chance and can only pick up one
+		}else if(!world.isRemote && block == Blocks.cactus && random.nextInt(ConfigRegistry.crootClawChance) % ConfigRegistry.crootClawChance == 0 &&  !inv.hasItem(ItemRegistry.crootClaw)){ //Add chance and can only pick up one
 			float f = this.random.nextFloat() * 0.8F + 0.1F;
             float f1 = this.random.nextFloat() * 0.8F + 0.1F;
             float f2 = this.random.nextFloat() * 0.8F + 0.1F;

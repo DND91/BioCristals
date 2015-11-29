@@ -37,9 +37,9 @@ public class ItemCrootClaw extends Item {
 				player.setPositionAndUpdate(x+0.5D, y+1.5D, z+0.5D);
 				PotionEffect pot = player.getActivePotionEffect(Potion.hunger);
 				if(pot == null)
-					player.addPotionEffect(new PotionEffect(Potion.hunger.id, 100, 0));
+					player.addPotionEffect(new PotionEffect(Potion.hunger.id, ConfigRegistry.hungerDurationTP, ConfigRegistry.hungerAmplifierTP));
 				else
-					player.addPotionEffect(new PotionEffect(Potion.hunger.id, 100 + pot.getDuration(), pot.getAmplifier()+0));
+					player.addPotionEffect(new PotionEffect(Potion.hunger.id, ConfigRegistry.hungerDurationTP + pot.getDuration(), pot.getAmplifier()+ConfigRegistry.hungerAmplifierTP));
 				return true;
 			}
 			return false;
