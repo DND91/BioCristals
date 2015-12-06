@@ -227,140 +227,24 @@ public class KnowledgeDescriptions {
 		return s + "\t";
 	}
 	
-	public static String getDisplayName(String code){
-		if(code.equals("NONE"))
+	public static String getDisplayName(RecipeContainer con){
+		if(con == null)
 			return "NONE";
 		
-		for(RecipeContainer con : RecipeRegistry.recipes){
-			if(con.code.equals(code)){
-				return con.output.getDisplayName() + "\n[Crafting]";
-			}
-		}
-		
-		for(CrootRecipeContainer con : RecipeRegistry.crootRecipes){
-			if(con.code.equals(code)){
-				return con.output.getDisplayName() + "\n[Croot Crafting]";
-			}
-		}
-		
-		for(TransformerContainer con : CristalRegistry.transformationContainer){
-			if(con.code.equals(code)){
-				return con.output.getDisplayName() + "\n[Attuner]";
-
-			}
-		}
-		
-		for(TransformerEntityContainer con : CristalRegistry.transformationEntityContainer){
-			if(con.code.equals(code)){
-				return EntityList.createEntityByName((String) EntityList.classToStringMapping.get(con.input), Minecraft.getMinecraft().theWorld).getCommandSenderName() + "\n[Tuft]";
-			}
-		}
-		
-		for(PurifierContainer con : RecipeRegistry.purifierContainers){
-			if(con.code.equals(code)){
-				return con.name  + "\n[Purifier]";
-			}
-		}
-		return "NONE";
+		return con.output.getDisplayName() + "\n[Crafting]";
 	}
 	
-	public static String getStructure(String code){
-		if(code.equals("NONE"))
+	public static String getStructure(RecipeContainer con){
+		if(con == null)
 			return "NONE";
 		
-		for(RecipeContainer con : RecipeRegistry.recipes){
-			if(con.code.equals(code)){
-				return KnowledgeDescriptions.transformRecipe(con);
-			}
-		}
-		
-		for(CrootRecipeContainer con : RecipeRegistry.crootRecipes){
-			if(con.code.equals(code)){
-				return KnowledgeDescriptions.transformRecipe(con);
-			}
-		}
-		
-		for(TransformerContainer con : CristalRegistry.transformationContainer){
-			if(con.code.equals(code)){
-				return KnowledgeDescriptions.transformWeakCristal(Block.getBlockFromItem(con.output.getItem()));
-
-			}
-		}
-		
-		for(TransformerEntityContainer con : CristalRegistry.transformationEntityContainer){
-			if(con.code.equals(code)){
-				return KnowledgeDescriptions.transformWeakFlesh(con.input);
-			}
-		}
-		
-		for(PurifierContainer con : RecipeRegistry.purifierContainers){
-			if(con.code.equals(code)){
-				String structure = "\n\nFilter: \t" + KnowledgeDescriptions.transformItemStack(con.filter, false) + "\t\n\n";
-				structure += "Input: \t";
-				int y = 0;
-				for(Object obj : con.input){
-					if (obj instanceof String){
-						structure += KnowledgeDescriptions.transformItemStack(new ItemStack(Blocks.air), false);
-					} else if (obj instanceof ItemStack){
-						structure += KnowledgeDescriptions.transformStrictItemStack((ItemStack)obj, false);
-					} else if(obj instanceof OreDictContainer){
-						structure += transformOreCon((OreDictContainer)obj, false);
-					}
-					
-					y++;
-					if(y % 5 == 0)
-						structure += "\n\n\f";
-				}
-				structure += "\t\n\n";
-				return structure;
-			}
-		}
-		return "NONE";
+		return KnowledgeDescriptions.transformRecipe(con);
 	}
 
-	public static String getResult(String code){
-		if(code.equals("NONE"))
+	public static String getResult(RecipeContainer con){
+		if(con == null)
 			return "NONE";
 		
-		for(RecipeContainer con : RecipeRegistry.recipes){
-			if(con.code.equals(code)){
-				return KnowledgeDescriptions.transformOutput(con.output);
-			}
-		}
-		
-		for(CrootRecipeContainer con : RecipeRegistry.crootRecipes){
-			if(con.code.equals(code)){
-				return KnowledgeDescriptions.transformOutput(con.output);
-			}
-		}
-		
-		for(TransformerContainer con : CristalRegistry.transformationContainer){
-			if(con.code.equals(code)){
-				return KnowledgeDescriptions.transformOutput(con.output);
-
-			}
-		}
-		
-		for(TransformerEntityContainer con : CristalRegistry.transformationEntityContainer){
-			if(con.code.equals(code)){
-				return KnowledgeDescriptions.transformOutput(con.input);
-			}
-		}
-		
-		for(PurifierContainer con : RecipeRegistry.purifierContainers){
-			if(con.code.equals(code)){
-				String result = "\t\f";
-				int y = 0;
-				for(ItemStack stack : con.output){
-					result += KnowledgeDescriptions.transformItemStack(stack, false);
-					y++;
-					if(y % 5 == 0)
-						result += "\n\n";
-				}
-				result += "\t\n\n";
-				return result;
-			}
-		}
-		return "NONE";
+		return KnowledgeDescriptions.transformOutput(con.output);
 	}
 }

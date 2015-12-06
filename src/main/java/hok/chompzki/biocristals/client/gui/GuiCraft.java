@@ -18,6 +18,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class GuiCraft extends GuiCraftingHelper {
 
@@ -25,61 +26,21 @@ public class GuiCraft extends GuiCraftingHelper {
 	String structure = "";
 	String result = "";
 	
-	public GuiCraft(Minecraft minecraft, String code) {
+	public GuiCraft(Minecraft minecraft, ItemStack stack, String code) {
 		super(minecraft, ReserchDataNetwork.instance().getResearch(code));
 		if(code.equals("NONE"))
 			return;
 		
 		for(RecipeContainer con : RecipeRegistry.recipes){
-			if(con.code.equals(code)){
-				displayName = KnowledgeDescriptions.getDisplayName(code);
-				structure = KnowledgeDescriptions.getStructure(code);
-				result = KnowledgeDescriptions.getResult(code);
+			if(con.output.getItem() == stack.getItem() && (stack.getItemDamage() == OreDictionary.WILDCARD_VALUE || con.output.getItemDamage() == stack.getItemDamage())){
+				displayName = KnowledgeDescriptions.getDisplayName(con);
+				structure = KnowledgeDescriptions.getStructure(con);
+				result = KnowledgeDescriptions.getResult(con);
 				this.input = con;
 				this.output = con.output;
 				return;
 			}
 		}
-		
-		for(CrootRecipeContainer con : RecipeRegistry.crootRecipes){
-			if(con.code.equals(code)){
-				displayName = KnowledgeDescriptions.getDisplayName(code);
-				structure = KnowledgeDescriptions.getStructure(code);
-				result = KnowledgeDescriptions.getResult(code);
-				this.input = con;
-				this.output = con.output;
-				return;
-			}
-		}
-		
-		for(TransformerContainer con : CristalRegistry.transformationContainer){
-			if(con.code.equals(code)){
-				displayName = KnowledgeDescriptions.getDisplayName(code);
-				structure = KnowledgeDescriptions.getStructure(code);
-				result = KnowledgeDescriptions.getResult(code);
-				return;
-			}
-		}
-		
-		for(TransformerEntityContainer con : CristalRegistry.transformationEntityContainer){
-			if(con.code.equals(code)){
-				displayName = KnowledgeDescriptions.getDisplayName(code);
-				structure = KnowledgeDescriptions.getStructure(code);
-				result = KnowledgeDescriptions.getResult(code);
-				return;
-			}
-		}
-		
-		for(PurifierContainer con : RecipeRegistry.purifierContainers){
-			if(con.code.equals(code)){
-				displayName = KnowledgeDescriptions.getDisplayName(code);
-				structure = KnowledgeDescriptions.getStructure(code);
-				result = KnowledgeDescriptions.getResult(code);
-				return;
-			}
-		}
-		
-		
 	}
 	
 	public void drawGui(GuiScreen currentScreen, Minecraft mc, World world, EntityPlayer player, ItemStack currentStack, int mouseX, int mouseY, float renderPartialTicks) {

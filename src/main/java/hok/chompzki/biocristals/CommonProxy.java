@@ -9,6 +9,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import hok.chompzki.biocristals.croot.power.TreeStorage;
 import hok.chompzki.biocristals.recipes.RecipeTransformer;
 import hok.chompzki.biocristals.registrys.BioEntityRegistry;
+import hok.chompzki.biocristals.registrys.BiomeRegistry;
 import hok.chompzki.biocristals.registrys.BlockRegistry;
 import hok.chompzki.biocristals.registrys.ConfigRegistry;
 import hok.chompzki.biocristals.registrys.CristalRegistry;
@@ -81,6 +82,9 @@ public class CommonProxy {
     	
     	VillagerBank bank = new VillagerBank();
     	bank.init(event);
+    	
+    	BiomeRegistry biome = new BiomeRegistry();
+    	biome.init(event);
 	}
 
     

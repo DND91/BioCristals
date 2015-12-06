@@ -5,6 +5,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityBlaze;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
@@ -35,6 +36,13 @@ public class EntityWSB extends EntityThrowable {
 	            int b0 = ConfigRegistry.wsbDamage;
 	            
 	            p_70184_1_.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), (float)b0);
+	            
+	            float f4 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
+
+                if (f4 > 0.0F)
+                {	
+                	p_70184_1_.entityHit.addVelocity(this.motionX * (double)1 * 0.6000000238418579D / (double)f4, 0.1D, this.motionZ * (double)1 * 0.6000000238418579D / (double)f4);
+                }
 	        }
 
 	        for (int i = 0; i < 8; ++i)

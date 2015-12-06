@@ -171,8 +171,8 @@ public class GuiResearchBook extends GuiScreen {
 			article.setWorldAndResolution(mc, width, height, null);
 			this.initGui();
         }else if(btn == 1 && this.tooltipResearch != null && DataHelper.belongsTo(reader, reader.getCurrentEquippedItem())){
-        	if(tooltipResearch.getContent().getFaved() == null)
-        		return;
+        	//TODO: if(tooltipResearch.getContent().getFaved() == null)
+        	//	return;
         	
         	BioCristalsMod.network.sendToServer(new PlayerStorageFaveMessage(reader.getGameProfile().getId().toString(), tooltipResearch.getCode()));
         	//tooltipResearch.getContent().selected(!b);
@@ -900,4 +900,14 @@ public class GuiResearchBook extends GuiScreen {
     {
         return false;
     }
+
+	public GuiResearchBook load() {
+		GuiArticle a = GuiInventoryOverlay.craftingHelper.getBooked();
+        if(a != null){
+        	article = a;
+        	article.setLast(this);
+        	article.setWorldAndResolution(Minecraft.getMinecraft(), width, height, null);
+        }
+		return this;
+	}
 }

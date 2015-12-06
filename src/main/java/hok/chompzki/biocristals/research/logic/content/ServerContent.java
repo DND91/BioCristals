@@ -5,10 +5,4 @@ import hok.chompzki.biocristals.client.gui.GuiCraftingHelper;
 
 public class ServerContent extends ArticleContent {
 
-	@Override
-	public GuiCraftingHelper getFaved() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

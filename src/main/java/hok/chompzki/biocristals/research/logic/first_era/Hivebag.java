@@ -1,9 +1,13 @@
 package hok.chompzki.biocristals.research.logic.first_era;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import hok.chompzki.biocristals.api.ArticleContent;
 import hok.chompzki.biocristals.api.ArticleContent.EnumContent;
 import hok.chompzki.biocristals.client.gui.GuiCraftingHelper;
+import hok.chompzki.biocristals.client.gui.GuiCrootStickHelper;
 import hok.chompzki.biocristals.client.gui.KnowledgeDescriptions;
 import hok.chompzki.biocristals.registrys.ItemRegistry;
 
@@ -30,7 +34,7 @@ public class Hivebag extends ArticleContent {
 			   + "small insect is a morph between life and plant, it grows "
 			   + "as a parasite on reeds and produces strong acid that cooks "
 			   + "whatever it catches. It was used by nomads to cook diffrent "
-			   + "resources while they traveled. ";
+			   + "resources while they traveled. Consumes croot bug. ";
 			break;
 		case 1: //Sodium acetate, Cara Rot (Carrot), Elle D'berry (Elderberry), Rabarberpaj... Carla & Fleur (Cauliflower)
 			
@@ -47,11 +51,6 @@ public class Hivebag extends ArticleContent {
 	@Override
 	public int numberOfPages(EnumContent content){
 		return 1;
-	}
-	
-	@Override
-	public GuiCraftingHelper getFaved() {
-		return null; //new GuiCraft(Minecraft.getMinecraft(), code);
 	}
 
 }

@@ -1,10 +1,12 @@
 package hok.chompzki.biocristals.research.data.network;
 
 import hok.chompzki.biocristals.api.ArticleContent;
+import hok.chompzki.biocristals.client.gui.GuiCraftingHelper;
 import hok.chompzki.biocristals.client.gui.GuiInventoryOverlay;
 import hok.chompzki.biocristals.research.data.PlayerResearch;
 import hok.chompzki.biocristals.research.data.PlayerStorage;
 import hok.chompzki.biocristals.research.data.Research;
+import hok.chompzki.biocristals.research.data.ResearchUnlocks;
 import hok.chompzki.biocristals.research.data.ReserchDataNetwork;
 import hok.chompzki.biocristals.research.logic.ResearchLogicNetwork;
 
@@ -42,7 +44,11 @@ public class PlayerStorageSyncHandler implements
 				if(ReserchDataNetwork.instance().getResearch(code) == null)
 					continue;
 				ArticleContent content = ReserchDataNetwork.instance().getResearch(code).getContent();
-				GuiInventoryOverlay.craftingHelper.add(content.getFaved());
+				
+				GuiCraftingHelper gui = ResearchUnlocks.getGui(code);
+				if(gui != null)
+					GuiInventoryOverlay.craftingHelper.add(gui);
+				
 			}
 			GuiInventoryOverlay.craftingHelper.setPage(place);
 			if(oldResearch != null){

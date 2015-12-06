@@ -5,14 +5,17 @@ import java.util.UUID;
 import hok.chompzki.biocristals.client.gui.GuiCrootCore;
 import hok.chompzki.biocristals.client.gui.GuiCrootHollow;
 import hok.chompzki.biocristals.client.gui.GuiHivebag;
+import hok.chompzki.biocristals.client.gui.GuiNest;
 import hok.chompzki.biocristals.client.gui.GuiResearchBook;
 import hok.chompzki.biocristals.containers.ContainerCrootHollow;
 import hok.chompzki.biocristals.containers.ContainerCrootCore;
 import hok.chompzki.biocristals.containers.ContainerHivebag;
+import hok.chompzki.biocristals.containers.ContainerNest;
 import hok.chompzki.biocristals.research.data.DataHelper;
 import hok.chompzki.biocristals.research.data.PlayerStorage;
 import hok.chompzki.biocristals.tile_enteties.TileCrootHollow;
 import hok.chompzki.biocristals.tile_enteties.TileCrootCore;
+import hok.chompzki.biocristals.tile_enteties.TileNest;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -44,6 +47,9 @@ public class GuiHandler implements IGuiHandler {
 			return new ContainerCrootCore(player.inventory, (TileCrootCore) tileEntity, false);
 		}else if(ID == this.hivebagId){
 			return new ContainerHivebag(player, player.inventory.currentItem);
+		}else if(ID == 104){
+			TileEntity tileEntity = world.getTileEntity(x, y, z);
+			return new ContainerNest(player.inventory, (TileNest)tileEntity);
 		}
 		
 		return null;
@@ -58,7 +64,7 @@ public class GuiHandler implements IGuiHandler {
 			
 			if(DataHelper.belongsTo(player, stack) && book == null)
 				book = new GuiResearchBook(player);
-			return DataHelper.belongsTo(player, stack) ? book : new GuiResearchBook(player);
+			return DataHelper.belongsTo(player, stack) ? book.load() : new GuiResearchBook(player);
 		}else if(ID == 101){ //ResearchBook
 			TileEntity tileEntity = world.getTileEntity(x, y, z);
 			return new GuiCrootHollow(player.inventory, (TileCrootHollow) tileEntity);
@@ -67,6 +73,9 @@ public class GuiHandler implements IGuiHandler {
 			return new GuiCrootCore(player.inventory, (TileCrootCore) tileEntity);
 		}else if(ID == this.hivebagId){
 			return new GuiHivebag(player, player.inventory.currentItem);
+		}else if(ID == 104){
+			TileEntity tileEntity = world.getTileEntity(x, y, z);
+			return new GuiNest(player.inventory, (TileNest)tileEntity);
 		}
 		
 		return null;

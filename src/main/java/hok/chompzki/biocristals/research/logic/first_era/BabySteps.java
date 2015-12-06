@@ -3,11 +3,14 @@ package hok.chompzki.biocristals.research.logic.first_era;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import hok.chompzki.biocristals.api.ArticleContent;
 import hok.chompzki.biocristals.api.ArticleContent.EnumContent;
 import hok.chompzki.biocristals.client.gui.GuiCraft;
 import hok.chompzki.biocristals.client.gui.GuiCraftingHelper;
+import hok.chompzki.biocristals.client.gui.GuiCrootStickHelper;
 import hok.chompzki.biocristals.client.gui.GuiInventoryOverlay;
 import hok.chompzki.biocristals.client.gui.KnowledgeDescriptions;
 import hok.chompzki.biocristals.registrys.BlockRegistry;
@@ -53,8 +56,8 @@ public class BabySteps extends ArticleContent {
 		return 1;
 	}
 	
-	@Override
+	/*@Override
 	public GuiCraftingHelper getFaved() {
-		return null; //new GuiCraft(Minecraft.getMinecraft(), code);
-	}
+		return new GuiCrootStickHelper(Minecraft.getMinecraft(), code, null, new ItemStack(ItemRegistry.crootBeetle), new ItemStack(Blocks.tallgrass, 1, 1));
+	}*/
 }

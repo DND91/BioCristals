@@ -29,8 +29,6 @@ public abstract class ArticleContent {
 		return 1;
 	}
 
-	public abstract GuiCraftingHelper getFaved();
-
 	public String getCode() {
 		return code;
 	}

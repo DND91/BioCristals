@@ -43,11 +43,4 @@ public class AgeOfConflict extends ArticleContent {
 	public int numberOfPages(EnumContent content){
 		return 2;
 	}
-
-
-	@Override
-	public GuiCraftingHelper getFaved() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

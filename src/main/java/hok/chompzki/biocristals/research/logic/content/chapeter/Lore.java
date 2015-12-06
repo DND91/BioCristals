@@ -32,9 +32,4 @@ public class Lore extends ArticleContent {
 	public int numberOfPages(EnumContent content){
 		return 1;
 	}
-
-	@Override
-	public GuiCraftingHelper getFaved() {
-		return null;
-	}
 }

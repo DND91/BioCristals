@@ -107,7 +107,7 @@ public class GuiArticle extends GuiScreen {
         
         ItemStack stack = reader.inventory.getCurrentItem();
         
-        this.buttonCheckboxPage.visible = this.article.getContent().getFaved() != null && this.content.getFaved() != null && DataHelper.belongsTo(reader, stack);
+        this.buttonCheckboxPage.visible = DataHelper.belongsTo(reader, stack); //TODO: this.article.getContent().getFaved() != null && this.content.getFaved() != null && 
         if(this.buttonCheckboxPage.visible){
         	this.buttonCheckboxPage.selected = PlayerStorage.instance(true).get(owner).hasFaved(article.getCode());
         }
@@ -206,7 +206,7 @@ public class GuiArticle extends GuiScreen {
 	
 	public void drawScreen(int par1, int par2, float par3)
     {
-		this.buttonCheckboxPage.visible = this.content.getFaved() != null && reader.getGameProfile().getId().equals(owner);
+		this.buttonCheckboxPage.visible = reader.getGameProfile().getId().equals(owner); //TODO: this.content.getFaved() != null && 
         if(this.buttonCheckboxPage.visible){
         	this.buttonCheckboxPage.selected = PlayerStorage.instance(true).get(owner).hasFaved(article.getCode());
         }

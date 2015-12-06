@@ -1,10 +1,17 @@
 package hok.chompzki.biocristals.blocks;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import hok.chompzki.biocristals.BioCristalsMod;
 import hok.chompzki.biocristals.api.IBaseCristal;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
 
 public class BlockBiomass extends Block implements IBaseCristal{
 
@@ -16,5 +23,5 @@ public class BlockBiomass extends Block implements IBaseCristal{
 		setCreativeTab(BioCristalsMod.creativeTab);
 		setBlockTextureName(BioCristalsMod.MODID + ":" + NAME);
 	}
-
+	
 }

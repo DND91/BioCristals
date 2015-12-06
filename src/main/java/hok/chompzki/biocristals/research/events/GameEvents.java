@@ -11,8 +11,10 @@ import hok.chompzki.biocristals.registrys.BlockRegistry;
 import hok.chompzki.biocristals.registrys.ItemRegistry;
 import hok.chompzki.biocristals.registrys.RecipeRegistry;
 import hok.chompzki.biocristals.registrys.ReserchRegistry;
+import hok.chompzki.biocristals.research.data.EnumUnlock;
 import hok.chompzki.biocristals.research.data.PlayerResearch;
 import hok.chompzki.biocristals.research.data.PlayerStorage;
+import hok.chompzki.biocristals.research.data.ResearchUnlocks;
 import hok.chompzki.biocristals.research.data.ReserchDataNetwork;
 import hok.chompzki.biocristals.research.logic.ResearchLogicNetwork;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -29,27 +31,8 @@ public class GameEvents {
 		if(event.entityPlayer.worldObj.isRemote)
 			return;
 		
-		if(event.item.getEntityItem().getItem() == ItemRegistry.crootBeetle){
-			UUID id = event.entityPlayer.getGameProfile().getId();
-			PlayerResearch research = PlayerStorage.instance(false).get(id);
-			ResearchLogicNetwork.instance().compelte(research, ReserchRegistry.babySteps);
-		} else if(event.item.getEntityItem().getItem() == ItemRegistry.kraKenBug){
-			UUID id = event.entityPlayer.getGameProfile().getId();
-			PlayerResearch research = PlayerStorage.instance(false).get(id);
-			ResearchLogicNetwork.instance().compelte(research, ReserchRegistry.kraken);
-		} else if(event.item.getEntityItem().getItem() == ItemRegistry.wsb){
-			UUID id = event.entityPlayer.getGameProfile().getId();
-			PlayerResearch research = PlayerStorage.instance(false).get(id);
-			ResearchLogicNetwork.instance().compelte(research, ReserchRegistry.wsb);
-		} else if(event.item.getEntityItem().getItem() == ItemRegistry.crootClaw){
-			UUID id = event.entityPlayer.getGameProfile().getId();
-			PlayerResearch research = PlayerStorage.instance(false).get(id);
-			ResearchLogicNetwork.instance().compelte(research, ReserchRegistry.crootClaw);
-		} else if(event.item.getEntityItem().getItem() == ItemRegistry.hivebag){
-			UUID id = event.entityPlayer.getGameProfile().getId();
-			PlayerResearch research = PlayerStorage.instance(false).get(id);
-			ResearchLogicNetwork.instance().compelte(research, ReserchRegistry.hivebag);
-		}
+		ResearchUnlocks.unlock(event.entityPlayer, EnumUnlock.PICKUP, event.item.getEntityItem());
+		
 		ItemStack current = event.entityPlayer.inventory.getCurrentItem();
 		if(current != null && current.getItem() == ItemRegistry.nomadSack){
 			ItemStack floor = event.item.getEntityItem();
@@ -71,27 +54,9 @@ public class GameEvents {
 		if(event.player.worldObj.isRemote)
 			return;
 		
-		for(CrootRecipeContainer con : RecipeRegistry.crootRecipes){
-			if(con.code.equals("NONE"))
-				continue;
-			if(con.output.isItemEqual(event.crafting)){
-				UUID id = event.player.getGameProfile().getId();
-				PlayerResearch research = PlayerStorage.instance(false).get(id);
-				ResearchLogicNetwork.instance().compelte(research, con.code);
-				return;
-			}
-		}
+		ResearchUnlocks.unlock(event.player, EnumUnlock.CRAFT, event.crafting);
 		
-		for(RecipeContainer con : RecipeRegistry.recipes){
-			if(con.code.equals("NONE"))
-				continue;
-			if(con.output.isItemEqual(event.crafting)){
-				UUID id = event.player.getGameProfile().getId();
-				PlayerResearch research = PlayerStorage.instance(false).get(id);
-				ResearchLogicNetwork.instance().compelte(research, con.code);
-				return;
-			}
-		}
+		
 	}
 	
 }

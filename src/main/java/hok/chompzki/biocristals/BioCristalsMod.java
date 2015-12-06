@@ -25,13 +25,17 @@ import cpw.mods.fml.relauncher.Side;
 @Mod(name = BioCristalsMod.MODID, modid = BioCristalsMod.MODID, version = BioCristalsMod.VERSION)
 public class BioCristalsMod
 {
+	/**
+	 * All recipes need to be based on stone and things that you make after stone extratction point, 
+	 * then iron, lapiz, gold, redstone, diamond and emerald.
+	 */
 	
 	public static CreativeTabs creativeTab = new BioCristalTab();
 	
     public static final String MODID = "BioCristals";
-    public static final String VERSION = "1.2";
+    public static final String VERSION = "1.6";
     
-    public static SimpleNetworkWrapper network;
+    public static SimpleNetworkWrapper network = null;
     
     @SidedProxy(clientSide = "hok.chompzki.biocristals.ClientProxy", serverSide = "hok.chompzki.biocristals.CommonProxy")
     public static CommonProxy proxy;

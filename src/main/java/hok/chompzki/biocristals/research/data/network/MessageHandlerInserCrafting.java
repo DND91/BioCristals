@@ -46,7 +46,7 @@ public class MessageHandlerInserCrafting implements IMessageHandler<MessageInser
 				IInventory grid = getCraftMatrix(slot);
 				if(grid == null)
 					continue;
-				Slot[] slots = getSlots(container, grid); //TODO: ERROR IN CALCULATION! TO SMALL CRAFTING TALBLE GETS FILLED WRONGLY!
+				Slot[] slots = getSlots(container, grid);
 				
 				int gridLength = (int) Math.sqrt(grid.getSizeInventory());
 				int diff = gridLength - (recipe.length);
@@ -90,7 +90,7 @@ public class MessageHandlerInserCrafting implements IMessageHandler<MessageInser
 		int[] targetIds = OreDictionary.getOreIDs(itemStack);
 		
 		if(0 < targetIds.length && hasItem(player.inventory, targetIds) && !player.capabilities.isCreativeMode){
-			
+			container.putStackInSlot(slot.slotNumber, getOneOre(player, targetIds));
 		} else if(itemStack != null && (player.inventory.hasItem(itemStack.getItem()) || player.capabilities.isCreativeMode)){
 			container.putStackInSlot(slot.slotNumber, getOneOf(player, itemStack));
 		}

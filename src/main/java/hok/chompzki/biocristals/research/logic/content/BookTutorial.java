@@ -61,10 +61,4 @@ public class BookTutorial extends ArticleContent {
 		return 5;
 	}
 	
-	
-	@Override
-	public GuiCraftingHelper getFaved() {
-		return null;
-	}
-	
 }

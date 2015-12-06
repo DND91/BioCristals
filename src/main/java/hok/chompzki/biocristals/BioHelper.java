@@ -82,7 +82,12 @@ public class BioHelper {
 	
 	public static int getFirstEmptyStack(IInventory inventory)
     {
-        for (int i = 0; i < inventory.getSizeInventory(); ++i)
+        return getFirstEmptyStack(inventory, 0, inventory.getSizeInventory());
+    }
+	
+	public static int getFirstEmptyStack(IInventory inventory, int min, int max)
+    {
+        for (int i = min; i < max; ++i)
         {
             if (inventory.getStackInSlot(i) == null)
             {
@@ -94,6 +99,10 @@ public class BioHelper {
     }
 	
 	public static boolean addItemStackToInventory(final ItemStack stack, IInventory inventory){
+		return addItemStackToInventory(stack, inventory, 0, inventory.getSizeInventory());
+	}
+	
+	public static boolean addItemStackToInventory(final ItemStack stack, IInventory inventory, int min, int max){
 		if (stack != null && stack.stackSize != 0 && stack.getItem() != null)
         {
             try
@@ -102,7 +111,7 @@ public class BioHelper {
 
                 if (stack.isItemDamaged())
                 {
-                    i = getFirstEmptyStack(inventory);
+                    i = getFirstEmptyStack(inventory, min, max);
 
                     if (i >= 0)
                     {
@@ -120,7 +129,7 @@ public class BioHelper {
                     do
                     {
                         i = stack.stackSize;
-                        stack.stackSize = storePartialItemStack(stack, inventory);
+                        stack.stackSize = storePartialItemStack(stack, inventory, min, max);
                     }
                     while (stack.stackSize > 0 && stack.stackSize < i);
 
@@ -158,13 +167,17 @@ public class BioHelper {
 	}
 	
 	private static int storePartialItemStack(ItemStack stack, IInventory inventory){
+		return storePartialItemStack(stack, inventory, 0, inventory.getSizeInventory());
+	}
+	
+	private static int storePartialItemStack(ItemStack stack, IInventory inventory, int min, int max){
         Item item = stack.getItem();
         int i = stack.stackSize;
         int j;
 
         if (stack.getMaxStackSize() == 1)
         {
-            j = getFirstEmptyStack(inventory);
+            j = getFirstEmptyStack(inventory, min, max);
 
             if (j < 0)
             {
@@ -182,11 +195,11 @@ public class BioHelper {
         }
         else
         {
-            j = storeItemStack(stack, inventory);
+            j = storeItemStack(stack, inventory, min, max);
 
             if (j < 0)
             {
-                j = getFirstEmptyStack(inventory);
+                j = getFirstEmptyStack(inventory, min, max);
             }
 
             if (j < 0)
@@ -233,7 +246,12 @@ public class BioHelper {
 	
 	private static int storeItemStack(ItemStack stack, IInventory inventory)
     {
-        for (int i = 0; i < inventory.getSizeInventory(); ++i)
+		return storeItemStack(stack, inventory, 0, inventory.getSizeInventory());
+    }
+	
+	private static int storeItemStack(ItemStack stack, IInventory inventory, int min, int max)
+    {
+        for (int i = min; i < max; ++i)
         {
             if (inventory.getStackInSlot(i) != null && inventory.getStackInSlot(i).getItem() == stack.getItem() && inventory.getStackInSlot(i).isStackable() && inventory.getStackInSlot(i).stackSize < inventory.getStackInSlot(i).getMaxStackSize() && inventory.getStackInSlot(i).stackSize < inventory.getInventoryStackLimit() && (!inventory.getStackInSlot(i).getHasSubtypes() || inventory.getStackInSlot(i).getItemDamage() == stack.getItemDamage()) && ItemStack.areItemStackTagsEqual(inventory.getStackInSlot(i), stack))
             {

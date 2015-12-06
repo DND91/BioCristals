@@ -63,7 +63,19 @@ public class ItemCrootStick extends Item {
             entityitem.motionZ = (double)((float)this.random.nextGaussian() * f3);
 			world.spawnEntityInWorld(entityitem);
 			return true;
-		}else if(!world.isRemote && block.getMaterial() == Material.vine && random.nextInt(ConfigRegistry.krakenChance) % ConfigRegistry.krakenChance == 0){ //Add chance WSB
+		}else if(!world.isRemote && block == Blocks.melon_block && random.nextInt(ConfigRegistry.kittehChance) % ConfigRegistry.kittehChance == 0){ //Add chance kitteh beetle
+			float f = this.random.nextFloat() * 0.8F + 0.1F;
+            float f1 = this.random.nextFloat() * 0.8F + 0.1F;
+            float f2 = this.random.nextFloat() * 0.8F + 0.1F;
+            
+			EntityItem entityitem = new EntityItem(world, (double)((float)x + f), (double)((float)y + f1), (double)((float)z + f2), new ItemStack(ItemRegistry.kittehBeetle, 1));
+            float f3 = 0.05F;
+            entityitem.motionX = (double)((float)this.random .nextGaussian() * f3);
+            entityitem.motionY = (double)((float)this.random.nextGaussian() * f3 + 0.2F);
+            entityitem.motionZ = (double)((float)this.random.nextGaussian() * f3);
+			world.spawnEntityInWorld(entityitem);
+			return true;
+		}else if(!world.isRemote && block.getMaterial() == Material.vine && random.nextInt(ConfigRegistry.wsbChance) % ConfigRegistry.wsbChance == 0){ //Add chance WSB
 			float f = this.random.nextFloat() * 0.8F + 0.1F;
             float f1 = this.random.nextFloat() * 0.8F + 0.1F;
             float f2 = this.random.nextFloat() * 0.8F + 0.1F;
@@ -76,6 +88,11 @@ public class ItemCrootStick extends Item {
 			world.spawnEntityInWorld(entityitem);
 			return true;
 		}else if(!world.isRemote && block == Blocks.reeds  && random.nextInt(ConfigRegistry.hivebagChance) % ConfigRegistry.hivebagChance == 0 && !inv.hasItem(ItemRegistry.hivebag)){ //Add chance and can only pick up one
+			
+			if(!inv.hasItem(ItemRegistry.crootBeetle))
+				return false;
+			inv.consumeInventoryItem(ItemRegistry.crootBeetle);
+			
 			float f = this.random.nextFloat() * 0.8F + 0.1F;
             float f1 = this.random.nextFloat() * 0.8F + 0.1F;
             float f2 = this.random.nextFloat() * 0.8F + 0.1F;
@@ -88,11 +105,33 @@ public class ItemCrootStick extends Item {
 			world.spawnEntityInWorld(entityitem);
 			return true;
 		}else if(!world.isRemote && block == Blocks.cactus && random.nextInt(ConfigRegistry.crootClawChance) % ConfigRegistry.crootClawChance == 0 &&  !inv.hasItem(ItemRegistry.crootClaw)){ //Add chance and can only pick up one
+			
+			if(!inv.hasItem(ItemRegistry.crootBeetle))
+				return false;
+			inv.consumeInventoryItem(ItemRegistry.crootBeetle);
+			
 			float f = this.random.nextFloat() * 0.8F + 0.1F;
             float f1 = this.random.nextFloat() * 0.8F + 0.1F;
             float f2 = this.random.nextFloat() * 0.8F + 0.1F;
             
 			EntityItem entityitem = new EntityItem(world, (double)((float)x + f), (double)((float)y + f1), (double)((float)z + f2), new ItemStack(ItemRegistry.crootClaw, 1));
+            float f3 = 0.05F;
+            entityitem.motionX = (double)((float)this.random .nextGaussian() * f3);
+            entityitem.motionY = (double)((float)this.random.nextGaussian() * f3 + 0.2F);
+            entityitem.motionZ = (double)((float)this.random.nextGaussian() * f3);
+			world.spawnEntityInWorld(entityitem);
+			return true;
+		}else if(!world.isRemote && block == Blocks.clay && random.nextInt(ConfigRegistry.clayHunterChance) % ConfigRegistry.clayHunterChance == 0 &&  !inv.hasItem(ItemRegistry.clayHunter)){ //Add chance and can only pick up one
+			
+			if(!inv.hasItem(ItemRegistry.crootBeetle))
+				return false;
+			inv.consumeInventoryItem(ItemRegistry.crootBeetle);
+			
+			float f = this.random.nextFloat() * 0.8F + 0.1F;
+            float f1 = this.random.nextFloat() * 0.8F + 0.1F;
+            float f2 = this.random.nextFloat() * 0.8F + 0.1F;
+            
+			EntityItem entityitem = new EntityItem(world, (double)((float)x + f), (double)((float)y + f1), (double)((float)z + f2), new ItemStack(ItemRegistry.clayHunter, 1));
             float f3 = 0.05F;
             entityitem.motionX = (double)((float)this.random .nextGaussian() * f3);
             entityitem.motionY = (double)((float)this.random.nextGaussian() * f3 + 0.2F);

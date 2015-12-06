@@ -15,6 +15,7 @@ import hok.chompzki.biocristals.blocks.BlockCrootTrunk;
 import hok.chompzki.biocristals.blocks.BlockExtractor;
 import hok.chompzki.biocristals.blocks.BlockGhost;
 import hok.chompzki.biocristals.blocks.BlockMembrane;
+import hok.chompzki.biocristals.blocks.BlockNest;
 import hok.chompzki.biocristals.blocks.BlockPlatformer;
 import hok.chompzki.biocristals.blocks.BlockPrimogenitus;
 import hok.chompzki.biocristals.blocks.BlockReagentPurifier;
@@ -72,6 +73,7 @@ public class BlockRegistry {
 	public static Block shell = null;
 	public static Block blood = null;
 	public static Block crootNest = null;
+	public static Block nest = null;
 	
 	public void registerBlocks(){
 		
@@ -107,6 +109,7 @@ public class BlockRegistry {
 		shell = new BlockShell();
 		blood = new FluidBlood(fluidBlood, Material.water);
 		crootNest = new BlockCrootNest();
+		nest = new BlockNest();
 		
 		
 		CrootModule module = new CrootModule();
@@ -181,6 +184,7 @@ public class BlockRegistry {
 		GameRegistry.registerBlock(platformer, BlockPlatformer.NAME);
 		GameRegistry.registerBlock(bioplatform, BlockPlatformer.NAME + "_bio");
 		GameRegistry.registerBlock(crootNest, BlockCrootNest.NAME);
+		GameRegistry.registerBlock(nest, BlockNest.NAME);
 	}
 	
 	

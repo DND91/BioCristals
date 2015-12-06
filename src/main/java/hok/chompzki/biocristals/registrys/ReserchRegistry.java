@@ -2,29 +2,45 @@ package hok.chompzki.biocristals.registrys;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import hok.chompzki.biocristals.api.ArticleContent;
 import hok.chompzki.biocristals.research.data.ArticleStorage;
 import hok.chompzki.biocristals.research.data.Category;
 import hok.chompzki.biocristals.research.data.Chapeter;
 import hok.chompzki.biocristals.research.data.PlayerStorage;
 import hok.chompzki.biocristals.research.data.Research;
+import hok.chompzki.biocristals.research.data.ResearchUnlocks;
 import hok.chompzki.biocristals.research.data.ReserchDataNetwork;
 import hok.chompzki.biocristals.research.logic.content.BookTutorial;
 import hok.chompzki.biocristals.research.logic.content.ServerContent;
 import hok.chompzki.biocristals.research.logic.content.chapeter.AgeOfConflict;
 import hok.chompzki.biocristals.research.logic.content.chapeter.FirstEra;
 import hok.chompzki.biocristals.research.logic.content.chapeter.Lore;
+import hok.chompzki.biocristals.research.logic.content.chapeter.Settlement;
 import hok.chompzki.biocristals.research.logic.content.lore.CaraRot;
 import hok.chompzki.biocristals.research.logic.content.lore.CarlaFleur;
 import hok.chompzki.biocristals.research.logic.content.lore.Dberry;
 import hok.chompzki.biocristals.research.logic.content.lore.Rabarberpaj;
 import hok.chompzki.biocristals.research.logic.first_era.BabySteps;
+import hok.chompzki.biocristals.research.logic.first_era.ChitinBoots;
+import hok.chompzki.biocristals.research.logic.first_era.ChitinChestplate;
+import hok.chompzki.biocristals.research.logic.first_era.ChitinHelmet;
+import hok.chompzki.biocristals.research.logic.first_era.ChitinLeggings;
+import hok.chompzki.biocristals.research.logic.first_era.ChitinPlate;
+import hok.chompzki.biocristals.research.logic.first_era.ClayHunter;
 import hok.chompzki.biocristals.research.logic.first_era.CrootClaw;
 import hok.chompzki.biocristals.research.logic.first_era.CrootStick;
 import hok.chompzki.biocristals.research.logic.first_era.Hivebag;
+import hok.chompzki.biocristals.research.logic.first_era.KittehBeetle;
 import hok.chompzki.biocristals.research.logic.first_era.KraKen;
 import hok.chompzki.biocristals.research.logic.first_era.NomadsSack;
 import hok.chompzki.biocristals.research.logic.first_era.WSB;
+import hok.chompzki.biocristals.research.logic.settlement.Nest;
+import hok.chompzki.biocristals.research.logic.settlement.NestingCrootBeetle;
+import hok.chompzki.biocristals.research.logic.settlement.NestingCrootClaw;
+import hok.chompzki.biocristals.research.logic.settlement.NestingKittehBettle;
+import hok.chompzki.biocristals.research.logic.settlement.NestingKraKen;
+import hok.chompzki.biocristals.research.logic.settlement.NestingWSB;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -34,6 +50,18 @@ import cpw.mods.fml.relauncher.Side;
 
 public class ReserchRegistry {
 	
+	/**
+	 * 
+	 * DONE - Croot Beetle - Works like bonemeal on plants around it.
+	 * DONE - WSB - Turret 10 damage over 500 ticks.
+	 * DONE - Croot Claw - Hopper collector
+	 * DONE KraKen - Make Animals mature faster.
+	 * Kitteh Beetle - Depending on grass around it.. it will spawn random insects as a result?
+	 * Clay Hunter - Processing for next stage of blocks, Tier 1.
+	 * Hivebag - Processing for next stage of blocks, Tier 2.
+	 * 
+	 */
+	
 	
 	private static final boolean isServer = FMLCommonHandler.instance().getSide() == Side.SERVER;
 	public  static ArticleContent tutorialContent = isServer ? new ServerContent() : new BookTutorial();
@@ -42,7 +70,10 @@ public class ReserchRegistry {
 	//Chapeters
 	public static final Chapeter loreChapeter = new Chapeter("loreChapeter", "loreChapeter", isServer ? new ServerContent() : new Lore());
 	public static final Chapeter firstEra = new Chapeter("firstEra", "firstEra", isServer ? new ServerContent() : new FirstEra());
-	public static final Chapeter ageOfConflict = new Chapeter("ageOfConflict", "ageOfConflict", isServer ? new ServerContent() : new AgeOfConflict());
+	public static final Chapeter settlement = new Chapeter("settlement", "settlement", isServer ? new ServerContent() : new Settlement());
+	
+	
+	//public static final Chapeter ageOfConflict = new Chapeter("ageOfConflict", "ageOfConflict", isServer ? new ServerContent() : new AgeOfConflict());
 	
 	
 	
@@ -67,7 +98,22 @@ public class ReserchRegistry {
 	public static final String wsb = "wsb";
 	public static final String crootClaw = "crootClaw";
 	public static final String hivebag = "hivebag";
+	public static final String kittehBeetle = "kittehBeetle";
+	public static final String clayHunter = "clayHunter";
 	public static final String nomadsSack = "nomadsSack";
+	
+	public static final String chitinPlate = "chitinPlate";
+	public static final String chitinHelmet = "chitinHelmet";
+	public static final String chitinChestplate = "chitinChestplate";
+	public static final String chitinLeggings = "chitinLeggings";
+	public static final String chitinBoots = "chitinBoots";
+	
+	public static final String nest = "nest";
+	public static final String nestCrootBeeltel = "nestCrootBeeltel";
+	public static final String nestWSB = "nestWSB";
+	public static final String nestCrootClaw = "nestCrootClaw";
+	public static final String nestKraKen = "nestKraKen";
+	public static final String nestKittehBeetle = "nestKittehBeetle";
 	
 	public static final String crootSapling = "crootSapling";
 	
@@ -93,12 +139,27 @@ public class ReserchRegistry {
 		ReserchDataNetwork.register(new Research(crootStick, 0, 1, ItemRegistry.crootStick, side ? new ServerContent() : new CrootStick(), firstEra, fundamental, babySteps));
 		
 		ReserchDataNetwork.register(new Research(kraken, -1, 0, ItemRegistry.kraKenBug, side ? new ServerContent() : new KraKen(), firstEra, fundamental, crootStick));
+		ReserchDataNetwork.register(new Research(kittehBeetle, 0, 1, ItemRegistry.kittehBeetle, side ? new ServerContent() : new KittehBeetle(), firstEra, fundamental, crootStick));
 		ReserchDataNetwork.register(new Research(wsb, 1, 0, ItemRegistry.wsb, side ? new ServerContent() : new WSB(), firstEra, fundamental, crootStick));
-		
+		ReserchDataNetwork.register(new Research(clayHunter, -1, -1, ItemRegistry.clayHunter, side ? new ServerContent() : new ClayHunter(), firstEra, fundamental, crootStick));
 		ReserchDataNetwork.register(new Research(crootClaw, -1, 1, ItemRegistry.crootClaw, side ? new ServerContent() : new CrootClaw(), firstEra, fundamental, crootStick));
 		ReserchDataNetwork.register(new Research(hivebag, 1, 1, ItemRegistry.hivebag, side ? new ServerContent() : new Hivebag(), firstEra, fundamental, crootStick));
+
+		ReserchDataNetwork.register(new Research(chitinPlate, -1, 0, ItemRegistry.chitinPlate, side ? new ServerContent() : new ChitinPlate(), firstEra, fundamental, clayHunter));
+		ReserchDataNetwork.register(new Research(chitinHelmet, -1, -1, ItemRegistry.chitinHelmet, side ? new ServerContent() : new ChitinHelmet(), firstEra, fundamental, chitinPlate));
+		ReserchDataNetwork.register(new Research(chitinChestplate, -1, 0, ItemRegistry.chitinChestplate, side ? new ServerContent() : new ChitinChestplate(), firstEra, fundamental, chitinPlate));
+		ReserchDataNetwork.register(new Research(chitinLeggings, -1, 1, ItemRegistry.chitinLeggings, side ? new ServerContent() : new ChitinLeggings(), firstEra, fundamental, chitinPlate));
+		ReserchDataNetwork.register(new Research(chitinBoots, -1, 2, ItemRegistry.chitinBoots, side ? new ServerContent() : new ChitinBoots(), firstEra, fundamental, chitinPlate));
 		
 		ReserchDataNetwork.register(new Research(nomadsSack, 0, -1, ItemRegistry.nomadSack, side ? new ServerContent() : new NomadsSack(), firstEra, fundamental, babySteps));
+		
+		//SETTLEMENT ERA
+		ReserchDataNetwork.register(new Research(nest, 0, 0, BlockRegistry.nest, side ? new ServerContent() : new Nest(), settlement, fundamental, crootStick));
+		ReserchDataNetwork.register(new Research(nestCrootBeeltel, 0, 0, ItemRegistry.crootBeetle, side ? new ServerContent() : new NestingCrootBeetle(), settlement, fundamental, nest));
+		ReserchDataNetwork.register(new Research(nestWSB, 0, 0, ItemRegistry.wsb, side ? new ServerContent() : new NestingWSB(), settlement, fundamental, nest));
+		ReserchDataNetwork.register(new Research(nestCrootClaw, 0, 0, ItemRegistry.crootClaw, side ? new ServerContent() : new NestingCrootClaw(), settlement, fundamental, nest));
+		ReserchDataNetwork.register(new Research(nestKraKen, 0, 0, ItemRegistry.kraKenBug, side ? new ServerContent() : new NestingKraKen(), settlement, fundamental, nest));
+		ReserchDataNetwork.register(new Research(nestKittehBeetle, 0, 0, ItemRegistry.kittehBeetle, side ? new ServerContent() : new NestingKittehBettle(), settlement, fundamental, nest));
 		
 		
 		//RESEARCH
@@ -154,6 +215,31 @@ public class ReserchRegistry {
     
 	public void init(FMLInitializationEvent event) {
 		ReserchDataNetwork.build();
+		
+		ResearchUnlocks.addCraftingUnlock(new ItemStack(ItemRegistry.crootStick), crootStick);
+		ResearchUnlocks.addCraftingUnlock(new ItemStack(ItemRegistry.nomadSack), nomadsSack);
+		ResearchUnlocks.addCraftingUnlock(new ItemStack(BlockRegistry.nest), nest);
+		ResearchUnlocks.addCraftingUnlock(new ItemStack(ItemRegistry.chitinPlate), chitinPlate);
+		ResearchUnlocks.addCraftingUnlock(new ItemStack(ItemRegistry.chitinHelmet), chitinHelmet);
+		ResearchUnlocks.addCraftingUnlock(new ItemStack(ItemRegistry.chitinChestplate), chitinChestplate);
+		ResearchUnlocks.addCraftingUnlock(new ItemStack(ItemRegistry.chitinLeggings), chitinLeggings);
+		ResearchUnlocks.addCraftingUnlock(new ItemStack(ItemRegistry.chitinBoots), chitinBoots);
+		
+		ResearchUnlocks.addPickUpUnlock(new ItemStack(ItemRegistry.crootBeetle), babySteps, null, new ItemStack(ItemRegistry.crootBeetle), new ItemStack(Blocks.tallgrass, 1, 1));
+		ResearchUnlocks.addPickUpUnlock(new ItemStack(ItemRegistry.clayHunter), clayHunter, new ItemStack(ItemRegistry.crootStick), new ItemStack(ItemRegistry.clayHunter), new ItemStack(Blocks.clay));
+		ResearchUnlocks.addPickUpUnlock(new ItemStack(ItemRegistry.kraKenBug), kraken, new ItemStack(ItemRegistry.crootStick), new ItemStack(ItemRegistry.kraKenBug), new ItemStack(Blocks.leaves));
+		ResearchUnlocks.addPickUpUnlock(new ItemStack(ItemRegistry.crootClaw), crootClaw, new ItemStack(ItemRegistry.crootStick), new ItemStack(ItemRegistry.crootClaw), new ItemStack(Blocks.cactus));
+		ResearchUnlocks.addPickUpUnlock(new ItemStack(ItemRegistry.kittehBeetle), kittehBeetle, new ItemStack(ItemRegistry.crootStick), new ItemStack(ItemRegistry.kittehBeetle), new ItemStack(Blocks.melon_block));
+		ResearchUnlocks.addPickUpUnlock(new ItemStack(ItemRegistry.hivebag), hivebag, new ItemStack(ItemRegistry.crootStick), new ItemStack(ItemRegistry.hivebag), new ItemStack(Items.reeds));
+		ResearchUnlocks.addPickUpUnlock(new ItemStack(ItemRegistry.wsb), wsb, new ItemStack(ItemRegistry.crootStick), new ItemStack(ItemRegistry.wsb), new ItemStack(Blocks.tallgrass, 1, 1));
+		
+		
+		ResearchUnlocks.addPutInNestUnlock(new ItemStack(ItemRegistry.crootBeetle), nestCrootBeeltel);
+		ResearchUnlocks.addPutInNestUnlock(new ItemStack(ItemRegistry.wsb), nestWSB);
+		ResearchUnlocks.addPutInNestUnlock(new ItemStack(ItemRegistry.crootClaw), nestCrootClaw);
+		ResearchUnlocks.addPutInNestUnlock(new ItemStack(ItemRegistry.kraKenBug), nestKraKen);
+		ResearchUnlocks.addPutInNestUnlock(new ItemStack(ItemRegistry.kittehBeetle), nestKittehBeetle);
+		
 		
 	}
 

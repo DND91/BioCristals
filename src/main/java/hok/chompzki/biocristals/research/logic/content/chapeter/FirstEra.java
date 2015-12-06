@@ -43,11 +43,4 @@ public class FirstEra extends ArticleContent {
 	public int numberOfPages(EnumContent content){
 		return 1;
 	}
-
-	
-	@Override
-	public GuiCraftingHelper getFaved() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

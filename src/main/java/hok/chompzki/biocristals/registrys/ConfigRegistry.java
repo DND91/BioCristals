@@ -23,28 +23,8 @@ import net.minecraftforge.common.config.Property;
 /**
  * IDEAS
  * 
+ * CONFIG OPTIONS FOR NESTING FINDINGS AND CHANCES!
  * 
- * THINGS TO FIX: 
- * 
- * Croot Hollow MK2 each slot inside represents a specific side, symbols bind sides... slot to side with symbols!
- * 
- * Lore to explain the croot power system!!!!!
- * Need a better and more explaining tutorial that shows the player things! :)
- * Need to look into som text bugs for the NEI overlay... text gets a bit compact....
- * Need to add lore for the Croot Beetle!
- * Add multitextures for Croot System! Make it dynamic with config! Make a recipe so that you can transform croot saplings to diffrent croot saplings! :)
- * 
- * Slimes scoots of a working tuft when they are effected by it...
- * Bio Blob checks for weakness potion effect, need to change that so it checks for somethign unique, that can only be applyied by the tuft... like the negativ jump boost.
- * Bio Blob dosn't work on wither as potion effects dosn't work on it... as it should :)
- * Bio Blob should be one time use!
- * Need to add progressbar to the progmenitus!!! Like with the purifier!
- * The progmenitus has the same bug as the insert into crafting grid has... the methods have diffrent names between debug mode and IRL...
- * 
- * At the moment there only exist "normal".. but i'm going to add so you can say "sandstone", then ad textures for that and then you take a croot sapling plus a piece of sandstone and then that kind of tree will grow... :3
- * On top of that i will add so that you can decide how each of the trees should grow and what they will drop.... but that will have to come later ^^
- * 
- * - URGENTS!
  * 
  * 
  * 
@@ -75,7 +55,7 @@ public class ConfigRegistry {
 	
 	public static int wsbDamage = 2;
 	
-	public static String configNumber = "0.666";
+	public static String configNumber = "0.672";
 	public static Configuration config;
 	
 	public static List<RecipeData> recipeData = new ArrayList<RecipeData>();
@@ -95,7 +75,12 @@ public class ConfigRegistry {
 	public static int wsbChance = 6;
 	public static int hivebagChance = 6;
 	public static int crootClawChance = 6;
+	public static int kittehChance = 6;
+	public static int clayHunterChance = 6;
+	
 	public static int nomadsSackSize = 2500;
+	
+	
 	
 	public static void preinit(File configFile) {
         if (config == null) {
@@ -135,6 +120,8 @@ public class ConfigRegistry {
     	wsbChance  = config.getInt("Water Shielded Bug (Range Attack)", "Chance for bug (1 in X chance)", 6, 1, 20000, "");
     	hivebagChance   = config.getInt("Hivebag (Pocket Smelting)", "Chance for bug (1 in X chance)", 6, 1, 20000, "");
     	crootClawChance    = config.getInt("Croot Claw (Climbing Tool)", "Chance for bug (1 in X chance)", 6, 1, 20000, "");
+    	kittehChance    = config.getInt("Kitteh Beetle (Food)", "Chance for bug (1 in X chance)", 6, 1, 20000, "");
+    	clayHunterChance    = config.getInt("Clay Hunter(Producer)", "Chance for bug (1 in X chance)", 6, 1, 20000, "");
     	
     	wsbDamage = config.getInt("Damage", "Water Shielded Bug (Range Attack)", 2, 1, 100, "");
     	
@@ -371,6 +358,51 @@ public class ConfigRegistry {
 																	   "BioCristals:itemCrootBeetle treeSapling"},
 																	   Property.Type.STRING));
 		nomadsSack.put("output", new Property("output", "BioCristals:itemNomandsSack", Property.Type.STRING));
+		
+		ConfigCategory chitinPlate = new ConfigCategory("Chitin Plate", recipes);
+		chitinPlate.put("code", new Property("code", ReserchRegistry.chitinPlate, Property.Type.STRING));
+		chitinPlate.put("input", new Property("input", new String[] { "BioCristals:itemClayHunter treeSapling", 
+																	   "minecraft:clay_ball BioCristals:itemKraKenBug"},
+																	   Property.Type.STRING));
+		chitinPlate.put("output", new Property("output", "BioCristals:itemChitinPlate", Property.Type.STRING));
+		
+		ConfigCategory chitinHelmet = new ConfigCategory("Chitin Helmet", recipes);
+		chitinHelmet.put("code", new Property("code", ReserchRegistry.chitinHelmet, Property.Type.STRING));
+		chitinHelmet.put("input", new Property("input", new String[] { "BioCristals:itemChitinPlate BioCristals:itemChitinPlate BioCristals:itemChitinPlate", 
+																	   "BioCristals:itemChitinPlate BioCristals:itemClayHunter BioCristals:itemChitinPlate"},
+																	   Property.Type.STRING));
+		chitinHelmet.put("output", new Property("output", "BioCristals:chitinHelmet", Property.Type.STRING));
+		
+		ConfigCategory chitinChestplate = new ConfigCategory("Chitin Chestplate", recipes);
+		chitinChestplate.put("code", new Property("code", ReserchRegistry.chitinChestplate, Property.Type.STRING));
+		chitinChestplate.put("input", new Property("input", new String[] { "BioCristals:itemChitinPlate BioCristals:itemClayHunter BioCristals:itemChitinPlate", 
+																	   "BioCristals:itemChitinPlate BioCristals:itemChitinPlate BioCristals:itemChitinPlate",
+																	   "BioCristals:itemChitinPlate BioCristals:itemChitinPlate BioCristals:itemChitinPlate"},
+																	   Property.Type.STRING));
+		chitinChestplate.put("output", new Property("output", "BioCristals:chitinChestplate", Property.Type.STRING));
+		
+		ConfigCategory chitinLeggings = new ConfigCategory("Chitin Leggings", recipes);
+		chitinLeggings.put("code", new Property("code", ReserchRegistry.chitinLeggings, Property.Type.STRING));
+		chitinLeggings.put("input", new Property("input", new String[] { "BioCristals:itemChitinPlate BioCristals:itemChitinPlate BioCristals:itemChitinPlate", 
+																	   "BioCristals:itemChitinPlate BioCristals:itemClayHunter BioCristals:itemChitinPlate",
+																	   "BioCristals:itemChitinPlate empty BioCristals:itemChitinPlate"},
+																	   Property.Type.STRING));
+		chitinLeggings.put("output", new Property("output", "BioCristals:chitinLeggings", Property.Type.STRING));
+		
+		ConfigCategory chitinBoots = new ConfigCategory("Chitin Boots", recipes);
+		chitinBoots.put("code", new Property("code", ReserchRegistry.chitinBoots, Property.Type.STRING));
+		chitinBoots.put("input", new Property("input", new String[] { "BioCristals:itemChitinPlate BioCristals:itemClayHunter BioCristals:itemChitinPlate", 
+																	   "BioCristals:itemChitinPlate empty BioCristals:itemChitinPlate"},
+																	   Property.Type.STRING));
+		chitinBoots.put("output", new Property("output", "BioCristals:chitinBoots", Property.Type.STRING));
+		
+		ConfigCategory nest = new ConfigCategory("Nest", recipes);
+		nest.put("code", new Property("code", ReserchRegistry.nest, Property.Type.STRING));
+		nest.put("input", new Property("input", new String[] { "logWood BioCristals:itemChitinPlate logWood", 
+															   "logWood BioCristals:itemCrootStick logWood",
+															   "minecraft:stone_slab:3 minecraft:stone_slab:3 minecraft:stone_slab:3"},
+																	   Property.Type.STRING));
+		nest.put("output", new Property("output", "BioCristals:blockNest", Property.Type.STRING));
     }
 	
 	//https://github.com/Piron1991/Builder_tools/blob/master/src/main/java/com/piron1991/builder_tools/handler/ConfigHandler.java#L82
