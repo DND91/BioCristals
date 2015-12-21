@@ -17,6 +17,7 @@ import hok.chompzki.biocristals.research.logic.content.chapeter.AgeOfConflict;
 import hok.chompzki.biocristals.research.logic.content.chapeter.FirstEra;
 import hok.chompzki.biocristals.research.logic.content.chapeter.Lore;
 import hok.chompzki.biocristals.research.logic.content.chapeter.Settlement;
+import hok.chompzki.biocristals.research.logic.content.chapeter.Underworld;
 import hok.chompzki.biocristals.research.logic.content.lore.CaraRot;
 import hok.chompzki.biocristals.research.logic.content.lore.CarlaFleur;
 import hok.chompzki.biocristals.research.logic.content.lore.Dberry;
@@ -38,9 +39,11 @@ import hok.chompzki.biocristals.research.logic.first_era.WSB;
 import hok.chompzki.biocristals.research.logic.settlement.Nest;
 import hok.chompzki.biocristals.research.logic.settlement.NestingCrootBeetle;
 import hok.chompzki.biocristals.research.logic.settlement.NestingCrootClaw;
+import hok.chompzki.biocristals.research.logic.settlement.NestingFruitSpider;
 import hok.chompzki.biocristals.research.logic.settlement.NestingKittehBettle;
 import hok.chompzki.biocristals.research.logic.settlement.NestingKraKen;
 import hok.chompzki.biocristals.research.logic.settlement.NestingWSB;
+import hok.chompzki.biocristals.research.logic.underworld.IronCrootPickaxe;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -71,6 +74,7 @@ public class ReserchRegistry {
 	public static final Chapeter loreChapeter = new Chapeter("loreChapeter", "loreChapeter", isServer ? new ServerContent() : new Lore());
 	public static final Chapeter firstEra = new Chapeter("firstEra", "firstEra", isServer ? new ServerContent() : new FirstEra());
 	public static final Chapeter settlement = new Chapeter("settlement", "settlement", isServer ? new ServerContent() : new Settlement());
+	public static final Chapeter underworld = new Chapeter("underworld", "underworld", isServer ? new ServerContent() : new Underworld());
 	
 	
 	//public static final Chapeter ageOfConflict = new Chapeter("ageOfConflict", "ageOfConflict", isServer ? new ServerContent() : new AgeOfConflict());
@@ -114,6 +118,12 @@ public class ReserchRegistry {
 	public static final String nestCrootClaw = "nestCrootClaw";
 	public static final String nestKraKen = "nestKraKen";
 	public static final String nestKittehBeetle = "nestKittehBeetle";
+	public static final String nestFruitSpider = "nestFruitSpider";
+	
+	public static String crootBreeder = "crootBreeder";
+	
+	public static final String crootIronPickaxe = "crootIronPickaxe";
+	
 	
 	public static final String crootSapling = "crootSapling";
 	
@@ -153,13 +163,17 @@ public class ReserchRegistry {
 		
 		ReserchDataNetwork.register(new Research(nomadsSack, 0, -1, ItemRegistry.nomadSack, side ? new ServerContent() : new NomadsSack(), firstEra, fundamental, babySteps));
 		
-		//SETTLEMENT ERA
+		//FAMILY ERA
 		ReserchDataNetwork.register(new Research(nest, 0, 0, BlockRegistry.nest, side ? new ServerContent() : new Nest(), settlement, fundamental, crootStick));
 		ReserchDataNetwork.register(new Research(nestCrootBeeltel, 0, 0, ItemRegistry.crootBeetle, side ? new ServerContent() : new NestingCrootBeetle(), settlement, fundamental, nest));
 		ReserchDataNetwork.register(new Research(nestWSB, 0, 0, ItemRegistry.wsb, side ? new ServerContent() : new NestingWSB(), settlement, fundamental, nest));
 		ReserchDataNetwork.register(new Research(nestCrootClaw, 0, 0, ItemRegistry.crootClaw, side ? new ServerContent() : new NestingCrootClaw(), settlement, fundamental, nest));
 		ReserchDataNetwork.register(new Research(nestKraKen, 0, 0, ItemRegistry.kraKenBug, side ? new ServerContent() : new NestingKraKen(), settlement, fundamental, nest));
 		ReserchDataNetwork.register(new Research(nestKittehBeetle, 0, 0, ItemRegistry.kittehBeetle, side ? new ServerContent() : new NestingKittehBettle(), settlement, fundamental, nest));
+		ReserchDataNetwork.register(new Research(nestFruitSpider, 0, 0, ItemRegistry.fruitSpider, side ? new ServerContent() : new NestingFruitSpider(), settlement, fundamental, nest));
+		
+		//UNDERWORLD ERA
+		ReserchDataNetwork.register(new Research(crootIronPickaxe, 0, 0, ItemRegistry.crootIronPickaxe, side ? new ServerContent() : new IronCrootPickaxe(), underworld, fundamental, nest));
 		
 		
 		//RESEARCH
@@ -211,7 +225,7 @@ public class ReserchRegistry {
 		tutorialResearch = new Research(tutorial, 0, 0, Items.book, tutorialContent, loreChapeter, tutorialCat);
 		ReserchDataNetwork.register(tutorialResearch);
 	}
-
+	
     
 	public void init(FMLInitializationEvent event) {
 		ReserchDataNetwork.build();
@@ -224,6 +238,7 @@ public class ReserchRegistry {
 		ResearchUnlocks.addCraftingUnlock(new ItemStack(ItemRegistry.chitinChestplate), chitinChestplate);
 		ResearchUnlocks.addCraftingUnlock(new ItemStack(ItemRegistry.chitinLeggings), chitinLeggings);
 		ResearchUnlocks.addCraftingUnlock(new ItemStack(ItemRegistry.chitinBoots), chitinBoots);
+		ResearchUnlocks.addCraftingUnlock(new ItemStack(ItemRegistry.crootIronPickaxe), crootIronPickaxe);
 		
 		ResearchUnlocks.addPickUpUnlock(new ItemStack(ItemRegistry.crootBeetle), babySteps, null, new ItemStack(ItemRegistry.crootBeetle), new ItemStack(Blocks.tallgrass, 1, 1));
 		ResearchUnlocks.addPickUpUnlock(new ItemStack(ItemRegistry.clayHunter), clayHunter, new ItemStack(ItemRegistry.crootStick), new ItemStack(ItemRegistry.clayHunter), new ItemStack(Blocks.clay));
@@ -233,12 +248,12 @@ public class ReserchRegistry {
 		ResearchUnlocks.addPickUpUnlock(new ItemStack(ItemRegistry.hivebag), hivebag, new ItemStack(ItemRegistry.crootStick), new ItemStack(ItemRegistry.hivebag), new ItemStack(Items.reeds));
 		ResearchUnlocks.addPickUpUnlock(new ItemStack(ItemRegistry.wsb), wsb, new ItemStack(ItemRegistry.crootStick), new ItemStack(ItemRegistry.wsb), new ItemStack(Blocks.tallgrass, 1, 1));
 		
-		
 		ResearchUnlocks.addPutInNestUnlock(new ItemStack(ItemRegistry.crootBeetle), nestCrootBeeltel);
 		ResearchUnlocks.addPutInNestUnlock(new ItemStack(ItemRegistry.wsb), nestWSB);
 		ResearchUnlocks.addPutInNestUnlock(new ItemStack(ItemRegistry.crootClaw), nestCrootClaw);
 		ResearchUnlocks.addPutInNestUnlock(new ItemStack(ItemRegistry.kraKenBug), nestKraKen);
 		ResearchUnlocks.addPutInNestUnlock(new ItemStack(ItemRegistry.kittehBeetle), nestKittehBeetle);
+		ResearchUnlocks.addPutInNestUnlock(new ItemStack(ItemRegistry.fruitSpider), nestFruitSpider);
 		
 		
 	}

@@ -52,7 +52,7 @@ public class ItemNomadSack extends Item {
 	
 	private boolean isWhitelisted(ItemStack block){
 		for(ItemStack b : whitelist){
-			if(b.getItem() == block.getItem() && (b.getItemDamage() == OreDictionary.WILDCARD_VALUE || b.getItemDamage() == block.getItemDamage()))
+			if(OreDictionary.itemMatches(b, block, false))
 				return true;
 		}
 		return false;
@@ -60,7 +60,7 @@ public class ItemNomadSack extends Item {
 	
 	private boolean isBlacklisted(ItemStack item){
 		for(ItemStack i : blacklist){
-			if(i.getItem() == item.getItem() && (i.getItemDamage() == OreDictionary.WILDCARD_VALUE || i.getItemDamage() == item.getItemDamage()))
+			if(OreDictionary.itemMatches(i, item, false))
 				return true;
 		}
 		return false;

@@ -3,6 +3,7 @@ package hok.chompzki.biocristals;
 import hok.chompzki.biocristals.client.gui.GuiInventoryOverlay;
 import hok.chompzki.biocristals.client.renderer.RendererGhost;
 import hok.chompzki.biocristals.client.renderer.SpeciallRenenderGhost;
+import hok.chompzki.biocristals.entity.EntityFruitSpider;
 import hok.chompzki.biocristals.entity.EntityWSB;
 import hok.chompzki.biocristals.registrys.ItemRegistry;
 import hok.chompzki.biocristals.research.data.PlayerStorage;
@@ -28,6 +29,7 @@ public class ClientProxy extends CommonProxy {
     	ClientRegistry.bindTileEntitySpecialRenderer(TileGhost.class, new SpeciallRenenderGhost());
     	
     	RenderingRegistry.registerEntityRenderingHandler(EntityWSB.class, new RenderSnowball(ItemRegistry.wsb));
+    	RenderingRegistry.registerEntityRenderingHandler(EntityFruitSpider.class, new RenderSnowball(ItemRegistry.fruitSpider));
 	}
 	
 	@Override

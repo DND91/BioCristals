@@ -24,7 +24,7 @@ public class ItemHivebag extends Item {
 	
 	public static final String NAME = "itemHivebag";
 	@SideOnly(Side.CLIENT)
-	private IIcon[] icons = new IIcon[2];
+	private IIcon[] icons;
 
 	public ItemHivebag(){
 		this.setMaxStackSize(1);
@@ -58,6 +58,7 @@ public class ItemHivebag extends Item {
 	@SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconReg)
     {
+		this.icons = new IIcon[2];
 		this.itemIcon = iconReg.registerIcon(this.getIconString());
 		this.icons[0] = iconReg.registerIcon(this.getIconString() + "_closed");
 		this.icons[1] = iconReg.registerIcon(this.getIconString() + "_open");

@@ -20,6 +20,7 @@ import hok.chompzki.biocristals.registrys.BlockRegistry;
 import hok.chompzki.biocristals.research.data.DataHelper;
 import hok.chompzki.biocristals.tile_enteties.TileGhost;
 import hok.chompzki.biocristals.tile_enteties.TileHolderPlant;
+import hok.chompzki.biocristals.tile_enteties.TileReplacer;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockSlab;
@@ -46,17 +47,17 @@ import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class BlockGhost extends BlockContainer{
+public class BlockReplacerOpen extends BlockContainer{
 	
-	public static final String NAME = "blockGhost";
-	public static final Material plasma = new MaterialGhost();
-
+	public static final String NAME = "blockReplacerOpen";
 	
 	public static int renderPass = 0;
+
+	private Random rand = new Random();
     
-    public BlockGhost()
+    public BlockReplacerOpen()
     {
-    	super(plasma);
+    	super(BlockGhost.plasma);
         setBlockName(BioCristalsMod.MODID + "_" + NAME);
 		setBlockTextureName(BioCristalsMod.MODID + ":" + NAME);
 		this.setLightOpacity(0);
@@ -66,22 +67,35 @@ public class BlockGhost extends BlockContainer{
         this.setHardness(0.0F);
         this.setStepSound(soundTypeGrass);
         this.disableStats();
-        this.setTickRandomly(true);
         this.setBlockUnbreakable();
+        setCreativeTab(BioCristalsMod.creativeTab);
+        this.setTickRandomly(true);
+        this.setLightLevel(0.5F);
+        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.03125F, 1.0F);
     }
     
-	@Override
-	public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
-		return new TileGhost();
-	}
-	
-	/**
-     * Ticks the block if it's been scheduled
-     */
+    public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
+    	if(rand.nextInt(10) == 0){
+	    	for (int k = 0; k < 2; ++k)
+	        {
+	            world.spawnParticle("portal", x + (this.rand .nextDouble() + 0.25D), y + 0.25D + this.rand.nextDouble(), z+ (this.rand.nextDouble() + 0.25D) , (this.rand.nextDouble() - 0.5D) * 2.0D, -this.rand.nextDouble(), (this.rand.nextDouble() - 0.5D) * 2.0D);
+	        }
+    	}
+    }
+    
+    public int tickRate(World p_149738_1_)
+    {
+        return 30;
+    }
+    
     public void updateTick(World world, int x, int y, int z, Random rand) {
     	
     }
-
+    
+	@Override
+	public TileEntity createNewTileEntity(World world, int meta) {
+		return new TileReplacer();
+	}
 
     /**
      * Called right before the block is destroyed by a player.  Args: world, x, y, z, metaData
@@ -101,6 +115,12 @@ public class BlockGhost extends BlockContainer{
     public void breakBlock(World world, int x, int y, int z, Block brocke, int u)
     {
     	
+    }
+    
+    @SideOnly(Side.CLIENT)
+    public int getRenderBlockPass()
+    {
+        return 1;
     }
    
     @SideOnly(Side.CLIENT)
@@ -155,74 +175,12 @@ public class BlockGhost extends BlockContainer{
         return false;
     }
     
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(IBlockAccess world, int x, int y, int z, int u)
-    {
-    	return null;
-    }
-    
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int a, int b)
-    {
-        return null;
-    }
-    
-    public Block getBlock(World world, int x, int y, int z){
-    	TileGhost plant = (TileGhost) world.getTileEntity(x, y, z);
-    	if(plant == null)
-    		return null;
-    	return plant.getBlock();
-    }
-    
-    public Block getBlock(IBlockAccess world, int x, int y, int z) {
-    	TileGhost plant = (TileGhost) world.getTileEntity(x, y, z);
-    	if(plant == null)
-    		return null;
-    	return plant.getBlock();
-	}
-    
-    @SideOnly(Side.CLIENT)
-    public int getRenderBlockPass()
-    {
-        return -1;
-    }
-    
     @Override
     public boolean canRenderInPass(int pass)
     {
-	    //Set the static var in the client proxy
 	    renderPass = pass;
-	    //the block can render in both passes, so return true always
 	    return pass == getRenderBlockPass();
 	}
-    
-    @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side)
-    {
-        Block block = world.getBlock(x, y, z);
-        Block block2 = world.getBlock(x - Facing.offsetsXForSide[side], y - Facing.offsetsYForSide[side], z - Facing.offsetsZForSide[side]);
-
-        if (this == BlockRegistry.ghost)
-        {
-            if (world.getBlockMetadata(x, y, z) != world.getBlockMetadata(x - Facing.offsetsXForSide[side], y - Facing.offsetsYForSide[side], z - Facing.offsetsZForSide[side]))
-            {
-                return true;
-            }
-            
-            if(block == BlockRegistry.ghost && block2 == block){
-            	Block a = this.getBlock(world, x, y, z);
-            	Block b = this.getBlock(world, x - Facing.offsetsXForSide[side], y - Facing.offsetsYForSide[side], z - Facing.offsetsZForSide[side]);
-            	return a != b;
-            }
-            
-        }else{
-        	return true;
-        }
-        
-        
-
-        return block == this ? false : super.shouldSideBeRendered(world, x, y, z, side);
-    }
     
     public boolean isBlockSolid(IBlockAccess p_149747_1_, int p_149747_2_, int p_149747_3_, int p_149747_4_, int p_149747_5_)
     {
@@ -237,6 +195,11 @@ public class BlockGhost extends BlockContainer{
     public boolean isReplaceable(IBlockAccess world, int x, int y, int z)
     {
         return true;
+    }
+    
+    public boolean canBlockStay(World world, int x, int y, int z)
+    {
+        return world.isAirBlock(x, y+1, z) && world.isSideSolid(x, y-1, z, ForgeDirection.UP);
     }
 }
 

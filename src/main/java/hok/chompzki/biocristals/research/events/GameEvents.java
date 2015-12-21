@@ -5,6 +5,8 @@ import java.util.UUID;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
+import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
+import hok.chompzki.biocristals.BioHelper;
 import hok.chompzki.biocristals.recipes.CrootRecipeContainer;
 import hok.chompzki.biocristals.recipes.RecipeContainer;
 import hok.chompzki.biocristals.registrys.BlockRegistry;
@@ -55,6 +57,22 @@ public class GameEvents {
 			return;
 		
 		ResearchUnlocks.unlock(event.player, EnumUnlock.CRAFT, event.crafting);
+		
+		
+	}
+	
+	//PlayerDestroyItemEvent
+	@SubscribeEvent
+	public void playerDestroyItemEvent(PlayerDestroyItemEvent event)
+	{
+		if(event.entityPlayer == null || event.entityPlayer.worldObj.isRemote)
+			return;
+		
+		if(event.original.getItem() == ItemRegistry.crootIronPickaxe){
+			BioHelper.addItemStackToInventory(new ItemStack(ItemRegistry.crootStick), event.entityPlayer.inventory);
+		} else if(event.original.getItem() == ItemRegistry.crootWoodHoe){
+			BioHelper.addItemStackToInventory(new ItemStack(ItemRegistry.crootStick), event.entityPlayer.inventory);
+		}
 		
 		
 	}

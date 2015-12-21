@@ -2,17 +2,20 @@ package hok.chompzki.biocristals.registrys;
 
 import java.util.UUID;
 
+import hok.chompzki.biocristals.client.gui.GuiCrootBreeder;
 import hok.chompzki.biocristals.client.gui.GuiCrootCore;
 import hok.chompzki.biocristals.client.gui.GuiCrootHollow;
 import hok.chompzki.biocristals.client.gui.GuiHivebag;
 import hok.chompzki.biocristals.client.gui.GuiNest;
 import hok.chompzki.biocristals.client.gui.GuiResearchBook;
+import hok.chompzki.biocristals.containers.ContainerCrootBreeder;
 import hok.chompzki.biocristals.containers.ContainerCrootHollow;
 import hok.chompzki.biocristals.containers.ContainerCrootCore;
 import hok.chompzki.biocristals.containers.ContainerHivebag;
 import hok.chompzki.biocristals.containers.ContainerNest;
 import hok.chompzki.biocristals.research.data.DataHelper;
 import hok.chompzki.biocristals.research.data.PlayerStorage;
+import hok.chompzki.biocristals.tile_enteties.TileCrootBreeder;
 import hok.chompzki.biocristals.tile_enteties.TileCrootHollow;
 import hok.chompzki.biocristals.tile_enteties.TileCrootCore;
 import hok.chompzki.biocristals.tile_enteties.TileNest;
@@ -50,6 +53,9 @@ public class GuiHandler implements IGuiHandler {
 		}else if(ID == 104){
 			TileEntity tileEntity = world.getTileEntity(x, y, z);
 			return new ContainerNest(player.inventory, (TileNest)tileEntity);
+		}else if(ID == 105){
+			TileEntity tileEntity = world.getTileEntity(x, y, z);
+			return new ContainerCrootBreeder(player.inventory, (TileCrootBreeder)tileEntity);
 		}
 		
 		return null;
@@ -76,6 +82,9 @@ public class GuiHandler implements IGuiHandler {
 		}else if(ID == 104){
 			TileEntity tileEntity = world.getTileEntity(x, y, z);
 			return new GuiNest(player.inventory, (TileNest)tileEntity);
+		}else if(ID == 105){
+			TileEntity tileEntity = world.getTileEntity(x, y, z);
+			return new GuiCrootBreeder(player.inventory, (TileCrootBreeder)tileEntity);
 		}
 		
 		return null;

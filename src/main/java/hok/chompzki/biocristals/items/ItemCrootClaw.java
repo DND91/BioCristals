@@ -27,7 +27,7 @@ public class ItemCrootClaw extends Item implements IInsect{
 		setUnlocalizedName(BioCristalsMod.MODID + "_" + NAME);
 		setCreativeTab(BioCristalsMod.creativeTab);
 		setTextureName(BioCristalsMod.MODID + ":" + NAME);
-		this.setMaxStackSize(1);
+		this.setMaxStackSize(64);
 		
 	}
 	
@@ -90,7 +90,7 @@ public class ItemCrootClaw extends Item implements IInsect{
 		int z = entity.zCoord;
 		
 		AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(entity.xCoord, entity.yCoord, entity.zCoord, entity.xCoord + 1, entity.yCoord + 1, entity.zCoord + 1);
-		List<EntityItem> list = world.getEntitiesWithinAABB(EntityItem.class, bb.expand(3, 3, 3));
+		List<EntityItem> list = world.getEntitiesWithinAABB(EntityItem.class, bb.expand(4, 4, 4));
 		
 		for(EntityItem ei : list){
 			ItemStack item = ei.getEntityItem();

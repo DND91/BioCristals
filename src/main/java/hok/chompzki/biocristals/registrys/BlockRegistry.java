@@ -4,6 +4,7 @@ import hok.chompzki.biocristals.BioCristalsMod;
 import hok.chompzki.biocristals.CrootHelper;
 import hok.chompzki.biocristals.blocks.BlockBiomass;
 import hok.chompzki.biocristals.blocks.BlockCorePlasma;
+import hok.chompzki.biocristals.blocks.BlockCrootBreeder;
 import hok.chompzki.biocristals.blocks.BlockCrootCore;
 import hok.chompzki.biocristals.blocks.BlockCrootHollow;
 import hok.chompzki.biocristals.blocks.BlockCrootLeaves;
@@ -19,6 +20,8 @@ import hok.chompzki.biocristals.blocks.BlockNest;
 import hok.chompzki.biocristals.blocks.BlockPlatformer;
 import hok.chompzki.biocristals.blocks.BlockPrimogenitus;
 import hok.chompzki.biocristals.blocks.BlockReagentPurifier;
+import hok.chompzki.biocristals.blocks.BlockReplacer;
+import hok.chompzki.biocristals.blocks.BlockReplacerOpen;
 import hok.chompzki.biocristals.blocks.BlockShell;
 import hok.chompzki.biocristals.blocks.BlockStructer;
 import hok.chompzki.biocristals.blocks.BlockSulphurTuft;
@@ -60,6 +63,8 @@ public class BlockRegistry {
 	public static Block crootHollow = null;
 	public static Block extractor = null;
 	public static Block ghost = null;
+	public static Block replacer = null;
+	public static Block replacerOpen = null;
 	
 	public static Block structer = null;
 	
@@ -74,6 +79,7 @@ public class BlockRegistry {
 	public static Block blood = null;
 	public static Block crootNest = null;
 	public static Block nest = null;
+	public static Block crootBreeder = null;
 	
 	public void registerBlocks(){
 		
@@ -110,6 +116,9 @@ public class BlockRegistry {
 		blood = new FluidBlood(fluidBlood, Material.water);
 		crootNest = new BlockCrootNest();
 		nest = new BlockNest();
+		crootBreeder = new BlockCrootBreeder();
+		replacer = new BlockReplacer();
+		replacerOpen = new BlockReplacerOpen();
 		
 		
 		CrootModule module = new CrootModule();
@@ -185,6 +194,9 @@ public class BlockRegistry {
 		GameRegistry.registerBlock(bioplatform, BlockPlatformer.NAME + "_bio");
 		GameRegistry.registerBlock(crootNest, BlockCrootNest.NAME);
 		GameRegistry.registerBlock(nest, BlockNest.NAME);
+		GameRegistry.registerBlock(crootBreeder, BlockCrootBreeder.NAME);
+		GameRegistry.registerBlock(replacer, BlockReplacer.NAME);
+		GameRegistry.registerBlock(replacerOpen, BlockReplacerOpen.NAME);
 	}
 	
 	

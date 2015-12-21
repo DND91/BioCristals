@@ -40,12 +40,12 @@ public class BioHelper {
         {
             ItemStack itemstack = list.get(i1);
             
-            if (itemstack != null)
+            if (itemstack != null && 0 < itemstack.stackSize)
             {
                 float f = random.nextFloat() * 0.8F + 0.1F;
                 float f1 = random.nextFloat() * 0.8F + 0.1F;
                 EntityItem entityitem;
-
+                
                 for (float f2 = random.nextFloat() * 0.8F + 0.1F; itemstack.stackSize > 0; world.spawnEntityInWorld(entityitem))
                 {
                     int j1 = random.nextInt(21) + 10;

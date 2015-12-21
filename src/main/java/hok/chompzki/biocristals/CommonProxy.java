@@ -11,6 +11,7 @@ import hok.chompzki.biocristals.recipes.RecipeTransformer;
 import hok.chompzki.biocristals.registrys.BioEntityRegistry;
 import hok.chompzki.biocristals.registrys.BiomeRegistry;
 import hok.chompzki.biocristals.registrys.BlockRegistry;
+import hok.chompzki.biocristals.registrys.BreedingRegistry;
 import hok.chompzki.biocristals.registrys.ConfigRegistry;
 import hok.chompzki.biocristals.registrys.CristalRegistry;
 import hok.chompzki.biocristals.registrys.GuiHandler;
@@ -85,6 +86,9 @@ public class CommonProxy {
     	
     	BiomeRegistry biome = new BiomeRegistry();
     	biome.init(event);
+    	
+    	BreedingRegistry breeding = new BreedingRegistry();
+    	breeding.init(event);
 	}
 
     

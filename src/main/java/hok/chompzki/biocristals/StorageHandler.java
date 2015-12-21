@@ -28,6 +28,8 @@ import net.minecraftforge.event.world.WorldEvent;
 
 public class StorageHandler {
 	
+	// ASSUMPTION IS THAT OVERWORLD IS NEVER UNLOADED WHILE A WORLD IS ACTIVE!
+	
 	private static String currentWorld = null;
 	
 	private static ArrayList<IDataFile> dataFiles = new ArrayList<IDataFile>();
@@ -47,7 +49,7 @@ public class StorageHandler {
 		}
 		String levelName = event.world.getWorldInfo().getWorldName();
 		String dimenstionName = event.world.provider.getDimensionName();
-		if(!levelName.equals("MpServer") && !levelName.equals(currentWorld)){
+		if(!levelName.equals("MpServer") && !levelName.equals(currentWorld) && dimenstionName.equals("Overworld")){
 			this.controllSetup(event.world);
 			
 			for(IDataFile dataFile : dataFiles){
@@ -57,7 +59,7 @@ public class StorageHandler {
 			System.out.println(" --- LOAD --- ");
 			System.out.println("LEVEL NAME: " + levelName);
 			System.out.println("DIMENSION NAME: " + dimenstionName);
-			System.out.println("WORLD DIRECTORY NAME: " + event.world.getSaveHandler().getWorldDirectoryName());
+			System.out.println("WORLD DIRECTORY NAME: " + event.world.getSaveHandler().getWorldDirectory().getPath());
 			
 			currentWorld = levelName;
 			load(event.world);
@@ -67,7 +69,6 @@ public class StorageHandler {
 	}
 	
 	private void load(World world){
-		String dict = world.getSaveHandler().getWorldDirectoryName();
 		for(IDataFile dataFile : dataFiles){
 			File file = new File(getLocalPath(world) + dataFile.getFile());
 			ObjectInputStream inputStream;
@@ -99,26 +100,21 @@ public class StorageHandler {
 			System.out.println(" --- SAVE --- ");
 			System.out.println("LEVEL NAME: " + levelName);
 			System.out.println("DIMENSION NAME: " + dimenstionName);
-			System.out.println("WORLD DIRECTORY NAME: " + event.world.getSaveHandler().getWorldDirectoryName());
+			System.out.println("WORLD DIRECTORY NAME: " + event.world.getSaveHandler().getWorldDirectory().getPath());
 			save(event.world);
 		}
 		
 	}
 	
 	private void save(World world){
-		String dict = world.getSaveHandler().getWorldDirectoryName();
 		
 		for(IDataFile dataFile : dataFiles){
 			try {
 				File file = new File(getLocalPath(world) + dataFile.getFile());
 				
-				
-				
 				ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream (file));
 	            outputStream.writeObject(dataFile.getObject());
 	            outputStream.close( );
-	          
-	            
 	            
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -141,7 +137,7 @@ public class StorageHandler {
 			System.out.println(" --- CLEAR --- ");
 			System.out.println("LEVEL NAME: " + levelName);
 			System.out.println("DIMENSION NAME: " + dimenstionName);
-			System.out.println("WORLD DIRECTORY NAME: " + event.world.getSaveHandler().getWorldDirectoryName());
+			System.out.println("WORLD DIRECTORY NAME: " + event.world.getSaveHandler().getWorldDirectory().getPath());
 			save(event.world);
 			currentWorld = null;
 			for(IDataFile dataFile : dataFiles){
@@ -177,15 +173,15 @@ public class StorageHandler {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		}
+		} 
 	}
 	
 	private String getLocalPath(World world){
-		String dict = world.getSaveHandler().getWorldDirectoryName();
+		String dict = world.getSaveHandler().getWorldDirectory().getPath();
 		if(!MinecraftServer.getServer().isDedicatedServer()){
-			return "saves\\" + dict + "\\BioCristals\\";
+			return dict + File.separator + "BioCristals" + File.separator;
 		}else{
-			return dict + "\\BioCristals\\";
+			return dict + File.separator + "BioCristals" + File.separator;
 		}
 	}
 }

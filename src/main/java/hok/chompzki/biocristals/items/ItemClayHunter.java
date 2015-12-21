@@ -14,7 +14,7 @@ public class ItemClayHunter extends Item {
 		setUnlocalizedName(BioCristalsMod.MODID + "_" + NAME);
 		setCreativeTab(BioCristalsMod.creativeTab);
 		setTextureName(BioCristalsMod.MODID + ":" + NAME);
-		this.setMaxStackSize(1);
+		this.setMaxStackSize(64);
 	}
 	
 }

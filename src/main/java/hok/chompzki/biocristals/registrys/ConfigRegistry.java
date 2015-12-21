@@ -18,6 +18,7 @@ import net.minecraft.init.Blocks;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
+import net.minecraftforge.oredict.OreDictionary;
 
 
 /**
@@ -53,9 +54,12 @@ public class ConfigRegistry {
 	
 	public static int crootBeetleChance = 10;
 	
+	public static int displaceTime = 1000;
+	public static int displaceMultiplier = 10;
+	
 	public static int wsbDamage = 2;
 	
-	public static String configNumber = "0.672";
+	public static String configNumber = "0.682";
 	public static Configuration config;
 	
 	public static List<RecipeData> recipeData = new ArrayList<RecipeData>();
@@ -125,6 +129,8 @@ public class ConfigRegistry {
     	
     	wsbDamage = config.getInt("Damage", "Water Shielded Bug (Range Attack)", 2, 1, 100, "");
     	
+    	displaceTime = config.getInt("Time", "Block displacer", 1000, 100, 10000, "How long blocks are displaced");
+    	displaceMultiplier = config.getInt("Multiplier", "Block displacer", 10, 1, 100, "How fast the displaced area collapses");
     	
     	oreDictBioMaterial = config.get("Bio Material OreDict", "OreDict", oreDictBioMaterialDefault, "first texture/croot name then block needed to make it!").getStringList();
     	
@@ -303,8 +309,8 @@ public class ConfigRegistry {
 	}
 
 	private static void createNomadsSackWhitelistStandard(
-			ConfigCategory whitelist) {
-		registerSingle(whitelist, "Wool", "BLOCK", "minecraft:wool");
+			ConfigCategory whitelist) { 
+		registerSingle(whitelist, "Wool", "BLOCK", "minecraft:wool:"+OreDictionary.WILDCARD_VALUE);
 		registerSingle(whitelist, "Lever", "BLOCK", "minecraft:lever");
 		registerSingle(whitelist, "Melon Block", "BLOCK", "minecraft:melon_block");
 		registerSingle(whitelist, "Pumpkin", "BLOCK", "minecraft:pumpkin");
@@ -312,14 +318,14 @@ public class ConfigRegistry {
 		registerSingle(whitelist, "Brown Mushroom", "BLOCK", "minecraft:brown_mushroom");
 		registerSingle(whitelist, "Red Mushroom", "BLOCK", "minecraft:red_mushroom");
 		registerSingle(whitelist, "Brewing Stand", "BLOCK", "minecraft:brewing_stand");
-		registerSingle(whitelist, "Sapling", "BLOCK", "minecraft:sapling");
-		registerSingle(whitelist, "Red Flower", "BLOCK", "minecraft:red_flower");
+		registerSingle(whitelist, "Sapling", "BLOCK", "minecraft:sapling:"+OreDictionary.WILDCARD_VALUE);
+		registerSingle(whitelist, "Red Flower", "BLOCK", "minecraft:red_flower:"+OreDictionary.WILDCARD_VALUE);
 		registerSingle(whitelist, "Redstone Torch", "BLOCK", "minecraft:redstone_torch");
 		registerSingle(whitelist, "Waterlily", "BLOCK", "minecraft:waterlily");
-		registerSingle(whitelist, "Grass", "BLOCK", "minecraft:grass");
-		registerSingle(whitelist, "Leaves", "BLOCK", "minecraft:leaves");
-		registerSingle(whitelist, "Yellow Flower", "BLOCK", "minecraft:yellow_flower");
-		registerSingle(whitelist, "Vine", "BLOCK", "minecraft:vine");
+		registerSingle(whitelist, "Grass", "BLOCK", "minecraft:grass:"+OreDictionary.WILDCARD_VALUE);
+		registerSingle(whitelist, "Leaves", "BLOCK", "minecraft:leaves:"+OreDictionary.WILDCARD_VALUE);
+		registerSingle(whitelist, "Yellow Flower", "BLOCK", "minecraft:yellow_flower:"+OreDictionary.WILDCARD_VALUE);
+		registerSingle(whitelist, "Vine", "BLOCK", "minecraft:vine:"+OreDictionary.WILDCARD_VALUE);
 	}
 	
 	private static void createRecipeStandard(ConfigCategory recipes){
@@ -403,6 +409,21 @@ public class ConfigRegistry {
 															   "minecraft:stone_slab:3 minecraft:stone_slab:3 minecraft:stone_slab:3"},
 																	   Property.Type.STRING));
 		nest.put("output", new Property("output", "BioCristals:blockNest", Property.Type.STRING));
+		
+		ConfigCategory crootBreeder = new ConfigCategory("Croot Breeder", recipes);
+		crootBreeder.put("code", new Property("code", ReserchRegistry.crootBreeder, Property.Type.STRING));
+		crootBreeder.put("input", new Property("input", new String[] { "logWood BioCristals:itemChitinPlate logWood", 
+															   "plankWood BioCristals:itemKittehBeetle plankWood",
+															   "minecraft:stone_slab:3 minecraft:stone_slab:3 minecraft:stone_slab:3"},
+																	   Property.Type.STRING));
+		crootBreeder.put("output", new Property("output", "BioCristals:blockCrootBreeder", Property.Type.STRING));
+		
+		ConfigCategory ironCrootBeetle = new ConfigCategory("Iron Croot Pickaxe", recipes);
+		ironCrootBeetle.put("code", new Property("code", ReserchRegistry.crootIronPickaxe, Property.Type.STRING));
+		ironCrootBeetle.put("input", new Property("input", new String[] { "minecraft:string BioCristals:itemCrootStick", 
+															   			  "minecraft:iron_pickaxe:0 minecraft:string"},
+																	   Property.Type.STRING));
+		ironCrootBeetle.put("output", new Property("output", "BioCristals:itemCrootIronPickaxe", Property.Type.STRING));
     }
 	
 	//https://github.com/Piron1991/Builder_tools/blob/master/src/main/java/com/piron1991/builder_tools/handler/ConfigHandler.java#L82

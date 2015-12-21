@@ -7,6 +7,7 @@ item.BioCristals_itemBioBlob.name=Bio Blob
 item.BioCristals_itemHivebag.name=[WIP]Hivebag
 item.BioCristals_itemCrootBeetle.name=Croot Beetle
 item.BioCristals_itemKraKenBug.name=Kraken Bug
+item.BioCristals_itemUnlockBug.name=Unlock Bug
 item.BioCristals_itemCrootStick.name=Croot Stick
 item.BioCristals_itemCrootClaw.name=Croot Claw
 item.BioCristals_itemWSB.name=Water Shield Beetle
@@ -18,6 +19,9 @@ item.chitinHelmet.name=Chitin Helmet
 item.chitinChestplate.name=Chitin Chestplate
 item.chitinLeggings.name=Chitin Leggings
 item.chitinBoots.name=Chitin Boots
+item.BioCristals_itemCrootIronPickaxe.name=Iron Croot Pickaxe
+item.BioCristals_itemCrootHoe.name=Croot Hoe
+item.BioCristals_itemFruitSpider.name=Fruit Spider
 
 tile.BioCristals_blockBiomass.name=Biomass
 tile.BioCristals_blockWheatCristal.name=Wheat Cristal
@@ -39,8 +43,9 @@ tile.BioCristals_crootCore.normal.name=Croot Core
 tile.BioCristals_crootStreamStem.name=Croot Stem
 tile.BioCristals_blockCrootHollow.name=Croot Hollow
 tile.BioCristals_blockExtractor.name=Extractor
-tile.BioCristals_blockAttunedEarth.name=[WIP]Attuned Earyh (not working)
+tile.BioCristals_blockAttunedEarth.name=[WIP]Attuned Earth (not working)
 tile.BioCristals_blockNest.name=Nest
+tile.BioCristals_blockCrootBreeder.name=Croot Breeder
 
 itemGroup.Bio Cristal=Bio Cristal
 
@@ -85,6 +90,11 @@ research.nestKraKen.title=Nesting KraKen
 research.nestKraKen.text=Don't eat me! I bring food!
 research.nestKittehBeetle.title=Nesting Kitteh Beetle
 research.nestKittehBeetle.text=I bring home friends!
+research.nestFruitSpider.title=Nesting Fruit Spider
+research.nestFruitSpider.text=One... two... three... four...
+research.crootIronPickaxe.title=Croot Iron Pickaxe
+research.crootIronPickaxe.text=Not even stone can protect you
+
 
 
 
@@ -169,6 +179,7 @@ research.tutorial.text=Navigation and so on...
 Research.get=RESEARCH UNLOCKED
 
 container.croot.hollow=Croot Hollow
+container.croot.breeder=Croot Breeder
 container.croot.core=Croot Core
 container.nest=Nest
 
@@ -178,6 +189,8 @@ chapeter.loreChapeter.title=Collected Lore
 chapeter.loreChapeter.text=World background...
 chapeter.ageOfConflict.title=Age Of Conflict
 chapeter.ageOfConflict.text=Death And Life
-chapeter.settlement.title=Settlement
-chapeter.settlement.text=Settle down...
+chapeter.settlement.title=Family
+chapeter.settlement.text=Time to settle down...
+chapeter.underworld.title=Underworld
+chapeter.underworld.text=To the core...
 

@@ -11,30 +11,36 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import hok.chompzki.biocristals.BioCristalsMod;
 import hok.chompzki.biocristals.api.IInsect;
+import hok.chompzki.biocristals.entity.EntityFruitSpider;
+import hok.chompzki.biocristals.entity.EntityWSB;
 import hok.chompzki.biocristals.registrys.ItemRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.IGrowable;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.player.BonemealEvent;
 
-public class ItemCrootBeetle extends Item implements IInsect{
+public class ItemFruitSpider extends Item implements IInsect{
 	
-	public final static String NAME = "itemCrootBeetle";
+	public final static String NAME = "itemFruitSpider";
 	private Random rand = new Random();
 	
-	public ItemCrootBeetle(){
+	public ItemFruitSpider(){
 		setUnlocalizedName(BioCristalsMod.MODID + "_" + NAME);
 		setCreativeTab(BioCristalsMod.creativeTab);
 		setTextureName(BioCristalsMod.MODID + ":" + NAME);
@@ -43,78 +49,54 @@ public class ItemCrootBeetle extends Item implements IInsect{
 	@Override
 	@SideOnly(Side.CLIENT)
     public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List list, boolean p_77624_4_) {
-		list.add("I live in grass...");
+		list.add("I... serve...");
 	}
 
 	@Override
 	public String getActionText(TileEntity entity, ItemStack stack) {
-		return "I'm currently helping your plants grow!";
+		return "I will harvest mature plants.";
 	}
 	
 	@Override
 	public ItemStack[] getResult(ItemStack stack) {
-		return new ItemStack[] {new ItemStack(Items.string)};
+		return new ItemStack[] {new ItemStack(Items.wheat_seeds)};
 	}
 
 	@Override
 	public void tileUpdate(TileEntity entity, ItemStack stack) {
-		int y = entity.yCoord;
 		World world = entity.getWorldObj();
+		int x = entity.xCoord;
+		int y = entity.yCoord;
+		int z = entity.zCoord;
 		
-		for(int x = entity.xCoord - 4; x <= entity.xCoord + 4; x++)
-		for(int z = entity.zCoord - 4; z <= entity.zCoord + 4; z++){
-			if(world.getBlock(x, y, z) instanceof IGrowable && rand.nextInt(6) == 0){
-				IGrowable plant = (IGrowable)world.getBlock(x, y, z);
-				Block block = world.getBlock(x, y, z);
-				FakePlayer player = FakePlayerFactory.get((WorldServer) world, new GameProfile(UUID.randomUUID(), "BioCristals"));
-		        BonemealEvent event = new BonemealEvent(player, world, block, x, y, z);
-		        if (MinecraftForge.EVENT_BUS.post(event))
-		        {
-		            continue;
-		        }
-
-		        if (event.getResult() == Result.ALLOW)
-		        {
-		        	continue;
-		        }
-
-		        if (block instanceof IGrowable)
-		        {
-		            IGrowable igrowable = (IGrowable)block;
-
-		            if (igrowable.func_149851_a(world, x, y, z, world.isRemote))
-		            {
-		                if (!world.isRemote)
-		                {
-		                    if (igrowable.func_149852_a(world, world.rand, x, y, z))
-		                    {
-		                        igrowable.func_149853_b(world, world.rand, x, y, z);
-		                    }
-		                }
-
-		                continue;
-		            }
-		        }
-
-		        continue;
+		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS){
+			
+			if(world.isAirBlock(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ)){
+				int newY = y + dir.offsetY;
+				for(;world.isAirBlock(x + dir.offsetX, newY, z + dir.offsetZ);newY--) {}
+				if(!(world.getBlock(x + dir.offsetX, newY, z + dir.offsetZ) instanceof IGrowable))
+					newY++;
+				EntityFruitSpider spider = new EntityFruitSpider(world);
+		        spider.setPosition(x + dir.offsetX + 0.5D, newY + 0.5D, z + dir.offsetZ + 0.5D);
+		        world.spawnEntityInWorld(spider);
 			}
 		}
 	}
-
+	
 	@Override
 	public int lifeSpan(ItemStack stack) {
-		return 1000;
+		return 200;
 	}
 	
-	private boolean hasPlanteable(TileEntity entity){
-		int y = entity.yCoord;
+	private boolean hasMature(TileEntity entity){
 		World world = entity.getWorldObj();
 		
 		for(int x = entity.xCoord - 4; x <= entity.xCoord + 4; x++)
+		for(int y = entity.yCoord - 4; y <= entity.yCoord + 4; y++)
 		for(int z = entity.zCoord - 4; z <= entity.zCoord + 4; z++){
 			if(world.getBlock(x, y, z) instanceof IGrowable){
 				IGrowable grow = (IGrowable)world.getBlock(x, y, z);
-				if(grow.func_149851_a(world, x, y, z, true))
+				if(!grow.func_149851_a(world, x, y, z, true))
 					return true;
 			}
 		}
@@ -123,7 +105,15 @@ public class ItemCrootBeetle extends Item implements IInsect{
 
 	@Override
 	public boolean canUpdate(TileEntity entity, ItemStack stack) {
-		return hasPlanteable(entity);
+		World world = entity.getWorldObj();
+		int x = entity.xCoord;
+		int y = entity.yCoord;
+		int z = entity.zCoord;
+		
+		AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(entity.xCoord, entity.yCoord, entity.zCoord, entity.xCoord + 1, entity.yCoord + 1, entity.zCoord + 1);
+		List<EntityFruitSpider> list = world.getEntitiesWithinAABB(EntityFruitSpider.class, bb.expand(4, 4, 4));
+		
+		return hasMature(entity) && list.size() <= 0;
 	}
 
 	@Override

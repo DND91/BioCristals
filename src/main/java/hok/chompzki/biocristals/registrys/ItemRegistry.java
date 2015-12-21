@@ -16,19 +16,24 @@ import hok.chompzki.biocristals.items.ItemClayHunter;
 import hok.chompzki.biocristals.items.ItemCollector;
 import hok.chompzki.biocristals.items.ItemCrootBeetle;
 import hok.chompzki.biocristals.items.ItemCrootClaw;
+import hok.chompzki.biocristals.items.ItemCrootHoe;
+import hok.chompzki.biocristals.items.ItemCrootIronPickaxe;
 import hok.chompzki.biocristals.items.ItemDebuggerStick;
+import hok.chompzki.biocristals.items.ItemFruitSpider;
 import hok.chompzki.biocristals.items.ItemHivebag;
 import hok.chompzki.biocristals.items.ItemKittehBeetle;
 import hok.chompzki.biocristals.items.ItemKraKenBug;
 import hok.chompzki.biocristals.items.ItemCrootStick;
 import hok.chompzki.biocristals.items.ItemNomadSack;
 import hok.chompzki.biocristals.items.ItemResearchBook;
+import hok.chompzki.biocristals.items.ItemUnlockBug;
 import hok.chompzki.biocristals.items.ItemWSB;
 import hok.chompzki.biocristals.recipes.RecipeData;
 import hok.chompzki.biocristals.recipes.RecipeTransformer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -48,6 +53,7 @@ import net.minecraftforge.common.util.EnumHelper;
 public class ItemRegistry {
 	
 	public static ArmorMaterial chitin_armor = EnumHelper.addArmorMaterial("chitin_armor", 10, new int[] {2, 6, 5, 2}, 2);
+	public static ToolMaterial crootIron = EnumHelper.addToolMaterial("crootIton", 2, 500, 7.0F, 3.0F, 5);
 	
 	public static Item attuner = null;
 	public static Item bioReagent = null;
@@ -70,6 +76,10 @@ public class ItemRegistry {
 	public static Item chitinChestplate = null;
 	public static Item chitinLeggings = null;
 	public static Item chitinBoots = null;
+	public static Item unlockBug = null;
+	public static Item crootIronPickaxe = null;
+	public static Item crootWoodHoe = null;
+	public static Item fruitSpider = null;
 	
 	public void registerItems(){
 		attuner = new ItemAttuner();
@@ -90,6 +100,10 @@ public class ItemRegistry {
 		clayHunter = new ItemClayHunter();
 		clayHunter.setContainerItem(clayHunter);
 		chitinPlate = new ItemChitinPlate();
+		unlockBug = new ItemUnlockBug();
+		crootIronPickaxe = new ItemCrootIronPickaxe();
+		crootWoodHoe = new ItemCrootHoe(7*7-1);
+		fruitSpider = new ItemFruitSpider();
 		
 		GameRegistry.registerItem(attuner, ItemAttuner.NAME, BioCristalsMod.MODID);
 		GameRegistry.registerItem(bioReagent, ItemBioReagent.NAME, BioCristalsMod.MODID);
@@ -109,6 +123,10 @@ public class ItemRegistry {
 		GameRegistry.registerItem(kittehBeetle, ItemKittehBeetle.NAME, BioCristalsMod.MODID);
 		GameRegistry.registerItem(clayHunter, ItemClayHunter.NAME, BioCristalsMod.MODID);
 		GameRegistry.registerItem(chitinPlate, ItemChitinPlate.NAME, BioCristalsMod.MODID);
+		GameRegistry.registerItem(unlockBug, ItemUnlockBug.NAME, BioCristalsMod.MODID);
+		GameRegistry.registerItem(crootIronPickaxe, ItemCrootIronPickaxe.NAME, BioCristalsMod.MODID);
+		GameRegistry.registerItem(crootWoodHoe, ItemCrootHoe.NAME, BioCristalsMod.MODID);
+		GameRegistry.registerItem(fruitSpider, ItemFruitSpider.NAME, BioCristalsMod.MODID);
 		
 		GameRegistry.registerItem(chitinHelmet = new ItemChitinArmor("chitinHelmet", chitin_armor, "chitin_layer", 0), "chitinHelmet"); //0 for helmet
 		GameRegistry.registerItem(chitinChestplate = new ItemChitinArmor("chitinChestplate", chitin_armor, "chitin_layer", 1), "chitinChestplate"); // 1 for chestplate

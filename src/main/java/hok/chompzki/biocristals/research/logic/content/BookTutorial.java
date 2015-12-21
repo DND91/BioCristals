@@ -45,12 +45,6 @@ public class BookTutorial extends ArticleContent {
 			s += "- In that mode left-click grid pattern to place recipe in crafting grid.\n";
 			s += "- Use arrows to move between favorised recipes.\n";
 			break;
-		case 4:
-			s += "" + ((char)167) + "l ~ To Start ~ " + ((char)167) + "r\n";
-			s += "1. Craft a croot sapling and plant in a big open area far away from anything you like (6-8 blocks).\n";
-			s += "2. Craft a attuner.\n";
-			s += "3. Explore the research and have fun!\n";
-			break;
 		}
 		return s;
 	}
@@ -58,7 +52,7 @@ public class BookTutorial extends ArticleContent {
 	
 	@Override
 	public int numberOfPages(EnumContent content){
-		return 5;
+		return 4;
 	}
 	
 }
