@@ -3,6 +3,7 @@ package hok.chompzki.biocristals.client.slots;
 import hok.chompzki.biocristals.research.data.EnumUnlock;
 import hok.chompzki.biocristals.research.data.ResearchUnlocks;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -56,7 +57,8 @@ public class SlotBreedingResult extends Slot {
     
     protected void onCrafting(ItemStack p_75208_1_)
     {
-        ResearchUnlocks.unlock(thePlayer, EnumUnlock.BREEDING, p_75208_1_);
+    	if(FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER) 
+    		ResearchUnlocks.unlock(thePlayer, EnumUnlock.BREEDING, p_75208_1_);
     }
 	
 }

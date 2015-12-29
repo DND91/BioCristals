@@ -1,7 +1,7 @@
 package hok.chompzki.biocristals.client.slots;
 
 import hok.chompzki.biocristals.api.IInsect;
-import hok.chompzki.biocristals.items.ItemHivebag;
+import hok.chompzki.biocristals.items.insects.ItemHivebag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;

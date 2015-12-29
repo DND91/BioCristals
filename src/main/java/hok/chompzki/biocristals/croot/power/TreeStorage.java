@@ -13,7 +13,7 @@ import hok.chompzki.biocristals.StorageHandler;
 import hok.chompzki.biocristals.api.ICrootCore;
 import hok.chompzki.biocristals.api.IDataFile;
 import hok.chompzki.biocristals.research.data.PlayerResearch;
-import hok.chompzki.biocristals.research.data.PlayerStorage;
+import hok.chompzki.biocristals.research.data.PlayerResearchStorage;
 import hok.chompzki.biocristals.research.data.network.MessageHandlerInserCrafting;
 import hok.chompzki.biocristals.research.data.network.MessageInsertCrafting;
 import hok.chompzki.biocristals.research.data.network.PlayerStorageDelissenHandler;

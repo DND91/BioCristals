@@ -27,14 +27,14 @@ public class PlayerResearch implements Serializable {
 	private ArrayList<String> favorised = new ArrayList<String>();
 	
 	
-	transient private PlayerStorage currentStorage = null;
+	transient private PlayerResearchStorage currentStorage = null;
 	
 	public PlayerResearch(UUID id) {
 		ownerId = id;
 		completed.add(ReserchRegistry.tutorial);
 	}
 	
-	public void setStorage(PlayerStorage stor){
+	public void setStorage(PlayerResearchStorage stor){
 		currentStorage = stor;
 	}
 	

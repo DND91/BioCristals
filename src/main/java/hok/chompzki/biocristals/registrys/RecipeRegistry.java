@@ -1,5 +1,9 @@
 package hok.chompzki.biocristals.registrys;
 
+import hok.chompzki.biocristals.items.token.recipes.AttuneEaterRecipe;
+import hok.chompzki.biocristals.items.token.recipes.AttuneFeederRecipe;
+import hok.chompzki.biocristals.items.token.recipes.AttuneNetworkRecipe;
+import hok.chompzki.biocristals.items.token.recipes.AttuneTokenRecipe;
 import hok.chompzki.biocristals.recipes.CrootManager;
 import hok.chompzki.biocristals.recipes.CrootRecipeContainer;
 import hok.chompzki.biocristals.recipes.CrootRecipeData;
@@ -12,7 +16,7 @@ import hok.chompzki.biocristals.recipes.RecipePurifier;
 import hok.chompzki.biocristals.recipes.RecipeTransformer;
 import hok.chompzki.biocristals.recipes.ShapedOreCrootRecipe;
 import hok.chompzki.biocristals.research.data.PlayerResearch;
-import hok.chompzki.biocristals.research.data.PlayerStorage;
+import hok.chompzki.biocristals.research.data.PlayerResearchStorage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -105,6 +109,12 @@ public class RecipeRegistry {
 		for(RecipeContainer con : recipes){
 			GameRegistry.addRecipe(new ShapedOreRecipe(con.output, con.input));
 		}
+		
+		
+		GameRegistry.addRecipe(new AttuneNetworkRecipe());
+		GameRegistry.addRecipe(new AttuneTokenRecipe());
+		GameRegistry.addRecipe(new AttuneFeederRecipe());
+		GameRegistry.addRecipe(new AttuneEaterRecipe());
 	}
 	
 	public static void loadCroot(){

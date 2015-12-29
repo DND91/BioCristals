@@ -14,7 +14,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 
 public class BreedingRegistry {
 	
-	private static ArrayList<BreedingRecipe> list = new ArrayList<BreedingRecipe>();
+	public static ArrayList<BreedingRecipe> list = new ArrayList<BreedingRecipe>();
 	
 	//Input 0,1: Insects
 	//Input   2: Nesting material
@@ -61,17 +61,18 @@ public class BreedingRegistry {
 	}
 	
 	public void init(FMLInitializationEvent event) {
-		register((IInsect)ItemRegistry.crootBeetle, (IInsect)ItemRegistry.crootBeetle, new ItemStack(Blocks.sapling, 1, OreDictionary.WILDCARD_VALUE), 100, new ItemStack(ItemRegistry.crootBeetle, 4));
-		register((IInsect)ItemRegistry.crootClaw, (IInsect)ItemRegistry.crootClaw, new ItemStack(Blocks.cactus, 1, OreDictionary.WILDCARD_VALUE), 200, new ItemStack(ItemRegistry.crootClaw, 3));
-		register((IInsect)ItemRegistry.kraKenBug, (IInsect)ItemRegistry.kraKenBug, new ItemStack(Blocks.sapling, 1, OreDictionary.WILDCARD_VALUE), 50, new ItemStack(ItemRegistry.kraKenBug, 4));
-		register((IInsect)ItemRegistry.wsb, (IInsect)ItemRegistry.wsb, new ItemStack(Blocks.log, 1, OreDictionary.WILDCARD_VALUE), 300, new ItemStack(ItemRegistry.wsb, 6));
-		register((IInsect)ItemRegistry.wsb, (IInsect)ItemRegistry.wsb, new ItemStack(Blocks.log2, 1, OreDictionary.WILDCARD_VALUE), 300, new ItemStack(ItemRegistry.wsb, 6));
-		register((IInsect)ItemRegistry.kittehBeetle, (IInsect)ItemRegistry.kittehBeetle, new ItemStack(Items.melon, 1, OreDictionary.WILDCARD_VALUE), 100, new ItemStack(ItemRegistry.kittehBeetle, 4));
-		//register((IInsect)ItemRegistry.clayHunter, (IInsect)ItemRegistry.clayHunter, new ItemStack(Items.clay_ball, 1, OreDictionary.WILDCARD_VALUE), 200, new ItemStack(ItemRegistry.clayHunter, 3));
-		//register((IInsect)ItemRegistry.hivebag, (IInsect)ItemRegistry.hivebag, new ItemStack(Items.reeds, 1, OreDictionary.WILDCARD_VALUE), 500, new ItemStack(ItemRegistry.hivebag, 3));
-		register((IInsect)ItemRegistry.fruitSpider, (IInsect)ItemRegistry.fruitSpider, new ItemStack(Items.wheat, 1, OreDictionary.WILDCARD_VALUE), 50, new ItemStack(ItemRegistry.fruitSpider, 3));
-		
-		
+		register((IInsect)ItemRegistry.crootBeetle, (IInsect)ItemRegistry.crootBeetle, new ItemStack(Blocks.sapling, 1, OreDictionary.WILDCARD_VALUE), 100, new ItemStack(ItemRegistry.crootBeetle, 1));
+		register((IInsect)ItemRegistry.crootClaw, (IInsect)ItemRegistry.crootClaw, new ItemStack(Blocks.cactus, 1, OreDictionary.WILDCARD_VALUE), 200, new ItemStack(ItemRegistry.crootClaw, 1));
+		register((IInsect)ItemRegistry.kraKenBug, (IInsect)ItemRegistry.kraKenBug, new ItemStack(Blocks.sapling, 1, OreDictionary.WILDCARD_VALUE), 50, new ItemStack(ItemRegistry.kraKenBug, 1));
+		register((IInsect)ItemRegistry.wsb, (IInsect)ItemRegistry.wsb, new ItemStack(Blocks.log, 1, OreDictionary.WILDCARD_VALUE), 300, new ItemStack(ItemRegistry.wsb, 1));
+		register((IInsect)ItemRegistry.wsb, (IInsect)ItemRegistry.wsb, new ItemStack(Blocks.log2, 1, OreDictionary.WILDCARD_VALUE), 300, new ItemStack(ItemRegistry.wsb, 1));
+		register((IInsect)ItemRegistry.kittehBeetle, (IInsect)ItemRegistry.kittehBeetle, new ItemStack(Items.melon, 1, OreDictionary.WILDCARD_VALUE), 100, new ItemStack(ItemRegistry.kittehBeetle, 1));
+		register((IInsect)ItemRegistry.clayHunter, (IInsect)ItemRegistry.clayHunter, new ItemStack(Items.clay_ball, 1, OreDictionary.WILDCARD_VALUE), 200, new ItemStack(ItemRegistry.clayHunter, 1));
+		register((IInsect)ItemRegistry.hivebag, (IInsect)ItemRegistry.hivebag, new ItemStack(Items.reeds, 1, OreDictionary.WILDCARD_VALUE), 500, new ItemStack(ItemRegistry.hivebag, 1));
+		register((IInsect)ItemRegistry.fruitSpider, (IInsect)ItemRegistry.fruitSpider, new ItemStack(Items.wheat, 1, OreDictionary.WILDCARD_VALUE), 50, new ItemStack(ItemRegistry.fruitSpider, 1));
+		register((IInsect)ItemRegistry.kittehBeetle, (IInsect)ItemRegistry.kraKenBug, new ItemStack(Items.wheat, 1, OreDictionary.WILDCARD_VALUE), 100, new ItemStack(ItemRegistry.fruitSpider, 1));
+		register((IInsect)ItemRegistry.voidCrawler, (IInsect)ItemRegistry.voidCrawler, new ItemStack(Items.ender_pearl, 1, OreDictionary.WILDCARD_VALUE), 1000, new ItemStack(ItemRegistry.voidCrawler, 1));
+		register((IInsect)ItemRegistry.crootClaw, (IInsect)ItemRegistry.kraKenBug, new ItemStack(Items.ender_pearl, 1, OreDictionary.WILDCARD_VALUE), 2000, new ItemStack(ItemRegistry.voidCrawler, 1));
 		
 	}
 	

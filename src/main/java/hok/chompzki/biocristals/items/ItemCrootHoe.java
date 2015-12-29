@@ -80,12 +80,16 @@ public class ItemCrootHoe extends Item {
 					if(0 < getCost(world.getBlock(x, dy, maxZ))){
 						world.setBlock(x, dy, maxZ, Blocks.farmland);
 						stack.damageItem(1, player);
+						if(world.blockExists(x, dy+1, maxZ) && world.getBlock(x, dy+1, maxZ).isReplaceable(world, x, dy+1, maxZ))
+							world.setBlockToAir(x, dy+1, maxZ);
 						if(stack.getMaxDamage() < stack.getItemDamage())
 							return;
 					}
 					if(0 < getCost(world.getBlock(x, dy, minZ))){
 						world.setBlock(x, dy, minZ, Blocks.farmland);
 						stack.damageItem(1, player);
+						if(world.blockExists(x, dy+1, minZ) && world.getBlock(x, dy+1, minZ).isReplaceable(world, x, dy+1, minZ))
+							world.setBlockToAir(x, dy+1, minZ);
 						if(stack.getMaxDamage() < stack.getItemDamage())
 							return;
 					}
@@ -94,12 +98,16 @@ public class ItemCrootHoe extends Item {
 					if(0 < getCost(world.getBlock(minX, dy, z))){
 						world.setBlock(minX, dy, z, Blocks.farmland);
 						stack.damageItem(1, player);
+						if(world.blockExists(minX, dy+1, z) && world.getBlock(minX, dy+1, z).isReplaceable(world, minX, dy+1, z))
+							world.setBlockToAir(minX, dy+1, z);
 						if(stack.getMaxDamage() < stack.getItemDamage())
 							return;
 					}
 					if(0 < getCost(world.getBlock(maxX, dy, z))){
 						world.setBlock(maxX, dy, z, Blocks.farmland);
 						stack.damageItem(1, player);
+						if(world.blockExists(maxX, dy+1, z) && world.getBlock(maxX, dy+1, z).isReplaceable(world, maxX, dy+1, z))
+							world.setBlockToAir(maxX, dy+1, z);
 						if(stack.getMaxDamage() < stack.getItemDamage())
 							return;
 					}

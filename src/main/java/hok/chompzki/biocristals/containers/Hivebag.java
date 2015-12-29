@@ -1,6 +1,6 @@
 package hok.chompzki.biocristals.containers;
 
-import hok.chompzki.biocristals.items.ItemHivebag;
+import hok.chompzki.biocristals.items.insects.ItemHivebag;
 import hok.chompzki.biocristals.registrys.ConfigRegistry;
 
 import java.awt.Color;

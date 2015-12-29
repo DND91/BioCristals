@@ -7,7 +7,7 @@ import hok.chompzki.biocristals.api.ArticleContent;
 import hok.chompzki.biocristals.research.data.ArticleStorage;
 import hok.chompzki.biocristals.research.data.Category;
 import hok.chompzki.biocristals.research.data.Chapeter;
-import hok.chompzki.biocristals.research.data.PlayerStorage;
+import hok.chompzki.biocristals.research.data.PlayerResearchStorage;
 import hok.chompzki.biocristals.research.data.Research;
 import hok.chompzki.biocristals.research.data.ResearchUnlocks;
 import hok.chompzki.biocristals.research.data.ReserchDataNetwork;
@@ -36,6 +36,17 @@ import hok.chompzki.biocristals.research.logic.first_era.KittehBeetle;
 import hok.chompzki.biocristals.research.logic.first_era.KraKen;
 import hok.chompzki.biocristals.research.logic.first_era.NomadsSack;
 import hok.chompzki.biocristals.research.logic.first_era.WSB;
+import hok.chompzki.biocristals.research.logic.settlement.BreedingClayHunter;
+import hok.chompzki.biocristals.research.logic.settlement.BreedingCrootBeetle;
+import hok.chompzki.biocristals.research.logic.settlement.BreedingCrootClaw;
+import hok.chompzki.biocristals.research.logic.settlement.BreedingFruitSpider;
+import hok.chompzki.biocristals.research.logic.settlement.BreedingHivebag;
+import hok.chompzki.biocristals.research.logic.settlement.BreedingKittehBeetle;
+import hok.chompzki.biocristals.research.logic.settlement.BreedingKraKenBug;
+import hok.chompzki.biocristals.research.logic.settlement.BreedingWSB;
+import hok.chompzki.biocristals.research.logic.settlement.CrootBreeder;
+import hok.chompzki.biocristals.research.logic.settlement.CrootHoe;
+import hok.chompzki.biocristals.research.logic.settlement.HungerPortal;
 import hok.chompzki.biocristals.research.logic.settlement.Nest;
 import hok.chompzki.biocristals.research.logic.settlement.NestingCrootBeetle;
 import hok.chompzki.biocristals.research.logic.settlement.NestingCrootClaw;
@@ -43,7 +54,16 @@ import hok.chompzki.biocristals.research.logic.settlement.NestingFruitSpider;
 import hok.chompzki.biocristals.research.logic.settlement.NestingKittehBettle;
 import hok.chompzki.biocristals.research.logic.settlement.NestingKraKen;
 import hok.chompzki.biocristals.research.logic.settlement.NestingWSB;
+import hok.chompzki.biocristals.research.logic.settlement.SacrificePit;
+import hok.chompzki.biocristals.research.logic.settlement.TokenAssembler;
+import hok.chompzki.biocristals.research.logic.settlement.TokenBank;
+import hok.chompzki.biocristals.research.logic.settlement.TokenBridge;
+import hok.chompzki.biocristals.research.logic.settlement.TokenEater;
+import hok.chompzki.biocristals.research.logic.settlement.TokenFeeder;
+import hok.chompzki.biocristals.research.logic.settlement.TokenFilter;
+import hok.chompzki.biocristals.research.logic.settlement.TokenTransformer;
 import hok.chompzki.biocristals.research.logic.underworld.IronCrootPickaxe;
+import hok.chompzki.biocristals.research.logic.underworld.VoidCrawler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -88,8 +108,10 @@ public class ReserchRegistry {
 	public static final Category flesh = new Category("flesh", "flesh", new ServerContent());
 	public static final Category structure = new Category("structure", "structure", new ServerContent());
 	public static final Category purifing = new Category("purifing", "purifing", new ServerContent());
+	public static final Category hunger = new Category("hunger", "hunger", new ServerContent());
 	public static final Category lore = new Category("lore", "lore", new ServerContent());
-	
+	public static final Category tools = new Category("tools", "tools", new ServerContent());
+	public static final Category breeding = new Category("breeding", "breeding", new ServerContent());
 	
 	
 	//Reseaches
@@ -105,6 +127,7 @@ public class ReserchRegistry {
 	public static final String kittehBeetle = "kittehBeetle";
 	public static final String clayHunter = "clayHunter";
 	public static final String nomadsSack = "nomadsSack";
+	public static final String voidCrawler = "voidCrawler";
 	
 	public static final String chitinPlate = "chitinPlate";
 	public static final String chitinHelmet = "chitinHelmet";
@@ -120,7 +143,28 @@ public class ReserchRegistry {
 	public static final String nestKittehBeetle = "nestKittehBeetle";
 	public static final String nestFruitSpider = "nestFruitSpider";
 	
-	public static String crootBreeder = "crootBreeder";
+	public static final String crootBreeder = "crootBreeder";
+	public static final String breedingCrootBeetle = "breedingCrootBeetle";
+	public static final String breedingCrootClaw = "breedingCrootClaw";
+	public static final String breedingKraKenBug = "breedingKraKenBug";
+	public static final String breedingWSB = "breedingWSB";
+	public static final String breedingKittehBeetle = "breedingKittehBeetle";
+	public static final String breedingClayHunter = "breedingClayHunter";
+	public static final String breedingHivebag = "breedingHivebag";
+	public static final String breedingFruitSpider = "breedingFruitSpider";
+	
+	public static final String hungerPortal = "hungerPortal";
+	public static final String tokenAssembler = "tokenAssembler";
+	public static final String sacrificePit = "sacrificePit";
+	
+	public static final String tokenBridge = "tokenBridge";
+	public static final String tokenFilter = "tokenFilter";
+	public static final String tokenTransformer = "tokenTransformer";
+	public static final String tokenFeeder = "tokenFeeder";
+	public static final String tokenEater = "tokenEater";
+	public static final String tokenBank = "tokenBank";
+	
+	public static final String crootHoe = "crootHoe";
 	
 	public static final String crootIronPickaxe = "crootIronPickaxe";
 	
@@ -146,7 +190,7 @@ public class ReserchRegistry {
 		
 		/** FIRST AGE **/
 		ReserchDataNetwork.register(new Research(babySteps, 0, 0, ItemRegistry.crootBeetle, side ? new ServerContent() : new BabySteps(), firstEra, fundamental).setSpecial());
-		ReserchDataNetwork.register(new Research(crootStick, 0, 1, ItemRegistry.crootStick, side ? new ServerContent() : new CrootStick(), firstEra, fundamental, babySteps));
+		ReserchDataNetwork.register(new Research(crootStick, 0, 1, ItemRegistry.crootStick, side ? new ServerContent() : new CrootStick(), firstEra, tools, babySteps));
 		
 		ReserchDataNetwork.register(new Research(kraken, -1, 0, ItemRegistry.kraKenBug, side ? new ServerContent() : new KraKen(), firstEra, fundamental, crootStick));
 		ReserchDataNetwork.register(new Research(kittehBeetle, 0, 1, ItemRegistry.kittehBeetle, side ? new ServerContent() : new KittehBeetle(), firstEra, fundamental, crootStick));
@@ -155,16 +199,16 @@ public class ReserchRegistry {
 		ReserchDataNetwork.register(new Research(crootClaw, -1, 1, ItemRegistry.crootClaw, side ? new ServerContent() : new CrootClaw(), firstEra, fundamental, crootStick));
 		ReserchDataNetwork.register(new Research(hivebag, 1, 1, ItemRegistry.hivebag, side ? new ServerContent() : new Hivebag(), firstEra, fundamental, crootStick));
 
-		ReserchDataNetwork.register(new Research(chitinPlate, -1, 0, ItemRegistry.chitinPlate, side ? new ServerContent() : new ChitinPlate(), firstEra, fundamental, clayHunter));
-		ReserchDataNetwork.register(new Research(chitinHelmet, -1, -1, ItemRegistry.chitinHelmet, side ? new ServerContent() : new ChitinHelmet(), firstEra, fundamental, chitinPlate));
-		ReserchDataNetwork.register(new Research(chitinChestplate, -1, 0, ItemRegistry.chitinChestplate, side ? new ServerContent() : new ChitinChestplate(), firstEra, fundamental, chitinPlate));
-		ReserchDataNetwork.register(new Research(chitinLeggings, -1, 1, ItemRegistry.chitinLeggings, side ? new ServerContent() : new ChitinLeggings(), firstEra, fundamental, chitinPlate));
-		ReserchDataNetwork.register(new Research(chitinBoots, -1, 2, ItemRegistry.chitinBoots, side ? new ServerContent() : new ChitinBoots(), firstEra, fundamental, chitinPlate));
+		ReserchDataNetwork.register(new Research(chitinPlate, -1, 0, ItemRegistry.chitinPlate, side ? new ServerContent() : new ChitinPlate(), firstEra, tools, clayHunter));
+		ReserchDataNetwork.register(new Research(chitinHelmet, -1, -1, ItemRegistry.chitinHelmet, side ? new ServerContent() : new ChitinHelmet(), firstEra, tools, chitinPlate));
+		ReserchDataNetwork.register(new Research(chitinChestplate, -1, 0, ItemRegistry.chitinChestplate, side ? new ServerContent() : new ChitinChestplate(), firstEra, tools, chitinPlate));
+		ReserchDataNetwork.register(new Research(chitinLeggings, -1, 1, ItemRegistry.chitinLeggings, side ? new ServerContent() : new ChitinLeggings(), firstEra, tools, chitinPlate));
+		ReserchDataNetwork.register(new Research(chitinBoots, -1, 2, ItemRegistry.chitinBoots, side ? new ServerContent() : new ChitinBoots(), firstEra, tools, chitinPlate));
 		
-		ReserchDataNetwork.register(new Research(nomadsSack, 0, -1, ItemRegistry.nomadSack, side ? new ServerContent() : new NomadsSack(), firstEra, fundamental, babySteps));
+		ReserchDataNetwork.register(new Research(nomadsSack, 0, -1, ItemRegistry.nomadSack, side ? new ServerContent() : new NomadsSack(), firstEra, tools, babySteps));
 		
 		//FAMILY ERA
-		ReserchDataNetwork.register(new Research(nest, 0, 0, BlockRegistry.nest, side ? new ServerContent() : new Nest(), settlement, fundamental, crootStick));
+		ReserchDataNetwork.register(new Research(nest, 3, 0, BlockRegistry.nest, side ? new ServerContent() : new Nest(), settlement, fundamental, crootStick).setSpecial());
 		ReserchDataNetwork.register(new Research(nestCrootBeeltel, 0, 0, ItemRegistry.crootBeetle, side ? new ServerContent() : new NestingCrootBeetle(), settlement, fundamental, nest));
 		ReserchDataNetwork.register(new Research(nestWSB, 0, 0, ItemRegistry.wsb, side ? new ServerContent() : new NestingWSB(), settlement, fundamental, nest));
 		ReserchDataNetwork.register(new Research(nestCrootClaw, 0, 0, ItemRegistry.crootClaw, side ? new ServerContent() : new NestingCrootClaw(), settlement, fundamental, nest));
@@ -172,8 +216,33 @@ public class ReserchRegistry {
 		ReserchDataNetwork.register(new Research(nestKittehBeetle, 0, 0, ItemRegistry.kittehBeetle, side ? new ServerContent() : new NestingKittehBettle(), settlement, fundamental, nest));
 		ReserchDataNetwork.register(new Research(nestFruitSpider, 0, 0, ItemRegistry.fruitSpider, side ? new ServerContent() : new NestingFruitSpider(), settlement, fundamental, nest));
 		
+		ReserchDataNetwork.register(new Research(hungerPortal, -4, 0, ItemRegistry.hiveBrain , side ? new ServerContent() : new HungerPortal(), settlement, hunger, nest).setSpecial());
+		ReserchDataNetwork.register(new Research(tokenAssembler, -1, 0, BlockRegistry.tokenAssembler , side ? new ServerContent() : new TokenAssembler(), settlement, hunger, hungerPortal));
+		ReserchDataNetwork.register(new Research(sacrificePit, 1, 0, BlockRegistry.sacrificePit , side ? new ServerContent() : new SacrificePit(), settlement, hunger, hungerPortal));
+		ReserchDataNetwork.register(new Research(tokenBridge, 0, 0, ItemRegistry.tokenBridge , side ? new ServerContent() : new TokenBridge(), settlement, hunger, tokenAssembler));
+		ReserchDataNetwork.register(new Research(tokenFilter, 0, 0, ItemRegistry.tokenFilter , side ? new ServerContent() : new TokenFilter(), settlement, hunger, tokenAssembler));
+		ReserchDataNetwork.register(new Research(tokenTransformer, 0, 0, ItemRegistry.tokenTransformer , side ? new ServerContent() : new TokenTransformer(), settlement, hunger, tokenAssembler));
+		ReserchDataNetwork.register(new Research(tokenFeeder, 0, 0, ItemRegistry.tokenFeeder , side ? new ServerContent() : new TokenFeeder(), settlement, hunger, tokenAssembler));
+		ReserchDataNetwork.register(new Research(tokenEater, 0, 0, ItemRegistry.tokenEater , side ? new ServerContent() : new TokenEater(), settlement, hunger, tokenAssembler));
+		ReserchDataNetwork.register(new Research(tokenBank, 0, 0, ItemRegistry.tokenBank , side ? new ServerContent() : new TokenBank(), settlement, hunger, tokenAssembler));
+		
+		ReserchDataNetwork.register(new Research(crootHoe, 1, 3, ItemRegistry.crootWoodHoe, side ? new ServerContent() : new CrootHoe(), settlement, tools, crootStick).setSpecial());
+		
+		
+		ReserchDataNetwork.register(new Research(crootBreeder, 1, -3, BlockRegistry.crootBreeder, side ? new ServerContent() : new CrootBreeder(), settlement, breeding, crootStick).setSpecial());
+		ReserchDataNetwork.register(new Research(breedingCrootBeetle, 0, 0, ItemRegistry.crootBeetle, side ? new ServerContent() : new BreedingCrootBeetle(), settlement, breeding, crootBreeder));
+		ReserchDataNetwork.register(new Research(breedingCrootClaw, 0, 0, ItemRegistry.crootClaw, side ? new ServerContent() : new BreedingCrootClaw(), settlement, breeding, crootBreeder));
+		ReserchDataNetwork.register(new Research(breedingKraKenBug, 0, 0, ItemRegistry.kraKenBug, side ? new ServerContent() : new BreedingKraKenBug(), settlement, breeding, crootBreeder));
+		ReserchDataNetwork.register(new Research(breedingWSB, 0, 0, ItemRegistry.wsb, side ? new ServerContent() : new BreedingWSB(), settlement, breeding, crootBreeder).setSpecial());
+		ReserchDataNetwork.register(new Research(breedingKittehBeetle, 0, 0, ItemRegistry.kittehBeetle, side ? new ServerContent() : new BreedingKittehBeetle(), settlement, breeding, crootBreeder));
+		ReserchDataNetwork.register(new Research(breedingClayHunter, 0, 0, ItemRegistry.clayHunter, side ? new ServerContent() : new BreedingClayHunter(), settlement, breeding, crootBreeder));
+		ReserchDataNetwork.register(new Research(breedingHivebag, 0, 0, ItemRegistry.hivebag, side ? new ServerContent() : new BreedingHivebag(), settlement, breeding, crootBreeder));
+		ReserchDataNetwork.register(new Research(breedingFruitSpider, 0, 0, ItemRegistry.fruitSpider, side ? new ServerContent() : new BreedingFruitSpider(), settlement, breeding, crootBreeder));
+		
+		
 		//UNDERWORLD ERA
-		ReserchDataNetwork.register(new Research(crootIronPickaxe, 0, 0, ItemRegistry.crootIronPickaxe, side ? new ServerContent() : new IronCrootPickaxe(), underworld, fundamental, nest));
+		ReserchDataNetwork.register(new Research(crootIronPickaxe, 0, 0, ItemRegistry.crootIronPickaxe, side ? new ServerContent() : new IronCrootPickaxe(), underworld, tools, nest));
+		ReserchDataNetwork.register(new Research(voidCrawler, 0, 0, ItemRegistry.voidCrawler, side ? new ServerContent() : new VoidCrawler(), underworld, breeding, crootBreeder, crootIronPickaxe));
 		
 		
 		//RESEARCH
@@ -239,6 +308,11 @@ public class ReserchRegistry {
 		ResearchUnlocks.addCraftingUnlock(new ItemStack(ItemRegistry.chitinLeggings), chitinLeggings);
 		ResearchUnlocks.addCraftingUnlock(new ItemStack(ItemRegistry.chitinBoots), chitinBoots);
 		ResearchUnlocks.addCraftingUnlock(new ItemStack(ItemRegistry.crootIronPickaxe), crootIronPickaxe);
+		ResearchUnlocks.addCraftingUnlock(new ItemStack(BlockRegistry.crootBreeder), crootBreeder);
+		ResearchUnlocks.addCraftingUnlock(new ItemStack(ItemRegistry.crootWoodHoe), crootHoe);
+		ResearchUnlocks.addCraftingUnlock(new ItemStack(BlockRegistry.sacrificePit), sacrificePit);
+		ResearchUnlocks.addCraftingUnlock(new ItemStack(BlockRegistry.tokenAssembler), tokenAssembler);
+		ResearchUnlocks.addCraftingUnlock(new ItemStack(ItemRegistry.hiveBrain), hungerPortal);
 		
 		ResearchUnlocks.addPickUpUnlock(new ItemStack(ItemRegistry.crootBeetle), babySteps, null, new ItemStack(ItemRegistry.crootBeetle), new ItemStack(Blocks.tallgrass, 1, 1));
 		ResearchUnlocks.addPickUpUnlock(new ItemStack(ItemRegistry.clayHunter), clayHunter, new ItemStack(ItemRegistry.crootStick), new ItemStack(ItemRegistry.clayHunter), new ItemStack(Blocks.clay));
@@ -255,7 +329,22 @@ public class ReserchRegistry {
 		ResearchUnlocks.addPutInNestUnlock(new ItemStack(ItemRegistry.kittehBeetle), nestKittehBeetle);
 		ResearchUnlocks.addPutInNestUnlock(new ItemStack(ItemRegistry.fruitSpider), nestFruitSpider);
 		
+		ResearchUnlocks.addBreedingUnlock(new ItemStack(ItemRegistry.crootBeetle), breedingCrootBeetle);
+		ResearchUnlocks.addBreedingUnlock(new ItemStack(ItemRegistry.crootClaw), breedingCrootClaw);
+		ResearchUnlocks.addBreedingUnlock(new ItemStack(ItemRegistry.kraKenBug), breedingKraKenBug);
+		ResearchUnlocks.addBreedingUnlock(new ItemStack(ItemRegistry.wsb), breedingWSB);
+		ResearchUnlocks.addBreedingUnlock(new ItemStack(ItemRegistry.kittehBeetle), breedingKittehBeetle);
+		ResearchUnlocks.addBreedingUnlock(new ItemStack(ItemRegistry.clayHunter), breedingClayHunter);
+		ResearchUnlocks.addBreedingUnlock(new ItemStack(ItemRegistry.hivebag), breedingHivebag);
+		ResearchUnlocks.addBreedingUnlock(new ItemStack(ItemRegistry.fruitSpider), breedingFruitSpider);
+		ResearchUnlocks.addBreedingUnlock(new ItemStack(ItemRegistry.voidCrawler), voidCrawler);
 		
+		ResearchUnlocks.addTokenAssemblyUnlock(new ItemStack(ItemRegistry.tokenBridge), tokenBridge);
+		ResearchUnlocks.addTokenAssemblyUnlock(new ItemStack(ItemRegistry.tokenFilter), tokenFilter);
+		ResearchUnlocks.addTokenAssemblyUnlock(new ItemStack(ItemRegistry.tokenTransformer), tokenTransformer);
+		ResearchUnlocks.addTokenAssemblyUnlock(new ItemStack(ItemRegistry.tokenFeeder), tokenFeeder);
+		ResearchUnlocks.addTokenAssemblyUnlock(new ItemStack(ItemRegistry.tokenEater), tokenEater);
+		ResearchUnlocks.addTokenAssemblyUnlock(new ItemStack(ItemRegistry.tokenBank), tokenBank);
 	}
 
     

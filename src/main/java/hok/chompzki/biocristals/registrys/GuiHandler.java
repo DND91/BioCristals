@@ -5,20 +5,30 @@ import java.util.UUID;
 import hok.chompzki.biocristals.client.gui.GuiCrootBreeder;
 import hok.chompzki.biocristals.client.gui.GuiCrootCore;
 import hok.chompzki.biocristals.client.gui.GuiCrootHollow;
+import hok.chompzki.biocristals.client.gui.GuiHiveBrain;
 import hok.chompzki.biocristals.client.gui.GuiHivebag;
 import hok.chompzki.biocristals.client.gui.GuiNest;
 import hok.chompzki.biocristals.client.gui.GuiResearchBook;
+import hok.chompzki.biocristals.client.gui.GuiSacrificePit;
+import hok.chompzki.biocristals.client.gui.GuiTokenAssembler;
 import hok.chompzki.biocristals.containers.ContainerCrootBreeder;
 import hok.chompzki.biocristals.containers.ContainerCrootHollow;
 import hok.chompzki.biocristals.containers.ContainerCrootCore;
+import hok.chompzki.biocristals.containers.ContainerHiveBrain;
 import hok.chompzki.biocristals.containers.ContainerHivebag;
 import hok.chompzki.biocristals.containers.ContainerNest;
+import hok.chompzki.biocristals.containers.ContainerSacrificePit;
+import hok.chompzki.biocristals.containers.ContainerTokenAssembler;
+import hok.chompzki.biocristals.hunger.PlayerHungerNetwork;
+import hok.chompzki.biocristals.hunger.PlayerHungerStorage;
 import hok.chompzki.biocristals.research.data.DataHelper;
-import hok.chompzki.biocristals.research.data.PlayerStorage;
+import hok.chompzki.biocristals.research.data.PlayerResearchStorage;
 import hok.chompzki.biocristals.tile_enteties.TileCrootBreeder;
 import hok.chompzki.biocristals.tile_enteties.TileCrootHollow;
 import hok.chompzki.biocristals.tile_enteties.TileCrootCore;
 import hok.chompzki.biocristals.tile_enteties.TileNest;
+import hok.chompzki.biocristals.tile_enteties.TileSacrificePit;
+import hok.chompzki.biocristals.tile_enteties.TileTokenAssembler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -40,7 +50,7 @@ public class GuiHandler implements IGuiHandler {
 			EntityPlayer p = world.getPlayerEntityByName(player.getCommandSenderName());
 			UUID observer = p.getGameProfile().getId();
 			UUID subject = UUID.fromString(DataHelper.getOwner(player.inventory.getCurrentItem()));
-			PlayerStorage.instance(false).registerLissner(observer, subject);
+			PlayerResearchStorage.instance(false).registerLissner(observer, subject);
 			return null;
 		}else if(ID == 101){ //CrootHollow
 			TileEntity tileEntity = world.getTileEntity(x, y, z);
@@ -56,6 +66,19 @@ public class GuiHandler implements IGuiHandler {
 		}else if(ID == 105){
 			TileEntity tileEntity = world.getTileEntity(x, y, z);
 			return new ContainerCrootBreeder(player.inventory, (TileCrootBreeder)tileEntity);
+		}else if(ID == 106){ //HiveBrain
+			EntityPlayer p = world.getPlayerEntityByName(player.getCommandSenderName());
+			UUID observer = p.getGameProfile().getId();
+			String subject = DataHelper.getNetwork(player.inventory.getCurrentItem());
+			PlayerHungerStorage.instance(false).registerLissner(observer, subject);
+			PlayerHungerNetwork hunger = PlayerHungerStorage.instance(false).get(subject);
+			return new ContainerHiveBrain(player, hunger);
+		}else if(ID == 107){
+			TileEntity tileEntity = world.getTileEntity(x, y, z);
+			return new ContainerTokenAssembler(player, (TileTokenAssembler)tileEntity);
+		}else if(ID == 108){
+			TileEntity tileEntity = world.getTileEntity(x, y, z);
+			return new ContainerSacrificePit(player, (TileSacrificePit)tileEntity);
 		}
 		
 		return null;
@@ -85,6 +108,19 @@ public class GuiHandler implements IGuiHandler {
 		}else if(ID == 105){
 			TileEntity tileEntity = world.getTileEntity(x, y, z);
 			return new GuiCrootBreeder(player.inventory, (TileCrootBreeder)tileEntity);
+		}else if(ID == 106){ //HiveBrain
+			EntityPlayer p = world.getPlayerEntityByName(player.getCommandSenderName());
+			ItemStack stack = p.getCurrentEquippedItem();
+			
+			String sid = DataHelper.getNetwork(stack);
+			PlayerHungerNetwork hunger = PlayerHungerStorage.instance(true).get(sid);
+			return new GuiHiveBrain(player, hunger);
+		}else if(ID == 107){
+			TileEntity tileEntity = world.getTileEntity(x, y, z);
+			return new GuiTokenAssembler(player, (TileTokenAssembler)tileEntity);
+		}else if(ID == 108){
+			TileEntity tileEntity = world.getTileEntity(x, y, z);
+			return new GuiSacrificePit(player, (TileSacrificePit)tileEntity);
 		}
 		
 		return null;

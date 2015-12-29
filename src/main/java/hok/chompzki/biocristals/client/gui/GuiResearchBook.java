@@ -6,7 +6,7 @@ import hok.chompzki.biocristals.registrys.ReserchRegistry;
 import hok.chompzki.biocristals.research.data.Chapeter;
 import hok.chompzki.biocristals.research.data.DataHelper;
 import hok.chompzki.biocristals.research.data.PlayerResearch;
-import hok.chompzki.biocristals.research.data.PlayerStorage;
+import hok.chompzki.biocristals.research.data.PlayerResearchStorage;
 import hok.chompzki.biocristals.research.data.Research;
 import hok.chompzki.biocristals.research.data.network.PlayerStorageDelissenMessage;
 import hok.chompzki.biocristals.research.data.network.PlayerStorageFaveMessage;
@@ -345,7 +345,7 @@ public class GuiResearchBook extends GuiScreen {
 		
         int i = 1;
         
-        PlayerResearch player = PlayerStorage.instance(true).get(this.player);
+        PlayerResearch player = PlayerResearchStorage.instance(true).get(this.player);
         if(player == null)
         	return;
         
@@ -592,7 +592,7 @@ public class GuiResearchBook extends GuiScreen {
         int i5;
         tooltipResearch = null;
         tooltipChapeter = null;
-        PlayerResearch res = PlayerStorage.instance(true).get(player);
+        PlayerResearch res = PlayerResearchStorage.instance(true).get(player);
         if(res == null){
         	this.drawString(fontRendererObj, "Syncing...", k1, l1, 0xFFFFFF);
         	return;
@@ -605,7 +605,7 @@ public class GuiResearchBook extends GuiScreen {
             	i5 = k1 + colum;
                 l4 = l1 + row;
                 
-                this.drawIcon(knowledge, i5, l4, PlayerStorage.instance(true).get(player).hasCompleted(knowledge.getCode()), true);
+                this.drawIcon(knowledge, i5, l4, PlayerResearchStorage.instance(true).get(player).hasCompleted(knowledge.getCode()), true);
                 Rectangle rect = new Rectangle(i5, l4, 26, 26);
                 if(rect.contains(new Rectangle(par1, par2, 2, 2))){
                 	tooltipResearch = knowledge;
@@ -673,7 +673,7 @@ public class GuiResearchBook extends GuiScreen {
           
           GL11.glColor4f(f3, f3, f3, 1.0F);
           
-         PlayerResearch res = PlayerStorage.instance(true).get(player);
+         PlayerResearch res = PlayerResearchStorage.instance(true).get(player);
          boolean owner = player.equals(this.reader.getGameProfile().getId());
          
          if (research.getSpecial())
@@ -898,9 +898,9 @@ public class GuiResearchBook extends GuiScreen {
 	@Override
 	public boolean doesGuiPauseGame()
     {
-        return false;
+        return false; //IF TRUE YOU CANNOT FAVORISE STUFF!!! FFS!
     }
-
+	
 	public GuiResearchBook load() {
 		GuiArticle a = GuiInventoryOverlay.craftingHelper.getBooked();
         if(a != null){

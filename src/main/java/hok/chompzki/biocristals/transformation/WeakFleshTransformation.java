@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 import hok.chompzki.biocristals.BioHelper;
 import hok.chompzki.biocristals.api.IEntityTransformation;
 import hok.chompzki.biocristals.research.data.PlayerResearch;
-import hok.chompzki.biocristals.research.data.PlayerStorage;
+import hok.chompzki.biocristals.research.data.PlayerResearchStorage;
 import hok.chompzki.biocristals.research.logic.ResearchLogicNetwork;
 
 public class WeakFleshTransformation implements IEntityTransformation {
@@ -35,7 +35,7 @@ public class WeakFleshTransformation implements IEntityTransformation {
 	public boolean hasResources(ItemStack stack, EntityPlayer player,
 			Entity taget) {
 		UUID id = player.getGameProfile().getId();
-		PlayerResearch research = PlayerStorage.instance(false).get(id);
+		PlayerResearch research = PlayerResearchStorage.instance(false).get(id);
 		
 		return code.equals("NONE") || ResearchLogicNetwork.instance().available(research, code);
 	}
@@ -63,7 +63,7 @@ public class WeakFleshTransformation implements IEntityTransformation {
 		
 		if(code != null){
 			UUID id = player.getGameProfile().getId();
-			PlayerResearch research = PlayerStorage.instance(false).get(id);
+			PlayerResearch research = PlayerResearchStorage.instance(false).get(id);
 			ResearchLogicNetwork.instance().compelte(research, code);
 		}
 	}

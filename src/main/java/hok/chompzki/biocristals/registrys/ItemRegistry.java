@@ -12,22 +12,30 @@ import hok.chompzki.biocristals.items.ItemBioReagent;
 import hok.chompzki.biocristals.items.ItemCatalystInjector;
 import hok.chompzki.biocristals.items.ItemChitinArmor;
 import hok.chompzki.biocristals.items.ItemChitinPlate;
-import hok.chompzki.biocristals.items.ItemClayHunter;
 import hok.chompzki.biocristals.items.ItemCollector;
-import hok.chompzki.biocristals.items.ItemCrootBeetle;
-import hok.chompzki.biocristals.items.ItemCrootClaw;
 import hok.chompzki.biocristals.items.ItemCrootHoe;
 import hok.chompzki.biocristals.items.ItemCrootIronPickaxe;
 import hok.chompzki.biocristals.items.ItemDebuggerStick;
-import hok.chompzki.biocristals.items.ItemFruitSpider;
-import hok.chompzki.biocristals.items.ItemHivebag;
-import hok.chompzki.biocristals.items.ItemKittehBeetle;
-import hok.chompzki.biocristals.items.ItemKraKenBug;
+import hok.chompzki.biocristals.items.ItemHiveBrain;
 import hok.chompzki.biocristals.items.ItemCrootStick;
 import hok.chompzki.biocristals.items.ItemNomadSack;
 import hok.chompzki.biocristals.items.ItemResearchBook;
-import hok.chompzki.biocristals.items.ItemUnlockBug;
-import hok.chompzki.biocristals.items.ItemWSB;
+import hok.chompzki.biocristals.items.insects.ItemClayHunter;
+import hok.chompzki.biocristals.items.insects.ItemCrootBeetle;
+import hok.chompzki.biocristals.items.insects.ItemCrootClaw;
+import hok.chompzki.biocristals.items.insects.ItemFruitSpider;
+import hok.chompzki.biocristals.items.insects.ItemHivebag;
+import hok.chompzki.biocristals.items.insects.ItemKittehBeetle;
+import hok.chompzki.biocristals.items.insects.ItemKraKenBug;
+import hok.chompzki.biocristals.items.insects.ItemUnlockBug;
+import hok.chompzki.biocristals.items.insects.ItemVoidCrawler;
+import hok.chompzki.biocristals.items.insects.ItemWSB;
+import hok.chompzki.biocristals.items.token.ItemBank;
+import hok.chompzki.biocristals.items.token.ItemBridge;
+import hok.chompzki.biocristals.items.token.ItemEater;
+import hok.chompzki.biocristals.items.token.ItemFeeder;
+import hok.chompzki.biocristals.items.token.ItemFilter;
+import hok.chompzki.biocristals.items.token.ItemTransformer;
 import hok.chompzki.biocristals.recipes.RecipeData;
 import hok.chompzki.biocristals.recipes.RecipeTransformer;
 import net.minecraft.init.Blocks;
@@ -80,6 +88,15 @@ public class ItemRegistry {
 	public static Item crootIronPickaxe = null;
 	public static Item crootWoodHoe = null;
 	public static Item fruitSpider = null;
+	public static Item voidCrawler = null;
+	public static Item hiveBrain = null;
+	
+	public static Item tokenFeeder = null;
+	public static Item tokenBridge = null;
+	public static Item tokenBank = null;
+	public static Item tokenEater = null;
+	public static Item tokenFilter = null;
+	public static Item tokenTransformer = null;
 	
 	public void registerItems(){
 		attuner = new ItemAttuner();
@@ -98,12 +115,21 @@ public class ItemRegistry {
 		nomadSack = new ItemNomadSack();
 		kittehBeetle = new ItemKittehBeetle();
 		clayHunter = new ItemClayHunter();
-		clayHunter.setContainerItem(clayHunter);
+		//clayHunter.setContainerItem(clayHunter);
 		chitinPlate = new ItemChitinPlate();
 		unlockBug = new ItemUnlockBug();
 		crootIronPickaxe = new ItemCrootIronPickaxe();
 		crootWoodHoe = new ItemCrootHoe(7*7-1);
 		fruitSpider = new ItemFruitSpider();
+		voidCrawler = new ItemVoidCrawler();
+		
+		hiveBrain = new ItemHiveBrain();
+		tokenFeeder = new ItemFeeder();
+		tokenBridge = new ItemBridge();
+		tokenBank = new ItemBank();
+		tokenEater = new ItemEater();
+		tokenFilter = new ItemFilter();
+		tokenTransformer = new ItemTransformer();
 		
 		GameRegistry.registerItem(attuner, ItemAttuner.NAME, BioCristalsMod.MODID);
 		GameRegistry.registerItem(bioReagent, ItemBioReagent.NAME, BioCristalsMod.MODID);
@@ -127,6 +153,7 @@ public class ItemRegistry {
 		GameRegistry.registerItem(crootIronPickaxe, ItemCrootIronPickaxe.NAME, BioCristalsMod.MODID);
 		GameRegistry.registerItem(crootWoodHoe, ItemCrootHoe.NAME, BioCristalsMod.MODID);
 		GameRegistry.registerItem(fruitSpider, ItemFruitSpider.NAME, BioCristalsMod.MODID);
+		GameRegistry.registerItem(voidCrawler, ItemVoidCrawler.NAME, BioCristalsMod.MODID);
 		
 		GameRegistry.registerItem(chitinHelmet = new ItemChitinArmor("chitinHelmet", chitin_armor, "chitin_layer", 0), "chitinHelmet"); //0 for helmet
 		GameRegistry.registerItem(chitinChestplate = new ItemChitinArmor("chitinChestplate", chitin_armor, "chitin_layer", 1), "chitinChestplate"); // 1 for chestplate

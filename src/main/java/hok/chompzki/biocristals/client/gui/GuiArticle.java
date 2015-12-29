@@ -8,7 +8,7 @@ import hok.chompzki.biocristals.api.ArticleContent;
 import hok.chompzki.biocristals.api.IArticle;
 import hok.chompzki.biocristals.api.ArticleContent.EnumContent;
 import hok.chompzki.biocristals.research.data.DataHelper;
-import hok.chompzki.biocristals.research.data.PlayerStorage;
+import hok.chompzki.biocristals.research.data.PlayerResearchStorage;
 import hok.chompzki.biocristals.research.data.Research;
 import hok.chompzki.biocristals.research.data.network.PlayerStorageFaveMessage;
 
@@ -109,7 +109,7 @@ public class GuiArticle extends GuiScreen {
         
         this.buttonCheckboxPage.visible = DataHelper.belongsTo(reader, stack); //TODO: this.article.getContent().getFaved() != null && this.content.getFaved() != null && 
         if(this.buttonCheckboxPage.visible){
-        	this.buttonCheckboxPage.selected = PlayerStorage.instance(true).get(owner).hasFaved(article.getCode());
+        	this.buttonCheckboxPage.selected = PlayerResearchStorage.instance(true).get(owner).hasFaved(article.getCode());
         }
     }
 	
@@ -208,7 +208,7 @@ public class GuiArticle extends GuiScreen {
     {
 		this.buttonCheckboxPage.visible = reader.getGameProfile().getId().equals(owner); //TODO: this.content.getFaved() != null && 
         if(this.buttonCheckboxPage.visible){
-        	this.buttonCheckboxPage.selected = PlayerStorage.instance(true).get(owner).hasFaved(article.getCode());
+        	this.buttonCheckboxPage.selected = PlayerResearchStorage.instance(true).get(owner).hasFaved(article.getCode());
         }
         
 		int k = last.calculateLeft() + last.getScreenWidth();

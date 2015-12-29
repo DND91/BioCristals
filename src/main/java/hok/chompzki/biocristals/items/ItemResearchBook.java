@@ -10,7 +10,7 @@ import hok.chompzki.biocristals.registrys.ReserchRegistry;
 import hok.chompzki.biocristals.research.data.DataHelper;
 import hok.chompzki.biocristals.research.data.DataPlayer;
 import hok.chompzki.biocristals.research.data.PlayerResearch;
-import hok.chompzki.biocristals.research.data.PlayerStorage;
+import hok.chompzki.biocristals.research.data.PlayerResearchStorage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;

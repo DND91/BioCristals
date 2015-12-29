@@ -2,6 +2,7 @@ package hok.chompzki.biocristals.containers;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import hok.chompzki.biocristals.client.slots.SlotEater;
 import hok.chompzki.biocristals.client.slots.SlotInsect;
 import hok.chompzki.biocristals.client.slots.SlotResult;
 import hok.chompzki.biocristals.research.data.EnumUnlock;
@@ -27,8 +28,8 @@ public class ContainerNest extends Container {
 			TileNest tileEntity) {
 		hollow = tileEntity;
 		
-		this.addSlotToContainer(new SlotInsect(hollow, 0, 8, 15));
-		this.addSlotToContainer(new SlotResult(inventory.player, hollow, 1, 62, 15));
+		this.addSlotToContainer(new SlotEater(hollow, 0, 8, 15));
+		this.addSlotToContainer(new SlotInsect(hollow, 1, 26, 15));
 		this.addSlotToContainer(new SlotResult(inventory.player, hollow, 2, 80, 15));
 		this.addSlotToContainer(new SlotResult(inventory.player, hollow, 3, 98, 15));
 		
@@ -248,7 +249,7 @@ public class ContainerNest extends Container {
 	
     public ItemStack slotClick(int slot, int button, int c, EntityPlayer player)
     {
-    	if(!player.worldObj.isRemote && slot == 0  && (button == 0 || button == 1) && player.inventory.getItemStack() != null && this.getSlot(0).isItemValid(player.inventory.getItemStack())){
+    	if(!player.worldObj.isRemote && slot == 1  && (button == 0 || button == 1) && player.inventory.getItemStack() != null && this.getSlot(1).isItemValid(player.inventory.getItemStack())){
     		ItemStack held = player.inventory.getItemStack();
     		ResearchUnlocks.unlock(player, EnumUnlock.PUT_NEST, held);
     	}

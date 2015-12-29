@@ -7,7 +7,7 @@ import hok.chompzki.biocristals.BioHelper;
 import hok.chompzki.biocristals.recipes.RecipePurifier;
 import hok.chompzki.biocristals.registrys.RecipeRegistry;
 import hok.chompzki.biocristals.research.data.PlayerResearch;
-import hok.chompzki.biocristals.research.data.PlayerStorage;
+import hok.chompzki.biocristals.research.data.PlayerResearchStorage;
 import hok.chompzki.biocristals.research.logic.ResearchLogicNetwork;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.DataWatcher;
@@ -269,7 +269,7 @@ public class TileReagentPurifier extends TileCroot implements IInventory{
 			if(!recipe.code.equals("NONE")){
 				if(this.owner == null)
 					return;
-				PlayerResearch research = PlayerStorage.instance(false).get(owner);
+				PlayerResearch research = PlayerResearchStorage.instance(false).get(owner);
 				if(!ResearchLogicNetwork.instance().available(research, recipe.code())){
 					recipe = null;
 					return;
@@ -307,7 +307,7 @@ public class TileReagentPurifier extends TileCroot implements IInventory{
 				recipe = null;
 				return;
 			}
-			PlayerResearch research = PlayerStorage.instance(false).get(owner);
+			PlayerResearch research = PlayerResearchStorage.instance(false).get(owner);
 			ResearchLogicNetwork.instance().compelte(research, recipe.code());
 			recipe = null;
 		} else{

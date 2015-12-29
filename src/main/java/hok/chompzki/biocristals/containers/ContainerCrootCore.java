@@ -2,7 +2,7 @@ package hok.chompzki.biocristals.containers;
 
 import hok.chompzki.biocristals.recipes.CrootManager;
 import hok.chompzki.biocristals.research.data.PlayerResearch;
-import hok.chompzki.biocristals.research.data.PlayerStorage;
+import hok.chompzki.biocristals.research.data.PlayerResearchStorage;
 import hok.chompzki.biocristals.tile_enteties.TileCrootCore;
 import hok.chompzki.biocristals.tile_enteties.TileCrootHollow;
 import net.minecraft.entity.player.EntityPlayer;
@@ -66,7 +66,7 @@ public class ContainerCrootCore extends Container {
 	
 	public void onCraftMatrixChanged(IInventory p_75130_1_)
     {
-		PlayerResearch research = PlayerStorage.instance(isClient).get(player.getGameProfile().getId());
+		PlayerResearch research = PlayerResearchStorage.instance(isClient).get(player.getGameProfile().getId());
 		ItemStack stack = CrootManager.instance().findMatchingRecipe(this.core.getWorldObj(), research, this.core);
 		if(stack == null)
 			stack = CraftingManager.getInstance().findMatchingRecipe(fakeInv, this.core.getWorldObj());

@@ -7,6 +7,7 @@ import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
 import hok.chompzki.biocristals.croot.power.TreeStorage;
+import hok.chompzki.biocristals.hunger.PlayerHungerStorage;
 import hok.chompzki.biocristals.recipes.RecipeTransformer;
 import hok.chompzki.biocristals.registrys.BioEntityRegistry;
 import hok.chompzki.biocristals.registrys.BiomeRegistry;
@@ -20,7 +21,7 @@ import hok.chompzki.biocristals.registrys.RecipeRegistry;
 import hok.chompzki.biocristals.registrys.ReserchRegistry;
 import hok.chompzki.biocristals.registrys.TileEntityRegistry;
 import hok.chompzki.biocristals.registrys.VillagerBank;
-import hok.chompzki.biocristals.research.data.PlayerStorage;
+import hok.chompzki.biocristals.research.data.PlayerResearchStorage;
 import hok.chompzki.biocristals.research.events.GameEvents;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -42,7 +43,8 @@ public class CommonProxy {
 		MinecraftForge.EVENT_BUS.register(new StorageHandler());
 		FMLCommonHandler.instance().bus().register(new GameEvents());
 		MinecraftForge.EVENT_BUS.register(new GameEvents());
-		FMLCommonHandler.instance().bus().register(PlayerStorage.instance(false));
+		FMLCommonHandler.instance().bus().register(PlayerResearchStorage.instance(false));
+		FMLCommonHandler.instance().bus().register(PlayerHungerStorage.instance(false));
 		
 		ItemRegistry items = new ItemRegistry();
 		items.registerItems();
@@ -100,7 +102,8 @@ public class CommonProxy {
 
 
 	public void initSaveHandling() {
-		PlayerStorage.instance(true);
+		PlayerResearchStorage.instance(false);
+		PlayerHungerStorage.instance(false);
 	}
 	
 	

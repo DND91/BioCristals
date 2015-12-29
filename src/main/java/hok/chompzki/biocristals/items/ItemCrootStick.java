@@ -64,6 +64,11 @@ public class ItemCrootStick extends Item {
 			world.spawnEntityInWorld(entityitem);
 			return true;
 		}else if(!world.isRemote && block == Blocks.melon_block && random.nextInt(ConfigRegistry.kittehChance) % ConfigRegistry.kittehChance == 0){ //Add chance kitteh beetle
+			
+			if(!inv.hasItem(ItemRegistry.crootBeetle))
+				return false;
+			inv.consumeInventoryItem(ItemRegistry.crootBeetle);
+			
 			float f = this.random.nextFloat() * 0.8F + 0.1F;
             float f1 = this.random.nextFloat() * 0.8F + 0.1F;
             float f2 = this.random.nextFloat() * 0.8F + 0.1F;
@@ -76,6 +81,11 @@ public class ItemCrootStick extends Item {
 			world.spawnEntityInWorld(entityitem);
 			return true;
 		}else if(!world.isRemote && block.getMaterial() == Material.vine && random.nextInt(ConfigRegistry.wsbChance) % ConfigRegistry.wsbChance == 0){ //Add chance WSB
+			
+			if(!inv.hasItem(ItemRegistry.crootBeetle))
+				return false;
+			inv.consumeInventoryItem(ItemRegistry.crootBeetle);
+			
 			float f = this.random.nextFloat() * 0.8F + 0.1F;
             float f1 = this.random.nextFloat() * 0.8F + 0.1F;
             float f2 = this.random.nextFloat() * 0.8F + 0.1F;

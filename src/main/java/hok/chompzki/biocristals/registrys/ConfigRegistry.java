@@ -46,11 +46,6 @@ public class ConfigRegistry {
 	
 	public static int hivebagCookTime = 500;
 	public static int hungerDistance = 500;
-	public static int hungerDuration = 600;
-	public static int hungerAmplifier = 1;
-	
-	public static int hungerDurationTP = 100;
-	public static int hungerAmplifierTP = 0;
 	
 	public static int crootBeetleChance = 10;
 	
@@ -59,7 +54,7 @@ public class ConfigRegistry {
 	
 	public static int wsbDamage = 2;
 	
-	public static String configNumber = "0.682";
+	public static String configNumber = "0.686";
 	public static Configuration config;
 	
 	public static List<RecipeData> recipeData = new ArrayList<RecipeData>();
@@ -111,14 +106,9 @@ public class ConfigRegistry {
     	
     	hivebagCookTime = config.getInt("Cook Time", "Hivebag", 500, 100, Integer.MAX_VALUE, "");
     	hungerDistance = config.getInt("Hunger Distance", "Hivebag", 500, 1, Integer.MAX_VALUE, "");
-    	hungerDuration = config.getInt("Hunger Duration", "Hivebag", 600, 1, 20000, "");
-    	hungerAmplifier = config.getInt("Hunger Amplifier", "Hivebag", 1, 0, 10, "");
     	
     	crootBeetleChance = config.getInt("Croot Beetle", "Chance In Grass", 10, 1, 100, "");
     	nomadsSackSize = config.getInt("Max Size", "Nomads Sack", 2500, 1, Integer.MAX_VALUE, "");
-    	
-    	hungerDurationTP = config.getInt("Hunger Duration", "Croot Claw", 100, 1, 20000, "");
-    	hungerAmplifierTP = config.getInt("Hunger Amplifier", "Croot Claw", 0, 0, 10, "");
     	
     	krakenChance = config.getInt("Kraken Bug (Food)", "Chance for bug (1 in X chance)", 6, 1, 20000, "");
     	wsbChance  = config.getInt("Water Shielded Bug (Range Attack)", "Chance for bug (1 in X chance)", 6, 1, 20000, "");
@@ -370,7 +360,7 @@ public class ConfigRegistry {
 		chitinPlate.put("input", new Property("input", new String[] { "BioCristals:itemClayHunter treeSapling", 
 																	   "minecraft:clay_ball BioCristals:itemKraKenBug"},
 																	   Property.Type.STRING));
-		chitinPlate.put("output", new Property("output", "BioCristals:itemChitinPlate", Property.Type.STRING));
+		chitinPlate.put("output", new Property("output", "8xBioCristals:itemChitinPlate", Property.Type.STRING));
 		
 		ConfigCategory chitinHelmet = new ConfigCategory("Chitin Helmet", recipes);
 		chitinHelmet.put("code", new Property("code", ReserchRegistry.chitinHelmet, Property.Type.STRING));
@@ -424,6 +414,37 @@ public class ConfigRegistry {
 															   			  "minecraft:iron_pickaxe:0 minecraft:string"},
 																	   Property.Type.STRING));
 		ironCrootBeetle.put("output", new Property("output", "BioCristals:itemCrootIronPickaxe", Property.Type.STRING));
+		
+		ConfigCategory woodenCrootHoe = new ConfigCategory("Wooden Croot Hoe", recipes);
+		woodenCrootHoe.put("code", new Property("code", ReserchRegistry.crootHoe, Property.Type.STRING));
+		woodenCrootHoe.put("input", new Property("input", new String[] { "minecraft:string BioCristals:itemCrootStick", 
+															   			  "minecraft:wooden_hoe:0 minecraft:string"},
+																	   Property.Type.STRING));
+		woodenCrootHoe.put("output", new Property("output", "BioCristals:itemCrootHoe", Property.Type.STRING));
+		
+		ConfigCategory hungerPortal = new ConfigCategory("Hunger Portal", recipes);
+		hungerPortal.put("code", new Property("code", ReserchRegistry.hungerPortal, Property.Type.STRING));
+		hungerPortal.put("input", new Property("input", new String[] { "BioCristals:itemCrootBeetle BioCristals:itemCrootBeetle BioCristals:itemCrootBeetle", 
+				   													   "BioCristals:itemCrootBeetle BioCristals:itemKraKenBug BioCristals:itemCrootBeetle",
+				   													   "BioCristals:itemCrootBeetle BioCristals:itemCrootBeetle BioCristals:itemCrootBeetle"},
+																	   Property.Type.STRING));
+		hungerPortal.put("output", new Property("output", "BioCristals:itemHiveBrain", Property.Type.STRING));
+		
+		ConfigCategory sacrificePit = new ConfigCategory("Sacrifice Pit", recipes);
+		sacrificePit.put("code", new Property("code", ReserchRegistry.sacrificePit, Property.Type.STRING));
+		sacrificePit.put("input", new Property("input", new String[] { "logWood BioCristals:itemChitinPlate logWood", 
+															   "plankWood BioCristals:itemHiveBrain plankWood",
+															   "minecraft:stone_slab:3 minecraft:stone_slab:3 minecraft:stone_slab:3"},
+																	   Property.Type.STRING));
+		sacrificePit.put("output", new Property("output", "BioCristals:blockSacrificePit", Property.Type.STRING));
+		
+		ConfigCategory tokenAssembler = new ConfigCategory("Token Assembler", recipes);
+		tokenAssembler.put("code", new Property("code", ReserchRegistry.tokenAssembler, Property.Type.STRING));
+		tokenAssembler.put("input", new Property("input", new String[] { "logWood BioCristals:itemChitinPlate logWood", 
+															   "plankWood BioCristals:itemClayHunter plankWood",
+															   "minecraft:stone_slab:3 minecraft:stone_slab:3 minecraft:stone_slab:3"},
+																	   Property.Type.STRING));
+		tokenAssembler.put("output", new Property("output", "BioCristals:blockTokenAssembler", Property.Type.STRING));
     }
 	
 	//https://github.com/Piron1991/Builder_tools/blob/master/src/main/java/com/piron1991/builder_tools/handler/ConfigHandler.java#L82

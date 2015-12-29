@@ -4,5 +4,6 @@ public enum EnumUnlock {
 	CRAFT,
 	PICKUP,
 	PUT_NEST, 
-	BREEDING
+	BREEDING,
+	TOKEN_ASSEMBLE
 }

@@ -1,5 +1,7 @@
 package hok.chompzki.biocristals.research.data;
 
+import hok.chompzki.biocristals.hunger.PlayerHungerStorage;
+
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +36,13 @@ public class DataHelper {
 		return data.hasKey("OWNER");
 	}
 	
+	public static boolean hasNetwork(ItemStack stack){
+		if(!stack.hasTagCompound())
+			return false;
+		NBTTagCompound data = stack.getTagCompound();
+		return data.hasKey("NETWORK");
+	}
+	
 	public static boolean belongsTo(EntityPlayer player, ItemStack stack){
 		if(stack == null)
 			return false;
@@ -62,10 +71,23 @@ public class DataHelper {
 		return getOwnerName(id, world);
 	}
 	
-	public static String getOwnerName(UUID id, World world){
-		if(PlayerStorage.instance(true).get(id) == null)
+	public static String getNetworkName(ItemStack stack, World world){
+		String id = stack.getTagCompound().getString("NETWORK");
+		return getNetworkName(id, world);
+	}
+	
+	public static String getNetworkName(String id, World world){
+		if(PlayerHungerStorage.instance(true).get(id) == null)
 			return "UNKOWN";
-		return PlayerStorage.instance(true).get(id).getUsername();
+		else
+			return PlayerHungerStorage.instance(true).get(id).getName();
+	}
+	
+	public static String getOwnerName(UUID id, World world){
+		if(PlayerResearchStorage.instance(true).get(id) == null)
+			return "UNKOWN";
+		else
+			return PlayerResearchStorage.instance(true).get(id).getUsername();
 	}
 	
 	public static MovingObjectPosition rayTrace(EntityLivingBase entity, double p_70614_1_, float p_70614_3_){
@@ -210,5 +232,11 @@ public class DataHelper {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		
+	}
+
+	public static String getNetwork(ItemStack stack) {
+		return stack.getTagCompound().getString("NETWORK");
 	}
 }

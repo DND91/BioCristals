@@ -3,17 +3,24 @@ package hok.chompzki.biocristals.tile_enteties;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import hok.chompzki.biocristals.api.IInsect;
+import hok.chompzki.biocristals.api.IToken;
+import hok.chompzki.biocristals.hunger.logic.EnumResource;
+import hok.chompzki.biocristals.hunger.logic.EnumToken;
+import hok.chompzki.biocristals.hunger.logic.ResourcePackage;
+import hok.chompzki.biocristals.items.insects.ItemInsect;
+import hok.chompzki.biocristals.items.token.ItemToken;
 import hok.chompzki.biocristals.recipes.BreedingRecipe;
 import hok.chompzki.biocristals.registrys.BreedingRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 
-public class TileCrootBreeder extends TileEntity  implements IInventory{
+public class TileCrootBreeder extends TileEntity  implements ISidedInventory{
 	
 	private static final int[] slotsTop = new int[] {0,1};
     private static final int[] slotsBottom = new int[] {4};
@@ -24,7 +31,7 @@ public class TileCrootBreeder extends TileEntity  implements IInventory{
 	private String customName = null;
 	public int startTime = -1;
 	public int lifeTime = -1;
-	public int currentFood = 0;
+	public double currentFood = 0;
 	
 	public TileCrootBreeder(){
 		super();
@@ -157,7 +164,7 @@ public class TileCrootBreeder extends TileEntity  implements IInventory{
         
         lifeTime = p_145839_1_.getInteger("LIFE_TIME");
         startTime = p_145839_1_.getInteger("START_TIME");
-        currentFood = p_145839_1_.getInteger("FOOD_LEVEL");
+        currentFood = p_145839_1_.getDouble("FOOD_LEVEL");
         if(p_145839_1_.hasKey("WORK_ITEM")){
         	NBTTagCompound item = p_145839_1_.getCompoundTag("WORK_ITEM");
         	workStack = ItemStack.loadItemStackFromNBT(item);
@@ -191,7 +198,7 @@ public class TileCrootBreeder extends TileEntity  implements IInventory{
         
         p_145841_1_.setInteger("LIFE_TIME", lifeTime);
         p_145841_1_.setInteger("START_TIME", startTime);
-        p_145841_1_.setInteger("FOOD_LEVEL", currentFood);
+        p_145841_1_.setDouble("FOOD_LEVEL", currentFood);
         
         if(this.workStack != null){
         	NBTTagCompound item = new NBTTagCompound();
@@ -209,12 +216,14 @@ public class TileCrootBreeder extends TileEntity  implements IInventory{
         	if(0.0F < this.currentFood)
         		this.currentFood--;
         	else if(this.getStackInSlot(3) != null){
-        		ItemStack stack = this.getStackInSlot(3);
-        		ItemFood food = (ItemFood) this.getStackInSlot(3).getItem();
+        		ItemStack input = this.getStackInSlot(3);
+        		IInsect insect = ((IInsect)workStack.getItem());
+        		double drain = insect.getDrain(workStack);
+        		EnumResource foodType = insect.getFoodType(workStack);
         		
-        		currentFood += food.func_150905_g(stack) * food.func_150906_h(stack) * 20.0F;
-        		
-        		this.decrStackSize(3, 1);
+    			double[] v = ItemInsect.drain(this, false, input, drain, foodType);
+    			currentFood += v[foodType.toInt()];
+    			this.markDirty();
         	}
 			
 			if(0.0F < this.currentFood)
@@ -258,9 +267,8 @@ public class TileCrootBreeder extends TileEntity  implements IInventory{
     		startTime = lifeTime = rep.foodNeed;
     		
     		this.workStack = rep.result.copy();
+    		workStack.getItem().onCreated(workStack, worldObj, null);
     		
-    		this.decrStackSize(0, 1);
-    		this.decrStackSize(1, 1);
     		this.decrStackSize(2, 1);
     		
     		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
@@ -292,4 +300,21 @@ public class TileCrootBreeder extends TileEntity  implements IInventory{
         	return v;
     	
     }
+
+    @Override
+	public int[] getAccessibleSlotsFromSide(int p_94128_1_) {
+		return p_94128_1_ == 0 ? slotsBottom : (p_94128_1_ == 1 ? slotsTop : slotsSides);
+	}
+    
+	@Override
+	public boolean canInsertItem(int p_102007_1_, ItemStack p_102007_2_,
+			int p_102007_3_) {
+		return p_102007_1_ == 0 && this.isItemValidForSlot(p_102007_1_, p_102007_2_);
+	}
+
+	@Override
+	public boolean canExtractItem(int s, ItemStack p_102008_2_,
+			int p_102008_3_) {
+		return 1 <= s && s <= 3;
+	}
 }

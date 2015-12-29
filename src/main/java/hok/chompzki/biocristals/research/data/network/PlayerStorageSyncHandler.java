@@ -4,7 +4,7 @@ import hok.chompzki.biocristals.api.ArticleContent;
 import hok.chompzki.biocristals.client.gui.GuiCraftingHelper;
 import hok.chompzki.biocristals.client.gui.GuiInventoryOverlay;
 import hok.chompzki.biocristals.research.data.PlayerResearch;
-import hok.chompzki.biocristals.research.data.PlayerStorage;
+import hok.chompzki.biocristals.research.data.PlayerResearchStorage;
 import hok.chompzki.biocristals.research.data.Research;
 import hok.chompzki.biocristals.research.data.ResearchUnlocks;
 import hok.chompzki.biocristals.research.data.ReserchDataNetwork;
@@ -30,7 +30,7 @@ public class PlayerStorageSyncHandler implements
 		if(research == null){
 			return null;
 		}
-		PlayerStorage storage = PlayerStorage.instance(true);
+		PlayerResearchStorage storage = PlayerResearchStorage.instance(true);
 		
 		UUID id = research.getOwnerId();
 		PlayerResearch oldResearch = storage.get(id);

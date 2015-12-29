@@ -22,9 +22,11 @@ import hok.chompzki.biocristals.blocks.BlockPrimogenitus;
 import hok.chompzki.biocristals.blocks.BlockReagentPurifier;
 import hok.chompzki.biocristals.blocks.BlockReplacer;
 import hok.chompzki.biocristals.blocks.BlockReplacerOpen;
+import hok.chompzki.biocristals.blocks.BlockSacrificePit;
 import hok.chompzki.biocristals.blocks.BlockShell;
 import hok.chompzki.biocristals.blocks.BlockStructer;
 import hok.chompzki.biocristals.blocks.BlockSulphurTuft;
+import hok.chompzki.biocristals.blocks.BlockTokenAssembler;
 import hok.chompzki.biocristals.blocks.BlockWeakCristal;
 import hok.chompzki.biocristals.croot.building.CrootModule;
 import hok.chompzki.biocristals.fluids.FluidBlood;
@@ -80,6 +82,8 @@ public class BlockRegistry {
 	public static Block crootNest = null;
 	public static Block nest = null;
 	public static Block crootBreeder = null;
+	public static Block tokenAssembler = null;
+	public static Block sacrificePit = null;
 	
 	public void registerBlocks(){
 		
@@ -119,6 +123,8 @@ public class BlockRegistry {
 		crootBreeder = new BlockCrootBreeder();
 		replacer = new BlockReplacer();
 		replacerOpen = new BlockReplacerOpen();
+		tokenAssembler = new BlockTokenAssembler();
+		sacrificePit = new BlockSacrificePit();
 		
 		
 		CrootModule module = new CrootModule();
@@ -197,6 +203,8 @@ public class BlockRegistry {
 		GameRegistry.registerBlock(crootBreeder, BlockCrootBreeder.NAME);
 		GameRegistry.registerBlock(replacer, BlockReplacer.NAME);
 		GameRegistry.registerBlock(replacerOpen, BlockReplacerOpen.NAME);
+		GameRegistry.registerBlock(tokenAssembler, BlockTokenAssembler.NAME);
+		GameRegistry.registerBlock(sacrificePit, BlockSacrificePit.NAME);
 	}
 	
 	

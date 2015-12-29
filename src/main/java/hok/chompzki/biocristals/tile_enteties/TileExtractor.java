@@ -20,7 +20,7 @@ import hok.chompzki.biocristals.api.IGrowthCristal;
 import hok.chompzki.biocristals.recipes.RecipePurifier;
 import hok.chompzki.biocristals.registrys.RecipeRegistry;
 import hok.chompzki.biocristals.research.data.PlayerResearch;
-import hok.chompzki.biocristals.research.data.PlayerStorage;
+import hok.chompzki.biocristals.research.data.PlayerResearchStorage;
 
 public class TileExtractor extends TileCroot {
 	

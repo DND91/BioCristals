@@ -1,6 +1,7 @@
 package hok.chompzki.biocristals.containers;
 
 import hok.chompzki.biocristals.client.slots.SlotBreedingResult;
+import hok.chompzki.biocristals.client.slots.SlotEater;
 import hok.chompzki.biocristals.client.slots.SlotFood;
 import hok.chompzki.biocristals.client.slots.SlotInsect;
 import hok.chompzki.biocristals.client.slots.SlotResult;
@@ -27,7 +28,7 @@ public class ContainerCrootBreeder extends Container {
 		this.addSlotToContainer(new SlotInsect(hollow, 0, 42, 25));
 		this.addSlotToContainer(new SlotInsect(hollow, 1, 117, 25));
 		this.addSlotToContainer(new Slot(hollow, 2, 71, 35));
-		this.addSlotToContainer(new SlotFood(hollow, 3, 90, 35));
+		this.addSlotToContainer(new SlotEater(hollow, 3, 90, 35));
 		this.addSlotToContainer(new SlotBreedingResult(inventory.player, hollow, 4, 80, 56));
 		
 		for (int j = 0; j < 3; ++j)

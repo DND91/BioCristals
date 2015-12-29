@@ -14,7 +14,9 @@ import hok.chompzki.biocristals.tile_enteties.TilePlatformer;
 import hok.chompzki.biocristals.tile_enteties.TilePrimogenitus;
 import hok.chompzki.biocristals.tile_enteties.TileReagentPurifier;
 import hok.chompzki.biocristals.tile_enteties.TileReplacer;
+import hok.chompzki.biocristals.tile_enteties.TileSacrificePit;
 import hok.chompzki.biocristals.tile_enteties.TileStructer;
+import hok.chompzki.biocristals.tile_enteties.TileTokenAssembler;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class TileEntityRegistry {
@@ -36,6 +38,8 @@ public class TileEntityRegistry {
 		GameRegistry.registerTileEntity(TileNest.class, "biocristals_tile_nest");
 		GameRegistry.registerTileEntity(TileCrootBreeder.class, "biocristals_tile_croot_breeder");
 		GameRegistry.registerTileEntity(TileReplacer.class, "biocristals_tile_replacer");
+		GameRegistry.registerTileEntity(TileTokenAssembler.class, "biocristals_tile_token_assembler");
+		GameRegistry.registerTileEntity(TileSacrificePit.class, "biocristals_tile_sacrifice_pit");
 	}
 	
 }

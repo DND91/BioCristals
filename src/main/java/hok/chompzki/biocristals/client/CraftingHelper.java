@@ -10,7 +10,7 @@ import hok.chompzki.biocristals.client.gui.GuiCraftingHelper;
 import hok.chompzki.biocristals.client.gui.GuiCrossButtonPage;
 import hok.chompzki.biocristals.recipes.RecipeContainer;
 import hok.chompzki.biocristals.research.data.DataHelper;
-import hok.chompzki.biocristals.research.data.PlayerStorage;
+import hok.chompzki.biocristals.research.data.PlayerResearchStorage;
 import hok.chompzki.biocristals.research.data.network.MessageInsertCrafting;
 import hok.chompzki.biocristals.research.data.network.PlayerStorageFaveMessage;
 import hok.chompzki.biocristals.research.data.network.PlayerStorageSyncMessage;

@@ -32,8 +32,8 @@ public class GuiNest extends GuiContainer {
     {
         String s = this.hollowInventory.hasCustomInventoryName() ? this.hollowInventory.getInventoryName() : I18n.format(this.hollowInventory.getInventoryName(), new Object[0]);
         this.fontRendererObj.drawString(s, this.xSize / 2 - this.fontRendererObj.getStringWidth(s) / 2, 4, 0xFFFFFF);
-        if(this.nest.workStack != null){
-        	ItemStack stack = this.nest.workStack;
+        if(this.nest.getStackInSlot(1) != null){
+        	ItemStack stack = this.nest.getStackInSlot(1);
         	IInsect insect = (IInsect)(stack.getItem());
         	this.fontRendererObj.drawSplitString(insect.getActionText(nest, stack), 9, 37, 103, 0xFFFFFF);
         }
@@ -51,7 +51,7 @@ public class GuiNest extends GuiContainer {
         this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
         if(0 < this.nest.startTime){
 	        int i1 = 35 - this.nest.getCookProgressScaled(35);
-	        this.drawTexturedModalRect(k + 25, l + 15, 0, 166, i1 + 1, 16);
+	        this.drawTexturedModalRect(k + 43, l + 15, 0, 166, i1 + 1, 16);
         }
     }
 

@@ -1,10 +1,13 @@
 package hok.chompzki.biocristals.research.events;
 
+import java.text.DecimalFormat;
 import java.util.UUID;
 
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 import hok.chompzki.biocristals.BioHelper;
 import hok.chompzki.biocristals.recipes.CrootRecipeContainer;
@@ -15,7 +18,7 @@ import hok.chompzki.biocristals.registrys.RecipeRegistry;
 import hok.chompzki.biocristals.registrys.ReserchRegistry;
 import hok.chompzki.biocristals.research.data.EnumUnlock;
 import hok.chompzki.biocristals.research.data.PlayerResearch;
-import hok.chompzki.biocristals.research.data.PlayerStorage;
+import hok.chompzki.biocristals.research.data.PlayerResearchStorage;
 import hok.chompzki.biocristals.research.data.ResearchUnlocks;
 import hok.chompzki.biocristals.research.data.ReserchDataNetwork;
 import hok.chompzki.biocristals.research.logic.ResearchLogicNetwork;
@@ -75,6 +78,20 @@ public class GameEvents {
 		}
 		
 		
+	}
+	
+	@SubscribeEvent
+	public void itemTooltip(ItemTooltipEvent event)
+	{
+		ItemStack stack = event.itemStack;
+		if(!(stack.getItem() instanceof ItemFood))
+			return;
+		ItemFood input = (ItemFood)stack.getItem();
+		DecimalFormat df = new DecimalFormat("0.00"); 
+		double value = input.func_150905_g(stack) * input.func_150906_h(stack) * 2.0D * 0.125D;
+		event.toolTip.add("Raw Food(Normal): " + df.format(value));
+		value = input.func_150905_g(stack) * input.func_150906_h(stack) * 2.0D;
+		event.toolTip.add("Raw Food(Hunger): " + df.format(value));
 	}
 	
 }

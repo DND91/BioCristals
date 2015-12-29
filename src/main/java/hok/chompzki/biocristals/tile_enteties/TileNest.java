@@ -2,10 +2,18 @@ package hok.chompzki.biocristals.tile_enteties;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import hok.chompzki.biocristals.BioHelper;
 import hok.chompzki.biocristals.api.IInsect;
+import hok.chompzki.biocristals.api.IToken;
+import hok.chompzki.biocristals.hunger.logic.EnumResource;
+import hok.chompzki.biocristals.hunger.logic.EnumToken;
+import hok.chompzki.biocristals.hunger.logic.ResourcePackage;
+import hok.chompzki.biocristals.items.insects.ItemInsect;
+import hok.chompzki.biocristals.items.token.ItemToken;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -17,10 +25,9 @@ import net.minecraft.tileentity.TileEntity;
 public class TileNest extends TileEntity  implements ISidedInventory{
 	
 	private static final int[] slotsTop = new int[] {0};
-    private static final int[] slotsBottom = new int[] {1, 2, 3};
+    private static final int[] slotsBottom = new int[] {2, 3};
     private static final int[] slotsSides = new int[] {};
 	
-    public ItemStack workStack = null;
 	private ItemStack[] contents = new ItemStack[10];
 	private String customName = null;
 	public int startTime = -1;
@@ -35,8 +42,13 @@ public class TileNest extends TileEntity  implements ISidedInventory{
 		if(worldObj.isRemote)
 			return;
 		
-		if(this.workStack != null && 0 < lifeTime){
-        	ItemStack stack = this.workStack;
+		if(this.getStackInSlot(1) == null){
+			startTime = lifeTime = 0;
+			return;
+		}
+		
+		if(this.getStackInSlot(1) != null && 0 < lifeTime){
+        	ItemStack stack = this.getStackInSlot(1);
         	IInsect insect = (IInsect)(stack.getItem());
         	
         	if(!insect.canUpdate(this, stack)){
@@ -50,49 +62,53 @@ public class TileNest extends TileEntity  implements ISidedInventory{
         	
         	if(lifeTime == 0){
         		ItemStack[] result = insect.getResult(stack);
-        		for(ItemStack res : result)
-        		for(int i = 1; i < 4 && (i-1) < result.length; i++){
-        			if(this.isItemValidForSlot(i, res)){
-        				if(this.getStackInSlot(i) == null){
-        					this.setInventorySlotContents(i, res);
-        					continue;
-        				}else{
-        					ItemStack s = this.getStackInSlot(i);
-        					s.stackSize = Math.min(s.stackSize + res.stackSize, s.getMaxStackSize());
-        					res.stackSize = s.stackSize + res.stackSize - s.getMaxStackSize();
-        					this.setInventorySlotContents(i, s);
-        					if(res.stackSize == 0)
-        						continue;
-        				}
-        			}
-        		}
         		
-        		startTime = lifeTime = 1;
-        		workStack = null;
+        		for(ItemStack res : result)
+        			BioHelper.addItemStackToInventory(res, this, 2, 4);
+        		
+        		startTime = lifeTime = 0;
         		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         		this.markDirty();
         	}
-        }else if (this.getStackInSlot(0) != null) {
-        	
-        	ItemStack stack = this.getStackInSlot(0);
+        }else if (this.getStackInSlot(0) != null && this.getStackInSlot(1) != null) {
+        	ItemStack stack = this.getStackInSlot(1);
         	IInsect insect = (IInsect)(stack.getItem());
         	ItemStack[] result = insect.getResult(stack);
-    		for(int i = 1; i < 4 && result.length < (i-1); i++){
-    			if(!this.isItemValidForSlot(i, result[i-1])){
-    				return;
-    			}
-    		}
-    		startTime = lifeTime = insect.lifeSpan(stack);
+
+        	for(ItemStack res : result){
+        		if(!this.canInsertResultStack(res))
+        			return;
+        	}
+        	double foodStorage = insect.getFood(stack);
     		
-    		this.workStack = stack.copy();
-    		this.workStack.stackSize = 1;
-    		this.decrStackSize(0, 1);
+    		ItemStack input = this.getStackInSlot(0);
+    		
+    		EnumResource foodType = insect.getFoodType(stack);
+    		
+			double[] v = ItemInsect.drain(this, false, input, insect.getDrain(stack), foodType);
+			foodStorage += v[foodType.toInt()];
+			
+			if(insect.getCost(stack) <= foodStorage){
+				foodStorage -= insect.getCost(stack);
+				startTime = lifeTime = insect.lifeSpan(stack);
+			}
+			
+			insect.setFood(stack, foodStorage);
     		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     		this.markDirty();
         }
 		
 	}
 	
+	private boolean canInsertResultStack(ItemStack res) {
+		for(int i = 2; i < 4; i++){
+			if(this.isItemValidForSlot(i, res)){
+				return true;
+			}
+		}
+		return false;
+	}
+
 	@Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
     {
@@ -238,12 +254,6 @@ public class TileNest extends TileEntity  implements ISidedInventory{
         
         lifeTime = nbt.getInteger("LIFE_TIME");
         startTime = nbt.getInteger("START_TIME");
-        if(nbt.hasKey("WORK_ITEM")){
-        	NBTTagCompound item = nbt.getCompoundTag("WORK_ITEM");
-        	workStack = ItemStack.loadItemStackFromNBT(item);
-        }else{
-        	workStack = null;
-        }
     }
 
     public void writeToNBT(NBTTagCompound nbt)
@@ -272,11 +282,6 @@ public class TileNest extends TileEntity  implements ISidedInventory{
         nbt.setInteger("LIFE_TIME", lifeTime);
         nbt.setInteger("START_TIME", startTime);
         
-        if(this.workStack != null){
-        	NBTTagCompound item = new NBTTagCompound();
-        	workStack.writeToNBT(item);
-        	nbt.setTag("WORK_ITEM", item);
-        }
     }
     
     @SideOnly(Side.CLIENT)

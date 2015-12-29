@@ -5,8 +5,9 @@ import hok.chompzki.biocristals.client.renderer.RendererGhost;
 import hok.chompzki.biocristals.client.renderer.SpeciallRenenderGhost;
 import hok.chompzki.biocristals.entity.EntityFruitSpider;
 import hok.chompzki.biocristals.entity.EntityWSB;
+import hok.chompzki.biocristals.hunger.PlayerHungerStorage;
 import hok.chompzki.biocristals.registrys.ItemRegistry;
-import hok.chompzki.biocristals.research.data.PlayerStorage;
+import hok.chompzki.biocristals.research.data.PlayerResearchStorage;
 import hok.chompzki.biocristals.tile_enteties.TileGhost;
 import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraftforge.common.MinecraftForge;
@@ -34,6 +35,7 @@ public class ClientProxy extends CommonProxy {
 	
 	@Override
 	public void initSaveHandling() {
-		PlayerStorage.instance(false);
+		PlayerResearchStorage.instance(true);
+		PlayerHungerStorage.instance(true);
 	}
 }

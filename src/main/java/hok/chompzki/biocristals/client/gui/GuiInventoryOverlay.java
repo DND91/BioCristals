@@ -1,5 +1,6 @@
 package hok.chompzki.biocristals.client.gui;
 
+import hok.chompzki.biocristals.BioCristalsMod;
 import hok.chompzki.biocristals.api.ICrootCore;
 import hok.chompzki.biocristals.api.IGrowthCristal;
 import hok.chompzki.biocristals.client.CraftingHelper;
@@ -39,17 +40,20 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.GuiScreenEvent.ActionPerformedEvent;
 import net.minecraftforge.client.event.GuiScreenEvent.DrawScreenEvent;
 import net.minecraftforge.client.event.GuiScreenEvent.InitGuiEvent;
 import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 
 public class GuiInventoryOverlay extends Gui{
 	
 	public static CraftingHelper craftingHelper = new CraftingHelper();
 	public static GuiUnlockedResearch unlockedGui = new GuiUnlockedResearch(Minecraft.getMinecraft());
+	private static final ResourceLocation overlay = new ResourceLocation(BioCristalsMod.MODID + ":textures/client/gui/Overlay.png");
 	
 	private static  int tick = 0;
 	private static  int tickMod = 20;
@@ -63,103 +67,116 @@ public class GuiInventoryOverlay extends Gui{
 	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
     public void onEventAction(ActionPerformedEvent.Post event)
     {
-        
+		
     }
 	
-	
-	
 	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
-    public void onEventDraw(RenderGameOverlayEvent.Pre event)
-    {
-			tick++;
+    public void onEventDraw(RenderGameOverlayEvent.Pre event){
+		tick++;
+		
+		Minecraft mc = Minecraft.getMinecraft();
+		EntityPlayer player = mc.thePlayer;
+		World world = mc.theWorld;
+		ItemStack currentStack = player.getCurrentEquippedItem();
+		
+		if(!player.capabilities.isCreativeMode && event.type == ElementType.FOOD){
+			mc.renderEngine.bindTexture(overlay);
+			double saturation = player.getFoodStats().getSaturationLevel();
 			
-			Minecraft mc = Minecraft.getMinecraft();
-			EntityPlayer player = mc.thePlayer;
-			World world = mc.theWorld;
-			ItemStack currentStack = player.getCurrentEquippedItem();
+			GL11.glEnable(GL11.GL_BLEND);
+	        int left = event.resolution.getScaledWidth() / 2 + 91;
+	        int top = event.resolution.getScaledHeight() - GuiIngameForge.right_height - 1;
 			
-			if(currentStack != null && currentStack.getItem() == ItemRegistry.attuner){
-				int bx = Minecraft.getMinecraft().objectMouseOver.blockX;
-				int by = Minecraft.getMinecraft().objectMouseOver.blockY;
-				int bz = Minecraft.getMinecraft().objectMouseOver.blockZ;
-				Entity entity  = Minecraft.getMinecraft().objectMouseOver.entityHit;
-				if(entity != null)
-					entity = world.getEntityByID(entity.getEntityId());
-				
-				if(entity != null && entity instanceof EntityLiving){
-					int x = 0;
-					int y = 20;
-					
-					EntityLiving target = (EntityLiving)entity;
-					if(target.isPotionActive(Potion.moveSlowdown)){
-						GL11.glPushMatrix();
-						ArrayList<String> list = new ArrayList<String>();
-						list.add(StatCollector.translateToLocal(target.getCommandSenderName()));
-						list.add("Is paralysed");
-						drawHoveringText(list, x, y, mc.fontRenderer);
-						GL11.glPopMatrix();
-					}
-					
-				}else if(!world.isAirBlock(bx, by, bz) && world.getTileEntity(bx, by, bz) != null && world.getTileEntity(bx, by, bz) instanceof TileCore){
-					int x = 0;
-					int y = 20;
-					Block block = world.getBlock(bx, by, bz);
-					TileCore tile = (TileCore) world.getTileEntity(bx, by, bz);
-					
-					
-					GL11.glPushMatrix();
-					ArrayList<String> list = new ArrayList<String>();
-					
-					list.add(StatCollector.translateToLocal(block.getLocalizedName()));
-					list.add("~ Power ~");
-					list.add("Total: " + tile.totalPower);
-					list.add("Usage: " + tile.powerUsage);
-					
-					drawHoveringText(list, x, y, mc.fontRenderer);
-					GL11.glPopMatrix();
-					
-				}else if(!world.isAirBlock(bx, by, bz) && world.getBlock(bx, by, bz) instanceof IGrowthCristal){
-					int x = 0;
-					int y = 20;
-					Block block = world.getBlock(bx, by, bz);
-					IGrowthCristal cristal = (IGrowthCristal)block;
-					GL11.glPushMatrix();
-					ArrayList<String> list = new ArrayList<String>();
-					
-					list.add(StatCollector.translateToLocal(block.getLocalizedName()));
-					list.add(cristal.isMature(world, player, currentStack, bx, by, bz) ? "Mature: True" : "Mature: False");
-					
-					drawHoveringText(list, x, y, mc.fontRenderer);
-					GL11.glPopMatrix();
-					
-				}else if(!world.isAirBlock(bx, by, bz) && world.getTileEntity(bx, by, bz) != null && world.getTileEntity(bx, by, bz) instanceof TileReagentPurifier){
-					int x = 0;
-					int y = 20;
-					Block block = world.getBlock(bx, by, bz);
-					TileReagentPurifier tile = (TileReagentPurifier) world.getTileEntity(bx, by, bz);
-					
-					GL11.glPushMatrix();
-					ArrayList<String> list = new ArrayList<String>();
-					
-					list.add((block.getLocalizedName()));
-					list.add(tile.getTimeLeft() <= 0 ? "Not working..." : "Working on " + tile.getWork());
-					if(0 < tile.getTimeLeft())
-						list.add("Time Left: " + tile.getTimeLeftGui());
-					
-					list.add(tile.getStored() == null ? "Not choking" : "Choking on " + tile.getStored().getDisplayName());
-					
-					drawHoveringText(list, x, y, mc.fontRenderer);
-					GL11.glPopMatrix();
-					
-				}
-			}
-			this.unlockedGui.updateResearchWindow();
+	        for(int i = 0; i < saturation; i++){
+	        	int x = left - i * 4 - 5;
+	        	this.drawTexturedModalRect(x, top, i % 2 == 0 ? 5 : 0, 0, 5, 11);
+	        }
+			
 			mc.renderEngine.bindTexture(Gui.icons);
-    }
-	
+		}
+		
+		if(currentStack != null && currentStack.getItem() == ItemRegistry.attuner){
+			int bx = Minecraft.getMinecraft().objectMouseOver.blockX;
+			int by = Minecraft.getMinecraft().objectMouseOver.blockY;
+			int bz = Minecraft.getMinecraft().objectMouseOver.blockZ;
+			Entity entity  = Minecraft.getMinecraft().objectMouseOver.entityHit;
+			if(entity != null)
+				entity = world.getEntityByID(entity.getEntityId());
+			
+			if(entity != null && entity instanceof EntityLiving){
+				int x = 0;
+				int y = 20;
+				
+				EntityLiving target = (EntityLiving)entity;
+				if(target.isPotionActive(Potion.moveSlowdown)){
+					GL11.glPushMatrix();
+					ArrayList<String> list = new ArrayList<String>();
+					list.add(StatCollector.translateToLocal(target.getCommandSenderName()));
+					list.add("Is paralysed");
+					drawHoveringText(list, x, y, mc.fontRenderer);
+					GL11.glPopMatrix();
+				}
+				
+			}else if(!world.isAirBlock(bx, by, bz) && world.getTileEntity(bx, by, bz) != null && world.getTileEntity(bx, by, bz) instanceof TileCore){
+				int x = 0;
+				int y = 20;
+				Block block = world.getBlock(bx, by, bz);
+				TileCore tile = (TileCore) world.getTileEntity(bx, by, bz);
+				
+				
+				GL11.glPushMatrix();
+				ArrayList<String> list = new ArrayList<String>();
+				
+				list.add(StatCollector.translateToLocal(block.getLocalizedName()));
+				list.add("~ Power ~");
+				list.add("Total: " + tile.totalPower);
+				list.add("Usage: " + tile.powerUsage);
+				
+				drawHoveringText(list, x, y, mc.fontRenderer);
+				GL11.glPopMatrix();
+				
+			}else if(!world.isAirBlock(bx, by, bz) && world.getBlock(bx, by, bz) instanceof IGrowthCristal){
+				int x = 0;
+				int y = 20;
+				Block block = world.getBlock(bx, by, bz);
+				IGrowthCristal cristal = (IGrowthCristal)block;
+				GL11.glPushMatrix();
+				ArrayList<String> list = new ArrayList<String>();
+				
+				list.add(StatCollector.translateToLocal(block.getLocalizedName()));
+				list.add(cristal.isMature(world, player, currentStack, bx, by, bz) ? "Mature: True" : "Mature: False");
+				
+				drawHoveringText(list, x, y, mc.fontRenderer);
+				GL11.glPopMatrix();
+				
+			}else if(!world.isAirBlock(bx, by, bz) && world.getTileEntity(bx, by, bz) != null && world.getTileEntity(bx, by, bz) instanceof TileReagentPurifier){
+				int x = 0;
+				int y = 20;
+				Block block = world.getBlock(bx, by, bz);
+				TileReagentPurifier tile = (TileReagentPurifier) world.getTileEntity(bx, by, bz);
+				
+				GL11.glPushMatrix();
+				ArrayList<String> list = new ArrayList<String>();
+				
+				list.add((block.getLocalizedName()));
+				list.add(tile.getTimeLeft() <= 0 ? "Not working..." : "Working on " + tile.getWork());
+				if(0 < tile.getTimeLeft())
+					list.add("Time Left: " + tile.getTimeLeftGui());
+				
+				list.add(tile.getStored() == null ? "Not choking" : "Choking on " + tile.getStored().getDisplayName());
+				
+				drawHoveringText(list, x, y, mc.fontRenderer);
+				GL11.glPopMatrix();
+				
+			}
+		}
+		this.unlockedGui.updateResearchWindow();
+		mc.renderEngine.bindTexture(Gui.icons);
+	}
+
 	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
-    public void onEventDraw(DrawScreenEvent.Post event)
-    {
+	public void onEventDraw(DrawScreenEvent.Post event)
+	{
 		Minecraft mc = Minecraft.getMinecraft();
 		EntityPlayer player = mc.thePlayer;
 		World world = mc.theWorld;
@@ -175,8 +192,8 @@ public class GuiInventoryOverlay extends Gui{
 		}
 		
 		this.unlockedGui.updateResearchWindow();
-    }
-	
+	}
+
 	
 	
 	protected void drawHoveringText(List p_146283_1_, int p_146283_2_, int p_146283_3_, FontRenderer font)

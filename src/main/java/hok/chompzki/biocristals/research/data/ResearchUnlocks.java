@@ -1,9 +1,11 @@
 package hok.chompzki.biocristals.research.data;
 
+import hok.chompzki.biocristals.client.gui.GuiBreeding;
 import hok.chompzki.biocristals.client.gui.GuiCraft;
 import hok.chompzki.biocristals.client.gui.GuiCraftingHelper;
 import hok.chompzki.biocristals.client.gui.GuiCrootStickHelper;
 import hok.chompzki.biocristals.client.gui.GuiInsectHelper;
+import hok.chompzki.biocristals.client.gui.GuiToken;
 import hok.chompzki.biocristals.registrys.ReserchRegistry;
 import hok.chompzki.biocristals.research.logic.ResearchLogicNetwork;
 
@@ -63,6 +65,22 @@ public class ResearchUnlocks {
 		addUnlockData(data);
 	}
 	
+	public static void addBreedingUnlock(ItemStack stack, String code){
+		UnlockData data = new UnlockData();
+		data.code = code;
+		data.stack = stack;
+		data.type = EnumUnlock.BREEDING;
+		addUnlockData(data);
+	}
+	
+	public static void addTokenAssemblyUnlock(ItemStack stack, String code){
+		UnlockData data = new UnlockData();
+		data.code = code;
+		data.stack = stack;
+		data.type = EnumUnlock.TOKEN_ASSEMBLE;
+		addUnlockData(data);
+	}
+	
 	public static void unlock(EntityPlayer player, EnumUnlock type, ItemStack stack){
 		if(!unlocks.containsKey(type))
 			unlocks.put(type, new ArrayList<UnlockData>());
@@ -71,7 +89,7 @@ public class ResearchUnlocks {
 			ItemStack result = data.stack;
 			if(stack.getItem() == result.getItem() && (result.getItemDamage() == OreDictionary.WILDCARD_VALUE || stack.getItemDamage() == result.getItemDamage())){
 				UUID id = player.getGameProfile().getId();
-				PlayerResearch research = PlayerStorage.instance(false).get(id);
+				PlayerResearch research = PlayerResearchStorage.instance(false).get(id);
 				ResearchLogicNetwork.instance().compelte(research, data.code);
 				return;
 			}
@@ -92,6 +110,10 @@ public class ResearchUnlocks {
 			return new GuiCrootStickHelper(Minecraft.getMinecraft(), data.code, pickup.tool, pickup.insect, pickup.places);
 		case PUT_NEST:
 			return new GuiInsectHelper(Minecraft.getMinecraft(), data.code, data.stack);
+		case BREEDING:
+			return new GuiBreeding(Minecraft.getMinecraft(), data.stack, data.code);
+		case TOKEN_ASSEMBLE:
+			return new GuiToken(Minecraft.getMinecraft(), data.stack, data.code);
 		default:
 			break;
 		}
