@@ -15,6 +15,7 @@ import hok.chompzki.biocristals.registrys.BlockRegistry;
 import hok.chompzki.biocristals.registrys.BreedingRegistry;
 import hok.chompzki.biocristals.registrys.ConfigRegistry;
 import hok.chompzki.biocristals.registrys.CristalRegistry;
+import hok.chompzki.biocristals.registrys.DrawbackRegistry;
 import hok.chompzki.biocristals.registrys.GuiHandler;
 import hok.chompzki.biocristals.registrys.ItemRegistry;
 import hok.chompzki.biocristals.registrys.RecipeRegistry;
@@ -91,6 +92,9 @@ public class CommonProxy {
     	
     	BreedingRegistry breeding = new BreedingRegistry();
     	breeding.init(event);
+    	
+    	DrawbackRegistry drawbacks = new DrawbackRegistry();
+    	drawbacks.init(event);
 	}
 
     

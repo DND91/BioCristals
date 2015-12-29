@@ -8,10 +8,12 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import hok.chompzki.biocristals.api.IInsect;
 import hok.chompzki.biocristals.api.IToken;
+import hok.chompzki.biocristals.hunger.drawbacks.Drawback;
 import hok.chompzki.biocristals.hunger.logic.EnumResource;
 import hok.chompzki.biocristals.hunger.logic.EnumToken;
 import hok.chompzki.biocristals.hunger.logic.ResourcePackage;
 import hok.chompzki.biocristals.items.token.ItemToken;
+import hok.chompzki.biocristals.registrys.DrawbackRegistry;
 import hok.chompzki.biocristals.research.data.DataHelper;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
@@ -24,6 +26,8 @@ import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.server.S06PacketUpdateHealth;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.FoodStats;
@@ -178,17 +182,21 @@ public abstract class ItemInsect extends Item implements IInsect {
 	public void drawbacks(EntityPlayer player, ItemStack stack, ResourcePackage pack){
 		if(pack.total <= 0.0D)
 			return;
-		
-		
-		
+		drawbacks(pack, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
 	}
 	
 	public static void drawbacks(TileEntity tile, ItemStack eater, ResourcePackage pack){
 		if(pack.total <= 0.0D)
 			return;
-		
-		
-		
+		drawbacks(pack, tile.getWorldObj(), tile.xCoord, tile.yCoord, tile.zCoord);
+	}
+	
+	public static void drawbacks(ResourcePackage pack, World world, int x, int y, int z){
+		if(pack.total <= 0.0D)
+			return;
+		for(Drawback drawback : DrawbackRegistry.list)
+			if(drawback.canAct(pack, world, x, y, z))
+				drawback.act(pack, world, x, y, z);
 	}
 	
 	public static double[] drain(TileEntity tile, boolean pit, ItemStack input, double drain, EnumResource... res){
@@ -235,7 +243,7 @@ public abstract class ItemInsect extends Item implements IInsect {
 	@SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advancedTooltip) {
 		if(20.0D <= cost || 20.0D <= drain){
-			list.add("§4DO NOT USE WITHOUT NETWORK");
+			list.add(((char)167) + "4DO NOT USE WITHOUT NETWORK");
 		}
 		list.add("Food: " + I18n.format("container."+foodType, new Object[0]));
 		list.add("Use Cost: " + cost);
