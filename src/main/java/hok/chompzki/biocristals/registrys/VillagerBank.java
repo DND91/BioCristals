@@ -7,11 +7,14 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.VillagerRegistry;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class VillagerBank {
 	
 	public static final int basicResercherId = 2015;
-	public static final ResourceLocation basicResercherSkin = new ResourceLocation(BioCristalsMod.MODID + ":textures/client/mobs/villagers/basicResercher.png");
+	
+	@SideOnly(Side.CLIENT)
+	public static ResourceLocation basicResercherSkin;
 	
 	
 	public void init(FMLInitializationEvent event) {
@@ -20,6 +23,7 @@ public class VillagerBank {
 		VillagerRegistry.instance().registerVillageTradeHandler(basicResercherId, new BasicResercher());
 		
 		if(event.getSide() == Side.CLIENT){
+			basicResercherSkin = new ResourceLocation(BioCristalsMod.MODID + ":textures/client/mobs/villagers/basicResercher.png");
 			VillagerRegistry.instance().registerVillagerSkin(basicResercherId, basicResercherSkin);
 		}
 	}

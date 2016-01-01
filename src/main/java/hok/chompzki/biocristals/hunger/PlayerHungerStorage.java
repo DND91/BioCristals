@@ -96,7 +96,7 @@ public class PlayerHungerStorage implements IDataFile{
 
 	@Override
 	public Serializable getObject() {
-		System.out.println(name + " -- SAVING PLAYER DATA -- ");
+		//System.out.println(name + " -- SAVING PLAYER DATA -- ");
 		ArrayList<PlayerHungerNetworkData> list = new ArrayList<PlayerHungerNetworkData>();
 		for(Entry<String, PlayerHungerNetwork> entry : networks.entrySet()){
 			list.add(entry.getValue().toData());
@@ -106,7 +106,7 @@ public class PlayerHungerStorage implements IDataFile{
 	
 	@Override
 	public void setObject(Serializable obj) {
-		System.out.println(name + " -- LOADING PLAYER DATA -- ");
+		//System.out.println(name + " -- LOADING PLAYER DATA -- ");
 		ArrayList<PlayerHungerNetworkData> list = (ArrayList<PlayerHungerNetworkData>)obj;
 		networks.clear();
 		
@@ -196,5 +196,9 @@ public class PlayerHungerStorage implements IDataFile{
 	public ResourcePackage drain(String id, String channel, Double amount) {
 		PlayerHungerNetwork network = this.get(id);
 		return network.drain(channel, amount);
+	}
+	
+	public boolean containsKey(String id){
+		return this.networks.containsKey(id);
 	}
 }

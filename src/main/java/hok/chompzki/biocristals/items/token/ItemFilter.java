@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import hok.chompzki.biocristals.BioCristalsMod;
+import hok.chompzki.biocristals.NBTHelper;
 import hok.chompzki.biocristals.api.IToken;
 import hok.chompzki.biocristals.hunger.logic.EnumResource;
 import hok.chompzki.biocristals.hunger.logic.EnumToken;
@@ -26,14 +27,11 @@ public class ItemFilter extends ItemToken implements IToken {
 
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
-		String channel = itemstack.hasTagCompound() ? this.getChannel(itemstack) : "NONE";
+		String channel = this.getChannel(itemstack);
 		list.add("Channel: " + I18n.format("container."+channel, new Object[0]));
 		
-		if(!itemstack.hasTagCompound())
-			return;
-		
 		list.add("- Filter -");
-		int[] arr = itemstack.stackTagCompound.getIntArray("FILTER");
+		int[] arr = NBTHelper.get(itemstack, "FILTER", new int[EnumResource.values().length]);
 		int j = 0;
 		for(int i : arr){
 			if(i == 1)
@@ -44,11 +42,8 @@ public class ItemFilter extends ItemToken implements IToken {
 	
 	@Override
 	public void onCreated(ItemStack stack, World world, EntityPlayer player) {
-		if(stack.hasTagCompound())
-			return;
-		stack.stackTagCompound = new NBTTagCompound();
-		stack.stackTagCompound.setString("CHANNEL", "NONE");
-		stack.stackTagCompound.setIntArray("FILTER", new int[EnumResource.values().length]);
+		NBTHelper.init(stack, "CHANNEL", "NONE");
+		NBTHelper.init(stack, "FILTER", new int[EnumResource.values().length]);
 	}
 	
 	@Override
@@ -77,7 +72,7 @@ public class ItemFilter extends ItemToken implements IToken {
 	
 	@Override
 	public void feed(ItemStack stack, ResourcePackage amount) {
-		int[] arr = stack.stackTagCompound.getIntArray("FILTER");
+		int[] arr = NBTHelper.get(stack, "FILTER", new int[EnumResource.values().length]);
 		int j = 0;
 		for(int i : arr){
 			if(i == 1)
@@ -88,7 +83,7 @@ public class ItemFilter extends ItemToken implements IToken {
 	
 	@Override
 	public void drain(ItemStack stack, ResourcePackage p, double amount) {
-		int[] arr = stack.stackTagCompound.getIntArray("FILTER");
+		int[] arr = NBTHelper.get(stack, "FILTER", new int[EnumResource.values().length]);
 		int j = 0;
 		for(int i : arr){
 			if(i == 1)

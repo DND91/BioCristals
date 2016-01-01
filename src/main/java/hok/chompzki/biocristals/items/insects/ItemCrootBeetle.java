@@ -56,11 +56,6 @@ public class ItemCrootBeetle extends ItemInsect{
 	}
 	
 	@Override
-	public ItemStack[] getResult(ItemStack stack) {
-		return new ItemStack[] {new ItemStack(Items.string)};
-	}
-
-	@Override
 	public void tileUpdate(TileEntity entity, ItemStack stack) {
 		int y = entity.yCoord;
 		World world = entity.getWorldObj();
@@ -104,11 +99,6 @@ public class ItemCrootBeetle extends ItemInsect{
 			}
 		}
 	}
-
-	@Override
-	public int lifeSpan(ItemStack stack) {
-		return 1000;
-	}
 	
 	private boolean hasPlanteable(TileEntity entity){
 		int y = entity.yCoord;
@@ -132,6 +122,6 @@ public class ItemCrootBeetle extends ItemInsect{
 
 	@Override
 	public int workSpan(ItemStack stack) {
-		return 10;
+		return 64 / stack.stackSize;
 	}
 }

@@ -25,7 +25,7 @@ public class RecipeContainer{
 		this.input = in;
 		length = ((String)in[0]).length(); //TODO: ERROR IN LENGTH CALCULATION LEADS TO CRASH!
 		for(int i = length; i < in.length-1; i += 2){
-			System.out.println("RESOURCE: " + in[i] + "; " + in[i+1]);
+			//System.out.println("RESOURCE: " + in[i] + "; " + in[i+1]);
 			if(in[i+1] instanceof ItemStack){
 				ArrayList<ItemStack> list = new ArrayList<ItemStack>();
 				list.add((ItemStack)in[i+1]);
@@ -55,8 +55,8 @@ public class RecipeContainer{
 				list.add(new ItemStack((Block)in[i+1]));
 				idToItem.put((Character)in[i], list);
 				idToObject.put((Character)in[i], in[i+1]);
-			} else
-				System.out.println("MISS! " + in[i] + ": " + in[i+1]);
+			} //else
+				//System.out.println("MISS! " + in[i] + ": " + in[i+1]);
 			
 			
 		}

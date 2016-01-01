@@ -18,7 +18,7 @@ public class TileReplacer extends TileEntity {
 	
 	protected Block block = Blocks.stone;
 	protected int meta = 0;
-	protected int trigger = 500;
+	public int trigger = 500;
 	
 	public TileReplacer() {
 		

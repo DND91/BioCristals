@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import hok.chompzki.biocristals.BioCristalsMod;
+import hok.chompzki.biocristals.NBTHelper;
 import hok.chompzki.biocristals.api.IToken;
 import hok.chompzki.biocristals.hunger.logic.EnumResource;
 import hok.chompzki.biocristals.hunger.logic.EnumToken;
@@ -26,16 +27,13 @@ public class ItemBridge extends ItemToken implements IToken {
 
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
-		String channel = itemstack.hasTagCompound() ? this.getChannel(itemstack) : "NONE";
+		String channel = this.getChannel(itemstack);
 		list.add("Channel: " + I18n.format("container."+channel, new Object[0]));
 	}
 	
 	@Override
 	public void onCreated(ItemStack stack, World world, EntityPlayer player) {
-		if(stack.hasTagCompound())
-			return;
-		stack.stackTagCompound = new NBTTagCompound();
-		stack.stackTagCompound.setString("CHANNEL", "NONE");
+		NBTHelper.init(stack, "CHANNEL", "NONE");
 	}
 	
 	@Override
@@ -46,10 +44,6 @@ public class ItemBridge extends ItemToken implements IToken {
 	
 	@Override
 	public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer player){
-		if(!DataHelper.hasOwner(itemstack)){
-			DataHelper.belongsTo(player, itemstack);
-			return itemstack;
-		}
 		if(world.isRemote)
 			return itemstack;
 		

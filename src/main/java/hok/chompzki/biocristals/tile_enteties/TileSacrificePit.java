@@ -136,9 +136,13 @@ public class TileSacrificePit extends TileEntity  implements ISidedInventory{
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 		if(slot == 0)
-			return (stack.getItem() instanceof ItemFood) || ((stack.getItem() instanceof ItemToken) && ((IToken)stack.getItem()).getType(stack) == EnumToken.EATER);
+			return (stack.getItem() instanceof ItemFood) || 
+					((stack.getItem() instanceof ItemToken) && 
+					((IToken)stack.getItem()).getType(stack) == EnumToken.EATER ||
+					((IToken)stack.getItem()).getType(stack) == EnumToken.BANK);
 		if(slot == 1)
-			return (((stack.getItem() instanceof ItemToken) && ((IToken)stack.getItem()).getType(stack) == EnumToken.FEEDER));
+			return (((stack.getItem() instanceof ItemToken) && ((IToken)stack.getItem()).getType(stack) == EnumToken.FEEDER) ||
+					((IToken)stack.getItem()).getType(stack) == EnumToken.BANK);
 		return false;
 	}
 	
@@ -228,6 +232,8 @@ public class TileSacrificePit extends TileEntity  implements ISidedInventory{
 			ItemStack input = this.getStackInSlot(0);
 			
 			double[] v = ItemInsect.drain(this, true, input, 20.0D, EnumResource.RAW_FOOD);
+			if(input.stackSize <= 0)
+				this.setInventorySlotContents(0, null);
 			rawFood += v[EnumResource.RAW_FOOD.toInt()];
 			
 			time = 200;
@@ -251,14 +257,24 @@ public class TileSacrificePit extends TileEntity  implements ISidedInventory{
 	}
     
 	@Override
-	public boolean canInsertItem(int p_102007_1_, ItemStack p_102007_2_,
-			int p_102007_3_) {
-		return this.isItemValidForSlot(p_102007_1_, p_102007_2_);
+	public boolean canInsertItem(int s, ItemStack stack,
+			int side) {
+		int[] slots = getAccessibleSlotsFromSide(side);
+		for(int s2 : slots)
+			if(s == s2)
+				return this.isItemValidForSlot(s, stack);
+		return false;
 	}
-
+	
 	@Override
-	public boolean canExtractItem(int s, ItemStack p_102008_2_,
-			int p_102008_3_) {
-		return true;
+	public boolean canExtractItem(int s, ItemStack stack,
+			int side) {
+		int[] slots = getAccessibleSlotsFromSide(side);
+		
+		for(int s2 : slots)
+			if(s == s2)
+				return true;
+		
+		return false;
 	}
 }

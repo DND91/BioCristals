@@ -23,7 +23,7 @@ public class TokenFilter extends ArticleContent {
 		String s = "";
 		switch(p){
 		case 0:
-			s += "The Filter type is used to stop resources from passing a certain point. "
+			s += "The filter type is used to stop resources from passing a certain point. "
 				+"Resources stopped will be sent back to their original source. If used smart "
 				+"this can lead to some intressting uses. ";
 			break;

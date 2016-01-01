@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import hok.chompzki.biocristals.BioCristalsMod;
+import hok.chompzki.biocristals.NBTHelper;
 import hok.chompzki.biocristals.api.IToken;
 import hok.chompzki.biocristals.hunger.logic.EnumResource;
 import hok.chompzki.biocristals.hunger.logic.EnumToken;
@@ -28,11 +29,8 @@ public class ItemBank extends ItemToken implements IToken {
 	
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
-		String channel = itemstack.hasTagCompound() ? this.getChannel(itemstack) : "NONE";
+		String channel = this.getChannel(itemstack);
 		list.add("Channel: " + I18n.format("container."+channel, new Object[0]));
-		
-		if(!itemstack.hasTagCompound())
-			return;
 		
 		DecimalFormat df = new DecimalFormat("0.00"); 
 		for(EnumResource res : EnumResource.values()){
@@ -42,16 +40,13 @@ public class ItemBank extends ItemToken implements IToken {
 			list.add(I18n.format("container."+res, new Object[0]) + ": " + df.format(value));
 		}
 		
-		list.add("Max Size: " + itemstack.stackTagCompound.getDouble("SIZE"));
+		list.add("Max Size: " + NBTHelper.get(itemstack, "SIZE", 0.0D));
 	}
 	
 	@Override
 	public void onCreated(ItemStack stack, World world, EntityPlayer player) {
-		if(stack.hasTagCompound())
-			return;
-		stack.stackTagCompound = new NBTTagCompound();
-		stack.stackTagCompound.setString("CHANNEL", "NONE");
-		stack.stackTagCompound.setDouble("SIZE", 100.0D);
+		NBTHelper.init(stack, "CHANNEL", "NONE");
+		NBTHelper.init(stack, "SIZE", 100.0D);
 	}
 	
 	@Override
@@ -62,12 +57,6 @@ public class ItemBank extends ItemToken implements IToken {
 	
 	@Override
 	public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer player){
-		if(itemstack.stackTagCompound == null){
-			onCreated(itemstack, world, player);
-			return itemstack;
-		}
-		
-		
 		if(world.isRemote)
 			return itemstack;
 		
@@ -86,8 +75,8 @@ public class ItemBank extends ItemToken implements IToken {
 	
 	@Override
 	public void feed(ItemStack stack, ResourcePackage amount) {
+		double size = NBTHelper.get(stack, "SIZE", 100.0D);
 		NBTTagCompound nbt = stack.getTagCompound();
-		double size = stack.stackTagCompound.getDouble("SIZE");
 		
 		for(EnumResource res : EnumResource.values()){
 			if(!nbt.hasKey(res.name()))

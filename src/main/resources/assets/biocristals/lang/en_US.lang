@@ -105,6 +105,14 @@ research.nestKittehBeetle.title=Nesting Kitteh Beetle
 research.nestKittehBeetle.text=I bring home friends!
 research.nestFruitSpider.title=Nesting Fruit Spider
 research.nestFruitSpider.text=One... two... three... four...
+
+research.nestHivebag.title=Nesting Hivebag
+research.nestHivebag.text=For all your smelting needs...
+research.nestVoidCrawler.title=Nesting Void Crawler
+research.nestVoidCrawler.text=Easy trapping
+research.nestClayHunter.title=Nesting Clay Hunter
+research.nestClayHunter.text=For all your clay needs...
+
 research.crootIronPickaxe.title=Croot Iron Pickaxe
 research.crootIronPickaxe.text=Not even stone can protect you
 
@@ -229,6 +237,8 @@ research.extractor.text=Author: Carla & Fleur
 
 research.tutorial.title=Tutorial
 research.tutorial.text=Navigation and so on...
+research.tutorialHunger.title=Tutorial: The Hunger
+research.tutorialHunger.text=Read this before asking the author anything...
 
 Research.get=RESEARCH UNLOCKED
 

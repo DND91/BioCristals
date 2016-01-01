@@ -23,7 +23,7 @@ public class TokenBridge extends ArticleContent {
 		String s = "";
 		switch(p){
 		case 0:
-			s += "The Token Bridge connects tokens inside The Hunger. It is not a requirement "
+			s += "The bridge token connects tokens inside The Hunger. It is not a requirement "
 				+"for a network to function. It's good to have when you are building complex "
 				+"networks.";
 			break;

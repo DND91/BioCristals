@@ -91,7 +91,7 @@ public class GameEvents {
 		double value = input.func_150905_g(stack) * input.func_150906_h(stack) * 2.0D * 0.125D;
 		event.toolTip.add("Raw Food(Normal): " + df.format(value));
 		value = input.func_150905_g(stack) * input.func_150906_h(stack) * 2.0D;
-		event.toolTip.add("Raw Food(Hunger): " + df.format(value));
+		event.toolTip.add("Raw Food(" + BlockRegistry.sacrificePit.getLocalizedName() + "): " + df.format(value));
 	}
 	
 }

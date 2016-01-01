@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import hok.chompzki.biocristals.BioCristalsMod;
+import hok.chompzki.biocristals.NBTHelper;
 import hok.chompzki.biocristals.api.IToken;
 import hok.chompzki.biocristals.hunger.logic.EnumResource;
 import hok.chompzki.biocristals.hunger.logic.EnumToken;
@@ -43,15 +44,15 @@ public class ItemTransformer extends ItemToken implements IToken {
 	
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
-		String channel = itemstack.hasTagCompound() ? this.getChannel(itemstack) : "NONE";
+		String channel = this.getChannel(itemstack);
 		list.add("Channel: " + I18n.format("container."+channel, new Object[0]));
 		
 		if(!itemstack.hasTagCompound())
 			return;
 		
-		int product = itemstack.stackTagCompound.getInteger("PRODUCT");
-		double effectivness = itemstack.stackTagCompound.getDouble("EFFECTIVNESS");
-		double balance = itemstack.stackTagCompound.getDouble("BALANCE");
+		int product = NBTHelper.get(itemstack, "PRODUCT", 0);
+		double effectivness = NBTHelper.get(itemstack, "EFFECTIVNESS", 0.25D);
+		double balance = NBTHelper.get(itemstack, "BALANCE", 0.5D);
 		
 		list.add("Raw: " + I18n.format("container."+getRaw(EnumResource.values()[product]), new Object[0]));
 		list.add("Effectivness: " + (effectivness * 100) + "%");
@@ -64,13 +65,10 @@ public class ItemTransformer extends ItemToken implements IToken {
 	
 	@Override
 	public void onCreated(ItemStack stack, World world, EntityPlayer player) {
-		if(stack.hasTagCompound())
-			return;
-		stack.stackTagCompound = new NBTTagCompound();
-		stack.stackTagCompound.setString("CHANNEL", "NONE");
-		stack.stackTagCompound.setInteger("PRODUCT", 0);
-		stack.stackTagCompound.setDouble("EFFECTIVNESS", 0.05D);
-		stack.stackTagCompound.setDouble("BALANCE", 0.05D);
+		NBTHelper.init(stack, "CHANNEL", "NONE");
+		NBTHelper.init(stack, "PRODUCT", 0);
+		NBTHelper.init(stack, "EFFECTIVNESS", 0.25D);
+		NBTHelper.init(stack, "BALANCE", 0.5D);
 	}
 	
 	@Override
@@ -103,9 +101,9 @@ public class ItemTransformer extends ItemToken implements IToken {
 	
 	@Override
 	public void feed(ItemStack stack, ResourcePackage amount) {
-		int p = stack.stackTagCompound.getInteger("PRODUCT");
-		double effectivness = stack.stackTagCompound.getDouble("EFFECTIVNESS");
-		double balance = stack.stackTagCompound.getDouble("BALANCE");
+		int p = NBTHelper.get(stack, "PRODUCT", 0);
+		double effectivness = NBTHelper.get(stack, "EFFECTIVNESS", 0.25D);
+		double balance = NBTHelper.get(stack, "BALANCE", 0.5D);
 		
 		EnumResource product = EnumResource.values()[p];
 		
@@ -143,9 +141,9 @@ public class ItemTransformer extends ItemToken implements IToken {
 	
 	@Override
 	public void drain(ItemStack stack, ResourcePackage pack, double amount) {
-		int p = stack.stackTagCompound.getInteger("PRODUCT");
-		double effectivness = stack.stackTagCompound.getDouble("EFFECTIVNESS");
-		double balance = stack.stackTagCompound.getDouble("BALANCE");
+		int p = NBTHelper.get(stack, "PRODUCT", 0);
+		double effectivness = NBTHelper.get(stack, "EFFECTIVNESS", 0.25D);
+		double balance = NBTHelper.get(stack, "BALANCE", 0.5D);
 		
 		EnumResource product = EnumResource.values()[p];
 		

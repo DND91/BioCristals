@@ -33,9 +33,8 @@ public class SacrificePit extends ArticleContent {
 			s += "The rules for Steve are qutie simple. Place block. In the top slot you can "
 				+"either place food, eaters or banks. In the bottom slot you can place feeders "
 				+" or banks. The block will transform food into raw food. Raw food will be darined "
-				+"from top to bottom slot. This is a slow process. Yes, you can move raw food "
-				+"between networks. On food items you can see the efficency between the hunger and "
-				+"normal insertion of food into blocks. ";
+				+"from top to bottom slot. This is a slow process. It can be used to move raw food"
+				+"between networks.";
 			break;
 		case 2: //Sodium acetate, Cara Rot (Carrot), Elle D'berry (Elderberry), Rabarberpaj... Carla & Fleur (Cauliflower)
 			s += KnowledgeDescriptions.getDisplayName(con) + "\n\n";

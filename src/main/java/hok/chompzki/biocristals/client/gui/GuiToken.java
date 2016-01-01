@@ -70,7 +70,10 @@ public class GuiToken extends GuiCraftingHelper {
 			break;
 		case TRANSFORMER:
 			s = KnowledgeDescriptions.transformOutput(stack) + "\n\n";
-			s += "The Transformer type is used to process one resource into another inside The Hunger. ";
+			s += "The Transformer type is used to process one resource into another inside The Hunger.\n";
+			s += "Tier 0: Raw Food, Waste.\n";
+			s += "Tier 1: Biomass.\n";
+			s += "Tier 2: Psy. Energy, Nuritment, Life Fluids.\n";
 			break;
 		}
         

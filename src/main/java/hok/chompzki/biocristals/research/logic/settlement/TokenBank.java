@@ -25,8 +25,8 @@ public class TokenBank extends ArticleContent {
 		String s = "";
 		switch(p){
 		case 0:
-			s += "The bank is used to store resources inside and outside the hunger. "
-				+"The most simple bank network consists of two feeders, one sacrifice pit "
+			s += "The bank is used to store resources inside and outside The Hunger. "
+				+"The most simple network consists of two feeders, one sacrifice pit "
 				+"and a bank for raw food. Processing food in the sacrifice pit to raw food "
 				+"that is stored inside the bank. ";
 			break;

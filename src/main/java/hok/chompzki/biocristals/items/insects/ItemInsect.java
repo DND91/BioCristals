@@ -6,6 +6,7 @@ import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import hok.chompzki.biocristals.NBTHelper;
 import hok.chompzki.biocristals.api.IInsect;
 import hok.chompzki.biocristals.api.IToken;
 import hok.chompzki.biocristals.hunger.drawbacks.Drawback;
@@ -35,15 +36,16 @@ import net.minecraft.world.World;
 
 public abstract class ItemInsect extends Item implements IInsect {
 	
-	protected final EnumResource foodType;
-	protected final double cost;
-	protected final double drain;
+	private final EnumResource foodType;
+	private final double cost;
+	private final double drain;
 	
 	public ItemInsect(EnumResource foodType, double cost, double drain){
 		this.foodType = foodType;
 		this.cost = cost;
-		this.drain = drain;
-		this.setMaxStackSize(1);
+		this.drain = Math.max(cost, drain);
+		this.setMaxStackSize(64);
+		this.setHasSubtypes(true);
 	}
 	
 	public static List<ItemStack> getTokens(IInventory inv, EnumToken token){
@@ -62,13 +64,13 @@ public abstract class ItemInsect extends Item implements IInsect {
 	public void feed(EntityPlayer player, ItemStack stack, boolean forceFeed){
 		if(player.capabilities.isCreativeMode)
 			return;
-		if(cost == 0.0D || drain == 0.0D)
+		if(getCost(stack) <= 0.0D)
 			return;
-		double food = stack.stackTagCompound.getDouble("FOOD");
+		double food = this.getFood(stack);
 		
-		if(cost <= food && !forceFeed){
-			food -= cost;
-			stack.stackTagCompound.setDouble("FOOD", food);
+		if(getCost(stack) <= food && !forceFeed){
+			food -= getCost(stack);
+			this.setFood(stack, food);
 			return;
 		}
 		
@@ -80,14 +82,14 @@ public abstract class ItemInsect extends Item implements IInsect {
 			for(ItemStack bank : banks){
 				IToken token = (IToken)bank.getItem();
 				ResourcePackage pack = new ResourcePackage();
-				token.drain(bank, pack, drain);
-				food += pack.get(foodType);
-				pack.put(foodType, 0.0D);
+				token.drain(bank, pack, getDrain(stack));
+				food += pack.get(getFoodType(stack));
+				pack.put(getFoodType(stack), 0.0D);
 				token.feed(bank, pack);
 				
-				if(cost <= food){
-					food -= cost;
-					stack.stackTagCompound.setDouble("FOOD", food);
+				if(getCost(stack) <= food){
+					food -= getCost(stack);
+					this.setFood(stack, food);
 					return;
 				}
 			}
@@ -100,14 +102,14 @@ public abstract class ItemInsect extends Item implements IInsect {
 			for(ItemStack eater : eaters){
 				IToken token = (IToken)eater.getItem();
 				ResourcePackage pack = new ResourcePackage();
-				token.drain(eater, pack, drain);
-				food += pack.get(foodType);
-				pack.put(foodType, 0.0D);
+				token.drain(eater, pack, getDrain(stack));
+				food += pack.get(getFoodType(stack));
+				pack.put(getFoodType(stack), 0.0D);
 				packs.add(pack);
-				stack.stackTagCompound.setDouble("FOOD", food);
-				if(cost <= food){
-					food -= cost;
-					stack.stackTagCompound.setDouble("FOOD", food);
+				this.setFood(stack, food);
+				if(getCost(stack) <= food){
+					food -= getCost(stack);
+					this.setFood(stack, food);
 					mainPack.combine(packs);
 					drawbacks(player, stack, mainPack);
 					return;
@@ -123,8 +125,8 @@ public abstract class ItemInsect extends Item implements IInsect {
 	
 	public void feedFromPlayer(EntityPlayer player, ItemStack stack){
 		FoodStats foodStats = player.getFoodStats();
-		double drainage = drain;
-		double food = stack.stackTagCompound.getDouble("FOOD");
+		double drainage = getDrain(stack);
+		double food = this.getFood(stack);
 		
 		double saturation = foodStats.getSaturationLevel();
 		
@@ -140,9 +142,9 @@ public abstract class ItemInsect extends Item implements IInsect {
 			foodStats.setFoodSaturationLevel((float) saturation);
 		}
 		if(drainage == 0.0D){
-			food -= cost;
+			food -= getCost(stack);
 			food = Math.max(0.0D, food);
-			stack.stackTagCompound.setDouble("FOOD", food); //S06PacketUpdateHealth
+			this.setFood(stack, food);
 			((EntityPlayerMP)player).playerNetServerHandler.sendPacket(new S06PacketUpdateHealth(player.getHealth(), player.getFoodStats().getFoodLevel(), player.getFoodStats().getSaturationLevel()));
 			return;
 		}
@@ -162,9 +164,9 @@ public abstract class ItemInsect extends Item implements IInsect {
 		}
 		
 		if(drainage == 0.0D){
-			food -= cost;
+			food -= getCost(stack);
 			food = Math.max(0.0D, food);
-			stack.stackTagCompound.setDouble("FOOD", food);
+			this.setFood(stack, food);
 			((EntityPlayerMP)player).playerNetServerHandler.sendPacket(new S06PacketUpdateHealth(player.getHealth(), player.getFoodStats().getFoodLevel(), player.getFoodStats().getSaturationLevel()));
 			return;
 		}
@@ -173,9 +175,9 @@ public abstract class ItemInsect extends Item implements IInsect {
 		float damage = (float) Math.min(health, drainage);
 		player.attackEntityFrom(DamageSource.starve, damage);
 		food += damage;
-		food -= cost;
+		food -= getCost(stack);
 		food = Math.max(0.0D, food);
-		stack.stackTagCompound.setDouble("FOOD", food);
+		this.setFood(stack, food);
 		((EntityPlayerMP)player).playerNetServerHandler.sendPacket(new S06PacketUpdateHealth(player.getHealth(), player.getFoodStats().getFoodLevel(), player.getFoodStats().getSaturationLevel()));
 	}
 	
@@ -234,21 +236,18 @@ public abstract class ItemInsect extends Item implements IInsect {
 	
 	@Override
 	public void onCreated(ItemStack stack, World world, EntityPlayer player) {
-		if(stack.hasTagCompound())
-			return;
-		stack.setTagCompound(new NBTTagCompound());
-		stack.stackTagCompound.setDouble("FOOD", 0.0D);
+		NBTHelper.init(stack, "FOOD", 0.0D);
 	}
 	
 	@SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advancedTooltip) {
-		if(20.0D <= cost || 20.0D <= drain){
+		if(20.0D <= getCost(stack) || 20.0D <= getDrain(stack)){
 			list.add(((char)167) + "4DO NOT USE WITHOUT NETWORK");
 		}
-		list.add("Food: " + I18n.format("container."+foodType, new Object[0]));
-		list.add("Use Cost: " + cost);
-		list.add("Drainage: " + drain);
-		double food = stack.stackTagCompound == null ? 0.0D : stack.stackTagCompound.getDouble("FOOD");
+		list.add("Food: " + I18n.format("container."+getFoodType(stack), new Object[0]));
+		list.add("Use Cost: " + getCost(stack));
+		list.add("Drainage: " + getDrain(stack));
+		double food = this.getFood(stack);
 		DecimalFormat df = new DecimalFormat("0.00"); 
 		list.add("Stored: " + df.format(food));
 	}
@@ -262,19 +261,18 @@ public abstract class ItemInsect extends Item implements IInsect {
     public void getSubItems(Item item, CreativeTabs tab, List list)
     {
 		ItemStack s = new ItemStack(item, 1, 0);
-		s.stackTagCompound = new NBTTagCompound();
 		this.onCreated(s, null, null);
 		list.add(s);
     }
 	
 	@Override
 	public double getCost(ItemStack stack) {
-		return cost;
+		return cost * stack.stackSize;
 	}
 
 	@Override
 	public double getDrain(ItemStack stack) {
-		return drain;
+		return drain * stack.stackSize;
 	}
 
 	@Override
@@ -283,10 +281,17 @@ public abstract class ItemInsect extends Item implements IInsect {
 	}
 	
 	public double getFood(ItemStack stack){
-		return stack.stackTagCompound.getDouble("FOOD");
+		NBTHelper.init(stack, "FOOD", 0.0D);
+		double food = stack.stackTagCompound.getDouble("FOOD");
+		food = Math.max(0.0D, food);
+		food = Math.min(food, this.getDrain(stack));
+		return food;
 	}
 	
 	public void setFood(ItemStack stack, double food){
+		NBTHelper.init(stack, "FOOD", 0.0D);
+		food = Math.max(0.0D, food);
+		food = Math.min(food, this.getDrain(stack));
 		stack.stackTagCompound.setDouble("FOOD", food);
 	}
 }

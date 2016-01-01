@@ -56,10 +56,10 @@ public class StorageHandler {
 				dataFile.clear();
 			}
 			
-			System.out.println(" --- LOAD --- ");
-			System.out.println("LEVEL NAME: " + levelName);
-			System.out.println("DIMENSION NAME: " + dimenstionName);
-			System.out.println("WORLD DIRECTORY NAME: " + event.world.getSaveHandler().getWorldDirectory().getPath());
+			//System.out.println(" --- LOAD --- ");
+			//System.out.println("LEVEL NAME: " + levelName);
+			//System.out.println("DIMENSION NAME: " + dimenstionName);
+			//System.out.println("WORLD DIRECTORY NAME: " + event.world.getSaveHandler().getWorldDirectory().getPath());
 			
 			currentWorld = levelName;
 			load(event.world);
@@ -97,10 +97,10 @@ public class StorageHandler {
 		
 		if(!levelName.equals("MpServer") && levelName.equals(currentWorld) && dimenstionName.equals("Overworld")){
 			this.controllSetup(event.world);
-			System.out.println(" --- SAVE --- ");
-			System.out.println("LEVEL NAME: " + levelName);
-			System.out.println("DIMENSION NAME: " + dimenstionName);
-			System.out.println("WORLD DIRECTORY NAME: " + event.world.getSaveHandler().getWorldDirectory().getPath());
+			//System.out.println(" --- SAVE --- ");
+			//System.out.println("LEVEL NAME: " + levelName);
+			//System.out.println("DIMENSION NAME: " + dimenstionName);
+			//System.out.println("WORLD DIRECTORY NAME: " + event.world.getSaveHandler().getWorldDirectory().getPath());
 			save(event.world);
 		}
 		
@@ -134,10 +134,10 @@ public class StorageHandler {
 		String dimenstionName = event.world.provider.getDimensionName();
 		
 		if(!levelName.equals("MpServer") && levelName.equals(currentWorld) && dimenstionName.equals("Overworld")){
-			System.out.println(" --- CLEAR --- ");
-			System.out.println("LEVEL NAME: " + levelName);
-			System.out.println("DIMENSION NAME: " + dimenstionName);
-			System.out.println("WORLD DIRECTORY NAME: " + event.world.getSaveHandler().getWorldDirectory().getPath());
+			//System.out.println(" --- CLEAR --- ");
+			//System.out.println("LEVEL NAME: " + levelName);
+			//System.out.println("DIMENSION NAME: " + dimenstionName);
+			//System.out.println("WORLD DIRECTORY NAME: " + event.world.getSaveHandler().getWorldDirectory().getPath());
 			save(event.world);
 			currentWorld = null;
 			for(IDataFile dataFile : dataFiles){

@@ -21,12 +21,13 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class TileNest extends TileEntity  implements ISidedInventory{
 	
-	private static final int[] slotsTop = new int[] {0};
+	private static final int[] slotsTop = new int[] {0,1};
     private static final int[] slotsBottom = new int[] {2, 3};
-    private static final int[] slotsSides = new int[] {};
+    private static final int[] slotsSides = new int[] {0,1};
 	
 	private ItemStack[] contents = new ItemStack[10];
 	private String customName = null;
@@ -57,43 +58,39 @@ public class TileNest extends TileEntity  implements ISidedInventory{
         	
         	lifeTime--;
         	
-        	if(lifeTime % insect.workSpan(stack) == 0)
-        		insect.tileUpdate(this, stack);
-        	
         	if(lifeTime == 0){
-        		ItemStack[] result = insect.getResult(stack);
-        		
-        		for(ItemStack res : result)
-        			BioHelper.addItemStackToInventory(res, this, 2, 4);
-        		
+        		insect.tileUpdate(this, stack);
         		startTime = lifeTime = 0;
         		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         		this.markDirty();
         	}
-        }else if (this.getStackInSlot(0) != null && this.getStackInSlot(1) != null) {
+        }else if (this.getStackInSlot(1) != null && lifeTime <= 0) {
         	ItemStack stack = this.getStackInSlot(1);
         	IInsect insect = (IInsect)(stack.getItem());
-        	ItemStack[] result = insect.getResult(stack);
-
-        	for(ItemStack res : result){
-        		if(!this.canInsertResultStack(res))
-        			return;
-        	}
         	double foodStorage = insect.getFood(stack);
-    		
-    		ItemStack input = this.getStackInSlot(0);
-    		
-    		EnumResource foodType = insect.getFoodType(stack);
-    		
-			double[] v = ItemInsect.drain(this, false, input, insect.getDrain(stack), foodType);
-			foodStorage += v[foodType.toInt()];
-			
-			if(insect.getCost(stack) <= foodStorage){
+        	
+        	if(insect.getCost(stack) <= foodStorage){
 				foodStorage -= insect.getCost(stack);
-				startTime = lifeTime = insect.lifeSpan(stack);
+				startTime = lifeTime = insect.workSpan(stack);
+				insect.setFood(stack, foodStorage);
+				return;
 			}
+    		
+        	if(this.getStackInSlot(0) != null){
+	    		ItemStack input = this.getStackInSlot(0);
+	    		EnumResource foodType = insect.getFoodType(stack);
+	    		
+	    		if((input.getItem() instanceof ItemFood && foodType != EnumResource.RAW_FOOD))
+	    			return;
+	    		
+				double[] v = ItemInsect.drain(this, false, input, insect.getDrain(stack), foodType);
+				if(input.stackSize <= 0)
+					this.setInventorySlotContents(0, null);
+				
+				foodStorage += v[foodType.toInt()];
+				insect.setFood(stack, foodStorage);
+        	}
 			
-			insect.setFood(stack, foodStorage);
     		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     		this.markDirty();
         }
@@ -102,7 +99,7 @@ public class TileNest extends TileEntity  implements ISidedInventory{
 	
 	private boolean canInsertResultStack(ItemStack res) {
 		for(int i = 2; i < 4; i++){
-			if(this.isItemValidForSlot(i, res)){
+			if(this.contents[i] == null || OreDictionary.itemMatches(res, contents[i], true)){
 				return true;
 			}
 		}
@@ -154,7 +151,7 @@ public class TileNest extends TileEntity  implements ISidedInventory{
             {
                 itemstack = this.contents[p_70298_1_].splitStack(p_70298_2_);
 
-                if (this.contents[p_70298_1_].stackSize == 0)
+                if (this.contents[p_70298_1_].stackSize <= 0)
                 {
                     this.contents[p_70298_1_] = null;
                 }
@@ -227,7 +224,16 @@ public class TileNest extends TileEntity  implements ISidedInventory{
 
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
-		return this.contents[slot] == null ? true : this.contents[slot].isItemEqual(stack);
+		
+		if((slot == 0))
+			return ((stack.getItem() instanceof ItemFood) || (stack.getItem() instanceof ItemToken) && (
+					((IToken)stack.getItem()).getType(stack) == EnumToken.EATER
+					|| ((IToken)stack.getItem()).getType(stack) == EnumToken.BANK));
+		
+		if((slot == 1))
+			return stack.getItem() instanceof IInsect;
+		
+		return false;
 	}
 	
 	public void readFromNBT(NBTTagCompound nbt)
@@ -296,15 +302,25 @@ public class TileNest extends TileEntity  implements ISidedInventory{
 	}
 
 	@Override
-	public boolean canInsertItem(int p_102007_1_, ItemStack p_102007_2_,
-			int p_102007_3_) {
-		return p_102007_1_ == 0 && this.isItemValidForSlot(p_102007_1_, p_102007_2_);
+	public boolean canInsertItem(int s, ItemStack stack,
+			int side) {
+		int[] slots = getAccessibleSlotsFromSide(side);
+		for(int s2 : slots)
+			if(s == s2)
+				return this.isItemValidForSlot(s, stack);
+		return false;
 	}
-
+	
 	@Override
 	public boolean canExtractItem(int s, ItemStack p_102008_2_,
-			int p_102008_3_) {
-		return 1 <= s && s <= 3;
+			int side) {
+		int[] slots = getAccessibleSlotsFromSide(side);
+		
+		for(int s2 : slots)
+			if(s == s2)
+				return true;
+		
+		return false;
 	}
 	
 }

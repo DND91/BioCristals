@@ -59,7 +59,7 @@ public class CommonProxy {
 			}
 			
 			ItemStack stack = RecipeTransformer.dataToItemStack(ore, true).get(0);
-			System.out.println("ORE DICT: " + ore + ", " + (stack == null || stack.getItem() == null ? "NULL" : stack));
+			//System.out.println("ORE DICT: " + ore + ", " + (stack == null || stack.getItem() == null ? "NULL" : stack));
 			OreDictionary.registerOre(oreBiomaterial, stack);
 		}
 		

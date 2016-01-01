@@ -1,5 +1,6 @@
 package hok.chompzki.biocristals.registrys;
 
+import hok.chompzki.biocristals.BioCristalsMod;
 import hok.chompzki.biocristals.items.token.recipes.AttuneEaterRecipe;
 import hok.chompzki.biocristals.items.token.recipes.AttuneFeederRecipe;
 import hok.chompzki.biocristals.items.token.recipes.AttuneNetworkRecipe;
@@ -32,8 +33,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
+import net.minecraftforge.oredict.RecipeSorter.Category;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class RecipeRegistry {
@@ -89,19 +92,19 @@ public class RecipeRegistry {
 			Object[] inputs = RecipeTransformer.dataToObjects(data.input);
 			Object[] trueInput = RecipeTransformer.stacksToRecipe(inputs);
 			
-			System.out.println("---------------- INPUT -----------------");
-			System.out.println("INPUT: ");
+			//System.out.println("---------------- INPUT -----------------");
+			//System.out.println("INPUT: ");
 			for(Object in : data.input)
-				System.out.println(in.toString());
-			System.out.println("---");
-			for(int i = 0; i < inputs.length; i++)
-				System.out.println(inputs[i] == null ? "null" : inputs[i].toString());
-			System.out.println("---------------- OUTPUT -----------------");
-			System.out.println("OUTPUT: " + data.output + " -> " + (output == null ? "NULL" : output.toString()));
+				//System.out.println(in.toString());
+			//System.out.println("---");
+			//for(int i = 0; i < inputs.length; i++)
+				//System.out.println(inputs[i] == null ? "null" : inputs[i].toString());
+			//System.out.println("---------------- OUTPUT -----------------");
+			//System.out.println("OUTPUT: " + data.output + " -> " + (output == null ? "NULL" : output.toString()));
 			
-			System.out.println("---------------- TRUE INPUT -----------------");
-			for(int i = 0; i < trueInput.length; i++)
-				System.out.println(trueInput[i]);
+			//System.out.println("---------------- TRUE INPUT -----------------");
+			//for(int i = 0; i < trueInput.length; i++)
+				//System.out.println(trueInput[i]);
 			
 			recipes.add(new RecipeContainer(data.code ,output, trueInput));
 		}
@@ -110,7 +113,10 @@ public class RecipeRegistry {
 			GameRegistry.addRecipe(new ShapedOreRecipe(con.output, con.input));
 		}
 		
-		
+		RecipeSorter.register(BioCristalsMod.MODID + ":AttuneNetworkRecipe", AttuneNetworkRecipe.class, Category.SHAPELESS, "after:minecraft:shapeless");
+		RecipeSorter.register(BioCristalsMod.MODID + ":AttuneTokenRecipe", AttuneTokenRecipe.class, Category.SHAPELESS, "after:minecraft:shapeless");
+		RecipeSorter.register(BioCristalsMod.MODID + ":AttuneFeederRecipe", AttuneFeederRecipe.class, Category.SHAPELESS, "after:minecraft:shapeless");
+		RecipeSorter.register(BioCristalsMod.MODID + ":AttuneEaterRecipe", AttuneEaterRecipe.class, Category.SHAPELESS, "after:minecraft:shapeless");
 		GameRegistry.addRecipe(new AttuneNetworkRecipe());
 		GameRegistry.addRecipe(new AttuneTokenRecipe());
 		GameRegistry.addRecipe(new AttuneFeederRecipe());
@@ -124,16 +130,16 @@ public class RecipeRegistry {
 			Object[] inputs = RecipeTransformer.dataToObjects(data.input);
 			Object[] trueInput = RecipeTransformer.stacksToRecipe(inputs);
 			
-			System.out.println("---------------- INPUT -----------------");
-			System.out.println("INPUT: " + data.input);
-			for(int i = 0; i < inputs.length; i++)
-				System.out.println(inputs[i] == null ? "null" : inputs[i].toString());
-			System.out.println("---------------- OUTPUT -----------------");
-			System.out.println("OUTPUT: " + data.output + " -> " + (output == null ? "NULL" : output.toString()));
+			//System.out.println("---------------- INPUT -----------------");
+			//System.out.println("INPUT: " + data.input);
+			//for(int i = 0; i < inputs.length; i++)
+				//System.out.println(inputs[i] == null ? "null" : inputs[i].toString());
+			//System.out.println("---------------- OUTPUT -----------------");
+			//System.out.println("OUTPUT: " + data.output + " -> " + (output == null ? "NULL" : output.toString()));
 			
-			System.out.println("---------------- TRUE INPUT -----------------");
-			for(int i = 0; i < trueInput.length; i++)
-				System.out.println(trueInput[i] == null || (trueInput[i] instanceof ItemStack && ((ItemStack) trueInput[i]).getItem() == null) ? "null" : trueInput[i]);
+			//System.out.println("---------------- TRUE INPUT -----------------");
+			//for(int i = 0; i < trueInput.length; i++)
+				//System.out.println(trueInput[i] == null || (trueInput[i] instanceof ItemStack && ((ItemStack) trueInput[i]).getItem() == null) ? "null" : trueInput[i]);
 			
 			crootRecipes.add(new CrootRecipeContainer(data.code ,output, trueInput));
 		}
@@ -159,17 +165,17 @@ public class RecipeRegistry {
 			ItemStack[] outputs = RecipeTransformer.dataToItemStacks(data.output.split(" "));
 			Object[] inputs = RecipeTransformer.dataToObjects(data.input.split(" "));
 			
-			System.out.println("---------------- INPUT -----------------");
-			System.out.println("CODE: " + data.code);
-			System.out.println("TIME: " + data.time);
-			System.out.println("FILTER: " + (filter == null ? "null" : filter.toString()));
-			System.out.println("INPUT: " + data.input);
-			for(int i = 0; i < inputs.length; i++)
-				System.out.println(inputs[i] == null ? "null" : inputs[i].toString());
-			System.out.println("---------------- OUTPUT -----------------");
-			System.out.println("OUTPUT: " + data.output);
-			for(int i = 0; i < outputs.length; i++)
-				System.out.println(outputs[i] == null ? "null" : outputs[i].toString());
+			//System.out.println("---------------- INPUT -----------------");
+			//System.out.println("CODE: " + data.code);
+			//System.out.println("TIME: " + data.time);
+			//System.out.println("FILTER: " + (filter == null ? "null" : filter.toString()));
+			//System.out.println("INPUT: " + data.input);
+			//for(int i = 0; i < inputs.length; i++)
+				//System.out.println(inputs[i] == null ? "null" : inputs[i].toString());
+			//System.out.println("---------------- OUTPUT -----------------");
+			//System.out.println("OUTPUT: " + data.output);
+			//for(int i = 0; i < outputs.length; i++)
+				//System.out.println(outputs[i] == null ? "null" : outputs[i].toString());
 			
 			purifierContainers.add(new PurifierContainer(data.name, filter, data.code, inputs, outputs, data.time));
 		}

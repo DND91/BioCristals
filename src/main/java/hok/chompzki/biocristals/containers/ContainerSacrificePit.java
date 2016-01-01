@@ -103,7 +103,7 @@ public class ContainerSacrificePit extends Container {
     {
         ItemStack itemstack = null;
         Slot slot = (Slot)this.inventorySlots.get(p_82846_2_);
-        int numRows = 1;
+        int numRows = 2;
 
         if (slot != null && slot.getHasStack())
         {

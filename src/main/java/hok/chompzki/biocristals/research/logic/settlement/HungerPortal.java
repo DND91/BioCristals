@@ -51,7 +51,7 @@ public class HungerPortal extends ArticleContent {
 				+"network. If the portal is crafted with an unbound portal it will bind the other. "
 				+"Inside the portal, Steve will find the darkness and a place to store his/hers feeding network. "
 				+"Only thing that can be placed inside of it are tokens, that can be made in the Token Assembler. "
-				+"Bound portals can be bought from villagers and other players can access your network. So be careful.";
+				+"Bound portals can be bought from villagers and other players can access these networks. So be careful.";
 			break;
 		case 4: //Sodium acetate, Cara Rot (Carrot), Elle D'berry (Elderberry), Rabarberpaj... Carla & Fleur (Cauliflower)
 			s += KnowledgeDescriptions.getDisplayName(con) + "\n\n";

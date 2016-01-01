@@ -31,9 +31,8 @@ public class TokenAssembler extends ArticleContent {
 				+"founder of the tokens. ";
 			break;
 		case 1: 
-			s += "The rules for Steve are quite easy. Around the block you place chests, in these chests you place the "
-				+"cost of what you want to create. The blocks insides should be "
-				+"self-explanatory if you have read about the diffrent tokens. ";
+			s += "The rules for Steve are quite easy. Around the assembler containers are placed, in these items for cost  "
+				+"shall lie. ";
 			break;
 		case 2: //Sodium acetate, Cara Rot (Carrot), Elle D'berry (Elderberry), Rabarberpaj... Carla & Fleur (Cauliflower)
 			s += KnowledgeDescriptions.getDisplayName(con) + "\n\n";

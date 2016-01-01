@@ -45,7 +45,7 @@ public class ItemVoidCrawler extends ItemInsect{
 			return stack;
 		feed(player, stack, player.isSneaking());
 		if(0.0F < player.getHealth())
-			activate(stack, player, world);
+			activate(stack, world, (int)player.posX, (int)player.posY, (int)player.posZ);
 		
         return stack;
     }
@@ -58,16 +58,12 @@ public class ItemVoidCrawler extends ItemInsect{
 		
 		feed(player, stack, player.isSneaking());
 		if(0.0F < player.getHealth())
-			activate(stack, player, world);
+			activate(stack, world, (int)player.posX, (int)player.posY, (int)player.posZ);
 		
         return true;
     }
 	
-	public void activate(ItemStack stack, EntityPlayer player, World world){
-		
-		int x = (int) player.posX;
-		int y = (int) player.posY;
-		int z = (int) player.posZ;
+	public void activate(ItemStack stack, World world, int x, int y, int z){
 		
 		for(int i = -5; i <= 5; i++)
 		for(int j = 0; j <= 5; j++)
@@ -78,11 +74,15 @@ public class ItemVoidCrawler extends ItemInsect{
 			distance *= ConfigRegistry.displaceMultiplier;
 			
 			if(block == Blocks.air || block instanceof BlockContainer || block instanceof ITileEntityProvider
-					|| block.hasTileEntity(meta) || block == BlockRegistry.replacer || block.getLightValue() != 0
-					|| block.getBlockHardness(world, x+i, y+j, z+k) < 0.0F){
+					|| block.hasTileEntity(meta) || block == BlockRegistry.replacer || block == BlockRegistry.replacerOpen 
+					|| block.getLightValue() != 0 || block.getBlockHardness(world, x+i, y+j, z+k) < 0.0F){
 				if((block == Blocks.air || block == null) && world.isAirBlock(x+i, y+j+1, z+k) && world.isSideSolid(x+i, y+j-1, z+k, ForgeDirection.UP)){
 					world.setBlock(x+i, y+j, z+k, BlockRegistry.replacerOpen, 0, 2);
 					world.setTileEntity(x+i, y+j, z+k, new TileReplacer(block, meta, ConfigRegistry.displaceTime - distance));
+				}
+				if(block == BlockRegistry.replacer || block == BlockRegistry.replacerOpen){
+					TileReplacer tile = (TileReplacer) world.getTileEntity(x+i, y+j, z+k);
+					tile.trigger = ConfigRegistry.displaceTime - distance;
 				}
 				continue;
 			}
@@ -98,11 +98,6 @@ public class ItemVoidCrawler extends ItemInsect{
 	public String getActionText(TileEntity entity, ItemStack stack) {
 		return "I will phase what is not of value.";
 	}
-
-	@Override
-	public ItemStack[] getResult(ItemStack stack) {
-		return new ItemStack[]{};
-	}
 	
 	@Override
 	public boolean canUpdate(TileEntity entity, ItemStack stack) {
@@ -111,43 +106,20 @@ public class ItemVoidCrawler extends ItemInsect{
 		int y = entity.yCoord;
 		int z = entity.zCoord;
 		
-		AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(entity.xCoord, entity.yCoord, entity.zCoord, entity.xCoord + 1, entity.yCoord + 1, entity.zCoord + 1);
-		List<EntityItem> list = world.getEntitiesWithinAABB(EntityItem.class, bb.expand(3, 3, 3));
+		AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(entity.xCoord, entity.yCoord, entity.zCoord, entity.xCoord + 1, entity.yCoord + 6, entity.zCoord + 1);
+		List<EntityPlayer> list = world.getEntitiesWithinAABB(EntityPlayer.class, bb.expand(6, 0, 6));
 		
 		return 0 < list.size();
 	}
 	
 	@Override
 	public void tileUpdate(TileEntity entity, ItemStack stack) {
-		World world = entity.getWorldObj();
-		if(world.isRemote)
-			return;
-		int x = entity.xCoord;
-		int y = entity.yCoord;
-		int z = entity.zCoord;
-		
-		AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(entity.xCoord, entity.yCoord, entity.zCoord, entity.xCoord + 1, entity.yCoord + 1, entity.zCoord + 1);
-		List<EntityItem> list = world.getEntitiesWithinAABB(EntityItem.class, bb.expand(4, 4, 4));
-		
-		for(EntityItem ei : list){
-			ItemStack item = ei.getEntityItem();
-			if(BioHelper.addItemStackToInventory(item, (IInventory) entity, 1, 4)){
-				if(item.stackSize <= 0){
-					ei.setDead();
-				}
-			}
-			
-		}
+		activate(stack, entity.getWorldObj(), entity.xCoord, entity.yCoord, entity.zCoord);
 	}
-
-	@Override
-	public int lifeSpan(ItemStack stack) {
-		return 1000;
-	}
-
+	
 	@Override
 	public int workSpan(ItemStack stack) {
-		return 50;
+		return ConfigRegistry.displaceTime / stack.stackSize;
 	}
 	
 	

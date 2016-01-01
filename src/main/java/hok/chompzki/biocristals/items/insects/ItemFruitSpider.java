@@ -61,11 +61,6 @@ public class ItemFruitSpider extends ItemInsect{
 	}
 	
 	@Override
-	public ItemStack[] getResult(ItemStack stack) {
-		return new ItemStack[] {new ItemStack(Items.wheat_seeds)};
-	}
-
-	@Override
 	public void tileUpdate(TileEntity entity, ItemStack stack) {
 		World world = entity.getWorldObj();
 		int x = entity.xCoord;
@@ -84,11 +79,6 @@ public class ItemFruitSpider extends ItemInsect{
 		        world.spawnEntityInWorld(spider);
 			}
 		}
-	}
-	
-	@Override
-	public int lifeSpan(ItemStack stack) {
-		return 200;
 	}
 	
 	private boolean hasMature(TileEntity entity){
@@ -121,6 +111,6 @@ public class ItemFruitSpider extends ItemInsect{
 
 	@Override
 	public int workSpan(ItemStack stack) {
-		return 10;
+		return 64 / stack.stackSize;
 	}
 }

@@ -64,11 +64,6 @@ public class ItemWSB extends ItemInsect{
 	}
 
 	@Override
-	public ItemStack[] getResult(ItemStack stack) {
-		return new ItemStack[] {new ItemStack(Items.bone)};
-	}
-
-	@Override
 	public boolean canUpdate(TileEntity entity, ItemStack stack) {
 		World world = entity.getWorldObj();
 		int x = entity.xCoord;
@@ -109,7 +104,6 @@ public class ItemWSB extends ItemInsect{
 	
 	public void attackEntityWithRangedAttack(EntityLivingBase mob, float p_82196_2_, double x, double y, double z)
     {
-		
 		EntityWSB entitysnowball = new EntityWSB(mob.worldObj, x + 0.5D, y  + 0.5D, z + 0.5D);
         double d0 = mob.posX - x - 0.5D;
         double d1 = mob.posY + (double)mob.getEyeHeight() - 1.100000023841858D - entitysnowball.posY;
@@ -121,13 +115,8 @@ public class ItemWSB extends ItemInsect{
     }
 	
 	@Override
-	public int lifeSpan(ItemStack stack) {
-		return 500;
-	}
-	
-	@Override
 	public int workSpan(ItemStack stack) {
-		return 50;
+		return 64 / stack.stackSize;
 	}
 	
 }

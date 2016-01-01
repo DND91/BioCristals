@@ -1,13 +1,16 @@
 package hok.chompzki.biocristals.items.insects;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import hok.chompzki.biocristals.BioCristalsMod;
 import hok.chompzki.biocristals.BioHelper;
+import hok.chompzki.biocristals.NBTHelper;
 import hok.chompzki.biocristals.api.IInsect;
 import hok.chompzki.biocristals.hunger.logic.EnumResource;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.item.EntityItem;
@@ -15,6 +18,7 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -27,11 +31,12 @@ public class ItemKraKenBug extends ItemFood implements IInsect{
 	public static final String NAME = "itemKraKenBug";
 	
 	public ItemKraKenBug() {
-		super(1, 1, false);
+		super(4, 2.0F, false);
         setUnlocalizedName(BioCristalsMod.MODID + "_" + NAME);
 		setCreativeTab(BioCristalsMod.creativeTab);
 		setTextureName(BioCristalsMod.MODID + ":" + NAME);
 		this.setMaxStackSize(64);
+		this.setHasSubtypes(true);
 	}
 	
 	public ItemStack onEaten(ItemStack stack, World world, EntityPlayer player)
@@ -43,27 +48,22 @@ public class ItemKraKenBug extends ItemFood implements IInsect{
         return stack;
     }
 	
+	@Override
 	public int func_150905_g(ItemStack stack)
     {
-		fix(stack);
-		NBTTagCompound nbt = stack.getTagCompound();
-        return nbt.getInteger("FOOD");
+        return NBTHelper.get(stack, "FOOD_LEVEL", 4);
     }
-
+	
+	@Override
     public float func_150906_h(ItemStack stack)
     {
-    	fix(stack);
-    	NBTTagCompound nbt = stack.getTagCompound();
-        return nbt.getFloat("SATURATION");
+        return NBTHelper.get(stack, "SATURATION", 2.0F);
     }
     
     public void fix(ItemStack stack){
-    	if(stack.getTagCompound() == null){
-    		stack.setTagCompound(new NBTTagCompound());
-        	NBTTagCompound nbt = stack.getTagCompound();
-        	nbt.setInteger("FOOD", 4);
-        	nbt.setFloat("SATURATON", 0.8F);
-    	}
+    	NBTHelper.init(stack, "FOOD_LEVEL", 4);
+    	NBTHelper.init(stack, "SATURATION", 2.0F);
+    	NBTHelper.init(stack, "FOOD", 0.0D);
     }
     
     public void onCreated(ItemStack stack, World world, EntityPlayer player) {
@@ -72,17 +72,21 @@ public class ItemKraKenBug extends ItemFood implements IInsect{
     
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List list, boolean p_77624_4_) {
+    	if(20.0D <= this.getDrain(p_77624_1_) || 20.0D <= this.getCost(p_77624_1_)){
+			list.add(((char)167) + "4DO NOT USE WITHOUT NETWORK");
+		}
+		list.add("Food: " + I18n.format("container."+EnumResource.WASTE, new Object[0]));
+		list.add("Use Cost: " + this.getCost(p_77624_1_));
+		list.add("Drainage: " + this.getDrain(p_77624_1_));
+		double food = NBTHelper.get(p_77624_1_, "FOOD", 0.0D);
+		DecimalFormat df = new DecimalFormat("0.00"); 
+		list.add("Stored: " + df.format(food));
     	list.add("We will never behave!");
     }
 
 	@Override
 	public String getActionText(TileEntity entity, ItemStack stack) {
 		return "I will help animals grow!";
-	}
-
-	@Override
-	public ItemStack[] getResult(ItemStack stack) {
-		return new ItemStack[] {new ItemStack(Items.egg)};
 	}
 
 	@Override
@@ -120,25 +124,34 @@ public class ItemKraKenBug extends ItemFood implements IInsect{
 			}
 		}
 	}
-
+	
 	@Override
-	public int lifeSpan(ItemStack stack) {
-		return 480;
-	}
+	@SideOnly(Side.CLIENT)
+    public void getSubItems(Item item, CreativeTabs tab, List list)
+    {
+		ItemStack s = new ItemStack(item, 1, 0);
+		this.onCreated(s, null, null);
+		list.add(s);
+    }
+	
+	public boolean getShareTag()
+    {
+        return true;
+    }
 
 	@Override
 	public int workSpan(ItemStack stack) {
-		return 1;
+		return 64 / stack.stackSize;
 	}
 
 	@Override
 	public double getCost(ItemStack stack) {
-		return 1.0D;
+		return 1.0D * stack.stackSize;
 	}
 
 	@Override
 	public double getDrain(ItemStack stack) {
-		return 10.0D;
+		return 10.0D * stack.stackSize;
 	}
 
 	@Override
@@ -146,17 +159,18 @@ public class ItemKraKenBug extends ItemFood implements IInsect{
 		return EnumResource.WASTE;
 	}
 
-	@Override
-	public double getFood(ItemStack stack) {
-		if(!stack.hasTagCompound())
-			return 0.0D;
-		return stack.stackTagCompound.getDouble("FOOD");
+	public double getFood(ItemStack stack){
+		NBTHelper.init(stack, "FOOD", 0.0D);
+		double food = stack.stackTagCompound.getDouble("FOOD");
+		food = Math.max(0.0D, food);
+		food = Math.min(food, this.getDrain(stack));
+		return food;
 	}
 	
-	@Override
-	public void setFood(ItemStack stack, double food) {
-		if(!stack.hasTagCompound())
-			stack.setTagCompound(new NBTTagCompound());
+	public void setFood(ItemStack stack, double food){
+		NBTHelper.init(stack, "FOOD", 0.0D);
+		food = Math.max(0.0D, food);
+		food = Math.min(food, this.getDrain(stack));
 		stack.stackTagCompound.setDouble("FOOD", food);
 	}
 

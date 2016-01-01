@@ -78,7 +78,7 @@ public class ItemCrootHoe extends Item {
 				int maxZ = dz + i;
 				for(int x = minX; x <= maxX; x++){
 					if(0 < getCost(world.getBlock(x, dy, maxZ))){
-						world.setBlock(x, dy, maxZ, Blocks.farmland);
+						world.setBlock(x, dy, maxZ, Blocks.farmland, 7, 3);
 						stack.damageItem(1, player);
 						if(world.blockExists(x, dy+1, maxZ) && world.getBlock(x, dy+1, maxZ).isReplaceable(world, x, dy+1, maxZ))
 							world.setBlockToAir(x, dy+1, maxZ);
@@ -86,7 +86,7 @@ public class ItemCrootHoe extends Item {
 							return;
 					}
 					if(0 < getCost(world.getBlock(x, dy, minZ))){
-						world.setBlock(x, dy, minZ, Blocks.farmland);
+						world.setBlock(x, dy, minZ, Blocks.farmland, 7, 3);
 						stack.damageItem(1, player);
 						if(world.blockExists(x, dy+1, minZ) && world.getBlock(x, dy+1, minZ).isReplaceable(world, x, dy+1, minZ))
 							world.setBlockToAir(x, dy+1, minZ);
@@ -96,7 +96,7 @@ public class ItemCrootHoe extends Item {
 				}
 				for(int z = minZ; z <= maxZ; z++){
 					if(0 < getCost(world.getBlock(minX, dy, z))){
-						world.setBlock(minX, dy, z, Blocks.farmland);
+						world.setBlock(minX, dy, z, Blocks.farmland, 7, 3);
 						stack.damageItem(1, player);
 						if(world.blockExists(minX, dy+1, z) && world.getBlock(minX, dy+1, z).isReplaceable(world, minX, dy+1, z))
 							world.setBlockToAir(minX, dy+1, z);
@@ -104,7 +104,7 @@ public class ItemCrootHoe extends Item {
 							return;
 					}
 					if(0 < getCost(world.getBlock(maxX, dy, z))){
-						world.setBlock(maxX, dy, z, Blocks.farmland);
+						world.setBlock(maxX, dy, z, Blocks.farmland, 7, 3);
 						stack.damageItem(1, player);
 						if(world.blockExists(maxX, dy+1, z) && world.getBlock(maxX, dy+1, z).isReplaceable(world, maxX, dy+1, z))
 							world.setBlockToAir(maxX, dy+1, z);

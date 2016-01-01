@@ -136,8 +136,29 @@ public class TileCrootBreeder extends TileEntity  implements ISidedInventory{
 	}
 
 	@Override
-	public boolean isItemValidForSlot(int p_94041_1_, ItemStack p_94041_2_) {
-		return true;
+	public boolean isItemValidForSlot(int slot, ItemStack stack) {
+		if((slot == 0 || slot == 1) && stack.getItem() instanceof IInsect){
+			if(this.getStackInSlot(slot) != null && 
+					(this.getStackInSlot(0) == null || this.getStackInSlot(1) == null))
+				return false;
+			if(this.getStackInSlot(0) == null || this.getStackInSlot(1) == null)
+				return true;
+			int o = slot == 0 ? 1 : 0;
+			
+			ItemStack first = this.getStackInSlot(slot);
+			ItemStack other = this.getStackInSlot(o);
+			
+			return first.getItem() == other.getItem() ? first.stackSize <= other.stackSize : true;
+		}
+		if((slot == 2))
+			return !((stack.getItem() instanceof ItemFood) || (stack.getItem() instanceof ItemToken));
+		if((slot == 3))
+			return ((stack.getItem() instanceof ItemFood) || (stack.getItem() instanceof ItemToken) && (
+					((IToken)stack.getItem()).getType(stack) == EnumToken.EATER
+					|| ((IToken)stack.getItem()).getType(stack) == EnumToken.BANK));
+		if(slot == 4)
+			return false;
+		return false;
 	}
 	
 	public void readFromNBT(NBTTagCompound p_145839_1_)
@@ -221,7 +242,12 @@ public class TileCrootBreeder extends TileEntity  implements ISidedInventory{
         		double drain = insect.getDrain(workStack);
         		EnumResource foodType = insect.getFoodType(workStack);
         		
+        		if((input.getItem() instanceof ItemFood && foodType != EnumResource.RAW_FOOD))
+        			return;
+        		
     			double[] v = ItemInsect.drain(this, false, input, drain, foodType);
+    			if(input.stackSize <= 0)
+    				this.setInventorySlotContents(3, null);
     			currentFood += v[foodType.toInt()];
     			this.markDirty();
         	}
@@ -306,15 +332,25 @@ public class TileCrootBreeder extends TileEntity  implements ISidedInventory{
 		return p_94128_1_ == 0 ? slotsBottom : (p_94128_1_ == 1 ? slotsTop : slotsSides);
 	}
     
-	@Override
-	public boolean canInsertItem(int p_102007_1_, ItemStack p_102007_2_,
-			int p_102007_3_) {
-		return p_102007_1_ == 0 && this.isItemValidForSlot(p_102007_1_, p_102007_2_);
+    @Override
+	public boolean canInsertItem(int s, ItemStack stack,
+			int side) {
+		int[] slots = getAccessibleSlotsFromSide(side);
+		for(int s2 : slots)
+			if(s == s2)
+				return this.isItemValidForSlot(s, stack);
+		return false;
 	}
 
-	@Override
-	public boolean canExtractItem(int s, ItemStack p_102008_2_,
-			int p_102008_3_) {
-		return 1 <= s && s <= 3;
+    @Override
+	public boolean canExtractItem(int s, ItemStack stack,
+			int side) {
+		int[] slots = getAccessibleSlotsFromSide(side);
+		
+		for(int s2 : slots)
+			if(s == s2)
+				return true;
+		
+		return false;
 	}
 }

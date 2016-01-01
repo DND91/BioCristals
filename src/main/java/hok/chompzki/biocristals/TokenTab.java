@@ -13,7 +13,7 @@ public class TokenTab extends CreativeTabs {
 	
 	@Override
 	public Item getTabIconItem() {
-		return ItemRegistry.tokenBridge;
+		return ItemRegistry.tokenFeeder;
 	}
 
 }

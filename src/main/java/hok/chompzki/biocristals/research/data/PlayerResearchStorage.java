@@ -93,7 +93,7 @@ public class PlayerResearchStorage implements IDataFile{
 
 	@Override
 	public Serializable getObject() {
-		System.out.println(name + " -- SAVING PLAYER DATA -- ");
+		//System.out.println(name + " -- SAVING PLAYER DATA -- ");
 		for(Entry<UUID, PlayerResearch> entry : players.entrySet()){
 			UUID id = entry.getKey();
 			PlayerResearch res = entry.getValue();
@@ -104,7 +104,7 @@ public class PlayerResearchStorage implements IDataFile{
 	
 	@Override
 	public void setObject(Serializable obj) {
-		System.out.println(name + " -- LOADING PLAYER DATA -- ");
+		//System.out.println(name + " -- LOADING PLAYER DATA -- ");
 		players = (HashMap<UUID, PlayerResearch>) obj;
 		for(Entry<UUID, PlayerResearch> entry : players.entrySet()){
 			UUID id = entry.getKey();
@@ -141,7 +141,7 @@ public class PlayerResearchStorage implements IDataFile{
 	
 	@SubscribeEvent
 	public void playerLogout(PlayerLoggedOutEvent event){
-		System.out.println("LOG OFF!!!");
+		//System.out.println("LOG OFF!!!");
 		UUID id = event.player.getGameProfile().getId();
 		deregisterLissnar(id);
 	}
@@ -149,7 +149,7 @@ public class PlayerResearchStorage implements IDataFile{
 	@SubscribeEvent
 	public void playerLogin(PlayerLoggedInEvent event){
 		UUID id = event.player.getGameProfile().getId();
-		System.out.println("LOG IN!!! ");
+		//System.out.println("LOG IN!!! ");
 		if(!this.players.containsKey(id)){
 			EntityPlayerMP player = (EntityPlayerMP) MinecraftServer.getServer().getEntityWorld().func_152378_a(id);
 			player.inventory.addItemStackToInventory(new ItemStack(ItemRegistry.researchBook));

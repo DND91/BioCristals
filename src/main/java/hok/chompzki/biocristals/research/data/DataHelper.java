@@ -78,7 +78,7 @@ public class DataHelper {
 	
 	public static String getNetworkName(String id, World world){
 		if(PlayerHungerStorage.instance(true).get(id) == null)
-			return "UNKOWN";
+			return id;
 		else
 			return PlayerHungerStorage.instance(true).get(id).getName();
 	}

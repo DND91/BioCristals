@@ -26,7 +26,7 @@ public class ItemCrootClaw extends ItemInsect implements IInsect{
 	public final static String NAME = "itemCrootClaw";
 	
 	public ItemCrootClaw(){
-		super(EnumResource.RAW_FOOD, 5.0D, 10.0D);
+		super(EnumResource.PSY_ENG, 5.0D, 10.0D);
 		setUnlocalizedName(BioCristalsMod.MODID + "_" + NAME);
 		setCreativeTab(BioCristalsMod.creativeTab);
 		setTextureName(BioCristalsMod.MODID + ":" + NAME);
@@ -60,12 +60,7 @@ public class ItemCrootClaw extends ItemInsect implements IInsect{
 	public String getActionText(TileEntity entity, ItemStack stack) {
 		return "I will collect items close to me.";
 	}
-
-	@Override
-	public ItemStack[] getResult(ItemStack stack) {
-		return new ItemStack[]{};
-	}
-
+	
 	@Override
 	public boolean canUpdate(TileEntity entity, ItemStack stack) {
 		World world = entity.getWorldObj();
@@ -93,7 +88,7 @@ public class ItemCrootClaw extends ItemInsect implements IInsect{
 		
 		for(EntityItem ei : list){
 			ItemStack item = ei.getEntityItem();
-			if(BioHelper.addItemStackToInventory(item, (IInventory) entity, 1, 4)){
+			if(BioHelper.addItemStackToInventory(item, (IInventory) entity, 2, 4)){
 				if(item.stackSize <= 0){
 					ei.setDead();
 				}
@@ -103,13 +98,8 @@ public class ItemCrootClaw extends ItemInsect implements IInsect{
 	}
 
 	@Override
-	public int lifeSpan(ItemStack stack) {
-		return 1000;
-	}
-
-	@Override
 	public int workSpan(ItemStack stack) {
-		return 50;
+		return 64 / stack.stackSize;
 	}
 	
 	

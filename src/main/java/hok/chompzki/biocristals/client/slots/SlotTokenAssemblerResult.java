@@ -60,5 +60,4 @@ public class SlotTokenAssemblerResult extends Slot {
     	if(FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER) 
     		ResearchUnlocks.unlock(thePlayer, EnumUnlock.TOKEN_ASSEMBLE, p_75208_1_);
     }
-	
 }

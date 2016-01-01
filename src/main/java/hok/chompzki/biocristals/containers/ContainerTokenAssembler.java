@@ -690,6 +690,7 @@ public class ContainerTokenAssembler extends Container {
             {
                 slot.onSlotChanged();
             }
+            slot.onPickupFromSlot(p_82846_1_, itemstack);
         }
         
         return itemstack;

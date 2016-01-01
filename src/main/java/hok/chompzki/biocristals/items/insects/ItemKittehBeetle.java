@@ -24,11 +24,10 @@ public class ItemKittehBeetle extends ItemInsect{
 	public static final String NAME = "itemKittehBeetle";
 	
 	public ItemKittehBeetle() {
-		super(EnumResource.NURITMENT, 10.0D, 20.0D);
+		super(EnumResource.LIFE_FLUIDS, 10.0D, 20.0D);
         setUnlocalizedName(BioCristalsMod.MODID + "_" + NAME);
 		setCreativeTab(BioCristalsMod.creativeTab);
 		setTextureName(BioCristalsMod.MODID + ":" + NAME);
-		
 	}
 	
 	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float p_77648_8_, float p_77648_9_, float p_77648_10_)
@@ -68,11 +67,6 @@ public class ItemKittehBeetle extends ItemInsect{
 	}
 
 	@Override
-	public ItemStack[] getResult(ItemStack stack) {
-		return new ItemStack[] {new ItemStack(Items.melon)};
-	}
-
-	@Override
 	public boolean canUpdate(TileEntity entity, ItemStack stack) {
 		return true;
 	}
@@ -101,12 +95,7 @@ public class ItemKittehBeetle extends ItemInsect{
 	}
 
 	@Override
-	public int lifeSpan(ItemStack stack) {
-		return 1000;
-	}
-
-	@Override
 	public int workSpan(ItemStack stack) {
-		return 100;
+		return 100 / stack.stackSize;
 	}
 }

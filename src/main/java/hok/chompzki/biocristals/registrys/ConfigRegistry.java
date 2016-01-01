@@ -54,7 +54,7 @@ public class ConfigRegistry {
 	
 	public static int wsbDamage = 2;
 	
-	public static String configNumber = "0.686";
+	public static String configNumber = "0.688";
 	public static Configuration config;
 	
 	public static List<RecipeData> recipeData = new ArrayList<RecipeData>();
@@ -79,6 +79,22 @@ public class ConfigRegistry {
 	
 	public static int nomadsSackSize = 2500;
 	
+	public static String[] networkNamesDefault={"Savain The Bullet", 
+		"Kitteh The Mascot", 
+		"Blueman Group", 
+		"Freewind",
+		"The Black Beast",
+		"Big Daddy",
+		"A City Under The Waves",
+		"Reed Wahld",
+		"Dexagon The Cat",
+		"Lead Paint & Baby Formula",
+		"Drill Fuel",
+		"SHIELD HAT",
+		"Pocket Kraken",
+		"Blue vs. Red"};
+	
+    public static String[] networkNames;
 	
 	
 	public static void preinit(File configFile) {
@@ -123,6 +139,9 @@ public class ConfigRegistry {
     	displaceMultiplier = config.getInt("Multiplier", "Block displacer", 10, 1, 100, "How fast the displaced area collapses");
     	
     	oreDictBioMaterial = config.get("Bio Material OreDict", "OreDict", oreDictBioMaterialDefault, "first texture/croot name then block needed to make it!").getStringList();
+    	
+    	networkNames = config.get("The Hunger", "Network Names", networkNamesDefault, "Public Networks that can be bought from villagers").getStringList();
+    	
     	
     	//Workbench!
     	recipeData.clear();

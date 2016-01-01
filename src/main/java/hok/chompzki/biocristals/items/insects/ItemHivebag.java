@@ -1,6 +1,10 @@
 package hok.chompzki.biocristals.items.insects;
 
+import java.util.List;
+
 import hok.chompzki.biocristals.BioCristalsMod;
+import hok.chompzki.biocristals.BioHelper;
+import hok.chompzki.biocristals.NBTHelper;
 import hok.chompzki.biocristals.containers.Hivebag;
 import hok.chompzki.biocristals.hunger.logic.EnumResource;
 import hok.chompzki.biocristals.registrys.ConfigRegistry;
@@ -8,15 +12,19 @@ import hok.chompzki.biocristals.registrys.GuiHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
@@ -29,12 +37,13 @@ public class ItemHivebag extends ItemInsect {
 	private IIcon[] icons;
 
 	public ItemHivebag(){
-		super(EnumResource.RAW_FOOD, 1.0D, 10.0D);
+		super(EnumResource.RAW_FOOD, 8.0D, 10.0D);
 		this.setMaxDamage(ConfigRegistry.hungerDistance);
 		this.setNoRepair();
 		setUnlocalizedName(BioCristalsMod.MODID + "_" + NAME);
 		setCreativeTab(BioCristalsMod.creativeTab);
 		setTextureName(BioCristalsMod.MODID + ":" + NAME);
+		this.setMaxStackSize(1);
 	}
 	
 	@Override
@@ -42,8 +51,7 @@ public class ItemHivebag extends ItemInsect {
     {
 		if(par2World.isRemote)
 			return stack;
-		if(stack.getTagCompound() == null)
-			this.onCreated(stack, par2World, player);
+		this.onCreated(stack, par2World, player);
 		
 		player.openGui(BioCristalsMod.instance, GuiHandler.hivebagId, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
         return stack;
@@ -51,10 +59,10 @@ public class ItemHivebag extends ItemInsect {
 	
 	@Override
 	public void onCreated(ItemStack stack, World world, EntityPlayer player) {
-		stack.stackTagCompound = new NBTTagCompound();
+		super.onCreated(stack, world, player);
+		NBTHelper.init(stack, "OPEN", false);
 		NBTTagList nbttaglist = new NBTTagList();
 		stack.stackTagCompound.setTag("INVENTORY", nbttaglist);
-		stack.stackTagCompound.setBoolean("OPEN", false);
 	}
 	
 	@SideOnly(Side.CLIENT)
@@ -68,7 +76,7 @@ public class ItemHivebag extends ItemInsect {
 	
 	public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining)
     {
-		boolean isOpen = stack.stackTagCompound.getBoolean("OPEN");
+		boolean isOpen = NBTHelper.get(stack, "OPEN", false);
         if(isOpen)
         	return this.icons[1];
 		return this.icons[0];
@@ -76,7 +84,7 @@ public class ItemHivebag extends ItemInsect {
 	
 	public IIcon getIcon(ItemStack stack, int pass)
     {
-		boolean isOpen = stack.stackTagCompound.getBoolean("OPEN");
+		boolean isOpen = NBTHelper.get(stack, "OPEN", false);
 		if(isOpen)
         	return this.icons[1];
 		return this.icons[0];
@@ -85,9 +93,8 @@ public class ItemHivebag extends ItemInsect {
 	@SideOnly(Side.CLIENT)
     public IIcon getIconIndex(ItemStack stack)
     {
-		if(stack.stackTagCompound == null)
-			this.onCreated(stack, Minecraft.getMinecraft().theWorld, Minecraft.getMinecraft().thePlayer);
-		boolean isOpen = stack.stackTagCompound.getBoolean("OPEN");
+		this.onCreated(stack, Minecraft.getMinecraft().theWorld, Minecraft.getMinecraft().thePlayer);
+		boolean isOpen = NBTHelper.get(stack, "OPEN", false);
 		if(isOpen)
         	return this.icons[1];
 		return this.icons[0];
@@ -107,26 +114,17 @@ public class ItemHivebag extends ItemInsect {
 	
 	public double getDurabilityForDisplay(ItemStack stack)
     {
-		int damage = 0;
-		if(stack.hasTagCompound() && stack.getTagCompound().hasKey("DISTANCE"))
-			damage = stack.getTagCompound().getInteger("DISTANCE");
+		int damage = NBTHelper.get(stack, "DISTANCE", 0);
         return 1.0d - ((double)damage / (double)stack.getMaxDamage());
     }
 	
 	public void onUpdate(ItemStack stack, World world, Entity entity, int slot, boolean par5) {
 		if(entity instanceof EntityPlayer){
 			EntityPlayer player = (EntityPlayer)entity;
-			float lastDistance = player.distanceWalkedOnStepModified;
 			float currentDistance = player.distanceWalkedOnStepModified;
-			if(player.getEntityData().hasKey("HIVECRAFT_PLAYER_LAST_DIST"))
-				lastDistance = player.getEntityData().getFloat("HIVECRAFT_PLAYER_LAST_DIST");
-			
-			float sub_distance = 0.0f;
-			if(stack.hasTagCompound() && stack.getTagCompound().hasKey("F_DISTANCE"))
-				sub_distance = stack.getTagCompound().getFloat("F_DISTANCE");
-			int distance = 0;
-			if(stack.hasTagCompound() && stack.getTagCompound().hasKey("DISTANCE"))
-				distance = stack.getTagCompound().getInteger("DISTANCE");
+			float lastDistance = NBTHelper.get(stack, "HIVECRAFT_PLAYER_LAST_DIST", player.distanceWalkedOnStepModified);
+			float sub_distance = NBTHelper.get(stack, "F_DISTANCE", 0.0F);
+			int distance = NBTHelper.get(stack, "DISTANCE", 0);
 			
 			sub_distance += (currentDistance-lastDistance);
 			
@@ -143,13 +141,11 @@ public class ItemHivebag extends ItemInsect {
 			
 			if(stack.getMaxDamage() <= distance){
 				distance = 0;
-				if(!world.isRemote && stack.hasTagCompound()){
+				if(!world.isRemote){
 					feed(player, stack, false);
 				}
 			}
 			
-			if(!stack.hasTagCompound())
-				stack.setTagCompound(new NBTTagCompound());
 			player.getEntityData().setFloat("HIVECRAFT_PLAYER_LAST_DIST", currentDistance);
 			stack.getTagCompound().setFloat("F_DISTANCE", sub_distance);
 			stack.getTagCompound().setInteger("DISTANCE", distance);
@@ -158,37 +154,86 @@ public class ItemHivebag extends ItemInsect {
 
 	@Override
 	public String getActionText(TileEntity entity, ItemStack stack) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	@Override
-	public ItemStack[] getResult(ItemStack stack) {
-		return new ItemStack[] {new ItemStack(Items.coal)};
+		return "";
 	}
 
 	@Override
 	public boolean canUpdate(TileEntity entity, ItemStack stack) {
-		// TODO Auto-generated method stub
+		World world = entity.getWorldObj();
+		int x = entity.xCoord;
+		int y = entity.yCoord;
+		int z = entity.zCoord;
+		
+		AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(entity.xCoord, entity.yCoord, entity.zCoord, entity.xCoord + 1, entity.yCoord + 1, entity.zCoord + 1);
+		List<EntityItem> list = world.getEntitiesWithinAABB(EntityItem.class, bb.expand(3, 3, 3));
+		
+		for(EntityItem ei : list){
+			ItemStack item = ei.getEntityItem();
+			
+			if(this.canSmelt((IInventory) entity, item, 2, 4))
+				return true;
+		}
+		
 		return false;
 	}
 
 	@Override
 	public void tileUpdate(TileEntity entity, ItemStack stack) {
-		// TODO Auto-generated method stub
+		World world = entity.getWorldObj();
+		if(world.isRemote)
+			return;
+		int x = entity.xCoord;
+		int y = entity.yCoord;
+		int z = entity.zCoord;
 		
+		AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(entity.xCoord, entity.yCoord, entity.zCoord, entity.xCoord + 1, entity.yCoord + 1, entity.zCoord + 1);
+		List<EntityItem> list = world.getEntitiesWithinAABB(EntityItem.class, bb.expand(3, 3, 3));
+		
+		int i = 0;
+		
+		for(EntityItem ei : list){
+			ItemStack item = ei.getEntityItem();
+			if(FurnaceRecipes.smelting().getSmeltingResult(stack) != null)
+				ei.age %= ei.lifespan / 3;
+			
+			while(0 < item.stackSize && this.canSmelt((IInventory) entity, item, 2, 4)){
+				ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(item);
+				i++;
+				item.stackSize--;
+				if(BioHelper.addItemStackToInventory(itemstack.copy(), (IInventory) entity, 2, 4)){
+					if(item.stackSize <= 0){
+						ei.setDead();
+						break;
+					}
+				}
+				if(32 <= i)
+					return;
+			}
+			
+		}
 	}
-
-	@Override
-	public int lifeSpan(ItemStack stack) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	
+	private boolean canSmelt(IInventory ent, ItemStack stack, int min, int max)
+    {
+		if(stack == null)
+			return false;
+		
+		ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(stack);
+        if (itemstack == null) return false;
+        
+		for(int i = min; i < max; i++){
+            if (ent.getStackInSlot(i) == null) return true;
+            if (!ent.getStackInSlot(i).isItemEqual(itemstack)) continue;
+            int result = ent.getStackInSlot(i).stackSize + itemstack.stackSize;
+            if(result <= ent.getInventoryStackLimit() && result <= ent.getStackInSlot(i).getMaxStackSize())
+            	return true;
+		}
+		return false;
+    }
 
 	@Override
 	public int workSpan(ItemStack stack) {
-		// TODO Auto-generated method stub
-		return 0;
+		return 200;
 	}
 	
 	

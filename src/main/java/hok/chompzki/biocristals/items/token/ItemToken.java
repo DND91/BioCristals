@@ -3,6 +3,7 @@ package hok.chompzki.biocristals.items.token;
 import java.util.List;
 
 import hok.chompzki.biocristals.BioCristalsMod;
+import hok.chompzki.biocristals.NBTHelper;
 import hok.chompzki.biocristals.api.IToken;
 import hok.chompzki.biocristals.hunger.logic.EnumToken;
 import hok.chompzki.biocristals.hunger.logic.ResourcePackage;
@@ -64,7 +65,7 @@ public abstract class ItemToken extends Item implements IToken {
        	if(pass == 0){
        		return super.getColorFromItemStack(stack, pass);
        	} else if(stack.getItemDamage() != 0 && pass == 1){
-       		String channel = stack.stackTagCompound.getString("CHANNEL");
+       		String channel = ItemDye.field_150923_a[stack.getItemDamage()-1];
        		return getColorFromDye(channel);
        	}
        	return 16777215;
@@ -100,8 +101,8 @@ public abstract class ItemToken extends Item implements IToken {
 		int i = 0;
 		for(String dye : ItemDye.field_150923_a){
 			ItemStack stack = new ItemStack(item, 1, i+1);
+			NBTHelper.init(stack, "CHANNEL", ItemDye.field_150923_a[i]);
 			this.onCreated(stack, null, null);
-			stack.stackTagCompound.setString("CHANNEL", ItemDye.field_150923_a[i]);
 			list.add(stack);
 			i++;
 		}
@@ -115,7 +116,9 @@ public abstract class ItemToken extends Item implements IToken {
 
 	@Override
 	public String getChannel(ItemStack stack) {
-		return stack.stackTagCompound.getString("CHANNEL");
+		if(stack.getItemDamage() != 0)
+			return NBTHelper.get(stack, "CHANNEL", ItemDye.field_150923_a[stack.getItemDamage()-1]);
+		return NBTHelper.get(stack, "CHANNEL", "NONE");
 	}
 	
 	@Override
