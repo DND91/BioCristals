@@ -9,12 +9,14 @@ import cpw.mods.fml.relauncher.SideOnly;
 import hok.chompzki.biocristals.NBTHelper;
 import hok.chompzki.biocristals.api.IInsect;
 import hok.chompzki.biocristals.api.IToken;
+import hok.chompzki.biocristals.containers.HoneyWidow;
 import hok.chompzki.biocristals.hunger.drawbacks.Drawback;
 import hok.chompzki.biocristals.hunger.logic.EnumResource;
 import hok.chompzki.biocristals.hunger.logic.EnumToken;
 import hok.chompzki.biocristals.hunger.logic.ResourcePackage;
 import hok.chompzki.biocristals.items.token.ItemToken;
 import hok.chompzki.biocristals.registrys.DrawbackRegistry;
+import hok.chompzki.biocristals.registrys.ItemRegistry;
 import hok.chompzki.biocristals.research.data.DataHelper;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
@@ -77,6 +79,19 @@ public abstract class ItemInsect extends Item implements IInsect {
 		List<ItemStack> banks = getTokens(player.inventory, EnumToken.BANK);
 		List<ItemStack> eaters = getTokens(player.inventory, EnumToken.EATER);
 		
+		for(int i = 0; i < player.inventory.getSizeInventory(); i++){
+			ItemStack s = player.inventory.getStackInSlot(i);
+			if(s == null || s.getItem() != ItemRegistry.honeyWidow)
+				continue;
+			HoneyWidow widow = new HoneyWidow(player, i);
+			
+			List<ItemStack> bs = getTokens(widow, EnumToken.BANK);
+			List<ItemStack> es = getTokens(widow, EnumToken.EATER);
+			for(ItemStack s2 : bs)
+				banks.add(s2);
+			for(ItemStack s2 : es)
+				eaters.add(s2);
+		}
 		
 		if(0 < banks.size()){
 			for(ItemStack bank : banks){

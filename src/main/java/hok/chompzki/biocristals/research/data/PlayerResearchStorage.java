@@ -1,6 +1,7 @@
 package hok.chompzki.biocristals.research.data;
 
 import hok.chompzki.biocristals.BioCristalsMod;
+import hok.chompzki.biocristals.CommonProxy;
 import hok.chompzki.biocristals.StorageHandler;
 import hok.chompzki.biocristals.api.IDataFile;
 import hok.chompzki.biocristals.client.gui.GuiInventoryOverlay;
@@ -131,7 +132,9 @@ public class PlayerResearchStorage implements IDataFile{
 		UUID subject = player.getOwnerId();
 		for(Entry<UUID, List<UUID>> entry : lissensOn.entrySet()){
 			UUID observer = entry.getKey();
-			EntityPlayerMP obs = (EntityPlayerMP) MinecraftServer.getServer().getEntityWorld().func_152378_a(observer);
+			EntityPlayerMP obs = CommonProxy.getPlayer(observer);
+			
+			
 			List<UUID> subjects = entry.getValue();
 			for(UUID s : subjects)
 				if(s.compareTo(subject) == 0)
@@ -151,7 +154,7 @@ public class PlayerResearchStorage implements IDataFile{
 		UUID id = event.player.getGameProfile().getId();
 		//System.out.println("LOG IN!!! ");
 		if(!this.players.containsKey(id)){
-			EntityPlayerMP player = (EntityPlayerMP) MinecraftServer.getServer().getEntityWorld().func_152378_a(id);
+			EntityPlayerMP player = CommonProxy.getPlayer(id);
 			player.inventory.addItemStackToInventory(new ItemStack(ItemRegistry.researchBook));
 			this.put(id, new PlayerResearch(id));
 			this.get(id).setUsername(event.player.getCommandSenderName());
@@ -171,7 +174,12 @@ public class PlayerResearchStorage implements IDataFile{
 			return;
 		list.add(subject);
 		PlayerResearch sub = this.get(subject);
-		EntityPlayerMP player = (EntityPlayerMP) MinecraftServer.getServer().getEntityWorld().func_152378_a(observer);
+		if(sub == null){
+			System.out.println(observer + " TRIES TO OBSERVE " + subject + ", BUT IT DOSN'T EXIST!");
+			return;
+		}
+		EntityPlayerMP player = CommonProxy.getPlayer(observer);
+		
 		BioCristalsMod.network.sendTo(new PlayerStorageSyncMessage(sub), player);
 	}
 	

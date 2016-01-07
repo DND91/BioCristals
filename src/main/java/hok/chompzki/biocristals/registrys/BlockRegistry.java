@@ -15,6 +15,7 @@ import hok.chompzki.biocristals.blocks.BlockCrootStreamStem;
 import hok.chompzki.biocristals.blocks.BlockCrootTrunk;
 import hok.chompzki.biocristals.blocks.BlockExtractor;
 import hok.chompzki.biocristals.blocks.BlockGhost;
+import hok.chompzki.biocristals.blocks.BlockLightGoo;
 import hok.chompzki.biocristals.blocks.BlockMembrane;
 import hok.chompzki.biocristals.blocks.BlockNest;
 import hok.chompzki.biocristals.blocks.BlockPlatformer;
@@ -67,6 +68,7 @@ public class BlockRegistry {
 	public static Block ghost = null;
 	public static Block replacer = null;
 	public static Block replacerOpen = null;
+	public static Block lightGoo = null;
 	
 	public static Block structer = null;
 	
@@ -125,6 +127,7 @@ public class BlockRegistry {
 		replacerOpen = new BlockReplacerOpen();
 		tokenAssembler = new BlockTokenAssembler();
 		sacrificePit = new BlockSacrificePit();
+		lightGoo = new BlockLightGoo();
 		
 		
 		CrootModule module = new CrootModule();
@@ -205,6 +208,7 @@ public class BlockRegistry {
 		GameRegistry.registerBlock(replacerOpen, BlockReplacerOpen.NAME);
 		GameRegistry.registerBlock(tokenAssembler, BlockTokenAssembler.NAME);
 		GameRegistry.registerBlock(sacrificePit, BlockSacrificePit.NAME);
+		GameRegistry.registerBlock(lightGoo, BlockLightGoo.NAME);
 	}
 	
 	

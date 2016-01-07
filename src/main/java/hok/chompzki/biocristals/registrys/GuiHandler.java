@@ -2,20 +2,24 @@ package hok.chompzki.biocristals.registrys;
 
 import java.util.UUID;
 
+import hok.chompzki.biocristals.client.gui.GuiArmorAttuner;
 import hok.chompzki.biocristals.client.gui.GuiCrootBreeder;
 import hok.chompzki.biocristals.client.gui.GuiCrootCore;
 import hok.chompzki.biocristals.client.gui.GuiCrootHollow;
 import hok.chompzki.biocristals.client.gui.GuiHiveBrain;
 import hok.chompzki.biocristals.client.gui.GuiHivebag;
+import hok.chompzki.biocristals.client.gui.GuiHoneyWidow;
 import hok.chompzki.biocristals.client.gui.GuiNest;
 import hok.chompzki.biocristals.client.gui.GuiResearchBook;
 import hok.chompzki.biocristals.client.gui.GuiSacrificePit;
 import hok.chompzki.biocristals.client.gui.GuiTokenAssembler;
+import hok.chompzki.biocristals.containers.ContainerArmorAttuner;
 import hok.chompzki.biocristals.containers.ContainerCrootBreeder;
 import hok.chompzki.biocristals.containers.ContainerCrootHollow;
 import hok.chompzki.biocristals.containers.ContainerCrootCore;
 import hok.chompzki.biocristals.containers.ContainerHiveBrain;
 import hok.chompzki.biocristals.containers.ContainerHivebag;
+import hok.chompzki.biocristals.containers.ContainerHoneyWidow;
 import hok.chompzki.biocristals.containers.ContainerNest;
 import hok.chompzki.biocristals.containers.ContainerSacrificePit;
 import hok.chompzki.biocristals.containers.ContainerTokenAssembler;
@@ -79,6 +83,10 @@ public class GuiHandler implements IGuiHandler {
 		}else if(ID == 108){
 			TileEntity tileEntity = world.getTileEntity(x, y, z);
 			return new ContainerSacrificePit(player, (TileSacrificePit)tileEntity);
+		} else if(ID == 109){
+			return new ContainerHoneyWidow(player, player.inventory.currentItem);
+		} else if(ID == 110){
+			return new ContainerArmorAttuner(player);
 		}
 		
 		return null;
@@ -121,6 +129,10 @@ public class GuiHandler implements IGuiHandler {
 		}else if(ID == 108){
 			TileEntity tileEntity = world.getTileEntity(x, y, z);
 			return new GuiSacrificePit(player, (TileSacrificePit)tileEntity);
+		}else if(ID == 109){
+			return new GuiHoneyWidow(player, player.inventory.currentItem);
+		}else if(ID == 110){
+			return new GuiArmorAttuner(player);
 		}
 		
 		return null;

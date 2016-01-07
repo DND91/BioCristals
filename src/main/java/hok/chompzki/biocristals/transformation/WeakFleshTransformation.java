@@ -36,7 +36,10 @@ public class WeakFleshTransformation implements IEntityTransformation {
 			Entity taget) {
 		UUID id = player.getGameProfile().getId();
 		PlayerResearch research = PlayerResearchStorage.instance(false).get(id);
-		
+		if(research == null){
+			System.out.println("UNKOWN PLAYER TRIED TRANSFORMATION WITHOUT REGISTATION: " + player.getDisplayName());
+			return false;
+		}
 		return code.equals("NONE") || ResearchLogicNetwork.instance().available(research, code);
 	}
 
@@ -64,6 +67,10 @@ public class WeakFleshTransformation implements IEntityTransformation {
 		if(code != null){
 			UUID id = player.getGameProfile().getId();
 			PlayerResearch research = PlayerResearchStorage.instance(false).get(id);
+			if(research == null){
+				System.out.println("UNKOWN PLAYER TRIED WEAK FLESH WITHOUT REGISTATION: " + player.getDisplayName());
+				return;
+			}
 			ResearchLogicNetwork.instance().compelte(research, code);
 		}
 	}

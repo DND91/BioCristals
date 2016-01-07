@@ -54,7 +54,10 @@ public class ItemUnlockBug extends ItemFood{
         
         UUID id = player.getGameProfile().getId();
         PlayerResearch research = PlayerResearchStorage.instance(false).get(id);
-        
+        if(research == null){
+			System.out.println("UNKOWN PLAYER TRIED UNLOCK BUG WITHOUT REGISTATION: " + player.getDisplayName());
+			return stack;
+		}
         for(Research master : ReserchDataNetwork.instance().getMasters()){
         	unlockAll(research, master.getCode());
         }

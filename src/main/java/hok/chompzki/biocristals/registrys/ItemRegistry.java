@@ -10,7 +10,6 @@ import hok.chompzki.biocristals.items.ItemAttuner;
 import hok.chompzki.biocristals.items.ItemBioBlob;
 import hok.chompzki.biocristals.items.ItemBioReagent;
 import hok.chompzki.biocristals.items.ItemCatalystInjector;
-import hok.chompzki.biocristals.items.ItemChitinArmor;
 import hok.chompzki.biocristals.items.ItemChitinPlate;
 import hok.chompzki.biocristals.items.ItemCollector;
 import hok.chompzki.biocristals.items.ItemCrootHoe;
@@ -20,13 +19,17 @@ import hok.chompzki.biocristals.items.ItemHiveBrain;
 import hok.chompzki.biocristals.items.ItemCrootStick;
 import hok.chompzki.biocristals.items.ItemNomadSack;
 import hok.chompzki.biocristals.items.ItemResearchBook;
+import hok.chompzki.biocristals.items.armor.ItemArmorAttuner;
+import hok.chompzki.biocristals.items.armor.ItemBioModArmor;
 import hok.chompzki.biocristals.items.insects.ItemClayHunter;
 import hok.chompzki.biocristals.items.insects.ItemCrootBeetle;
 import hok.chompzki.biocristals.items.insects.ItemCrootClaw;
 import hok.chompzki.biocristals.items.insects.ItemFruitSpider;
 import hok.chompzki.biocristals.items.insects.ItemHivebag;
+import hok.chompzki.biocristals.items.insects.ItemHoneyWidow;
 import hok.chompzki.biocristals.items.insects.ItemKittehBeetle;
 import hok.chompzki.biocristals.items.insects.ItemKraKenBug;
+import hok.chompzki.biocristals.items.insects.ItemLightbringer;
 import hok.chompzki.biocristals.items.insects.ItemUnlockBug;
 import hok.chompzki.biocristals.items.insects.ItemVoidCrawler;
 import hok.chompzki.biocristals.items.insects.ItemWSB;
@@ -90,6 +93,9 @@ public class ItemRegistry {
 	public static Item fruitSpider = null;
 	public static Item voidCrawler = null;
 	public static Item hiveBrain = null;
+	public static Item lightBringer = null;
+	public static Item honeyWidow = null;
+	public static Item armorAttuner = null;
 	
 	public static Item tokenFeeder = null;
 	public static Item tokenBridge = null;
@@ -122,6 +128,9 @@ public class ItemRegistry {
 		crootWoodHoe = new ItemCrootHoe(7*7-1);
 		fruitSpider = new ItemFruitSpider();
 		voidCrawler = new ItemVoidCrawler();
+		lightBringer = new ItemLightbringer();
+		honeyWidow = new ItemHoneyWidow();
+		armorAttuner = new ItemArmorAttuner();
 		
 		hiveBrain = new ItemHiveBrain();
 		tokenFeeder = new ItemFeeder();
@@ -154,11 +163,14 @@ public class ItemRegistry {
 		GameRegistry.registerItem(crootWoodHoe, ItemCrootHoe.NAME, BioCristalsMod.MODID);
 		GameRegistry.registerItem(fruitSpider, ItemFruitSpider.NAME, BioCristalsMod.MODID);
 		GameRegistry.registerItem(voidCrawler, ItemVoidCrawler.NAME, BioCristalsMod.MODID);
+		GameRegistry.registerItem(lightBringer, ItemLightbringer.NAME, BioCristalsMod.MODID);
+		GameRegistry.registerItem(honeyWidow, ItemHoneyWidow.NAME, BioCristalsMod.MODID);
+		GameRegistry.registerItem(armorAttuner, ItemArmorAttuner.NAME, BioCristalsMod.MODID);
 		
-		GameRegistry.registerItem(chitinHelmet = new ItemChitinArmor("chitinHelmet", chitin_armor, "chitin_layer", 0), "chitinHelmet"); //0 for helmet
-		GameRegistry.registerItem(chitinChestplate = new ItemChitinArmor("chitinChestplate", chitin_armor, "chitin_layer", 1), "chitinChestplate"); // 1 for chestplate
-		GameRegistry.registerItem(chitinLeggings = new ItemChitinArmor("chitinLeggings", chitin_armor, "chitin_layer", 2), "chitinLeggings"); // 2 for leggings
-		GameRegistry.registerItem(chitinBoots = new ItemChitinArmor("chitinBoots", chitin_armor, "chitin_layer", 3), "chitinBoots"); // 3 for boots
+		GameRegistry.registerItem(chitinHelmet = new ItemBioModArmor("chitinHelmet", chitin_armor, "chitin_layer", 0), "chitinHelmet"); //0 for helmet
+		GameRegistry.registerItem(chitinChestplate = new ItemBioModArmor("chitinChestplate", chitin_armor, "chitin_layer", 1), "chitinChestplate"); // 1 for chestplate
+		GameRegistry.registerItem(chitinLeggings = new ItemBioModArmor("chitinLeggings", chitin_armor, "chitin_layer", 2), "chitinLeggings"); // 2 for leggings
+		GameRegistry.registerItem(chitinBoots = new ItemBioModArmor("chitinBoots", chitin_armor, "chitin_layer", 3), "chitinBoots"); // 3 for boots
 	}
 
 	public void setupFilters() {

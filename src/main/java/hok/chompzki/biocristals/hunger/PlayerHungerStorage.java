@@ -1,6 +1,7 @@
 package hok.chompzki.biocristals.hunger;
 
 import hok.chompzki.biocristals.BioCristalsMod;
+import hok.chompzki.biocristals.CommonProxy;
 import hok.chompzki.biocristals.StorageHandler;
 import hok.chompzki.biocristals.api.IDataFile;
 import hok.chompzki.biocristals.client.gui.GuiInventoryOverlay;
@@ -136,7 +137,7 @@ public class PlayerHungerStorage implements IDataFile{
 		String subject = player.getName();
 		for(Entry<UUID, List<String>> entry : lissensOn.entrySet()){
 			UUID observer = entry.getKey();
-			EntityPlayerMP obs = (EntityPlayerMP) MinecraftServer.getServer().getEntityWorld().func_152378_a(observer);
+			EntityPlayerMP obs = CommonProxy.getPlayer(observer);
 			List<String> subjects = entry.getValue();
 			if(subjects.contains(subject))
 					BioCristalsMod.network.sendTo(new PlayerHungerSyncMessage(player), obs);
@@ -171,7 +172,8 @@ public class PlayerHungerStorage implements IDataFile{
 			return;
 		list.add(subject);
 		PlayerHungerNetwork sub = this.get(subject);
-		EntityPlayerMP player = (EntityPlayerMP) MinecraftServer.getServer().getEntityWorld().func_152378_a(observer);
+		EntityPlayerMP player = CommonProxy.getPlayer(observer);
+		
 		BioCristalsMod.network.sendTo(new PlayerHungerSyncMessage(sub), player);
 	}
 	

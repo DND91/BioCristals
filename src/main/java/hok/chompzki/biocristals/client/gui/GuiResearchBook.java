@@ -10,6 +10,7 @@ import hok.chompzki.biocristals.research.data.PlayerResearchStorage;
 import hok.chompzki.biocristals.research.data.Research;
 import hok.chompzki.biocristals.research.data.network.PlayerStorageDelissenMessage;
 import hok.chompzki.biocristals.research.data.network.PlayerStorageFaveMessage;
+import hok.chompzki.biocristals.research.data.network.PlayerStoragePullMessage;
 import hok.chompzki.biocristals.research.data.network.PlayerStorageSyncHandler;
 import hok.chompzki.biocristals.research.logic.ResearchLogicNetwork;
 
@@ -346,8 +347,10 @@ public class GuiResearchBook extends GuiScreen {
         int i = 1;
         
         PlayerResearch player = PlayerResearchStorage.instance(true).get(this.player);
-        if(player == null)
+        if(player == null){
+        	BioCristalsMod.network.sendToServer(new PlayerStoragePullMessage(this.player));
         	return;
+        }
         
         boolean owner = this.player.equals(this.reader.getGameProfile().getId());
         
@@ -595,6 +598,7 @@ public class GuiResearchBook extends GuiScreen {
         PlayerResearch res = PlayerResearchStorage.instance(true).get(player);
         if(res == null){
         	this.drawString(fontRendererObj, "Syncing...", k1, l1, 0xFFFFFF);
+        	BioCristalsMod.network.sendToServer(new PlayerStoragePullMessage(player));
         	return;
         }
         for(Research knowledge : ResearchLogicNetwork.instance().getOpenResearches(this.selectedChapeter, res)){
@@ -605,7 +609,13 @@ public class GuiResearchBook extends GuiScreen {
             	i5 = k1 + colum;
                 l4 = l1 + row;
                 
-                this.drawIcon(knowledge, i5, l4, PlayerResearchStorage.instance(true).get(player).hasCompleted(knowledge.getCode()), true);
+                PlayerResearch r = PlayerResearchStorage.instance(true).get(player);
+                if(res == null){
+                	BioCristalsMod.network.sendToServer(new PlayerStoragePullMessage(player));
+                	return;
+                }
+                
+                this.drawIcon(knowledge, i5, l4, r.hasCompleted(knowledge.getCode()), true);
                 Rectangle rect = new Rectangle(i5, l4, 26, 26);
                 if(rect.contains(new Rectangle(par1, par2, 2, 2))){
                 	tooltipResearch = knowledge;
@@ -674,6 +684,10 @@ public class GuiResearchBook extends GuiScreen {
           GL11.glColor4f(f3, f3, f3, 1.0F);
           
          PlayerResearch res = PlayerResearchStorage.instance(true).get(player);
+         if(res == null){
+        	 BioCristalsMod.network.sendToServer(new PlayerStoragePullMessage(player));
+        	 return;
+         }
          boolean owner = player.equals(this.reader.getGameProfile().getId());
          
          if (research.getSpecial())

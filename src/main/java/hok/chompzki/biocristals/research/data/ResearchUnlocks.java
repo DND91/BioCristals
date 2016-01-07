@@ -90,6 +90,10 @@ public class ResearchUnlocks {
 			if(stack.getItem() == result.getItem() && (result.getItemDamage() == OreDictionary.WILDCARD_VALUE || stack.getItemDamage() == result.getItemDamage())){
 				UUID id = player.getGameProfile().getId();
 				PlayerResearch research = PlayerResearchStorage.instance(false).get(id);
+				if(research == null){
+					System.out.println("UNKOWN PLAYER TRIED UNLOCK RESEARCH WITHOUT REGISTATION: " + player.getDisplayName());
+					return;
+				}
 				ResearchLogicNetwork.instance().compelte(research, data.code);
 				return;
 			}

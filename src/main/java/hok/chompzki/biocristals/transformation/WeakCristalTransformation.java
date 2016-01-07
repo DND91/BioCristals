@@ -36,7 +36,10 @@ public class WeakCristalTransformation implements ITransformation {
 	public boolean hasResources(ItemStack stack, EntityPlayer player) {
 		UUID id = player.getGameProfile().getId();
 		PlayerResearch research = PlayerResearchStorage.instance(false).get(id);
-		
+		if(research == null){
+			System.out.println("UNKOWN PLAYER TRIED TRANSFORMATION WITHOUT REGISTATION: " + player.getDisplayName());
+			return false;
+		}
 		return container.code.equals("NONE") || ResearchLogicNetwork.instance().available(research, container.code);
 	}
 
@@ -76,7 +79,10 @@ public class WeakCristalTransformation implements ITransformation {
 			if(container.code != null && !container.code.equals("NONE")){
 				UUID id = player.getGameProfile().getId();
 				PlayerResearch research = PlayerResearchStorage.instance(false).get(id);
-				ResearchLogicNetwork.instance().compelte(research, container.code);
+				if(research == null){
+					System.out.println("Ehm... someone tried to complete the uncompletable! " + player.getDisplayName());
+				}else
+					ResearchLogicNetwork.instance().compelte(research, container.code);
 			}
 		}
 	}

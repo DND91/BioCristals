@@ -11,6 +11,8 @@ import hok.chompzki.biocristals.research.data.network.PlayerStorageDelissenHandl
 import hok.chompzki.biocristals.research.data.network.PlayerStorageDelissenMessage;
 import hok.chompzki.biocristals.research.data.network.PlayerStorageFaveHandler;
 import hok.chompzki.biocristals.research.data.network.PlayerStorageFaveMessage;
+import hok.chompzki.biocristals.research.data.network.PlayerStoragePullHandler;
+import hok.chompzki.biocristals.research.data.network.PlayerStoragePullMessage;
 import hok.chompzki.biocristals.research.data.network.PlayerStorageSyncHandler;
 import hok.chompzki.biocristals.research.data.network.PlayerStorageSyncMessage;
 import net.minecraft.creativetab.CreativeTabs;
@@ -67,6 +69,8 @@ public class BioCristalsMod
 	    
 	    network.registerMessage(PlayerHungerSyncHandler.class, PlayerHungerSyncMessage.class, 4, Side.CLIENT);
 	    network.registerMessage(PlayerHungerDelissenHandler.class, PlayerHungerDelissenMessage.class, 5, Side.SERVER);
+	    
+	    network.registerMessage(PlayerStoragePullHandler.class, PlayerStoragePullMessage.class, 6, Side.SERVER);
 	    
 	}
 

@@ -270,6 +270,10 @@ public class TileReagentPurifier extends TileCroot implements IInventory{
 				if(this.owner == null)
 					return;
 				PlayerResearch research = PlayerResearchStorage.instance(false).get(owner);
+				if(research == null){
+					System.out.println("UNKOWN PLAYER TRIED WEAK FLESH WITHOUT REGISTATION: " + owner);
+					return;
+				}
 				if(!ResearchLogicNetwork.instance().available(research, recipe.code())){
 					recipe = null;
 					return;
@@ -308,6 +312,10 @@ public class TileReagentPurifier extends TileCroot implements IInventory{
 				return;
 			}
 			PlayerResearch research = PlayerResearchStorage.instance(false).get(owner);
+			if(research == null){
+				System.out.println("UNKOWN PLAYER TRIED WEAK FLESH WITHOUT REGISTATION: " + owner);
+				return;
+			}
 			ResearchLogicNetwork.instance().compelte(research, recipe.code());
 			recipe = null;
 		} else{

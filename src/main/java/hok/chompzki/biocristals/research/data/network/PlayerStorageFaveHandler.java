@@ -22,7 +22,7 @@ public class PlayerStorageFaveHandler implements IMessageHandler<PlayerStorageFa
 			MessageContext ctx) {
 		UUID id = UUID.fromString(message.getContainer().observer);
 		if(PlayerResearchStorage.instance(false).get(id) == null){
-			System.err.println("ERROR: PLAYER RESEARCH NOT FOUND IN FAVE HANDELING!");
+			System.err.println("ERROR: PLAYER RESEARCH NOT FOUND IN FAVE HANDELING! " + ctx.getServerHandler().playerEntity.getDisplayName());
 			return null;
 		}
 		if(PlayerResearchStorage.instance(false).get(id).hasFaved(message.getContainer().subject)){

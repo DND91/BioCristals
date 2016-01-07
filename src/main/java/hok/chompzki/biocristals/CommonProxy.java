@@ -1,14 +1,19 @@
 package hok.chompzki.biocristals;
 
 import java.util.List;
+import java.util.UUID;
 
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
 import hok.chompzki.biocristals.croot.power.TreeStorage;
 import hok.chompzki.biocristals.hunger.PlayerHungerStorage;
 import hok.chompzki.biocristals.recipes.RecipeTransformer;
+import hok.chompzki.biocristals.registrys.ArmorPatternRegistry;
 import hok.chompzki.biocristals.registrys.BioEntityRegistry;
 import hok.chompzki.biocristals.registrys.BiomeRegistry;
 import hok.chompzki.biocristals.registrys.BlockRegistry;
@@ -95,6 +100,9 @@ public class CommonProxy {
     	
     	DrawbackRegistry drawbacks = new DrawbackRegistry();
     	drawbacks.init(event);
+    	
+    	ArmorPatternRegistry patterns = new ArmorPatternRegistry();
+    	patterns.init(event);
 	}
 
     
@@ -110,5 +118,13 @@ public class CommonProxy {
 		PlayerHungerStorage.instance(false);
 	}
 	
+	public static EntityPlayerMP getPlayer(UUID id){
+		for(WorldServer world : MinecraftServer.getServer().worldServers){
+			EntityPlayerMP player = (EntityPlayerMP) world.func_152378_a(id);
+			if(player != null)
+				return player;
+		}
+		return null;
+	}
 	
 }

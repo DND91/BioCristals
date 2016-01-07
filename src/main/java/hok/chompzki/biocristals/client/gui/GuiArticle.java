@@ -11,6 +11,8 @@ import hok.chompzki.biocristals.research.data.DataHelper;
 import hok.chompzki.biocristals.research.data.PlayerResearchStorage;
 import hok.chompzki.biocristals.research.data.Research;
 import hok.chompzki.biocristals.research.data.network.PlayerStorageFaveMessage;
+import hok.chompzki.biocristals.research.data.network.PlayerStoragePullMessage;
+import hok.chompzki.biocristals.research.data.network.PlayerStorageSyncMessage;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
@@ -109,7 +111,11 @@ public class GuiArticle extends GuiScreen {
         
         this.buttonCheckboxPage.visible = DataHelper.belongsTo(reader, stack); //TODO: this.article.getContent().getFaved() != null && this.content.getFaved() != null && 
         if(this.buttonCheckboxPage.visible){
-        	this.buttonCheckboxPage.selected = PlayerResearchStorage.instance(true).get(owner).hasFaved(article.getCode());
+        	if(PlayerResearchStorage.instance(true).get(owner) == null){
+        		BioCristalsMod.network.sendToServer(new PlayerStoragePullMessage(owner));
+        	}else {
+        		this.buttonCheckboxPage.selected = PlayerResearchStorage.instance(true).get(owner).hasFaved(article.getCode());
+        	}
         }
     }
 	
@@ -208,7 +214,13 @@ public class GuiArticle extends GuiScreen {
     {
 		this.buttonCheckboxPage.visible = reader.getGameProfile().getId().equals(owner); //TODO: this.content.getFaved() != null && 
         if(this.buttonCheckboxPage.visible){
-        	this.buttonCheckboxPage.selected = PlayerResearchStorage.instance(true).get(owner).hasFaved(article.getCode());
+        	if(PlayerResearchStorage.instance(true).get(owner) == null){
+        		this.buttonCheckboxPage.selected = false;
+        		BioCristalsMod.network.sendToServer(new PlayerStoragePullMessage(owner));
+        		return;
+        	}else {
+        		this.buttonCheckboxPage.selected = PlayerResearchStorage.instance(true).get(owner).hasFaved(article.getCode());
+        	}
         }
         
 		int k = last.calculateLeft() + last.getScreenWidth();

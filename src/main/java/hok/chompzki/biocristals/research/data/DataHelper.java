@@ -1,6 +1,8 @@
 package hok.chompzki.biocristals.research.data;
 
+import hok.chompzki.biocristals.BioCristalsMod;
 import hok.chompzki.biocristals.hunger.PlayerHungerStorage;
+import hok.chompzki.biocristals.research.data.network.PlayerStoragePullMessage;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -84,9 +86,10 @@ public class DataHelper {
 	}
 	
 	public static String getOwnerName(UUID id, World world){
-		if(PlayerResearchStorage.instance(true).get(id) == null)
+		if(PlayerResearchStorage.instance(true).get(id) == null){
+			BioCristalsMod.network.sendToServer(new PlayerStoragePullMessage(id));
 			return "UNKOWN";
-		else
+		}else
 			return PlayerResearchStorage.instance(true).get(id).getUsername();
 	}
 	
