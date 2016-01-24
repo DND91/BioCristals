@@ -1,9 +1,9 @@
 [
 {
-  "modid": "BioCristals",
-  "name": "Bio Cristals",
-  "description": "Agriculture with cristaline biotech.",
-  "version": "1.8.11",
+  "modid": "Hivetera",
+  "name": "Hivetera",
+  "description": "Agriculture, Hive, bugs and exploration.",
+  "version": "2.0.0",
   "mcversion": "1.7.10",
   "url": "",
   "updateUrl": "",
