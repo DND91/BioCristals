@@ -28,7 +28,7 @@ public class ItemClayHunter extends ItemInsect implements INestInsect {
 	public ItemClayHunter(){
 		super(EnumResource.LIFE_FLUIDS, 5.0D, 5.0D, false);
 		setUnlocalizedName(HiveteraMod.MODID + "_" + NAME);
-		setCreativeTab(HiveteraMod.creativeTab);
+		setCreativeTab(HiveteraMod.insectTab);
 		setTextureName(HiveteraMod.MODID + ":" + NAME);
 	}
 

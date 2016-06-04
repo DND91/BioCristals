@@ -233,5 +233,9 @@ public class BioArmor implements IInventory {
 	public SocketType getType(int slot){
 		return this.inventory[slot].type;
 	}
+	
+	public boolean isBroken() {
+		return stack.getMaxDamage() <= stack.getItemDamage();
+	}
 }
 

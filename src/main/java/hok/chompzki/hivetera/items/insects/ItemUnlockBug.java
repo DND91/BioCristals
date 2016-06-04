@@ -34,7 +34,7 @@ public class ItemUnlockBug extends ItemFood{
 	public ItemUnlockBug() {
 		super(1, 1, false);
         setUnlocalizedName(HiveteraMod.MODID + "_" + NAME);
-		setCreativeTab(HiveteraMod.creativeTab);
+		setCreativeTab(HiveteraMod.insectTab);
 		setTextureName(HiveteraMod.MODID + ":" + NAME);
 		setAlwaysEdible();
 	}

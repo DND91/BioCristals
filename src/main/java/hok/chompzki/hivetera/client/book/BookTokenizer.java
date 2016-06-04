@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.util.ResourceLocation;
@@ -39,7 +40,7 @@ public class BookTokenizer {
 		resources.put(code, new ResourceLocation(standardPath + code + ".arc"));
 	}
 	
-	public void init(FMLInitializationEvent event) {
+	public void init(FMLPostInitializationEvent event) {
 		for(Entry<String, ResourceLocation> entry : resources.entrySet()){
 			ResourceLocation loc = entry.getValue();
 			IResource resource;

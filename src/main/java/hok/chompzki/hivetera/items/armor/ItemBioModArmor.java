@@ -1,7 +1,10 @@
 package hok.chompzki.hivetera.items.armor;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
+
+import org.lwjgl.input.Keyboard;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -10,6 +13,7 @@ import hok.chompzki.hivetera.NBTHelper;
 import hok.chompzki.hivetera.api.IArmorInsect;
 import hok.chompzki.hivetera.api.IInsect;
 import hok.chompzki.hivetera.containers.BioArmor;
+import hok.chompzki.hivetera.containers.BioArmor.BioArmorBase;
 import hok.chompzki.hivetera.hunger.logic.EnumResource;
 import hok.chompzki.hivetera.registrys.ArmorPatternRegistry;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -30,6 +34,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ISpecialArmor;
 
 public class ItemBioModArmor extends ItemArmor implements ISpecialArmor, IInsect {
+	
+	public static ArrayList<ModifierInsect> modifiers = new ArrayList<ModifierInsect>();
 	
 	@SideOnly(Side.CLIENT)
 	private IIcon overlay;
@@ -102,8 +108,24 @@ public class ItemBioModArmor extends ItemArmor implements ISpecialArmor, IInsect
 		list.add("Pattern: " + I18n.format("container."+NBTHelper.get(stack, "PATTERN", ArmorPatternRegistry.pattern_names[0]), new Object[0]));
 		list.add("Protection: " + ((ItemBioModArmor)stack.getItem()).getDamageReduceAmount(stack));
 		list.add("Durability: " + (stack.getMaxDamage() - stack.getItemDamage()) + "/" + stack.getMaxDamage());
-		//TODO: ADD CONTENTS PRINTING IF ADCANCED TOOLTIP
 		
+		BioArmor armor = new BioArmor(stack);
+		if(armor.getSizeInventory() <= 0)
+			return;
+	
+		if(!advancedTooltip && !(Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)
+				|| Keyboard.isKeyDown(Keyboard.KEY_RCONTROL)
+				|| Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)
+				|| Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))){
+			list.add("...");
+			return;
+		}
+		
+		for(BioArmorBase base : armor.inventory){
+			if(base.slot == null)
+				continue;
+			list.add(" - " + base.slot.getDisplayName());
+		}
 	}
 	
 	@SideOnly(Side.CLIENT)
@@ -175,11 +197,11 @@ public class ItemBioModArmor extends ItemArmor implements ISpecialArmor, IInsect
         super.registerIcons(p_94581_1_);
         
         this.overlay = p_94581_1_.registerIcon(this.getIconString() + "_overlay");
-        this.offensive = p_94581_1_.registerIcon(HiveteraMod.MODID + ":/icons/offensive");
-        this.defensive = p_94581_1_.registerIcon(HiveteraMod.MODID + ":/icons/defensive");
-        this.eater = p_94581_1_.registerIcon(HiveteraMod.MODID + ":/icons/eater");
-        this.func = p_94581_1_.registerIcon(HiveteraMod.MODID + ":/icons/func");
-        this.passive = p_94581_1_.registerIcon(HiveteraMod.MODID + ":/icons/passive");
+        this.offensive = p_94581_1_.registerIcon(HiveteraMod.MODID + ":icons/offensive");
+        this.defensive = p_94581_1_.registerIcon(HiveteraMod.MODID + ":icons/defensive");
+        this.eater = p_94581_1_.registerIcon(HiveteraMod.MODID + ":icons/eater");
+        this.func = p_94581_1_.registerIcon(HiveteraMod.MODID + ":icons/func");
+        this.passive = p_94581_1_.registerIcon(HiveteraMod.MODID + ":icons/passive");
         
     }
     
@@ -207,7 +229,7 @@ public class ItemBioModArmor extends ItemArmor implements ISpecialArmor, IInsect
         super.setDamage(stack, Math.min(damage, this.getMaxDamage(stack)));
     }
 	
-	public BioArmor[] getArmors(EntityPlayer player){
+	public static BioArmor[] getArmors(EntityPlayer player){
 		BioArmor[] armors = new BioArmor[4];
 		for(int i = 0; i < 4; i++){
 			ItemStack stack = player.inventory.getStackInSlot(player.inventory.getSizeInventory() - 1 - i);
@@ -219,6 +241,34 @@ public class ItemBioModArmor extends ItemArmor implements ISpecialArmor, IInsect
 		return armors;
 	}
 	
+	public static boolean contains(EntityPlayer player, IArmorInsect insect){
+		BioArmor[] armors = getArmors(player);
+		for(BioArmor armor : armors){
+			if(armor == null || (armor.isBroken()))
+				continue;
+			for(int i = 0; i < armor.getSizeInventory(); i++){
+				if(armor.getStackInSlot(i) != null && armor.getStackInSlot(i).getItem() == insect)
+					return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	public static ItemStack getInsect(EntityPlayer player, IArmorInsect insect){
+		BioArmor[] armors = getArmors(player);
+		for(BioArmor armor : armors){
+			if(armor == null || (armor.isBroken()))
+				continue;
+			for(int i = 0; i < armor.getSizeInventory(); i++){
+				if(armor.getStackInSlot(i) != null && armor.getStackInSlot(i).getItem() == insect)
+					return armor.getStackInSlot(i);
+			}
+		}
+		
+		return null;
+	}
+	
 	public int getMaxDamage(ItemStack stack)
     {
 		int dmg = this.getMaxDamage();
@@ -228,6 +278,21 @@ public class ItemBioModArmor extends ItemArmor implements ISpecialArmor, IInsect
 			if(armor.getStackInSlot(i) != null && armor.getStackInSlot(i).getItem() instanceof IArmorInsect){
 				IArmorInsect insect = (IArmorInsect)armor.getStackInSlot(i).getItem();
 				dmg += insect.addMaxDamage(dmg, armor, i);
+			}
+		}
+		
+        return dmg;
+    }
+	
+	public int getDamageReduction(ItemStack stack)
+    {
+		int dmg = this.damageReduceAmount;
+		BioArmor armor = new BioArmor(stack);
+		
+		for(int i = 0; i < armor.getSizeInventory(); i++){
+			if(armor.getStackInSlot(i) != null && armor.getStackInSlot(i).getItem() instanceof IArmorInsect){
+				IArmorInsect insect = (IArmorInsect)armor.getStackInSlot(i).getItem();
+				dmg += insect.getDamageReduction(dmg, armor, i);
 			}
 		}
 		
@@ -273,28 +338,14 @@ public class ItemBioModArmor extends ItemArmor implements ISpecialArmor, IInsect
 	}
 	
 	public int getDamageReduceAmount(ItemStack stack){
-		return (int)Math.ceil((double)this.damageReduceAmount * (((double)stack.getMaxDamage() - (double)stack.getItemDamage()) / (double)stack.getMaxDamage()));
+		return (int)Math.ceil((double)this.getDamageReduction(stack) * (((double)stack.getMaxDamage() - (double)stack.getItemDamage()) / (double)stack.getMaxDamage()));
 	}
 	
 	@Override
 	public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) {
-		
-		int display = getDamageReduceAmount(armor);
-		ItemBioModArmor a = (ItemBioModArmor)armor.getItem();
-		
-		BioArmor[] armors = getArmors(player);
-		
-		for(int i = 0; i < armors[a.armorType].getSizeInventory(); i++){
-			if(armors[a.armorType].getStackInSlot(i) != null && armors[a.armorType].getStackInSlot(i).getItem() instanceof IArmorInsect){
-				IArmorInsect insect = (IArmorInsect)armors[a.armorType].getStackInSlot(i).getItem();
-				if(insect.shouldWork(player.worldObj, player, armors, a.armorType, i))
-					display += insect.getArmorDisplay(armors, player, a.armorType, i);
-			}
-		}
-		
-		return display;
+		return getDamageReduceAmount(armor);
 	}
-
+	
 	@Override
 	public void damageArmor(EntityLivingBase entity, ItemStack stack,
 			DamageSource source, int damage, int slot) {

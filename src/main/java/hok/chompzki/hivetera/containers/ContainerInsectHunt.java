@@ -6,6 +6,7 @@ import java.util.Random;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import hok.chompzki.hivetera.BioHelper;
+import hok.chompzki.hivetera.api.IInsect;
 import hok.chompzki.hivetera.client.slots.SlotCrootBeetle;
 import hok.chompzki.hivetera.client.slots.SlotEater;
 import hok.chompzki.hivetera.client.slots.SlotInsect;
@@ -305,10 +306,15 @@ public class ContainerInsectHunt extends Container {
     		ItemStack held = player.inventory.getItemStack();
     		
     		if(this.selected == 0) {//Sacrifice
-    			if(this.getSlot(slot).getHasStack() && this.getSlot(slot).getStack().getItem() == ItemRegistry.biomeSample){
-    				
+    			if(this.getSlot(slot).getHasStack() && (this.getSlot(slot).getStack().getItem() == ItemRegistry.biomeSample
+    					|| this.getSlot(slot).getStack().getItem() instanceof IInsect)){
     				int stackSize = this.getSlot(slot).getStack().stackSize;
-    				this.insectHunt.points += stackSize;
+    				int pts = stackSize;
+    				if(this.getSlot(slot).getStack().getItem() instanceof IInsect)
+    					pts *= 2;
+    				
+    				this.insectHunt.points += pts;
+    				
     				this.insectHunt.writeTo();
     				if(!player.worldObj.isRemote){
     					this.getSlot(slot).putStack(null);
@@ -367,8 +373,13 @@ public class ContainerInsectHunt extends Container {
     			}
     		}
     		
-    		
+    		if(this.getSlot(slot).getHasStack() && !player.worldObj.isRemote){
+    			ResearchUnlocks.unlock(player, EnumUnlock.PICKUP, this.getSlot(slot).getStack());
+    		}
     	}
+    	
+    	
+    	
     	return super.slotClick(slot, button, c, player);
     }
 

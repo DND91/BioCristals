@@ -29,7 +29,7 @@ public class ItemCrootClaw extends ItemInsect implements INestInsect{
 	public ItemCrootClaw(){
 		super(EnumResource.PSY_ENG, 5.0D, 10.0D, true);
 		setUnlocalizedName(HiveteraMod.MODID + "_" + NAME);
-		setCreativeTab(HiveteraMod.creativeTab);
+		setCreativeTab(HiveteraMod.insectTab);
 		setTextureName(HiveteraMod.MODID + ":" + NAME);
 	}
 	

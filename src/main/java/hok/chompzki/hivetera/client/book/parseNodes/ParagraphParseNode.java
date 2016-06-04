@@ -74,7 +74,13 @@ public class ParagraphParseNode extends ParseNode {
 				int s = fts.getStringWidth(current);
 				int oldL = cursor.x - s;
 				current += token.value + " ";
-				cursor.x += fts.getStringWidth(token.value + " ");
+				
+				try{
+					cursor.x += fts.getStringWidth(token.value + " ");
+				}catch (Exception ex){
+					System.err.println("[PARSING ERROR]" + arc.name + ": " + token.value);
+					throw ex;
+				}
 				
 				if(Article.maxWidth < cursor.x){
 					int j = fts.sizeStringToWidth(current, Article.maxWidth - oldL);
@@ -85,7 +91,7 @@ public class ParagraphParseNode extends ParseNode {
 					cursor.x = fts.getStringWidth(current);
 				}
 			} else {
-				System.err.println(command.toUpperCase() + ": Wanted a word or number but got " + token.value);
+				System.err.println(arc.name + ":" + command.toUpperCase() + ": Wanted a word or number but got " + token.value);
 				return;
 			}
 		}

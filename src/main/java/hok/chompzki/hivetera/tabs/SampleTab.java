@@ -1,19 +1,19 @@
-package hok.chompzki.hivetera;
+package hok.chompzki.hivetera.tabs;
 
 import hok.chompzki.hivetera.registrys.ItemRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 
 
-public class TokenTab extends CreativeTabs {
+public class SampleTab extends CreativeTabs {
 
-	public TokenTab() {
-		super("Hivetera_Tokens");
+	public SampleTab() {
+		super("Hivetera_Sampels");
 	}
 	
 	@Override
 	public Item getTabIconItem() {
-		return ItemRegistry.tokenFeeder;
+		return ItemRegistry.biomeSample;
 	}
 
 }

@@ -15,6 +15,10 @@ import hok.chompzki.hivetera.research.data.network.PlayerStoragePullHandler;
 import hok.chompzki.hivetera.research.data.network.PlayerStoragePullMessage;
 import hok.chompzki.hivetera.research.data.network.PlayerStorageSyncHandler;
 import hok.chompzki.hivetera.research.data.network.PlayerStorageSyncMessage;
+import hok.chompzki.hivetera.tabs.HiveteraTab;
+import hok.chompzki.hivetera.tabs.InsectTab;
+import hok.chompzki.hivetera.tabs.SampleTab;
+import hok.chompzki.hivetera.tabs.TokenTab;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import cpw.mods.fml.common.Mod;
@@ -38,6 +42,8 @@ public class HiveteraMod
 	
 	public static CreativeTabs creativeTab = new HiveteraTab();
 	public static CreativeTabs tokenTab = new TokenTab();
+	public static CreativeTabs insectTab = new InsectTab();
+	public static CreativeTabs sampleTab = new SampleTab();
 	
     public static final String MODID = "Hivetera";
     public static final String VERSION = "2.0.0";

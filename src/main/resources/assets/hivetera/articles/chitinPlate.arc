@@ -3,10 +3,6 @@
 - Crafting Recipe -
 <tab><RECIPE name=itemChitinPlate domain=Hivetera>
 <body><bold>Chitin Plate<end>
-Our ancestors started to experiment with the Clay Hunters to turn different bio-materials into clay.
-They noted that the clay could be made to smell and even taste good, not much of that would help them to survive.
-By mixing the insect with a food source, some young bio-material and extra clay they were able to create a chitin plate.
 <tab><RECIPE name=itemChitinPlate domain=Hivetera>
-The chitin plate were used in everything from armor, nests to buildings.
-The new found material is stronger then leather, but weaker then iron, and useless for enchanting.
-Investigation of the armor suggests that there is room to make it modular.
+When our ancestors first started experimenting with the Clay Hunters, their initial purpose was to turn different biomaterials into clay. While they found that the clay could be made to smell good as well as even taste good, these discoveries would not help them much in surviving. However, by mixing the insect with a food source, some young biomaterial, and clay, the nomads were able to create a Chitin plate.
+They Chitin Plates were used in everything, from armor to nest, and even buildings. Then new found material is stronger than leather, but weaker than iron, and useless when it comes to enchanting. Investigation of the armor suggests that there is room to make it modular.

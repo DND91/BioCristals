@@ -10,6 +10,8 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
+import hok.chompzki.hivetera.client.book.BookParseTree;
+import hok.chompzki.hivetera.client.book.BookTokenizer;
 import hok.chompzki.hivetera.croot.power.TreeStorage;
 import hok.chompzki.hivetera.hunger.PlayerHungerStorage;
 import hok.chompzki.hivetera.recipes.RecipeTransformer;
@@ -23,6 +25,7 @@ import hok.chompzki.hivetera.registrys.CristalRegistry;
 import hok.chompzki.hivetera.registrys.DrawbackRegistry;
 import hok.chompzki.hivetera.registrys.GuiHandler;
 import hok.chompzki.hivetera.registrys.ItemRegistry;
+import hok.chompzki.hivetera.registrys.PotionRegistry;
 import hok.chompzki.hivetera.registrys.RecipeRegistry;
 import hok.chompzki.hivetera.registrys.ReserchRegistry;
 import hok.chompzki.hivetera.registrys.TileEntityRegistry;
@@ -56,6 +59,8 @@ public class CommonProxy {
 		items.registerItems();
 		BlockRegistry blocks = new BlockRegistry();
 		blocks.registerBlocks();
+		PotionRegistry potions = new PotionRegistry();
+		potions.register();
 		
 		for(String ore : ConfigRegistry.oreDictBioMaterial){
 			List<ItemStack> list = OreDictionary.getOres(ore);
@@ -113,6 +118,14 @@ public class CommonProxy {
 		TreeStorage.instance();
 		ItemRegistry items = new ItemRegistry();
 		items.setupFilters();
+		
+		if(event.getSide() == Side.CLIENT){
+			BookTokenizer tok = new BookTokenizer();
+			tok.init(event);
+			
+			BookParseTree parser = new BookParseTree();
+			parser.init(event);
+		}
 	}
 
 

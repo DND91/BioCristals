@@ -34,7 +34,7 @@ public class ItemKraKenBug extends ItemFood implements INestInsect{
 	public ItemKraKenBug() {
 		super(4, 2.0F, false);
         setUnlocalizedName(HiveteraMod.MODID + "_" + NAME);
-		setCreativeTab(HiveteraMod.creativeTab);
+		setCreativeTab(HiveteraMod.insectTab);
 		setTextureName(HiveteraMod.MODID + ":" + NAME);
 		this.setMaxStackSize(64);
 		this.setHasSubtypes(true);

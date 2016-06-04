@@ -39,7 +39,7 @@ public class ItemCrootBeetle extends ItemInsect implements INestInsect {
 	public ItemCrootBeetle(){
 		super(EnumResource.RAW_FOOD, 1.0D, 10.0D, false);
 		setUnlocalizedName(HiveteraMod.MODID + "_" + NAME);
-		setCreativeTab(HiveteraMod.creativeTab);
+		setCreativeTab(HiveteraMod.insectTab);
 		setTextureName(HiveteraMod.MODID + ":" + NAME);
 		this.setMaxStackSize(64);
 	}

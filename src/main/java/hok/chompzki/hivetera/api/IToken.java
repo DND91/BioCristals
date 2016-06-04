@@ -2,6 +2,7 @@ package hok.chompzki.hivetera.api;
 
 import java.util.UUID;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import hok.chompzki.hivetera.hunger.logic.EnumResource;
 import hok.chompzki.hivetera.hunger.logic.EnumToken;
@@ -20,6 +21,8 @@ public interface IToken {
 	public void feed(ItemStack stack, ResourcePackage amount);
 	
 	public void drain(ItemStack stack, ResourcePackage p, double amount);
+
+	public boolean canFeed(ItemStack input, ResourcePackage pack);
 	
 	
 }

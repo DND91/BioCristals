@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 public class BlockLightGoo extends Block {
 	
 	public static final String NAME = "blockLightGoo";
-
+	
 	public BlockLightGoo() {
 		super(Material.grass);
 		setBlockName(HiveteraMod.MODID + "_" + NAME);

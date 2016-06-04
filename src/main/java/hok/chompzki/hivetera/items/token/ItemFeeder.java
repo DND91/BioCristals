@@ -104,4 +104,15 @@ public class ItemFeeder extends ItemToken implements IToken {
 	public void drain(ItemStack stack, ResourcePackage p, double amount) {
 	}
 
+
+	@Override
+	public boolean canFeed(ItemStack input, ResourcePackage pack) {
+		if(DataHelper.hasNetwork(input)){
+			String network = DataHelper.getNetwork(input);
+			String channel = this.getChannel(input);
+			return PlayerHungerStorage.instance(false).canFeed(network, channel, pack);
+		}
+		return false;
+	}
+
 }

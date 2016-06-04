@@ -42,7 +42,7 @@ public class ItemHoneyWidow extends ItemInsect implements INestInsect {
 		super(EnumResource.RAW_FOOD, 0.0D, 0.0D, false);
 		this.setNoRepair();
 		setUnlocalizedName(HiveteraMod.MODID + "_" + NAME);
-		setCreativeTab(HiveteraMod.creativeTab);
+		setCreativeTab(HiveteraMod.insectTab);
 		setTextureName(HiveteraMod.MODID + ":" + NAME);
 		this.setMaxStackSize(1);
 	}

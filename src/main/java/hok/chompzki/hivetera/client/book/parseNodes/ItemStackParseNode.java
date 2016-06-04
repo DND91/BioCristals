@@ -40,7 +40,6 @@ public class ItemStackParseNode extends ParseNode {
 	private static RenderItem itemRender = null;
 	private static ArticleFontRenderer fts = null;
 	
-	
 	public ItemStackParseNode() {
 		super("ITEMSTACK", ItemStackParseNode.class);
 		if(mc == null)
@@ -73,7 +72,7 @@ public class ItemStackParseNode extends ParseNode {
 					stack.setItemDamage(damage);
 				} else {
 					stack = new ItemStack(Blocks.command_block);
-					System.err.println(command + ": Didn't find item " + domain + ":" + name);
+					System.err.println(arc.name + ":" +command + ": Didn't find item " + domain + ":" + name);
 				}
 				
 				for(Entry<String, String> entry : nbtStrings.entrySet()){

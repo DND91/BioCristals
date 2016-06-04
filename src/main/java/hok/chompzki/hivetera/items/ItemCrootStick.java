@@ -183,7 +183,7 @@ public class ItemCrootStick extends Item {
 				int id = BiomeRegistry.biomeToId.get(type);
 				hunt.setInventorySlotContents(slot, new ItemStack(ItemRegistry.biomeSample, 1, id));
 				
-				if(!player.capabilities.isCreativeMode)
+				if(!player.capabilities.isCreativeMode && random.nextInt(4) == 0)
 					hunt.decrStackSize(0, 1);
 			}
 		}

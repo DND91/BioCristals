@@ -106,6 +106,10 @@ public class ReserchRegistry {
 	public static final Category tools = new Category("tools", "tools");
 	public static final Category breeding = new Category("breeding", "breeding");
 	
+	public static final Category offensive = new Category("offensive", "offensive");
+	public static final Category defensive = new Category("defensive", "defensive");
+	public static final Category passive = new Category("passive", "passive");
+	public static final Category functional = new Category("functional", "functional");
 	
 	//Reseaches
 	public static final String tutorial = "tutorial";
@@ -163,27 +167,43 @@ public class ReserchRegistry {
 	
 	public static final String crootHoe = "crootHoe";
 	
-	public static final String crootIronPickaxe = "crootIronPickaxe";
 	
-	public static final String chitinHelmetRed = "chitinHelmetRed";
-	public static final String chitinChestplateRed = "chitinChestplateRed";
-	public static final String chitinLeggingsRed = "chitinLeggingsRed";
-	public static final String chitinBootsRed = "chitinBootsRed";
+	public static final String chitinHelmetDevonian = "chitinHelmetDevonian";
+	public static final String chitinChestplateDevonian = "chitinChestplateDevonian";
+	public static final String chitinLeggingsDevonian = "chitinLeggingsDevonian";
+	public static final String chitinBootsDevonian = "chitinBootsDevonian";
 	
-	public static final String chitinHelmetBlue = "chitinHelmetBlue";
-	public static final String chitinChestplateBlue = "chitinChestplateBlue";
-	public static final String chitinLeggingsBlue = "chitinLeggingsBlue";
-	public static final String chitinBootsBlue = "chitinBootsBlue";
+	public static final String lightbringer = "lightbringer";
+	public static final String honeyWidow = "honeyWidow";
+	public static final String armorAttuner = "armorAttuner";
+	public static final String clayFoamer = "clayFoamer";
+	public static final String sprinter = "sprinter";
+	public static final String darter = "darter";
+	public static final String dragonShell = "dragonShell";
+	public static final String waterHunter = "waterHunter";
+	public static final String hillSpider = "hillSpider";
+	public static final String fireSprinter = "fireSprinter";
+	public static final String deathsWing = "deathsWing";
+	public static final String carpaceSlug = "carpaceSlug";
+	public static final String carpaceSnail = "carpaceSnail";
+	public static final String lifeShader = "lifeShader";
+	public static final String voidFarer = "voidFarer";
+	public static final String sludgeGrim = "sludgeGrim";
+	public static final String bullWorm = "bullWorm";
+	public static final String ssb = "ssb";
+	public static final String blackLeech = "blackLeech";
+	public static final String hungerSwarm = "hungerSwarm";
+	public static final String greenBlower = "greenBlower";
+	public static final String priestBeetle = "priestBeetle";
+	public static final String colonialSlug = "colonialSlug";
+	public static final String blueHorder = "blueHorder";
+	public static final String hungerLarva = "hungerLarva";
+	public static final String buttScotch = "buttScotch";
 	
-	public static final String chitinHelmetGreen = "chitinHelmetGreen";
-	public static final String chitinChestplateGreen = "chitinChestplateGreen";
-	public static final String chitinLeggingsGreen = "chitinLeggingsGreen";
-	public static final String chitinBootsGreen = "chitinBootsGreen";
 	
-	public static final String chitinHelmetYellow = "chitinHelmetYellow";
-	public static final String chitinChestplateYellow = "chitinChestplateYellow";
-	public static final String chitinLeggingsYellow = "chitinLeggingsYellow";
-	public static final String chitinBootsYellow = "chitinBootsYellow";
+	
+	
+	
 	
 	public static final String crootSapling = "crootSapling";
 	
@@ -253,7 +273,7 @@ public class ReserchRegistry {
 		ReserchDataNetwork.register(new Research(breedingCrootBeetle, 0, 0, ItemRegistry.crootBeetle, settlement, breeding, crootBreeder));
 		ReserchDataNetwork.register(new Research(breedingCrootClaw, 0, 0, ItemRegistry.crootClaw, settlement, breeding, crootBreeder));
 		ReserchDataNetwork.register(new Research(breedingKraKenBug, 0, 0, ItemRegistry.kraKenBug, settlement, breeding, crootBreeder));
-		ReserchDataNetwork.register(new Research(breedingWSB, 0, 0, ItemRegistry.wsb, settlement, breeding, crootBreeder).setSpecial());
+		ReserchDataNetwork.register(new Research(breedingWSB, 0, 0, ItemRegistry.wsb, settlement, breeding, crootBreeder));
 		ReserchDataNetwork.register(new Research(breedingKittehBeetle, 0, 0, ItemRegistry.kittehBeetle, settlement, breeding, crootBreeder));
 		ReserchDataNetwork.register(new Research(breedingClayHunter, 0, 0, ItemRegistry.clayHunter, settlement, breeding, crootBreeder));
 		ReserchDataNetwork.register(new Research(breedingHivebag, 0, 0, ItemRegistry.hivebag, settlement, breeding, crootBreeder));
@@ -261,88 +281,62 @@ public class ReserchRegistry {
 		
 		
 		//UNDERWORLD ERA
-		ReserchDataNetwork.register(new Research(crootIronPickaxe, 0, 0, ItemRegistry.crootIronPickaxe, underworld, tools, nest));
-		ReserchDataNetwork.register(new Research(voidCrawler, 0, 0, ItemRegistry.voidCrawler, underworld, breeding, crootBreeder, crootIronPickaxe));
 		
-		//ARMOR RED
+		//ARMOR DEVONIAN
 		int x = -2;
 		int y = 0;
 		ItemStack armor = new ItemStack(ItemRegistry.chitinHelmet);
 		armor.getItem().onCreated(armor, null, null);
 		armor.stackTagCompound.setString("PATTERN", ArmorPatternRegistry.pattern_names[1]);
-		ReserchDataNetwork.register(new Research(chitinHelmetRed, x, y-1, armor, underworld, breeding, crootBreeder, hungerPortal));
+		ReserchDataNetwork.register(new Research(chitinHelmetDevonian, x, y-1, armor, underworld, breeding, crootBreeder, hungerPortal));
 		armor = new ItemStack(ItemRegistry.chitinChestplate);
 		armor.getItem().onCreated(armor, null, null);
 		armor.stackTagCompound.setString("PATTERN", ArmorPatternRegistry.pattern_names[1]);
-		ReserchDataNetwork.register(new Research(chitinChestplateRed, x, y, armor, underworld, breeding, crootBreeder, hungerPortal));
+		ReserchDataNetwork.register(new Research(chitinChestplateDevonian, x, y, armor, underworld, breeding, crootBreeder, hungerPortal));
 		armor = new ItemStack(ItemRegistry.chitinLeggings);
 		armor.getItem().onCreated(armor, null, null);
 		armor.stackTagCompound.setString("PATTERN", ArmorPatternRegistry.pattern_names[1]);
-		ReserchDataNetwork.register(new Research(chitinLeggingsRed, x, y+1, armor, underworld, breeding, crootBreeder, hungerPortal));
+		ReserchDataNetwork.register(new Research(chitinLeggingsDevonian, x, y+1, armor, underworld, breeding, crootBreeder, hungerPortal));
 		armor = new ItemStack(ItemRegistry.chitinBoots);
 		armor.getItem().onCreated(armor, null, null);
 		armor.stackTagCompound.setString("PATTERN", ArmorPatternRegistry.pattern_names[1]);
-		ReserchDataNetwork.register(new Research(chitinBootsRed, x, y+2, armor, underworld, breeding, crootBreeder, hungerPortal));
+		ReserchDataNetwork.register(new Research(chitinBootsDevonian, x, y+2, armor, underworld, breeding, crootBreeder, hungerPortal));
 		
-		//ARMOR GREEN
-		x = -1;
-		y = 0;
-		armor = new ItemStack(ItemRegistry.chitinHelmet);
-		armor.getItem().onCreated(armor, null, null);
-		armor.stackTagCompound.setString("PATTERN", ArmorPatternRegistry.pattern_names[2]);
-		ReserchDataNetwork.register(new Research(chitinHelmetBlue, x, y-1, armor, underworld, breeding, crootBreeder, hungerPortal));
-		armor = new ItemStack(ItemRegistry.chitinChestplate);
-		armor.getItem().onCreated(armor, null, null);
-		armor.stackTagCompound.setString("PATTERN", ArmorPatternRegistry.pattern_names[2]);
-		ReserchDataNetwork.register(new Research(chitinChestplateBlue, x, y, armor, underworld, breeding, crootBreeder, hungerPortal));
-		armor = new ItemStack(ItemRegistry.chitinLeggings);
-		armor.getItem().onCreated(armor, null, null);
-		armor.stackTagCompound.setString("PATTERN", ArmorPatternRegistry.pattern_names[2]);
-		ReserchDataNetwork.register(new Research(chitinLeggingsBlue, x, y+1, armor, underworld, breeding, crootBreeder, hungerPortal));
-		armor = new ItemStack(ItemRegistry.chitinBoots);
-		armor.getItem().onCreated(armor, null, null);
-		armor.stackTagCompound.setString("PATTERN", ArmorPatternRegistry.pattern_names[2]);
-		ReserchDataNetwork.register(new Research(chitinBootsBlue, x, y+2, armor, underworld, breeding, crootBreeder, hungerPortal));
+		//UNDERWORLD
+		ReserchDataNetwork.register(new Research(armorAttuner, x-1, y, ItemRegistry.armorAttuner, underworld, fundamental, crootBreeder));
+		ReserchDataNetwork.register(new Research(voidCrawler, 0, y-1, ItemRegistry.voidCrawler, underworld, breeding, armorAttuner));
+		ReserchDataNetwork.register(new Research(honeyWidow, 0, y+1, ItemRegistry.honeyWidow, underworld, breeding, armorAttuner));
 		
-		//ARMOR BLUE
-		x = 2;
-		y = 0;
-		armor = new ItemStack(ItemRegistry.chitinHelmet);
-		armor.getItem().onCreated(armor, null, null);
-		armor.stackTagCompound.setString("PATTERN", ArmorPatternRegistry.pattern_names[3]);
-		ReserchDataNetwork.register(new Research(chitinHelmetGreen, x, y-1, armor, underworld, breeding, crootBreeder, hungerPortal));
-		armor = new ItemStack(ItemRegistry.chitinChestplate);
-		armor.getItem().onCreated(armor, null, null);
-		armor.stackTagCompound.setString("PATTERN", ArmorPatternRegistry.pattern_names[3]);
-		ReserchDataNetwork.register(new Research(chitinChestplateGreen, x, y, armor, underworld, breeding, crootBreeder, hungerPortal));
-		armor = new ItemStack(ItemRegistry.chitinLeggings);
-		armor.getItem().onCreated(armor, null, null);
-		armor.stackTagCompound.setString("PATTERN", ArmorPatternRegistry.pattern_names[3]);
-		ReserchDataNetwork.register(new Research(chitinLeggingsGreen, x, y+1, armor, underworld, breeding, crootBreeder, hungerPortal));
-		armor = new ItemStack(ItemRegistry.chitinBoots);
-		armor.getItem().onCreated(armor, null, null);
-		armor.stackTagCompound.setString("PATTERN", ArmorPatternRegistry.pattern_names[3]);
-		ReserchDataNetwork.register(new Research(chitinBootsGreen, x, y+2, armor, underworld, breeding, crootBreeder, hungerPortal));
-		
-		//ARMOR YELLOW
 		x = 1;
-		y = 0;
-		armor = new ItemStack(ItemRegistry.chitinHelmet);
-		armor.getItem().onCreated(armor, null, null);
-		armor.stackTagCompound.setString("PATTERN", ArmorPatternRegistry.pattern_names[4]);
-		ReserchDataNetwork.register(new Research(chitinHelmetYellow, x, y-1, armor, underworld, breeding, crootBreeder, hungerPortal));
-		armor = new ItemStack(ItemRegistry.chitinChestplate);
-		armor.getItem().onCreated(armor, null, null);
-		armor.stackTagCompound.setString("PATTERN", ArmorPatternRegistry.pattern_names[4]);
-		ReserchDataNetwork.register(new Research(chitinChestplateYellow, x, y, armor, underworld, breeding, crootBreeder, hungerPortal));
-		armor = new ItemStack(ItemRegistry.chitinLeggings);
-		armor.getItem().onCreated(armor, null, null);
-		armor.stackTagCompound.setString("PATTERN", ArmorPatternRegistry.pattern_names[4]);
-		ReserchDataNetwork.register(new Research(chitinLeggingsYellow, x, y+1, armor, underworld, breeding, crootBreeder, hungerPortal));
-		armor = new ItemStack(ItemRegistry.chitinBoots);
-		armor.getItem().onCreated(armor, null, null);
-		armor.stackTagCompound.setString("PATTERN", ArmorPatternRegistry.pattern_names[4]);
-		ReserchDataNetwork.register(new Research(chitinBootsYellow, x, y+2, armor, underworld, breeding, crootBreeder, hungerPortal));
+		ReserchDataNetwork.register(new Research(lightbringer, x+1, y-1, ItemRegistry.lightBringer, underworld, functional, armorAttuner));
+		ReserchDataNetwork.register(new Research(clayFoamer, x+2, y-1, ItemRegistry.clayFoamer, underworld, functional, armorAttuner));
+		ReserchDataNetwork.register(new Research(colonialSlug, x+3, y-1, ItemRegistry.colonialSlug, underworld, functional, armorAttuner));
+		ReserchDataNetwork.register(new Research(blueHorder, x+4, y-1, ItemRegistry.blueHorder, underworld, functional, armorAttuner));
+		ReserchDataNetwork.register(new Research(hungerLarva, x+5, y-1, ItemRegistry.hungerLarva, underworld, functional, armorAttuner));
+		ReserchDataNetwork.register(new Research(buttScotch, x+6, y-1, ItemRegistry.medusaEye, underworld, functional, armorAttuner));
+		
+		ReserchDataNetwork.register(new Research(deathsWing, x+1, y+0, ItemRegistry.deathsWing, underworld, defensive, armorAttuner));
+		ReserchDataNetwork.register(new Research(carpaceSlug, x+2, y+0, ItemRegistry.carpaceSlug, underworld, defensive, armorAttuner));
+		ReserchDataNetwork.register(new Research(carpaceSnail, x+3, y+0, ItemRegistry.carpaceSnail, underworld, defensive, armorAttuner));
+		ReserchDataNetwork.register(new Research(lifeShader, x+4, y+0, ItemRegistry.lifeShader, underworld, defensive, armorAttuner));
+		ReserchDataNetwork.register(new Research(voidFarer, x+5, y+0, ItemRegistry.voidFarer, underworld, defensive, armorAttuner));
+		ReserchDataNetwork.register(new Research(sludgeGrim, x+6, y+0, ItemRegistry.sludgeGrim, underworld, defensive, armorAttuner));
+		
+		ReserchDataNetwork.register(new Research(bullWorm, x+1, y+1, ItemRegistry.bullWorm, underworld, offensive, armorAttuner));
+		ReserchDataNetwork.register(new Research(ssb, x+2, y+1, ItemRegistry.ssb, underworld, offensive, armorAttuner));
+		ReserchDataNetwork.register(new Research(blackLeech, x+3, y+1, ItemRegistry.blackLeech, underworld, offensive, armorAttuner));
+		ReserchDataNetwork.register(new Research(hungerSwarm, x+4, y+1, ItemRegistry.hungerSwarm, underworld, offensive, armorAttuner));
+		ReserchDataNetwork.register(new Research(greenBlower, x+5, y+1, ItemRegistry.greenBlower, underworld, offensive, armorAttuner));
+		ReserchDataNetwork.register(new Research(priestBeetle, x+6, y+1, ItemRegistry.priestBeetle, underworld, offensive, armorAttuner));
+		
+		ReserchDataNetwork.register(new Research(sprinter, x+1, y+2, ItemRegistry.sprinter, underworld, passive, armorAttuner));
+		ReserchDataNetwork.register(new Research(darter, x+2, y+2, ItemRegistry.darter, underworld, passive, armorAttuner));
+		ReserchDataNetwork.register(new Research(dragonShell, x+3, y+2, ItemRegistry.dragonShell, underworld, passive, armorAttuner));
+		ReserchDataNetwork.register(new Research(waterHunter, x+4, y+2, ItemRegistry.waterHunter, underworld, passive, armorAttuner));
+		ReserchDataNetwork.register(new Research(hillSpider, x+5, y+2, ItemRegistry.hillSpider, underworld, passive, armorAttuner));
+		ReserchDataNetwork.register(new Research(fireSprinter, x+6, y+2, ItemRegistry.fireSprinter, underworld, passive, armorAttuner));
+		
+		
 		
 	}
 	
@@ -358,7 +352,6 @@ public class ReserchRegistry {
 		ResearchUnlocks.addCraftingUnlock(new ItemStack(ItemRegistry.chitinChestplate), chitinChestplate);
 		ResearchUnlocks.addCraftingUnlock(new ItemStack(ItemRegistry.chitinLeggings), chitinLeggings);
 		ResearchUnlocks.addCraftingUnlock(new ItemStack(ItemRegistry.chitinBoots), chitinBoots);
-		ResearchUnlocks.addCraftingUnlock(new ItemStack(ItemRegistry.crootIronPickaxe), crootIronPickaxe);
 		ResearchUnlocks.addCraftingUnlock(new ItemStack(BlockRegistry.crootBreeder), crootBreeder);
 		ResearchUnlocks.addCraftingUnlock(new ItemStack(ItemRegistry.crootWoodHoe), crootHoe);
 		ResearchUnlocks.addCraftingUnlock(new ItemStack(BlockRegistry.sacrificePit), sacrificePit);
@@ -405,83 +398,21 @@ public class ReserchRegistry {
 		ItemStack armor = new ItemStack(ItemRegistry.chitinHelmet);
 		armor.getItem().onCreated(armor, null, null);
 		armor.stackTagCompound.setString("PATTERN", ArmorPatternRegistry.pattern_names[1]);
-		ResearchUnlocks.addBreedingUnlock(armor, chitinHelmetRed);
+		ResearchUnlocks.addBreedingUnlock(armor, chitinHelmetDevonian);
 		armor = new ItemStack(ItemRegistry.chitinChestplate);
 		armor.getItem().onCreated(armor, null, null);
 		armor.stackTagCompound.setString("PATTERN", ArmorPatternRegistry.pattern_names[1]);
-		ResearchUnlocks.addBreedingUnlock(armor, chitinChestplateRed);
+		ResearchUnlocks.addBreedingUnlock(armor, chitinChestplateDevonian);
 		armor = new ItemStack(ItemRegistry.chitinLeggings);
 		armor.getItem().onCreated(armor, null, null);
 		armor.stackTagCompound.setString("PATTERN", ArmorPatternRegistry.pattern_names[1]);
-		ResearchUnlocks.addBreedingUnlock(armor, chitinLeggingsRed);
+		ResearchUnlocks.addBreedingUnlock(armor, chitinLeggingsDevonian);
 		armor = new ItemStack(ItemRegistry.chitinBoots);
 		armor.getItem().onCreated(armor, null, null);
 		armor.stackTagCompound.setString("PATTERN", ArmorPatternRegistry.pattern_names[1]);
-		ResearchUnlocks.addBreedingUnlock(armor, chitinBootsRed);
+		ResearchUnlocks.addBreedingUnlock(armor, chitinBootsDevonian);
 		
-		//ARMOR GREEN
-		armor = new ItemStack(ItemRegistry.chitinHelmet);
-		armor.getItem().onCreated(armor, null, null);
-		armor.stackTagCompound.setString("PATTERN", ArmorPatternRegistry.pattern_names[2]);
-		ResearchUnlocks.addBreedingUnlock(armor, chitinHelmetBlue);
-		armor = new ItemStack(ItemRegistry.chitinChestplate);
-		armor.getItem().onCreated(armor, null, null);
-		armor.stackTagCompound.setString("PATTERN", ArmorPatternRegistry.pattern_names[2]);
-		ResearchUnlocks.addBreedingUnlock(armor, chitinChestplateBlue);
-		armor = new ItemStack(ItemRegistry.chitinLeggings);
-		armor.getItem().onCreated(armor, null, null);
-		armor.stackTagCompound.setString("PATTERN", ArmorPatternRegistry.pattern_names[2]);
-		ResearchUnlocks.addBreedingUnlock(armor, chitinLeggingsBlue);
-		armor = new ItemStack(ItemRegistry.chitinBoots);
-		armor.getItem().onCreated(armor, null, null);
-		armor.stackTagCompound.setString("PATTERN", ArmorPatternRegistry.pattern_names[2]);
-		ResearchUnlocks.addBreedingUnlock(armor, chitinBootsBlue);
 		
-		//ARMOR BLUE
-		armor = new ItemStack(ItemRegistry.chitinHelmet);
-		armor.getItem().onCreated(armor, null, null);
-		armor.stackTagCompound.setString("PATTERN", ArmorPatternRegistry.pattern_names[3]);
-		ResearchUnlocks.addBreedingUnlock(armor, chitinHelmetGreen);
-		armor = new ItemStack(ItemRegistry.chitinChestplate);
-		armor.getItem().onCreated(armor, null, null);
-		armor.stackTagCompound.setString("PATTERN", ArmorPatternRegistry.pattern_names[3]);
-		ResearchUnlocks.addBreedingUnlock(armor, chitinChestplateGreen);
-		armor = new ItemStack(ItemRegistry.chitinLeggings);
-		armor.getItem().onCreated(armor, null, null);
-		armor.stackTagCompound.setString("PATTERN", ArmorPatternRegistry.pattern_names[3]);
-		ResearchUnlocks.addBreedingUnlock(armor, chitinLeggingsGreen);
-		armor = new ItemStack(ItemRegistry.chitinBoots);
-		armor.getItem().onCreated(armor, null, null);
-		armor.stackTagCompound.setString("PATTERN", ArmorPatternRegistry.pattern_names[3]);
-		ResearchUnlocks.addBreedingUnlock(armor, chitinBootsGreen);
-		
-		//ARMOR YELLOW
-		armor = new ItemStack(ItemRegistry.chitinHelmet);
-		armor.getItem().onCreated(armor, null, null);
-		armor.stackTagCompound.setString("PATTERN", ArmorPatternRegistry.pattern_names[4]);
-		ResearchUnlocks.addBreedingUnlock(armor, chitinHelmetYellow);
-		armor = new ItemStack(ItemRegistry.chitinChestplate);
-		armor.getItem().onCreated(armor, null, null);
-		armor.stackTagCompound.setString("PATTERN", ArmorPatternRegistry.pattern_names[4]);
-		ResearchUnlocks.addBreedingUnlock(armor, chitinChestplateYellow);
-		armor = new ItemStack(ItemRegistry.chitinLeggings);
-		armor.getItem().onCreated(armor, null, null);
-		armor.stackTagCompound.setString("PATTERN", ArmorPatternRegistry.pattern_names[4]);
-		ResearchUnlocks.addBreedingUnlock(armor, chitinLeggingsYellow);
-		armor = new ItemStack(ItemRegistry.chitinBoots);
-		armor.getItem().onCreated(armor, null, null);
-		armor.stackTagCompound.setString("PATTERN", ArmorPatternRegistry.pattern_names[4]);
-		ResearchUnlocks.addBreedingUnlock(armor, chitinBootsYellow);
-		
-		if(event.getSide() == Side.CLIENT){
-			BookTokenizer tok = new BookTokenizer();
-			tok.init(event);
-			
-			BookParseTree parser = new BookParseTree();
-			parser.init(event);
-			
-			
-		}
 	}
 
     

@@ -189,7 +189,8 @@ public class PlayerHungerStorage implements IDataFile{
 	public void deregisterLissnar(UUID id){
 		lissensOn.remove(id);
 	}
-
+	
+	// Junction logic
 	public void feed(String id, String channel, ResourcePackage pack) {
 		PlayerHungerNetwork network = this.get(id);
 		network.feed(channel, pack);
@@ -202,5 +203,10 @@ public class PlayerHungerStorage implements IDataFile{
 	
 	public boolean containsKey(String id){
 		return this.networks.containsKey(id);
+	}
+
+	public boolean canFeed(String id, String channel, ResourcePackage pack) {
+		PlayerHungerNetwork network = this.get(id);
+		return network.canFeed(channel, pack);
 	}
 }

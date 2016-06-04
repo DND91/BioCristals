@@ -14,11 +14,14 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import hok.chompzki.hivetera.HiveteraMod;
 import hok.chompzki.hivetera.client.book.Article;
 import hok.chompzki.hivetera.client.book.BookTokenizer;
 import hok.chompzki.hivetera.client.book.TokenCollection;
 import hok.chompzki.hivetera.client.book.tokens.NumberToken;
+import hok.chompzki.hivetera.client.book.tokens.StringToken;
 import hok.chompzki.hivetera.client.book.tokens.Token;
 import hok.chompzki.hivetera.client.book.tokens.WordToken;
 import hok.chompzki.hivetera.client.gui.ArticleFontRenderer;
@@ -31,6 +34,7 @@ import hok.chompzki.hivetera.research.data.GuiCoord;
 
 public class RecipeParseNode extends ParseNode {
 	
+	private static final ResourceLocation background = new ResourceLocation(HiveteraMod.MODID + ":textures/client/gui/parse/Recipe.png");
 	
 	private int width = 16;
 	private int height = 16;
@@ -61,6 +65,7 @@ public class RecipeParseNode extends ParseNode {
 		String name = KnowledgeDescriptions.getName(new ItemStack(Blocks.command_block));
 		String domain = "minecraft";
 		int damage = 0;
+		HashMap<String, String> nbtStrings = new HashMap<String, String>();
 		
 		while(!collection.stack.isEmpty()){
 			Token token = collection.stack.pop();
@@ -74,6 +79,15 @@ public class RecipeParseNode extends ParseNode {
 					System.err.println(command + ": Didn't find item " + domain + ":" + name);
 				}
 				
+				if(0 < nbtStrings.size())
+					stack.getItem().onCreated(stack, null, null);
+				
+				for(Entry<String, String> entry : nbtStrings.entrySet()){
+					if(stack.stackTagCompound == null)
+						stack.setTagCompound(new NBTTagCompound());
+					stack.stackTagCompound.setString(entry.getKey(), entry.getValue());
+				}
+				
 				for(RecipeContainer con : RecipeRegistry.recipes){
 					ItemStack output = con.output;
 					if(output.getItem() == stack.getItem() && output.getItemDamage() == stack.getItemDamage()){
@@ -85,8 +99,8 @@ public class RecipeParseNode extends ParseNode {
 				if(con != null)
 					length = con.length;
 				
-				width = ItemStackParseNode.width * (2 + length);
-				height = fts.FONT_HEIGHT * (length-1);
+				width = 103;
+				height = 62;
 				
 				if(arc.maxWidth < cursor.x + width){
 					cursor.x = 0;
@@ -145,6 +159,29 @@ public class RecipeParseNode extends ParseNode {
 					}
 					damage = (int)((double)token.value);
 					break;
+				case "nbt_string":
+					token = collection.stack.pop();
+					if(token != BookTokenizer.equals){
+						System.err.println(command + ": Wanted a equals but got " + token.value);
+						return;
+					}
+					token = collection.stack.pop();
+					if(!(token instanceof StringToken)){
+						System.err.println(command + ": Wanted a string (\" \") but got " + token.value);
+						return;
+					}
+					String[] arr = ((String)token.value).split(" ");
+					if(arr.length % 2 != 0){
+						System.err.println(command + ": Wanted a even number of commands but got " + token.value);
+						return;
+					}
+					for(int i = 0; i < arr.length; i += 2){
+						String keyString = arr[i];
+						String valueString = arr[i+1];
+						nbtStrings.put(keyString, valueString);
+					}
+					
+					break;
 				}
 			} else {
 				System.err.println(command + ": Wanted a word but got " + token.value);
@@ -194,6 +231,24 @@ public class RecipeParseNode extends ParseNode {
 			ArticleFontRenderer articleFontRenderer, boolean summary, double scale) {
 		if(currPage != this.pageNumber) return;
 		tick++;
+		
+		int tx = (int)((1.0D / scale)*(x + (cursor.x) - 0));
+		int ty = (int)((1.0D / scale)*(y + (cursor.y*scale) - 6));
+		
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        
+        GL11.glPushMatrix();
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+		GL11.glEnable(GL11.GL_BLEND);
+		
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GL11.glScaled(scale, scale, 1.0D);
+		
+        this.mc.getTextureManager().bindTexture(background);
+        Gui.func_146110_a((int) (tx), (int) (ty), 0, 0, 103, 62, 103, 62);
+        GL11.glPopMatrix();
+		
 		GL11.glPushMatrix();
         RenderHelper.enableGUIStandardItemLighting();
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -201,14 +256,10 @@ public class RecipeParseNode extends ParseNode {
 		GL11.glScaled(scale, scale, 1.0D);
 		
 		
-		int tx = (int)((1.0D / scale)*(x + (cursor.x) - 0));
-		int ty = (int)((1.0D / scale)*(y + (cursor.y*scale) - 6));
-		
-		
 		this.itemRender.renderWithColor = true;
 		
-		this.itemRender.renderItemAndEffectIntoGUI(mc.fontRenderer, mc.renderEngine, stack, tx, (int)(ty + fts.FONT_HEIGHT / con.length * scale));
-		this.itemRender.renderItemOverlayIntoGUI(mc.fontRenderer, mc.renderEngine, stack, tx, (int)(ty + fts.FONT_HEIGHT / con.length * scale));
+		this.itemRender.renderItemAndEffectIntoGUI(mc.fontRenderer, mc.renderEngine, stack, tx + 77, ty + 23);
+		this.itemRender.renderItemOverlayIntoGUI(mc.fontRenderer, mc.renderEngine, stack, tx + 77, ty + 23);
 		
 		
 		for(int dx = 0; dx < con.length; dx++)
@@ -219,8 +270,9 @@ public class RecipeParseNode extends ParseNode {
 	    		pos /= 50;
 	    		pos %= list.size();
 				ItemStack stack = list.get(pos);
-				this.itemRender.renderItemAndEffectIntoGUI(mc.fontRenderer, mc.renderEngine, stack, tx + (dx+2) * fts.FONT_HEIGHT, (int)(ty + dy * (fts.FONT_HEIGHT+2) * scale));
-				this.itemRender.renderItemOverlayIntoGUI(mc.fontRenderer, mc.renderEngine, stack, tx + (dx+2) * fts.FONT_HEIGHT, (int)(ty + dy * (fts.FONT_HEIGHT+2) * scale));
+				GL11.glDisable(GL11.GL_LIGHTING);
+				this.itemRender.renderItemAndEffectIntoGUI(mc.fontRenderer, mc.renderEngine, stack, tx + 10 + dx * 18, ty + 5 + dy * 18);
+				this.itemRender.renderItemOverlayIntoGUI(mc.fontRenderer, mc.renderEngine, stack, tx + 10 + dx * 18, ty + 5 + dy * 18);
 			}
 		}
 		
@@ -256,18 +308,18 @@ public class RecipeParseNode extends ParseNode {
 		int xt = (int)((x + (cursor.x) - 0));
 		int yt = (int)((y + (cursor.y*scale) - 6));
 		
+		int x2 = (int)(xt + 77 * scale);
+		int y2 = (int)(yt + 23 * scale);
 		
-		int y2 = (int)(yt + fts.FONT_HEIGHT / con.length * scale);
-		
-		if(xt <= mosX && mosX <= (xt + size)
+		if(x2 <= mosX && mosX <= (x2 + size)
 				&& y2 <= mosY && mosY <= (y2 + size)){
 			fts.renderToolTip(stack, mosX, mosY, 400, 400);
 		}
 		
 		for(int dx = 0; dx < con.length; dx++)
 			for(int dy = 0; dy < con.length; dy++){
-				int x2 = (int) (xt + (dx+2) * fts.FONT_HEIGHT * scale);
-				y2 = (int)(yt + dy * (fts.FONT_HEIGHT+2) * scale);
+				x2 = (int) (xt + (10 + dx * 18) * scale);
+				y2 = (int) (yt + (5 + dy * 18) * scale);
 				
 				if(x2 <= mosX && mosX <= (x2 + size)
 						&& y2 <= mosY && mosY <= (y2 + size)){

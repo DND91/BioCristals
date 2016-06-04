@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -35,7 +37,7 @@ public class ItemClayFoamer extends ItemInsect implements IArmorInsect {
 	public ItemClayFoamer(){
 		super(EnumResource.RAW_FOOD, 1.0D, 1.0D, true);
 		setUnlocalizedName(HiveteraMod.MODID + "_" + NAME);
-		setCreativeTab(HiveteraMod.creativeTab);
+		setCreativeTab(HiveteraMod.insectTab);
 		setTextureName(HiveteraMod.MODID + ":" + NAME);
 	}
 	
@@ -119,14 +121,13 @@ public class ItemClayFoamer extends ItemInsect implements IArmorInsect {
 					armor.stack.setItemDamage(dmg);
 				}
 			}
-			
 		}
 	}
 	
 	@Override
 	public void addProperties(ArmorProperties prop, BioArmor[] armors,
 			EntityPlayer player, DamageSource source, double damage,
-			double type, int slot) {
+			int type, int slot) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -136,6 +137,9 @@ public class ItemClayFoamer extends ItemInsect implements IArmorInsect {
 			BioArmor[] armors, int type, int slot) {
 			ItemStack stack = armors[type].getStackInSlot(slot);
 			
+			if(stack == null || stack.getMaxDamage() <= stack.getItemDamage())
+				return false;
+			
 			for(BioArmor armor : armors){
 				if(armor == null)
 					continue;
@@ -144,13 +148,6 @@ public class ItemClayFoamer extends ItemInsect implements IArmorInsect {
 					return true;
 			}
 			return false;
-	}
-
-	@Override
-	public int getArmorDisplay(BioArmor[] armors, EntityPlayer player,
-			int armorType, int i) {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 	@Override
@@ -164,6 +161,36 @@ public class ItemClayFoamer extends ItemInsect implements IArmorInsect {
 	@Override
 	public SocketType getType() {
 		return SocketType.FUNC;
+	}
+
+	@Override
+	public boolean shouldMod(World worldObj, EntityPlayer player) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void applyModifier(IAttributeInstance attribute, AttributeModifier value, EntityPlayer player) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void removeModifier(IAttributeInstance attribute, AttributeModifier value, EntityPlayer player) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public double getBaseModValue() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getDamageReduction(int dmg, BioArmor armor, int i) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 }

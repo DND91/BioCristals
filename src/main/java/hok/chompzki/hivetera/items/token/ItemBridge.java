@@ -62,14 +62,15 @@ public class ItemBridge extends ItemToken implements IToken {
 	
 	@Override
 	public void feed(ItemStack stack, ResourcePackage amount) {
-		// TODO Auto-generated method stub
-		
 	}
 	
 	@Override
 	public void drain(ItemStack stack, ResourcePackage p, double amount) {
-		// TODO Auto-generated method stub
-		
+	}
+
+	@Override
+	public boolean canFeed(ItemStack input, ResourcePackage pack) {
+		return false;
 	}
 
 }

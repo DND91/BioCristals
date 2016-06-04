@@ -147,10 +147,23 @@ public class ContainerArmorAttuner extends Container {
         super.addCraftingToCrafters(par1ICrafting);
     }
 	
-	@Override
 	public void detectAndSendChanges()
     {
-        super.detectAndSendChanges();
-        
+        for (int i = 0; i < this.inventorySlots.size(); ++i)
+        {
+            ItemStack itemstack = ((Slot)this.inventorySlots.get(i)).getStack();
+            ItemStack itemstack1 = (ItemStack)this.inventoryItemStacks.get(i);
+
+            if (!(ItemStack.areItemStacksEqual(itemstack1, itemstack) && ItemStack.areItemStackTagsEqual(itemstack1, itemstack)))
+            {
+                itemstack1 = itemstack == null ? null : itemstack.copy();
+                this.inventoryItemStacks.set(i, itemstack1);
+
+                for (int j = 0; j < this.crafters.size(); ++j)
+                {
+                    ((ICrafting)this.crafters.get(j)).sendSlotContents(this, i, itemstack1);
+                }
+            }
+        }
     }
 }

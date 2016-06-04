@@ -59,7 +59,7 @@ public class CoreParseNode extends ParseNode {
 					
 					current.parse(cursor, arc, collection);
 				} else {
-					System.err.println(command.toUpperCase() + ": Wanted a command (SUMMARY or BODY) but got " + token.value);
+					System.err.println(arc.name + ":" + command.toUpperCase() + ": Wanted a command (SUMMARY or BODY) but got " + token.value);
 					return;
 				}
 			} else if(token == BookTokenizer.lineEnd) {

@@ -4,10 +4,12 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import hok.chompzki.hivetera.NBTHelper;
+import hok.chompzki.hivetera.api.IArmorInsect;
 import hok.chompzki.hivetera.api.IInsect;
 import hok.chompzki.hivetera.api.IToken;
 import hok.chompzki.hivetera.containers.BioArmor;
@@ -16,12 +18,16 @@ import hok.chompzki.hivetera.hunger.drawbacks.Drawback;
 import hok.chompzki.hivetera.hunger.logic.EnumResource;
 import hok.chompzki.hivetera.hunger.logic.EnumToken;
 import hok.chompzki.hivetera.hunger.logic.ResourcePackage;
+import hok.chompzki.hivetera.items.armor.ItemBioModArmor;
+import hok.chompzki.hivetera.items.armor.ModifierInsect;
 import hok.chompzki.hivetera.items.token.ItemToken;
 import hok.chompzki.hivetera.registrys.DrawbackRegistry;
 import hok.chompzki.hivetera.registrys.ItemRegistry;
 import hok.chompzki.hivetera.research.data.DataHelper;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
@@ -39,6 +45,8 @@ import net.minecraft.util.FoodStats;
 import net.minecraft.world.World;
 
 public abstract class ItemInsect extends Item implements IInsect {
+	
+	
 	
 	private final EnumResource foodType;
 	private final double cost;
@@ -291,6 +299,57 @@ public abstract class ItemInsect extends Item implements IInsect {
 		return v;
 	}
 	
+	public static void feed(EntityPlayer player, BioArmor[] armors, EnumResource res, double feed){
+		for(BioArmor armor : armors){
+			if(armor == null)
+				continue;
+			for(int i = 0; i < armor.getSizeInventory(); i++){
+				ItemStack input = armor.getStackInSlot(i);
+				if(input == null)
+					continue;
+				if((input.getItem() instanceof ItemToken) && ((IToken)input.getItem()).getType(input) == EnumToken.FEEDER){
+					IToken feeder = (IToken)input.getItem();
+					ResourcePackage pack = new ResourcePackage();
+					pack.add(res, feed);
+					feeder.feed(input, pack);
+					ItemInsect.drawbacks(player, input, pack);
+				}else if((input.getItem() instanceof ItemToken) && ((IToken)input.getItem()).getType(input) == EnumToken.BANK){
+					IToken bank = (IToken)input.getItem();
+					ResourcePackage pack = new ResourcePackage();
+					pack.add(res, feed);
+					bank.feed(input, pack);
+					ItemInsect.drawbacks(player, input, pack);
+				}
+			}
+		}
+	}
+	
+	public static boolean canFeed(EntityPlayer player, BioArmor[] armors,
+			EnumResource res, double feed) {
+		for(BioArmor armor : armors){
+			if(armor == null)
+				continue;
+			for(int i = 0; i < armor.getSizeInventory(); i++){
+				ItemStack input = armor.getStackInSlot(i);
+				if(input == null)
+					continue;
+				if((input.getItem() instanceof ItemToken) && ((IToken)input.getItem()).getType(input) == EnumToken.FEEDER){
+					IToken feeder = (IToken)input.getItem();
+					ResourcePackage pack = new ResourcePackage();
+					pack.add(res, feed);
+					return feeder.canFeed(input, pack);
+				}else if((input.getItem() instanceof ItemToken) && ((IToken)input.getItem()).getType(input) == EnumToken.BANK){
+					IToken bank = (IToken)input.getItem();
+					ResourcePackage pack = new ResourcePackage();
+					pack.add(res, feed);
+					return bank.canFeed(input, pack);
+				}
+			}
+		}
+		return false;
+	}
+
+	
 	@Override
 	public void onCreated(ItemStack stack, World world, EntityPlayer player) {
 		NBTHelper.init(stack, "FOOD", 0.0D);
@@ -302,14 +361,15 @@ public abstract class ItemInsect extends Item implements IInsect {
 			list.add(((char)167) + "4DO NOT USE WITHOUT NETWORK");
 		}
 		
-		
 		if(0.0D < getCost(stack) && 0.0D < getDrain(stack)){
 			list.add("Food: " + I18n.format("container."+getFoodType(stack), new Object[0]));
 			list.add("Use Cost: " + getCost(stack));
-			list.add("Drainage: " + getDrain(stack));
-			double food = this.getFood(stack);
-			DecimalFormat df = new DecimalFormat("0.00"); 
-			list.add("Stored: " + df.format(food));
+			if(getCost(stack) != getDrain(stack)){
+				list.add("Drainage: " + getDrain(stack));
+				double food = this.getFood(stack);
+				DecimalFormat df = new DecimalFormat("0.00"); 
+				list.add("Stored: " + df.format(food));
+			}
 		}
 	}
 	
@@ -354,5 +414,9 @@ public abstract class ItemInsect extends Item implements IInsect {
 		food = Math.max(0.0D, food);
 		food = Math.min(food, this.getDrain(stack));
 		stack.stackTagCompound.setDouble("FOOD", food);
+	}
+	
+	protected void registerModifier(IArmorInsect insect, IAttribute attribute, AttributeModifier value, boolean shouldAdd){
+		ItemBioModArmor.modifiers.add(new ModifierInsect(insect, attribute, value, shouldAdd));
 	}
 }

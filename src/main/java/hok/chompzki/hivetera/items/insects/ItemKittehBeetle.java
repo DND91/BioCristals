@@ -36,9 +36,9 @@ public class ItemKittehBeetle extends ItemInsect implements INestInsect {
 	public static IIcon[] icons;
 	
 	public ItemKittehBeetle() {
-		super(EnumResource.LIFE_FLUIDS, 10.0D, 20.0D, true);
+		super(EnumResource.LIFE_FLUIDS, 10.0D, 10.0D, true);
         setUnlocalizedName(HiveteraMod.MODID + "_" + NAME);
-		setCreativeTab(HiveteraMod.creativeTab);
+		setCreativeTab(HiveteraMod.insectTab);
 		setTextureName(HiveteraMod.MODID + ":" + NAME);
 	}
 	

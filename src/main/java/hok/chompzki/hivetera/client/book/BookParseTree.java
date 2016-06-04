@@ -2,9 +2,11 @@ package hok.chompzki.hivetera.client.book;
 
 import hok.chompzki.hivetera.client.book.parseNodes.BodyParseNode;
 import hok.chompzki.hivetera.client.book.parseNodes.BoldParseNode;
+import hok.chompzki.hivetera.client.book.parseNodes.BreedingParseNode;
 import hok.chompzki.hivetera.client.book.parseNodes.CoreParseNode;
 import hok.chompzki.hivetera.client.book.parseNodes.Cursor;
 import hok.chompzki.hivetera.client.book.parseNodes.EndParseNode;
+import hok.chompzki.hivetera.client.book.parseNodes.InsectParseNode;
 import hok.chompzki.hivetera.client.book.parseNodes.ItemStackParseNode;
 import hok.chompzki.hivetera.client.book.parseNodes.NewLineParseNode;
 import hok.chompzki.hivetera.client.book.parseNodes.NewPageParseNode;
@@ -22,12 +24,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.util.ResourceLocation;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 
 public class BookParseTree {
 	
 	public static HashMap<String, Article> articles = new HashMap<String, Article>();
 	
-	public void init(FMLInitializationEvent event) {
+	public void init(FMLPostInitializationEvent event) {
 		
 		new CoreParseNode();
 		new SummaryParseNode();
@@ -37,6 +40,8 @@ public class BookParseTree {
 		new TabParseNode();
 		new NewLineParseNode();
 		new RecipeParseNode();
+		new InsectParseNode();
+		new BreedingParseNode();
 		new BoldParseNode();
 		new EndParseNode();
 		new NewPageParseNode();

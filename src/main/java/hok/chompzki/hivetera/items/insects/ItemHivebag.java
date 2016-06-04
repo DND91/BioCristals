@@ -42,7 +42,7 @@ public class ItemHivebag extends ItemInsect implements INestInsect {
 		this.setMaxDamage(ConfigRegistry.hungerDistance);
 		this.setNoRepair();
 		setUnlocalizedName(HiveteraMod.MODID + "_" + NAME);
-		setCreativeTab(HiveteraMod.creativeTab);
+		setCreativeTab(HiveteraMod.insectTab);
 		setTextureName(HiveteraMod.MODID + ":" + NAME);
 		this.setMaxStackSize(1);
 	}

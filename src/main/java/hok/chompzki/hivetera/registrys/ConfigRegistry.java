@@ -54,7 +54,7 @@ public class ConfigRegistry {
 	
 	public static int wsbDamage = 2;
 	
-	public static String configNumber = "0.689";
+	public static String configNumber = "0.692";
 	public static Configuration config;
 	
 	public static List<RecipeData> recipeData = new ArrayList<RecipeData>();
@@ -304,8 +304,8 @@ public class ConfigRegistry {
 		registerSingle(blacklist, "Redstone", "ITEM", "minecraft:redstone");
 		registerSingle(blacklist, "Glowstone Dust", "ITEM", "minecraft:glowstone_dust");
 		registerSingle(blacklist, "Clock", "ITEM", "minecraft:clock");
-		registerSingle(blacklist, "Hopper Minecart", "ITEM", "minecraft:hopper_minecrat");
-		registerSingle(blacklist, "TNT Minecart", "ITEM", "minecraft:tnt_minecrat");
+		registerSingle(blacklist, "Hopper Minecart", "ITEM", "minecraft:hopper_minecart");
+		registerSingle(blacklist, "TNT Minecart", "ITEM", "minecraft:tnt_minecart");
 		registerSingle(blacklist, "Filled Map", "ITEM", "minecraft:filled_map");
 		registerSingle(blacklist, "Croot Stick", "ITEM", "Hivetera:itemCrootStick");
 		registerSingle(blacklist, "Research Book", "ITEM", "Hivetera:itemResearchBook");
@@ -346,6 +346,14 @@ public class ConfigRegistry {
 																  "minecraft:stick treeSapling minecraft:stick"},
 																  Property.Type.STRING));
 		attuner.put("output", new Property("output", "Hivetera:itemAttuner", Property.Type.STRING));
+		
+		ConfigCategory armorAttuner = new ConfigCategory("Armor Attuner", recipes);
+		armorAttuner.put("code", new Property("code", "NONE", Property.Type.STRING));
+		armorAttuner.put("input", new Property("input", new String[] { "empty Hivetera:itemChitinPlate Hivetera:itemChitinPlate", 
+																  "Hivetera:itemChitinPlate minecraft:coal_block Hivetera:itemChitinPlate", 
+																  "Hivetera:itemChitinPlate Hivetera:itemChitinPlate empty"},
+																  Property.Type.STRING));
+		armorAttuner.put("output", new Property("output", "Hivetera:itemArmorAttuner", Property.Type.STRING));
 		
 		ConfigCategory crootSapling = new ConfigCategory("Croot Sapling", recipes);
 		crootSapling.put("code", new Property("code", ReserchRegistry.crootSapling, Property.Type.STRING));
@@ -426,13 +434,6 @@ public class ConfigRegistry {
 															   "minecraft:stone_slab:3 minecraft:stone_slab:3 minecraft:stone_slab:3"},
 																	   Property.Type.STRING));
 		crootBreeder.put("output", new Property("output", "Hivetera:blockCrootBreeder", Property.Type.STRING));
-		
-		ConfigCategory ironCrootBeetle = new ConfigCategory("Iron Croot Pickaxe", recipes);
-		ironCrootBeetle.put("code", new Property("code", ReserchRegistry.crootIronPickaxe, Property.Type.STRING));
-		ironCrootBeetle.put("input", new Property("input", new String[] { "minecraft:string Hivetera:itemCrootStick", 
-															   			  "minecraft:iron_pickaxe:0 minecraft:string"},
-																	   Property.Type.STRING));
-		ironCrootBeetle.put("output", new Property("output", "Hivetera:itemCrootIronPickaxe", Property.Type.STRING));
 		
 		ConfigCategory woodenCrootHoe = new ConfigCategory("Wooden Croot Hoe", recipes);
 		woodenCrootHoe.put("code", new Property("code", ReserchRegistry.crootHoe, Property.Type.STRING));

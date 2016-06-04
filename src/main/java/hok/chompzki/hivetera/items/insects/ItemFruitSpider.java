@@ -45,7 +45,7 @@ public class ItemFruitSpider extends ItemInsect implements INestInsect {
 	public ItemFruitSpider(){
 		super(EnumResource.BIOMASS, 5.0D, 10.0D, false);
 		setUnlocalizedName(HiveteraMod.MODID + "_" + NAME);
-		setCreativeTab(HiveteraMod.creativeTab);
+		setCreativeTab(HiveteraMod.insectTab);
 		setTextureName(HiveteraMod.MODID + ":" + NAME);
 	}
 	

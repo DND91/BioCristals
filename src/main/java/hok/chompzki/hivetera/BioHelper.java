@@ -212,6 +212,7 @@ public class BioHelper {
                 {
                 	inventory.setInventorySlotContents(j, new ItemStack(item, 1, stack.getItemDamage()));
                 	stack.stackSize--;
+                	i--;
                     if (stack.hasTagCompound())
                     {
                     	NBTTagCompound tag = (NBTTagCompound)stack.getTagCompound().copy();

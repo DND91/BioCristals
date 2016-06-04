@@ -178,4 +178,10 @@ public class ItemTransformer extends ItemToken implements IToken {
 		}
 	}
 
+	@Override
+	public boolean canFeed(ItemStack input,	ResourcePackage pack) {
+		this.feed(input, pack);
+		return false;
+	}
+	
 }

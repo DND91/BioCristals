@@ -104,5 +104,11 @@ public class ItemEater extends ItemToken implements IToken {
 			p.read(PlayerHungerStorage.instance(false).drain(network, channel, amount));
 		}
 	}
+	
+
+	@Override
+	public boolean canFeed(ItemStack input, ResourcePackage pack) {
+		return false;
+	}
 
 }

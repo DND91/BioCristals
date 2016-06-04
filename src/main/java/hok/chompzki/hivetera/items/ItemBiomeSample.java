@@ -41,7 +41,7 @@ public class ItemBiomeSample extends Item{
 	
 	public ItemBiomeSample(){
 		setUnlocalizedName(HiveteraMod.MODID + "_" + NAME);
-		setCreativeTab(HiveteraMod.creativeTab);
+		setCreativeTab(HiveteraMod.sampleTab);
 		setTextureName(HiveteraMod.MODID + ":" + NAME);
 		setHasSubtypes(true);
 		setMaxStackSize(1);
@@ -108,13 +108,13 @@ public class ItemBiomeSample extends Item{
 			return;
 		}
 		
-		list.add("Chance & Item");
+		list.add("Chance% Item");
 		Double oldV = 0.0D;
 		for(Entry<Double, ItemStack> entry2 : data.entrySet()){
 			Double v = entry2.getKey();
 			ItemStack s = entry2.getValue();
 			
-			String row = Math.round(((v-oldV) / data.getTotal()) * 100.D) + " & " + (s == null ? "NOTHING" : "" + s.getDisplayName() + "");
+			String row = Math.round(((v-oldV) / data.getTotal()) * 100.D) + "% " + (s == null ? "NOTHING" : "" + s.getDisplayName() + "");
 			
 			oldV = v;
 			list.add(row);

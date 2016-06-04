@@ -104,7 +104,6 @@ public class ItemBank extends ItemToken implements IToken {
 			nbt.setDouble(res.name(), value);
 			amount.sub(res, diff);
 		}
-		
 	}
 	
 	@Override
@@ -121,6 +120,21 @@ public class ItemBank extends ItemToken implements IToken {
 			nbt.setDouble(res.name(), value);
 			p.add(res, drain);
 		}
+	}
+
+	@Override
+	public boolean canFeed(ItemStack input, ResourcePackage pack) {
+		double size = NBTHelper.get(input, "SIZE", 100.0D);
+		NBTTagCompound nbt = input.getTagCompound();
+		
+		for(EnumResource res : EnumResource.values()){
+			if(!nbt.hasKey(res.name()))
+				continue;
+			double saved = nbt.getDouble(res.name());
+			if(size < (saved+pack.get(res)))
+				return false;
+		}
+		return true;
 	}
 
 }

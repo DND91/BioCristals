@@ -35,7 +35,7 @@ public class ItemVoidCrawler extends ItemInsect implements INestInsect {
 	public ItemVoidCrawler(){
 		super(EnumResource.PSY_ENG, 25.0D, 100.0D, true);
 		setUnlocalizedName(HiveteraMod.MODID + "_" + NAME);
-		setCreativeTab(HiveteraMod.creativeTab);
+		setCreativeTab(HiveteraMod.insectTab);
 		setTextureName(HiveteraMod.MODID + ":" + NAME);
 	}
 	

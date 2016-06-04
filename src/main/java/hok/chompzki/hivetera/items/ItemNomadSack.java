@@ -19,6 +19,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
@@ -28,6 +29,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -75,6 +77,8 @@ public class ItemNomadSack extends Item {
 				return false;
 		} else {
 			if(stack.getItem().isItemTool(stack))
+				return false;
+			if(stack.getItem() instanceof ISpecialArmor || stack.getItem() instanceof ItemArmor)
 				return false;
 			if(stack.getItem() instanceof ItemFood)
 				return false;

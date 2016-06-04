@@ -11,6 +11,7 @@ import hok.chompzki.hivetera.hunger.logic.Feeder;
 import hok.chompzki.hivetera.hunger.logic.Path;
 import hok.chompzki.hivetera.hunger.logic.ResourcePackage;
 import hok.chompzki.hivetera.research.data.PlayerResearchStorage;
+import hok.chompzki.hivetera.research.logic.settlement.TokenBank;
 
 import java.awt.geom.Point2D;
 import java.io.Serializable;
@@ -391,31 +392,46 @@ public class PlayerHungerNetwork implements IInventory{
 		this.name = hunger.name;
 	}
 	
-	public void feed(String channel, ResourcePackage amount){
+	//SELECTION and FEEDING alg
+	public void feed(String channel, ResourcePackage amount, ISelection selection, IFeeding feeding){
 		ResourcePackage cpy = amount.copy();
 		
+		//SELECTION ALGORITHM
 		List<Feeder> feeds = new ArrayList<Feeder>();
-		for(Feeder f : feeders){
-			if(f.channel.equals(channel)){
-				feeds.add(f);
+		if(selection == null){
+			for(Feeder f : feeders){
+				if(f.channel.equals(channel)){
+					feeds.add(f);
+				}
 			}
-		}
+		} else
+			feeds = selection.select(channel, cpy, feeders);
 		
+		//Return of no selections found
 		if(feeds.size() <= 0)
 			return;
+		//ORDER ALGORITHM
+		if(feeding != null)
+			feeds = feeding.order(feeds);
 		
-		List<ResourcePackage> packs = cpy.split(feeds.size());
+		//FEEDING ALGORITHM
+		if(feeding == null){
+			List<ResourcePackage> packs = cpy.split(feeds.size());
+			
+			for(int i = 0; i < feeds.size(); i++){
+				Feeder feeder = feeds.get(i);
+				ResourcePackage p = packs.get(i);
+				feed(feeder, p);
+			}
+			
+			//CLEAN UP
+			cpy.clear();
+			cpy.combine(packs);
+		} else
+			feeding.feed(feeds, cpy);
 		
-		for(int i = 0; i < feeds.size(); i++){
-			Feeder feeder = feeds.get(i);
-			ResourcePackage p = packs.get(i);
-			feed(feeder, p);
-		}
-		
-		cpy.clear();
-		cpy.combine(packs);
-		
-		double per = cpy.diffrance == 0.0D && cpy.total == 0.0D ? 0.0D : cpy.diffrance / cpy.total;
+		//HANDLES RESTS AND SUCH
+		double per = (cpy.diffrance == 0.0D && cpy.total == 0.0D) || cpy.total == 0.0D ? 0.0D : cpy.diffrance / cpy.total;
 		for(EnumResource res : EnumResource.values()){
 			double v = amount.get(res) * per;
 			amount.put(res, v);
@@ -533,6 +549,59 @@ public class PlayerHungerNetwork implements IInventory{
 		}
 		
 		return data;
+	}
+
+	public boolean canFeed(String channel, ResourcePackage pack) {
+		ResourcePackage cpy = pack.copy();
+		
+		List<Feeder> feeds = new ArrayList<Feeder>();
+		for(Feeder f : feeders){
+			if(f.channel.equals(channel)){
+				feeds.add(f);
+			}
+		}
+		
+		if(feeds.size() <= 0)
+			return false;
+		
+		List<ResourcePackage> packs = cpy.split(feeds.size());
+		int successes = 0;
+		
+		for(int i = 0; i < feeds.size(); i++){
+			Feeder feeder = feeds.get(i);
+			ResourcePackage p = packs.get(i);
+			if(canFeed(feeder, p))
+				successes++;
+		}
+		
+		return successes == feeds.size();
+	}
+
+	private boolean canFeed(Feeder feeder, ResourcePackage p) {
+		if(feeder.path.size() <= 0)
+			return false;
+		
+		List<ResourcePackage> packs = p.split(feeder.path.size());
+		int success = 0;
+		
+		for(int i = 0; i < feeder.path.size(); i++){
+			Path path = feeder.path.get(i);
+			ResourcePackage pack = packs.get(i);
+			
+			for(int j = 1; j < path.points.size(); j++){
+				Point point = path.points.get(j);
+				ItemStack stack = contents[point.getX() + point.getY() * 9];
+				if(stack == null || !(stack.getItem() instanceof IToken))
+					continue;
+				IToken token = (IToken)stack.getItem();
+				if(token instanceof TokenBank && token.canFeed(stack, pack))
+					success++;
+				else
+					token.canFeed(stack, pack);
+			}
+		}
+		
+		return success == feeder.path.size();
 	}
 	
 	

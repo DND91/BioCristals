@@ -292,10 +292,8 @@ public class ContainerTokenAssembler extends Container {
 		
 		if(payment.size() < cost.size() && !player.capabilities.isCreativeMode)
 			return;
-		
         if(!affords(cost, payment) && !player.capabilities.isCreativeMode)
         	return;
-        
         if(this.craftResult.getStackInSlot(0) == null){
         	this.craftResult.setInventorySlotContents(0, craftVisual.getStackInSlot(0).copy());
         }else{
@@ -331,9 +329,9 @@ public class ContainerTokenAssembler extends Container {
 			while(ite.hasNext()){
 				ItemStack cost = ite.next();
 				
-				if(slot.getItem() == cost.getItem() && slot.getItemDamage() == cost.getItemDamage()
-						&& ((!slot.hasTagCompound() && !cost.hasTagCompound()) || 
-							((slot.hasTagCompound() && cost.hasTagCompound()) && slot.stackTagCompound.equals(cost.stackTagCompound)))){
+				if(slot.getItem() == cost.getItem() && slot.getItemDamage() == cost.getItemDamage())
+						/*&& ((!slot.hasTagCompound() && !cost.hasTagCompound()) || 
+							((slot.hasTagCompound() && cost.hasTagCompound()) && slot.stackTagCompound.equals(cost.stackTagCompound))))*/{
 					if(cost.stackSize <= slot.stackSize){
 						inv.decrStackSize(i, cost.stackSize);
 						cost.stackSize = 0;
@@ -359,10 +357,11 @@ public class ContainerTokenAssembler extends Container {
 	}
     
     private boolean affords(ItemStack cost, List<ItemStack> payment) {
+    	
 		for(ItemStack p : payment){
-			if(cost.getItem() == p.getItem() && cost.getItemDamage() == p.getItemDamage()
-					&& ((!cost.hasTagCompound() && !p.hasTagCompound()) || 
-						((cost.hasTagCompound() && p.hasTagCompound()) && cost.stackTagCompound.equals(p.stackTagCompound)))){
+			if(cost.getItem() == p.getItem() && cost.getItemDamage() == p.getItemDamage())
+					/*&& ((!cost.hasTagCompound() && !p.hasTagCompound()) || 
+						((cost.hasTagCompound() && p.hasTagCompound()) && cost.stackTagCompound.equals(p.stackTagCompound))))*/{
 				if(cost.stackSize <= p.stackSize)
 					return true;
 			}

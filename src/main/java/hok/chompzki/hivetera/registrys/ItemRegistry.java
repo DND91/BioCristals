@@ -4,6 +4,7 @@ import java.util.List;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import hok.chompzki.hivetera.HiveteraMod;
+import hok.chompzki.hivetera.api.IArmorInsect;
 import hok.chompzki.hivetera.client.gui.KnowledgeDescriptions;
 import hok.chompzki.hivetera.containers.Hivebag;
 import hok.chompzki.hivetera.items.ItemAttuner;
@@ -22,7 +23,30 @@ import hok.chompzki.hivetera.items.ItemNomadSack;
 import hok.chompzki.hivetera.items.ItemResearchBook;
 import hok.chompzki.hivetera.items.armor.ItemArmorAttuner;
 import hok.chompzki.hivetera.items.armor.ItemBioModArmor;
+import hok.chompzki.hivetera.items.armor.insects.ItemBlackLeech;
+import hok.chompzki.hivetera.items.armor.insects.ItemBlueHorder;
+import hok.chompzki.hivetera.items.armor.insects.ItemBullWorm;
+import hok.chompzki.hivetera.items.armor.insects.ItemMedusaEye;
+import hok.chompzki.hivetera.items.armor.insects.ItemCarpaceSlug;
+import hok.chompzki.hivetera.items.armor.insects.ItemCarpaceSnail;
 import hok.chompzki.hivetera.items.armor.insects.ItemClayFoamer;
+import hok.chompzki.hivetera.items.armor.insects.ItemColonialSlug;
+import hok.chompzki.hivetera.items.armor.insects.ItemDarter;
+import hok.chompzki.hivetera.items.armor.insects.ItemDeathsWing;
+import hok.chompzki.hivetera.items.armor.insects.ItemDragonShell;
+import hok.chompzki.hivetera.items.armor.insects.ItemFireSprinter;
+import hok.chompzki.hivetera.items.armor.insects.ItemGreenBlower;
+import hok.chompzki.hivetera.items.armor.insects.ItemHillSpider;
+import hok.chompzki.hivetera.items.armor.insects.ItemHungerLarva;
+import hok.chompzki.hivetera.items.armor.insects.ItemHungerSwarm;
+import hok.chompzki.hivetera.items.armor.insects.ItemLifeShader;
+import hok.chompzki.hivetera.items.armor.insects.ItemLightbringer;
+import hok.chompzki.hivetera.items.armor.insects.ItemPriestBeetle;
+import hok.chompzki.hivetera.items.armor.insects.ItemSSB;
+import hok.chompzki.hivetera.items.armor.insects.ItemSludgeGrim;
+import hok.chompzki.hivetera.items.armor.insects.ItemSprinter;
+import hok.chompzki.hivetera.items.armor.insects.ItemVoidFarer;
+import hok.chompzki.hivetera.items.armor.insects.ItemWaterHunter;
 import hok.chompzki.hivetera.items.insects.ItemClayHunter;
 import hok.chompzki.hivetera.items.insects.ItemCrootBeetle;
 import hok.chompzki.hivetera.items.insects.ItemCrootClaw;
@@ -31,7 +55,6 @@ import hok.chompzki.hivetera.items.insects.ItemHivebag;
 import hok.chompzki.hivetera.items.insects.ItemHoneyWidow;
 import hok.chompzki.hivetera.items.insects.ItemKittehBeetle;
 import hok.chompzki.hivetera.items.insects.ItemKraKenBug;
-import hok.chompzki.hivetera.items.insects.ItemLightbringer;
 import hok.chompzki.hivetera.items.insects.ItemUnlockBug;
 import hok.chompzki.hivetera.items.insects.ItemVoidCrawler;
 import hok.chompzki.hivetera.items.insects.ItemWSB;
@@ -65,7 +88,7 @@ import net.minecraftforge.common.util.EnumHelper;
 
 public class ItemRegistry {
 	
-	public static ArmorMaterial chitin_armor = EnumHelper.addArmorMaterial("chitin_armor", 10, new int[] {1, 3, 2, 1}, 1);
+	public static ArmorMaterial chitin_armor = EnumHelper.addArmorMaterial("chitin_armor", 20, new int[] {2, 6, 5, 2}, 1);
 	public static ToolMaterial crootIron = EnumHelper.addToolMaterial("crootIron", 2, 500, 7.0F, 3.0F, 5);
 	
 	public static Item attuner = null;
@@ -99,6 +122,28 @@ public class ItemRegistry {
 	public static Item honeyWidow = null;
 	public static Item armorAttuner = null;
 	public static Item clayFoamer = null;
+	public static Item sprinter = null;
+	public static Item darter = null;
+	public static Item dragonShell = null;
+	public static Item waterHunter = null;
+	public static Item hillSpider = null;
+	public static Item fireSprinter = null;
+	public static Item deathsWing = null;
+	public static Item carpaceSlug = null;
+	public static Item carpaceSnail = null;
+	public static Item lifeShader = null;
+	public static Item voidFarer = null;
+	public static Item sludgeGrim = null;
+	public static Item bullWorm = null;
+	public static Item ssb = null;
+	public static Item blackLeech = null;
+	public static Item hungerSwarm = null;
+	public static Item greenBlower = null;
+	public static Item priestBeetle = null;
+	public static Item colonialSlug = null;
+	public static Item blueHorder = null;
+	public static Item hungerLarva = null;
+	public static Item medusaEye = null;
 	
 	public static Item tokenFeeder = null;
 	public static Item tokenBridge = null;
@@ -108,6 +153,7 @@ public class ItemRegistry {
 	public static Item tokenTransformer = null;
 	
 	public static Item biomeSample = null;
+	
 	
 	public void registerItems(){
 		attuner = new ItemAttuner();
@@ -137,6 +183,28 @@ public class ItemRegistry {
 		honeyWidow = new ItemHoneyWidow();
 		armorAttuner = new ItemArmorAttuner();
 		clayFoamer = new ItemClayFoamer();
+		sprinter = new ItemSprinter();
+		darter = new ItemDarter();
+		dragonShell = new ItemDragonShell();
+		waterHunter = new ItemWaterHunter();
+		hillSpider = new ItemHillSpider();
+		fireSprinter = new ItemFireSprinter();
+		deathsWing = new ItemDeathsWing();
+		carpaceSlug = new ItemCarpaceSlug();
+		carpaceSnail = new ItemCarpaceSnail();
+		lifeShader = new ItemLifeShader();
+		voidFarer = new ItemVoidFarer();
+		sludgeGrim = new ItemSludgeGrim();
+		bullWorm = new ItemBullWorm();
+		ssb = new ItemSSB();
+		blackLeech = new ItemBlackLeech();
+		hungerSwarm = new ItemHungerSwarm();
+		greenBlower = new ItemGreenBlower();
+		priestBeetle = new ItemPriestBeetle();
+		colonialSlug = new ItemColonialSlug();
+		blueHorder = new ItemBlueHorder();
+		hungerLarva = new ItemHungerLarva();
+		medusaEye = new ItemMedusaEye();
 		
 		hiveBrain = new ItemHiveBrain();
 		tokenFeeder = new ItemFeeder();
@@ -177,6 +245,28 @@ public class ItemRegistry {
 		GameRegistry.registerItem(honeyWidow, ItemHoneyWidow.NAME, HiveteraMod.MODID);
 		GameRegistry.registerItem(armorAttuner, ItemArmorAttuner.NAME, HiveteraMod.MODID);
 		GameRegistry.registerItem(clayFoamer, ItemClayFoamer.NAME, HiveteraMod.MODID);
+		GameRegistry.registerItem(sprinter, ItemSprinter.NAME, HiveteraMod.MODID);
+		GameRegistry.registerItem(darter, ItemDarter.NAME, HiveteraMod.MODID);
+		GameRegistry.registerItem(dragonShell, ItemDragonShell.NAME, HiveteraMod.MODID);
+		GameRegistry.registerItem(waterHunter, ItemWaterHunter.NAME, HiveteraMod.MODID);
+		GameRegistry.registerItem(hillSpider, ItemHillSpider.NAME, HiveteraMod.MODID);
+		GameRegistry.registerItem(fireSprinter, ItemFireSprinter.NAME, HiveteraMod.MODID);
+		GameRegistry.registerItem(deathsWing, ItemDeathsWing.NAME, HiveteraMod.MODID);
+		GameRegistry.registerItem(carpaceSlug, ItemCarpaceSlug.NAME, HiveteraMod.MODID);
+		GameRegistry.registerItem(carpaceSnail, ItemCarpaceSnail.NAME, HiveteraMod.MODID);
+		GameRegistry.registerItem(lifeShader, ItemLifeShader.NAME, HiveteraMod.MODID);
+		GameRegistry.registerItem(voidFarer, ItemVoidFarer.NAME, HiveteraMod.MODID);
+		GameRegistry.registerItem(sludgeGrim, ItemSludgeGrim.NAME, HiveteraMod.MODID);
+		GameRegistry.registerItem(bullWorm, ItemBullWorm.NAME, HiveteraMod.MODID);
+		GameRegistry.registerItem(ssb, ItemSSB.NAME, HiveteraMod.MODID);
+		GameRegistry.registerItem(blackLeech, ItemBlackLeech.NAME, HiveteraMod.MODID);
+		GameRegistry.registerItem(hungerSwarm, ItemHungerSwarm.NAME, HiveteraMod.MODID);
+		GameRegistry.registerItem(greenBlower, ItemGreenBlower.NAME, HiveteraMod.MODID);
+		GameRegistry.registerItem(priestBeetle, ItemPriestBeetle.NAME, HiveteraMod.MODID);
+		GameRegistry.registerItem(colonialSlug, ItemColonialSlug.NAME, HiveteraMod.MODID);
+		GameRegistry.registerItem(blueHorder, ItemBlueHorder.NAME, HiveteraMod.MODID);
+		GameRegistry.registerItem(hungerLarva, ItemHungerLarva.NAME, HiveteraMod.MODID);
+		GameRegistry.registerItem(medusaEye, ItemMedusaEye.NAME, HiveteraMod.MODID);
 		
 		GameRegistry.registerItem(chitinHelmet = new ItemBioModArmor("chitinHelmet", chitin_armor, "chitin_layer", 0), "chitinHelmet"); //0 for helmet
 		GameRegistry.registerItem(chitinChestplate = new ItemBioModArmor("chitinChestplate", chitin_armor, "chitin_layer", 1), "chitinChestplate"); // 1 for chestplate
